@@ -1,0 +1,40 @@
+# Local-only chat logs (per session, written by tools/log_session.py)
+.chatlog/
+
+# Local-only Claude Code settings (may contain user-specific permissions / hooks)
+.claude
+
+# Per-machine Claude Code settings (may contain user-specific permissions / hooks)
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Node / Next.js (Phase 2+)
+node_modules/
+.next/
+.pnpm-debug.log
+.turbo/
+
+# Env files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Smart-contract build artefacts (Phase 1+)
+contracts/artifacts/
+contracts/cache/
+contracts/ignition/deployments/
+contracts/typechain-types/
+
+# App runtime data (Phase 3+)
+app/data/uploads/
+app/data/audit-ledger.jsonl
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

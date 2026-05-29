@@ -89,27 +89,29 @@ gantt
     Web frontend (buyer/seller/events)  :a3, after a1, 20d
     Doc verification (vision + rules)   :a4, after a2, 15d
     Deal-spec intake form               :a5, after a3, 8d
-    Demo runbook + seed + recording     :a6, 2026-08-03, 8d
-    MVP demo-ready                      :milestone, m1, 2026-08-14, 0d
+    Integration & hardening             :a6, after a4, 10d
+    Demo runbook + seed + recording     :a7, after a6, 8d
+    MVP demo-ready                      :milestone, m1, after a7, 0d
 
     section Assessment
-    Main pitch video                    :b1, 2026-08-03, 11d
-    Individual report (reflection)      :b2, 2026-08-14, 14d
-    Report submitted                    :milestone, m2, 2026-08-28, 0d
+    Main pitch video                    :b1, after a7, 11d
+    Individual report (reflection)      :b2, after b1, 14d
+    Report submitted                    :milestone, m2, after b2, 0d
 
     section Post-MVP roadmap
-    KYC / sanctions screening stub      :c1, 2026-09-01, 10d
+    KYC / sanctions screening stub      :c1, after b2, 10d
     Full state-machine v2 contract      :c2, after c1, 13d
     Dispute objection window + worker   :c3, after c2, 14d
-    Multi-deal dashboard                :c4, 2026-11-16, 12d
+    Multi-deal dashboard                :c4, after c3, 12d
     Audit-ledger viewer UI              :c5, after c4, 7d
-    Multi-agent orchestrator            :c6, 2027-01-05, 17d
+    Multi-agent orchestrator            :c6, after c5, 17d
 
     section Growth
-    Pilot prep (beachhead corridor)     :d1, 2027-02-02, 20d
-    Pilot with first SME              :d2, after d1, 40d
-    PMF review                          :milestone, m3, 2027-05-03, 0d
-    Seed raise                       :d3, 2027-05-04, 30d
+    Pilot prep (beachhead corridor)     :d1, after c6, 20d
+    Pilot with first SME              :d2, after d1, 90d
+    Iterate to product-market fit       :d3, after d2, 60d
+    PMF review                          :milestone, m3, after d3, 0d
+    Seed raise                       :d4, after d3, 45d
 ```
 
 > Durations are **calendar spans** (parallelised across the 5-person team), not the team-day

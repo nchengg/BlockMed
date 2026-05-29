@@ -80,7 +80,8 @@ gantt
     title Blockmediary — 12-month roadmap (2026-06 to 2027-06)
     dateFormat YYYY-MM-DD
     axisFormat %b %Y
-    excludes weekends
+    tickInterval 1month
+    weekday monday
 
     section Academic build (MVP)
     Setup & infra                       :a1, 2026-06-08, 5d
@@ -105,10 +106,10 @@ gantt
     Multi-agent orchestrator            :c6, 2027-01-05, 17d
 
     section Growth
-    Beachhead corridor pilot prep       :d1, 2027-02-02, 20d
-    Pilot with first SME importer/expo  :d2, after d1, 40d
-    Product-market-fit review           :milestone, m3, 2027-05-03, 0d
-    Seed raise / funding-deck refresh   :d3, 2027-05-04, 30d
+    Pilot prep (beachhead corridor)     :d1, 2027-02-02, 20d
+    Pilot with first SME              :d2, after d1, 40d
+    PMF review                          :milestone, m3, 2027-05-03, 0d
+    Seed raise                       :d3, 2027-05-04, 30d
 ```
 
 > Durations are **calendar spans** (parallelised across the 5-person team), not the team-day

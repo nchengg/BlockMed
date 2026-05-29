@@ -67,3 +67,51 @@ Per the planning rule (flag if total effort > available days × team size × 0.7
 > **Adjust the assumptions to your team's real availability.** Two levers bring MVP inside budget:
 > (a) raise effective days/week, or (b) further trim MVP scope (e.g. defer task 16 deal-intake form
 > to a hardcoded demo spec, saving 8 days).
+
+## 12-month roadmap (Gantt)
+
+Projection from the build kickoff (2026-06-08) through a year. The **Academic build** block
+matches the MVP scope above; **Post-MVP roadmap** sequences the deferred tasks; **Growth**
+projects the path to a beachhead pilot and seed raise. Diagram renders in VS Code's Markdown
+preview and on GitHub.
+
+```mermaid
+gantt
+    title Blockmediary — 12-month roadmap (2026-06 to 2027-06)
+    dateFormat YYYY-MM-DD
+    axisFormat %b %Y
+    excludes weekends
+
+    section Academic build (MVP)
+    Setup & infra                       :a1, 2026-06-08, 5d
+    Smart contract + tests + deploy     :a2, after a1, 15d
+    Web frontend (buyer/seller/events)  :a3, after a1, 20d
+    Doc verification (vision + rules)   :a4, after a2, 15d
+    Deal-spec intake form               :a5, after a3, 8d
+    Demo runbook + seed + recording     :a6, 2026-08-03, 8d
+    MVP demo-ready                      :milestone, m1, 2026-08-14, 0d
+
+    section Assessment
+    Main pitch video                    :b1, 2026-08-03, 11d
+    Individual report (reflection)      :b2, 2026-08-14, 14d
+    Report submitted                    :milestone, m2, 2026-08-28, 0d
+
+    section Post-MVP roadmap
+    KYC / sanctions screening stub      :c1, 2026-09-01, 10d
+    Full state-machine v2 contract      :c2, after c1, 13d
+    Dispute objection window + worker   :c3, after c2, 14d
+    Multi-deal dashboard                :c4, 2026-11-16, 12d
+    Audit-ledger viewer UI              :c5, after c4, 7d
+    Multi-agent orchestrator            :c6, 2027-01-05, 17d
+
+    section Growth
+    Beachhead corridor pilot prep       :d1, 2027-02-02, 20d
+    Pilot with first SME importer/expo  :d2, after d1, 40d
+    Product-market-fit review           :milestone, m3, 2027-05-03, 0d
+    Seed raise / funding-deck refresh   :d3, 2027-05-04, 30d
+```
+
+> Durations are **calendar spans** (parallelised across the 5-person team), not the team-day
+> efforts from the tables above — e.g. the 10-day KYC stub runs as one ~2-week calendar block.
+> Adjust dates to your team's real availability and to any showcase events (e.g. FinTech West,
+> tentatively 2026-09-18).

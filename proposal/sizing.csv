@@ -1,0 +1,28 @@
+Task ID,Scope,Workstream,Task Description,Development Effort,Testing Effort,Deployment Effort,Total Effort,Size
+1,MVP,Setup & Infra,Set up monorepo and developer environment (env files / faucets / accounts),2,0,1,3,XS
+2,MVP,Setup & Infra,Configure deployment pipeline and secrets management,2,1,1,4,S
+3,MVP,Smart Contract,Implement Escrow smart contract (state machine + role gating),6,3,1,10,M
+4,MVP,Smart Contract,Implement MockUSDC and ERC20 integration,2,1,0,3,XS
+5,MVP,Smart Contract,Write contract test suite (happy path / access / refund),4,2,0,6,S
+6,MVP,Smart Contract,Deploy and verify contract on Base Sepolia (Ignition),2,1,2,5,S
+7,MVP,Frontend,Scaffold Next.js app and wallet connect (wagmi / RainbowKit),4,1,1,6,S
+8,MVP,Frontend,Build buyer panel (approve / deposit / balance),5,2,1,8,M
+9,MVP,Frontend,Build seller panel (upload / verdict / release),5,2,1,8,M
+10,MVP,Frontend,Implement on-chain event watching and state sync,3,2,1,6,S
+11,MVP,Doc Verification,Build document upload API endpoint,3,1,1,5,S
+12,MVP,Doc Verification,Integrate Claude vision extraction with Zod schema,5,3,1,9,M
+13,MVP,Doc Verification,Implement deterministic rules engine,4,3,1,8,M
+14,MVP,Doc Verification,Build authorised releaser bridge (recordVerdict on-chain),3,2,1,6,S
+15,MVP,Doc Verification,Implement audit-ledger logging,2,1,1,4,S
+16,MVP,Deal Intake,Build escrow-spec intake form (structured terms to JSON),5,2,1,8,M
+17,MVP,Demo & Deliverables,Write demo runbook and seed script,2,1,1,4,S
+18,MVP,Demo & Deliverables,Record fallback demo video,2,1,0,3,XS
+19,Roadmap,Compliance,Build KYC / sanctions screening stub,6,3,1,10,M
+20,Roadmap,Dispute,Build dispute objection window and worker,8,4,2,14,L
+21,Roadmap,Smart Contract,Extend to full state-machine coverage (v2 contract),7,4,2,13,L
+22,Roadmap,Frontend,Build buyer/seller multi-deal dashboard,8,3,1,12,M
+23,Roadmap,Frontend,Build audit-ledger viewer UI,4,2,1,7,S
+24,Roadmap,Orchestration,Build multi-agent orchestrator (Agent SDK),10,5,2,17,L
+,,,MVP SUBTOTAL,61,29,16,106,
+,,,ROADMAP SUBTOTAL,43,21,9,73,
+,,,GRAND TOTAL,104,50,25,179,

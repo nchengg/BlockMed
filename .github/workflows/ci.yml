@@ -1,0 +1,27 @@
+name: CI
+
+# Plain, zero-token gates. Runs on GitHub's servers — no Claude usage.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Agent/skill sync drift check
+        run: python tools/sync_agents.py --check
+
+      - name: Validate data fixtures (JSON / JSONL)
+        run: python tools/validate_data.py
+
+      - name: Python syntax compile
+        run: python -m compileall -q tools

@@ -22,6 +22,9 @@ jobs:
       - name: Agent/skill generation (canonical -> .claude/)
         run: python tools/sync_agents.py
 
+      - name: Agent capability / security gate
+        run: python tools/check_agent_security.py
+
       - name: Validate data fixtures (JSON / JSONL)
         run: python tools/validate_data.py
 

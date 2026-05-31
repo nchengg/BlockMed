@@ -1,0 +1,32 @@
+name: CI
+
+# Plain, zero-token gates. Runs on GitHub's servers — no Claude usage.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # .claude/ is a local generated artifact (gitignored), so we can't drift-check it
+      # in CI. Instead, prove the canonical agents/ + skills/ generate cleanly.
+      - name: Agent/skill generation (canonical -> .claude/)
+        run: python tools/sync_agents.py
+
+      - name: Agent capability / security gate
+        run: python tools/check_agent_security.py
+
+      - name: Validate data fixtures (JSON / JSONL)
+        run: python tools/validate_data.py
+
+      - name: Python syntax compile
+        run: python -m compileall -q tools

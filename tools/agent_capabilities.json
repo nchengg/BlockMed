@@ -1,0 +1,18 @@
+{
+  "_comment": "Capability manifest — the APPROVED tool set per agent. tools/check_agent_security.py fails CI if any agent's frontmatter `tools:` grants a tool NOT listed here, if an agent is missing from this file, or if a privileged agent drops its escalation guardrails. Widening an agent's privilege is therefore a deliberate, reviewable edit to THIS file — not something that can slip through a prose change. Keep entries sorted. '*' = all tools (most privileged; use sparingly).",
+  "agents": {
+    "data-analyst":     ["Read", "Grep", "Glob", "Bash"],
+    "deal-intake":      ["Read", "Write", "Grep", "Glob", "Bash"],
+    "dispute":          ["Read", "Write", "Grep", "Glob", "Bash"],
+    "document-checker": ["Read", "Write", "Grep", "Glob", "Bash"],
+    "escrow":           ["Read", "Write", "Grep", "Glob", "Bash"],
+    "kyc-compliance":   ["Read", "Write", "Grep", "Glob", "Bash"],
+    "orchestrator":     ["*"],
+    "personal-log":     ["Read", "Write", "Grep", "Glob"],
+    "project-planner":  ["Read", "Write", "Grep", "Glob"],
+    "proposal-writer":  ["Read", "Grep", "Glob"],
+    "report-writer":    ["Read", "Write"],
+    "settlement":       ["Read", "Write", "Grep", "Glob", "Bash"]
+  },
+  "require_escalation_section_when_granted": ["Bash", "Write"]
+}

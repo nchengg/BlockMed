@@ -66,12 +66,20 @@ stablecoin escrow and document-based release.
 
 ### 3.3 What success looks like
 
-> **`[DISCUSS]`** We have not agreed our definition of success. Candidate framings:
-> - **Academic:** score well against the BEEM063 grading rubric (clarity, viability, demo).
-> - **Demo:** a working clickable testnet prototype that runs the happy path end-to-end.
-> - **Commercial (aspirational):** a credible path to first paying SME deals on a chosen corridor.
->
-> _Pick one primary lens for this BRD and keep the others as secondary._
+**Direction vs. current-phase success (settled 2026-05-31):** the firm is the long-term
+**direction** — a workable business serving the public at launch — but the **primary success
+criterion for *this* phase is the Demo.** We optimise the BRD around landing a convincing
+hackathon prototype; the firm is the horizon that keeps those choices honest.
+
+- **Primary lens now — Demo:** a working clickable testnet prototype that runs the happy path
+  end-to-end, due for the BEEM063 submission. _This is what we design and grade against today._
+- **Ultimate direction — firm:** a launched product taking real SME cross-border deals on a
+  chosen corridor, with a sustainable revenue model. Every MVP cut should be reversible toward this.
+- **Academic (concurrent):** score well against the BEEM063 rubric — a by-product of doing the above well.
+
+> **`[DISCUSS]`** (longer-term) Agree a commercial north-star metric for "workable firm at
+> launch" — e.g. _N_ live deals, escrow volume, or first paying customer. Not needed for the
+> demo, but it's what turns "firm" from aspiration into a target.
 
 ---
 
@@ -86,19 +94,56 @@ stablecoin escrow and document-based release.
 - Release funds to the seller if no valid objection; otherwise support discrepancy /
   amendment / refund / dispute paths.
 
-### 4.2 Non-goals (explicitly out of scope for MVP)
+### 4.2 Non-goals
+
+> **Team direction (agreed 2026-05-31):** Blockmediary is being built as a **workable firm
+> intended to serve the public at launch**. The hackathon MVP is the *first submission /
+> proof slice*, not the end state. So "out of scope" splits into two very different
+> buckets — things we'll build *later for the firm*, and things the firm *won't do at all*.
+> Don't treat the whole list as permanent product boundaries.
+
+**4.2.a — Deferred past the hackathon (firm will likely build these later)**
+
+These are real parts of the launched product; they're just not in the hackathon slice.
 
 - Buyer/seller marketplace or discovery.
-- **Trade financing, liquidity provision, invoice financing** — explicitly *not* Blockmediary,
-  despite operating in the same space.
-- Insurance sourcing; party trust scoring.
-- Full legal automation of the underlying sale contract.
-- Quality guarantees for physical goods (unless an inspection certificate is a release rule).
-- Direct title control (unless integrated with an eBL or document custodian).
-- Complex regulated goods, sanctioned corridors, high-risk commodities.
+- Insurance sourcing; party trust / counterparty scoring.
+- Direct title control via electronic bill of lading (eBL) / document-custodian integration.
+- White-label / API distribution to partner platforms (forwarders, marketplaces, banks).
+- Broader corridors and goods types beyond the initial beachhead.
 
-> **`[DISCUSS]`** Is the no-financing line firm for the whole project, or just the MVP?
-> It shapes positioning, regulatory exposure, and revenue.
+**4.2.b — Permanent product boundaries (the firm does *not* do these, even at scale)**
+
+These define what Blockmediary *is* — crossing them changes the product and its regulatory profile.
+
+- **Trade financing, liquidity provision, invoice financing** — Blockmediary is an escrow /
+  settlement layer, not a lender. No financing spread, ever. _(See `[DISCUSS]` below — confirm
+  this is a firm-level boundary, not just an MVP cut.)_
+- Full legal automation of the underlying sale contract — the sale contract stays between the parties.
+- Quality / condition guarantees for physical goods — release is on **document** compliance,
+  not on actual receipt or condition (unless an inspection certificate is a release rule).
+- Sanctioned corridors and prohibited high-risk goods.
+
+> **`[DISCUSS]`** Confirm the **no-financing** line is a *firm-level* boundary (4.2.b), not just
+> an MVP deferral. This is the single biggest positioning + regulatory call. If the firm ever
+> intends to add financing, it belongs in a roadmap section, not as a permanent boundary.
+
+### 4.3 Target market (beachhead)
+
+**Decided 2026-05-31.** Blockmediary's initial target market is:
+
+- **Corridors:** trade lanes across the **UK, the EU, and the Middle East** (UK ⇄ EU ⇄ ME).
+- **Goods:** **goods-agnostic** — any goods type, *except* the permanent exclusion below.
+
+The single hard limit on "any goods" is §4.2.b: **sanctioned corridors and prohibited /
+high-risk regulated goods are excluded** (e.g. weapons, dual-use, controlled substances).
+Subject to that, Blockmediary does not restrict by commodity — release depends on **document**
+compliance, not on the nature of the goods.
+
+> **Note for the team:** this is broader than a classic single-lane beachhead (one corridor +
+> one goods type). It widens addressable volume but also widens the document-rule and
+> compliance surface. Keep the **demo** narrow (pick one representative lane + goods sample to
+> show end-to-end) even though the **firm's** stated market is the full UK/EU/ME, any-goods scope.
 
 ---
 
@@ -241,12 +286,13 @@ required. *Protecting the seller from post-shipment renegotiation is core to the
 
 | Category | Requirement | Notes / `[DISCUSS]` |
 |----------|-------------|---------------------|
-| Security | Funds never held in a Blockmediary-controlled wallet | Smart contract or regulated custodian only |
+| Security | Funds never held in a Blockmediary-controlled wallet | ✅ Direct smart-contract custody for MVP (no custodian) |
+| Portability | Escrow contract + deploy scripts kept chain-portable | Enables fast migration off Base Sepolia if it breaks (§12) |
 | Auditability | Immutable audit ledger is the regulator-facing source of truth | Write before every on-chain action |
 | Determinism | All money math in code, not LLM prose | Prevents arithmetic errors |
 | Accuracy | Document extraction confidence ≥ 0.9 to auto-pass | Below threshold → human review |
 | Privacy / data | Synthetic data only during build; PII handling TBD for production | **`[DISCUSS]`** data-protection regime |
-| Performance | On-chain finality acceptable for an escrow release | Depends on chain choice |
+| Performance | On-chain finality acceptable for an escrow release | Base Sepolia (L2) — fast/cheap finality for the demo |
 | Compliance | AML / sanctions screening before funding | **`[DISCUSS]`** which jurisdictions |
 | Availability | Demo-grade for MVP | Production SLAs out of scope now |
 
@@ -272,14 +318,26 @@ off-chain, and an authorised release function submits the verdict on-chain.
 
 ## 12. External rails & dependencies
 
-- **Stablecoin rail** — USDC / EURC on a PoS chain. **`[DISCUSS]`** chain TBD; candidates:
-  Solana / Polygon / Base / Avalanche. Selection criteria: throughput, finality, regulatory
-  clarity, gas cost.
+- **Settlement chain — ✅ Base Sepolia (testnet) for the MVP.** Decided 2026-05-31. EVM /
+  L2, low gas, good tooling for the demo. **Contingency:** the team is scoping *instant
+  migration options* in case the chain breaks or degrades — keep contract code and deploy
+  scripts chain-portable (EVM-compatible fallback, e.g. another OP-stack / EVM L2) so a
+  redeploy is fast. _Production mainnet (Base or alternative) is a later decision._
+- **Stablecoin** — USDC / EURC (testnet equivalents on Base Sepolia for the demo).
+- **Document verification tooling — ✅ AI-first with human review as the final step.** Decided
+  2026-05-31. AI/OCR extracts fields and proposes a verdict; a human reviewer signs off as the
+  final gate before release. Matches the autonomy policy in §9.2 (auto-pass only above
+  confidence + value thresholds; otherwise mandatory human review).
+- **Custody — ✅ Direct smart contract.** Decided 2026-05-31. Buyer deposits straight into the
+  on-chain escrow contract; no regulated custody partner and no Blockmediary-controlled wallet
+  in the MVP. (Reflected in §10 and §9.3.)
 - **Document custody / electronic bill of lading** — **`[DISCUSS]`** TBD partner if title
-  control is added beyond MVP.
-- **Document verification tooling** — **`[DISCUSS]`** OCR/AI mix vs. human review.
+  control is added beyond MVP (deferred — §4.2.a).
 - **KYC / sanctions data feeds** — **`[DISCUSS]`** provider TBD.
-- **Dispute forum** — **`[DISCUSS]`** named arbitrator / expert determination process TBD.
+- **Dispute forum — ✅ Set by the parties' agreement.** Decided 2026-05-31. Rather than one
+  platform-wide arbitrator, the named dispute forum / expert-determination process is whatever
+  the buyer and seller agree in their **Trade Escrow Agreement** for that deal. _For the demo,
+  seed a sensible default in the escrow spec so the dispute path is exercisable end-to-end._
 
 ---
 
@@ -303,7 +361,7 @@ The MVP is **not** a financing product — there is no financing spread. Candida
 
 - **`[ASSUMPTION]`** Buyer and seller already have a signed sale contract before engaging Blockmediary.
 - **`[ASSUMPTION]`** Both parties can hold/transact a stablecoin (or we provide guidance to).
-- **`[ASSUMPTION]`** Beachhead is simple, repeatable, low-to-medium-value manufactured goods.
+- **Target market:** UK / EU / Middle East corridors, goods-agnostic (see §4.3) — *decided, not an assumption*.
 - **Constraint:** synthetic/sandbox data only during the build (no real PII).
 - **Constraint:** hackathon timeline — hard demo deadline **2026-08-14**; proposal due **2026-06-08**.
 - **Constraint:** team capacity vs. scope already flagged as tight in earlier sizing work.
@@ -313,20 +371,26 @@ The MVP is **not** a financing product — there is no financing spread. Candida
 ## 15. Open questions (the meeting agenda)
 
 These are the decisions that turn this draft into a real BRD. Carried forward from the
-product spec plus the gaps above.
+product spec plus the gaps above. ✅ = settled 2026-05-31.
 
-1. **Definition of success** — academic / demo / commercial primary lens? (§3.3)
-2. **Which PoS chain?** — Solana / Polygon / Base / Avalanche. (§12)
-3. **Document-verification tooling** — OCR/AI vs. human-review mix for acceptable accuracy. (§12)
-4. **Custody model** — direct-to-smart-contract vs. regulated custody partner. (§10)
-5. **Beachhead corridor + goods type** — e.g. Shenzhen → LA, manufactured components. (§14)
-6. **Dispute forum** — which named arbitrator / process for the MVP demo. (§12)
+**Settled (✅):**
+
+1. ✅ **Definition of success** — **Demo** is the primary current-phase lens; firm is the long-term direction. (§3.3)
+2. ✅ **Settlement chain** — **Base Sepolia** (testnet); keep chain-portable for instant migration if it breaks. (§12)
+3. ✅ **Document-verification tooling** — **AI-first, human review as the final step.** (§12, §9.2)
+4. ✅ **Custody model** — **Direct smart contract** (no custody partner, no Blockmediary wallet). (§10, §12)
+5. ✅ **Dispute forum** — **set by the parties' agreement** (per-deal in the Trade Escrow Agreement); seed a default for the demo. (§12)
+6. ✅ **Target market / beachhead** — **UK / EU / Middle East corridors, goods-agnostic.** Now stated in §4.3 (no longer an open question).
+
+**Still open:**
+
 7. **Sale-contract intake** — structured form only, or also term-extraction from uploads. (§7)
 8. **MVP value cap** — confirm **£50k** equivalent or change. (§9.2)
 9. **Objection window** — confirm **48h** default or change. (§9.2)
 10. **Primary revenue stream** — and a defensible fee level. (§13)
 11. **First customer / who initiates** — buyer, seller, or platform. (§5)
 12. **MVP doc set** — full six documents vs. a minimal core for the demo. (§8)
+13. **No-financing boundary** — confirm it's a firm-level boundary, not just an MVP cut. (§4.2.b)
 
 ---
 
@@ -334,11 +398,11 @@ product spec plus the gaps above.
 
 | Term | Definition |
 |------|------------|
-| **Beachhead** | The single buyer/seller corridor + goods type the MVP targets first. |
+| **Beachhead / target market** | Blockmediary's initial market: **UK / EU / Middle East** corridors, **goods-agnostic** (excluding sanctioned/prohibited high-risk goods). See §4.3. |
 | **Compliance verdict** | Document-verification outcome: Compliant / Discrepant / Rejected / Escalated. |
 | **Escrow specification** | Structured JSON generated at deal intake; authoritative for release rules. |
 | **Notice of release** | Message issued when documents are compliant; starts the objection window. |
 | **Objection window** | Fixed period (default 48h) for the buyer to raise a *valid* objection. |
-| **PoS chain** | Proof-of-stake blockchain hosting the escrow contract (chain TBD). |
+| **Settlement chain** | Blockchain hosting the escrow contract. MVP: **Base Sepolia** (testnet, EVM L2); kept chain-portable for fast migration. |
 | **Release rules** | Document-compliance conditions in the escrow spec that must be met to release funds. |
 | **Trade Escrow Agreement** | Legal agreement between buyer, seller and Blockmediary (separate from the sale contract). |

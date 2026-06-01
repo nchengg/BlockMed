@@ -3,10 +3,11 @@
   "agents": {
     "data-analyst":     ["Read", "Grep", "Glob", "Bash"],
     "orchestrator":     ["*"],
-    "personal-log":     ["Read", "Write", "Grep", "Glob"],
+    "personal-log":     ["Read", "Grep", "Glob"],
     "project-planner":  ["Read", "Write", "Grep", "Glob"],
     "proposal-writer":  ["Read", "Grep", "Glob"],
-    "report-writer":    ["Read", "Write"]
+    "report-writer":    ["Read", "Write"],
+    "tldr":             ["Read", "Grep", "Glob", "Bash"]
   },
   "require_escalation_section_when_granted": ["Bash", "Write"]
 }

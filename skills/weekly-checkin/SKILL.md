@@ -23,23 +23,23 @@ Skipping a week means reconstructing it later from memory — graders detect thi
 
 ### Monday — plan mode
 1. **Orchestrator** confirms phase = Build (between 2026-06-08 and 2026-08-14). Otherwise warn but proceed.
-2. Delegate to **personal-log** in Monday mode → append `### Planned` block for the week.
+2. Delegate to **personal-log** in Monday mode → record the week's planned items (confirmed against actuals in Friday's entries).
 3. Delegate to **project-planner** → reconcile this week's planned items against the active RACI + Kanban. Move cards from To-Do → Doing where appropriate.
 4. Surface conflicts: anything the user planned that has no Kanban card, or any Kanban card stalled >2 weeks.
 
 ### Friday — log mode
 1. **Orchestrator** confirms phase = Build.
 2. Optionally collect evidence: `git log --author="<user>" --since="last Monday"`, Drive `list_recent_files` (if MCP wired in this repo at the time), meeting notes.
-3. Delegate to **personal-log** in Friday mode → append `### Done` / `### Variance` / `### Learning` blocks.
+3. Delegate to **personal-log** in Friday mode → write the week's daily `Logs` entries (done / variance / learning) into the **Project Log** sheet.
 4. Delegate to **project-planner** → update Kanban (Doing → Review / Done), reconcile sizing vs actual.
 5. Report the running word count toward the 1,000-word §2 target.
 
 ## Output
-- Updated `proposal/personal-log.md` with the new week's entries.
+- Ready-to-paste `Logs` rows for the week, for the user to copy into the **Project Log** sheet (Google Drive → `Hackathon/`).
 - Updated Kanban / RACI artefacts (if changed).
 - A one-paragraph status to surface to the user: this-week progress, log word count, anything off-track.
 
 ## Notes
 - Never edit prior weeks' log entries (academic-integrity rule — see `personal-log.md`).
 - If a week is genuinely missed, log it as missed rather than backfilled. Authenticity scores higher than completeness here.
-- The personal log lives in the git repo, NOT in Drive — the log is the user's individual artefact and should be versioned alongside the code they produced.
+- The personal log lives in the **"Project Log" Google Sheet** under `Hackathon/` in Drive — write into the user's own daily grid only, never another member's.

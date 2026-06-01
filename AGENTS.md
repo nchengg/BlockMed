@@ -101,6 +101,13 @@ python tools/sync_agents.py --check || {
 - Every agent must state its inputs, outputs, and escalation/handoff rules.
 - Keep money math deterministic — do it in `tools/`, not in agent free-text, to
   avoid LLM arithmetic errors.
+- **Name branches by purpose.** Use `<type>/<kebab-purpose>` — `type` ∈
+  {feat, fix, chore, ci, docs, refactor}, or `claude/` to mark an agent-authored
+  branch — with a suffix that says what the branch does (e.g.
+  `claude/tldr-morning-briefing`, `chore/remove-operations-agents`, `ci/pr-gates`).
+  Never open a PR from a tool-generated random branch name
+  (`claude/<adjective>-<name>-<hexid>`); rename to a purposeful branch off `main`
+  first (stash → `git checkout -B <good-name> origin/main` → pop).
 
 ## For non-Claude-Code teammates
 

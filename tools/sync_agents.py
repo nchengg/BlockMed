@@ -47,10 +47,11 @@ def collect_pairs() -> list[tuple[Path, Path, str]]:
     """Return [(canonical_path, target_path, source_rel_for_banner), ...]."""
     pairs: list[tuple[Path, Path, str]] = []
 
-    for src in sorted(CANONICAL_AGENTS.glob("*.md")):
+    for src in sorted(CANONICAL_AGENTS.rglob("*.md")):
         if src.name.startswith("_"):
             continue  # templates / partials stay canonical-only
-        pairs.append((src, TARGET_AGENTS / src.name, f"agents/{src.name}"))
+        rel = src.relative_to(CANONICAL_AGENTS)  # e.g. operations/orchestrator.md
+        pairs.append((src, TARGET_AGENTS / rel, f"agents/{rel.as_posix()}"))
 
     for src in sorted(CANONICAL_SKILLS.glob("*/SKILL.md")):
         skill_name = src.parent.name
@@ -65,7 +66,7 @@ def existing_generated_files() -> set[Path]:
     """All .md files currently sitting in the generated tree."""
     found: set[Path] = set()
     if TARGET_AGENTS.exists():
-        found.update(TARGET_AGENTS.glob("*.md"))
+        found.update(TARGET_AGENTS.rglob("*.md"))
     if TARGET_SKILLS.exists():
         found.update(TARGET_SKILLS.glob("*/SKILL.md"))
     return found

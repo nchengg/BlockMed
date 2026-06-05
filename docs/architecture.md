@@ -4,7 +4,7 @@
 
 | Layer | Framework stage | Where it lives |
 |-------|-----------------|----------------|
-| Role | Define the role | `agents/*.md` (canonical); `.claude/agents/*.md` (generated) |
+| Role | Define the role | `agents/{operations,development}/*.md` (canonical); `.claude/agents/{operations,development}/*.md` (generated) |
 | Workflow | Build the workflow | `skills/*/SKILL.md` (canonical); `.claude/skills/*/SKILL.md` (generated) |
 | Context/memory | Add memory & context | `docs/domain-rules.md`, `docs/product-blockmediary.md`, `CLAUDE.md`, `AGENTS.md` |
 | Tools | Connect tools | `tools/`, MCP servers |
@@ -13,11 +13,21 @@
 
 ## Runtime split
 
-- **Development:** Claude Code runs the agents directly from this scaffold repo. Fast
-  iteration; agents and skills are just files.
-- **Product:** the same agent definitions and the `run-analysis` flow are invoked through
-  the Claude Agent SDK behind the Blockmediary web/dashboard UI in the downstream product
-  repo. The skill is the stable seam — the UI calls the workflow, not individual agents.
+The agents are split into **two isolated environments** that must not reference or invoke
+each other:
+
+- **`agents/development/` (`dev-*`)** — the Transakt team's build & delivery agents
+  (proposal, planning, weekly log, repo briefing). Active **now**, run by Claude Code
+  directly from this scaffold repo. Fast iteration; agents and skills are just files.
+- **`agents/operations/` (`ops-*`)** — the live escrow product runtime. The domain
+  specialists and the `run-analysis` flow are invoked through the Claude Agent SDK behind
+  the Blockmediary web/dashboard UI in the downstream product repo. The skill is the stable
+  seam — the UI calls the workflow, not individual agents. This is a **late-stage / product**
+  concern; in the MVP slice the agent runtime is cut (see `plans/mvp-slice.md`).
+
+An agent useful in both environments (e.g. the orchestrator, data-analyst, report-writer)
+gets a **separate copy in each directory** with its own `ops-`/`dev-` name — never a shared
+file, never a cross-environment call.
 
 ## On-chain vs off-chain split
 
@@ -33,23 +43,32 @@ See [product-blockmediary.md](product-blockmediary.md) for the full state model.
 
 ## Agent team
 
-Cross-phase generalists:
-- **orchestrator** — manager: routes, aggregates, decides vs. escalates.
-- **data-analyst** — prepares + profiles data (always first in analysis flows).
-- **report-writer** — formats results for the user (always last).
+Two isolated environments under `agents/` (`dev-*` and `ops-*` never invoke each other).
 
-Phase-specific:
-- **proposal-writer** — Proposal phase only (now → 2026-06-08).
-- **project-planner** — Proposal + Build phases (sizing, RACI, Kanban, BMC).
-- **personal-log** — Build + Report phases (weekly individual log; 80% individual-grade asset).
+### `agents/development/` — team build & delivery (active now)
 
-Blockmediary domain specialists (added during Build, from `_TEMPLATE.md`):
-- **deal-intake** — captures sale-contract terms (uploaded contract or structured form) → produces canonical escrow specification (JSON).
-- **kyc-compliance** — KYC / KYB / sanctions screening at intake plus continuous monitoring; appends to the audit ledger.
-- **escrow** — smart-contract wrapper: lock funds, release, refund, state transitions. Narrow scope by design.
-- **document-checker** — OCR/AI extraction of submitted trade documents + rules-engine comparison against the escrow spec; produces Compliant / Discrepant / Rejected / Escalated verdict.
-- **dispute** — handles objection-window logic, valid-objection grading, amendments, waivers, refunds, escalation to the named dispute forum.
-- **settlement** — executes the on-chain release or refund transaction once authorised; narrow scope (no FX, no on/off ramps in MVP).
+- **dev-orchestrator** — manager for the dev environment: routes across `dev-*`, aggregates, decides vs. escalates.
+- **dev-data-analyst** — profiles team-side datasets (fixtures, sizing, market data).
+- **dev-report-writer** — produces graded deliverables: video scripts + the report reflection.
+- **dev-proposal-writer** — Proposal phase only (now → 2026-06-08).
+- **dev-project-planner** — Proposal + Build phases (sizing, RACI, Kanban, BMC).
+- **dev-personal-log** — Build + Report phases (weekly individual log; 80% individual-grade asset).
+- **dev-tldr** — daily morning repo/CI/timeline briefing for each teammate.
+
+### `agents/operations/` — live escrow product runtime (late-stage / downstream)
+
+Cross-cutting (duplicated from dev with their own `ops-` identity):
+- **ops-orchestrator** — manager for the escrow pipeline: routes `ops-*` by escrow state, applies the autonomy policy.
+- **ops-data-analyst** — profiles operational datasets (document sets, KYC records, on-chain logs).
+- **ops-report-writer** — formats product-runtime output for buyer/seller/reviewer (product-briefing).
+
+Domain specialists (added during Build, from `agents/_TEMPLATE.md`):
+- **ops-deal-intake** — captures sale-contract terms (uploaded contract or structured form) → produces canonical escrow specification (JSON).
+- **ops-kyc-compliance** — KYC / KYB / sanctions screening at intake plus continuous monitoring; appends to the audit ledger.
+- **ops-escrow** — smart-contract wrapper: lock funds, release, refund, state transitions. Narrow scope by design.
+- **ops-document-checker** — OCR/AI extraction of submitted trade documents + rules-engine comparison against the escrow spec; produces Compliant / Discrepant / Rejected / Escalated verdict.
+- **ops-dispute** — handles objection-window logic, valid-objection grading, amendments, waivers, refunds, escalation to the named dispute forum.
+- **ops-settlement** — executes the on-chain release or refund transaction once authorised; narrow scope (no FX, no on/off ramps in MVP).
 
 ## Two rules that prevent the common failure modes
 

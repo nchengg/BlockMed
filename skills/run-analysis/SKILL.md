@@ -15,11 +15,13 @@ User invokes `/run-analysis` with a dataset name, or a routine fires it on a sch
 - Dataset under `data/` (default: most recent CSV).
 - Business rules from `docs/domain-rules.md` (escrow state model, valid objection grounds, autonomy thresholds).
 
+> **Environment: operations.** This workflow runs the live escrow pipeline and routes only `ops-*` agents. The development-environment equivalents (`dev-*`) are never used here.
+
 ## Process
-1. Delegate to the **data-analyst** agent → get a clean data profile.
-2. Delegate to the relevant **Blockmediary domain agent** (`deal-intake` / `kyc-compliance` / `escrow` / `document-checker` / `dispute` / `settlement` — pick based on the escrow state the dataset reflects) → get findings + compliance verdict (Compliant / Discrepant / Rejected / Escalated).
+1. Delegate to the **ops-data-analyst** agent → get a clean data profile.
+2. Delegate to the relevant **Blockmediary domain agent** (`ops-deal-intake` / `ops-kyc-compliance` / `ops-escrow` / `ops-document-checker` / `ops-dispute` / `ops-settlement` — pick based on the escrow state the dataset reflects) → get findings + compliance verdict (Compliant / Discrepant / Rejected / Escalated).
 3. Apply the autonomy rule from `docs/domain-rules.md`: separate auto-handled items from those needing the document reviewer or dispute resolver.
-4. Delegate to the **report-writer** agent → format for the target audience.
+4. Delegate to the **ops-report-writer** agent → format for the target audience.
 
 ## Output
 - A markdown report (and/or a structured object for the UI) containing: headline,

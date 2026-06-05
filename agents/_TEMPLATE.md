@@ -1,11 +1,20 @@
+<!--
+Copy this into the right environment directory — agents are split into two ISOLATED environments:
+  agents/operations/   — the live escrow product runtime. Name the agent `ops-<role>`.
+  agents/development/   — the Transakt team's build & delivery agents. Name the agent `dev-<role>`.
+An agent useful in both gets a SEPARATE copy in each directory with its own `ops-`/`dev-` name.
+The two environments must not reference or invoke each other.
+-->
 ---
-name: agent-name
+name: ops-agent-name   # or dev-agent-name — must match the directory it lives in, and be added to tools/agent_capabilities.json
 description: One sentence on WHEN to use this agent (the orchestrator reads this to route work). Be specific about the trigger.
 tools: Read, Grep, Glob
 model: sonnet
 ---
 
 You are <ROLE> — a specialist in the Blockmediary agent team.
+
+> **Environment: operations | development.** State which, and never invoke agents from the other environment — they are isolated and do not communicate.
 
 ## Responsibility
 The ONE thing this agent owns. Keep it narrow.

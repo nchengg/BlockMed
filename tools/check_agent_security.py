@@ -4,7 +4,7 @@ The security guarantee for the agent team is that an agent can only do what its
 frontmatter `tools:` grant allows. This gate makes that boundary machine-checked
 so a privilege escalation can't slip through a prose-only review.
 
-It fails (exit 1) when, for any canonical agents/*.md (templates `_*.md` skipped):
+It fails (exit 1) when, for any canonical agents/**/*.md (templates `_*.md` skipped):
   - the agent is not declared in the capability manifest;
   - its `tools:` grants a tool NOT in its approved set (privilege escalation);
   - it has an empty `tools:` line but is not approved for `*` (empty == all tools);
@@ -61,7 +61,7 @@ def check() -> int:
     problems: list[str] = []
     seen: set[str] = set()
 
-    for src in sorted(AGENTS.glob("*.md")):
+    for src in sorted(AGENTS.rglob("*.md")):
         if src.name.startswith("_"):
             continue  # templates / partials are not live agents
         rel = src.relative_to(ROOT).as_posix()
@@ -107,8 +107,8 @@ def check() -> int:
     stale = sorted(set(approved) - seen)
     for name in stale:
         problems.append(
-            f"manifest: '{name}' is in agent_capabilities.json but has no agents/{name}.md "
-            f"(remove the stale entry)."
+            f"manifest: '{name}' is in agent_capabilities.json but has no matching agent "
+            f"under agents/ (remove the stale entry)."
         )
 
     if problems:

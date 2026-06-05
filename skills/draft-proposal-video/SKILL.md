@@ -17,12 +17,14 @@ User invokes `/draft-proposal-video`, optionally with `--revision N` for follow-
 - Any market research / competitor notes already collected.
 - `docs/hackathon-context.md` — load before anything else.
 
+> **Environment: development.** This workflow uses only `dev-*` agents (team build & delivery). It never invokes operations (`ops-*`) agents.
+
 ## Process
-1. **Orchestrator** confirms phase = Proposal and current date ≤ 2026-06-08. If not, abort with a phase-mismatch message.
-2. Delegate to **project-planner** to produce a 10-week timeline + RACI matrix + Business Model Canvas — these supply the Feasibility (40%) evidence and the Knowledge-applied (40%) evidence.
-3. Delegate to **proposal-writer** to produce the 14-slide deck outline + beachhead persona + TAM/SAM/SOM with sourced numbers — these supply the FinTech-environment (20%) evidence and the Solution narrative.
-4. Delegate to **report-writer** in `proposal-video-script` mode to turn (2) + (3) into a ~750-word spoken script with slide cues, calibrated to 5 minutes.
-5. Orchestrator runs the **rubric check** — for each of the three grading criteria, name which slides / script lines satisfy it. Surface gaps explicitly.
+1. **dev-orchestrator** confirms phase = Proposal and current date ≤ 2026-06-08. If not, abort with a phase-mismatch message.
+2. Delegate to **dev-project-planner** to produce a 10-week timeline + RACI matrix + Business Model Canvas — these supply the Feasibility (40%) evidence and the Knowledge-applied (40%) evidence.
+3. Delegate to **dev-proposal-writer** to produce the 14-slide deck outline + beachhead persona + TAM/SAM/SOM with sourced numbers — these supply the FinTech-environment (20%) evidence and the Solution narrative.
+4. Delegate to **dev-report-writer** in `proposal-video-script` mode to turn (2) + (3) into a ~750-word spoken script with slide cues, calibrated to 5 minutes.
+5. dev-orchestrator runs the **rubric check** — for each of the three grading criteria, name which slides / script lines satisfy it. Surface gaps explicitly.
 
 ## Output
 A single deliverable bundle written to `proposal/proposal-video/`:

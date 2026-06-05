@@ -2,8 +2,8 @@
 
 **Product:** Blockmediary — programmable documentary escrow for SME cross-border trade
 **Team:** Transakt (BEEM063 Hackathon, Exeter MSc FinTech)
-**Document status:** Draft v0.2 — derived from the Business Requirements Document (BRD v0.1)
-**Last updated:** 2026-06-02
+**Document status:** Draft v0.3 — derived from the Business Requirements Document (BRD v0.2)
+**Last updated:** 2026-06-05
 
 ---
 
@@ -21,7 +21,7 @@
 
 | Source | Role |
 |--------|------|
-| [`docs/business-requirements.md`](business-requirements.md) | **Primary — the BRD.** Functional reqs (FR-1…FR-19), NFRs, business rules, decided items, open questions. Status: 🟡 draft v0.1 (2026-05-31). |
+| [`docs/business-requirements.md`](business-requirements.md) | **Primary — the BRD.** Functional reqs (FR-1…FR-19), NFRs, business rules, decided items, open questions. Status: 🟡 draft v0.2 (2026-06-05; adds the **full-API-integration** decision). |
 | [`docs/domain-rules.md`](domain-rules.md) | Business-rule detail: full state taxonomy, autonomy thresholds, valid objection grounds, money/standards conventions. |
 | [`docs/product-blockmediary.md`](product-blockmediary.md) | Supporting product narrative (positioning, actors, rails). Where it and the BRD differ, the **BRD wins** (e.g. target market — see note below). |
 | [`docs/architecture.md`](architecture.md) | On-chain/off-chain split and agent-team breakdown. |
@@ -118,6 +118,7 @@ Mapping the BRD's own identifiers to the technical requirements that realise the
 | **Performance** — on-chain finality acceptable for escrow release (Base Sepolia L2) | TR-3.1 (chain choice), TR-9.* | ✅ |
 | **Compliance** — AML / sanctions screening before funding | TR-4.5, TR-7.3 (pre-`Funded` gate) | 🔵 |
 | **Availability** — demo-grade for MVP; production SLAs out of scope | §1.1; TR-9.* | ✅ |
+| **API security** — full API integration: all client/partner interaction via the authenticated API layer (BRD §10, decided 2026-06-05) | AP-9, TR-6.2.4–TR-6.2.7 | 🔵 (MVP route unauthenticated + same-origin — accepted demo-only gap, TR-6.2.3) |
 
 ### 2.3 Business rules & autonomy (BRD §9; `domain-rules.md`)
 
@@ -164,6 +165,7 @@ Mapping the BRD's own identifiers to the technical requirements that realise the
 | AP-6 | **Chain portability.** The contract and deploy scripts stay EVM-portable so the escrow can be redeployed to another EVM/OP-stack L2 quickly if Base Sepolia degrades. | BRD §12, §10 (Portability) |
 | AP-7 | **Human-in-the-loop above the envelope, enforced at `recordVerdict`.** Any decision outside the autonomy thresholds (BRD §9.2) escalates to a human reviewer with a stated reason; AI proposes, a human signs off. Because `release` is permissionless (TR-3.4, AP-2), **all gating — verdict sign-off, objection window, dispute/sanctions holds — MUST occur before `recordVerdict` moves state to `ReleasePending`.** `ReleasePending` is the point of no return: once there, anyone may trigger settlement and it cannot be blocked. The effective "final gate before release" is therefore `recordVerdict`, not `release`. | BRD §9.2, §12; `plans/mvp-slice.md` (permissionless release) |
 | AP-8 | **Sandbox/synthetic only.** No real PII or live financial data during build; sanctions feeds are public snapshots. | BRD §9.3, §14 |
+| AP-9 | **API-first integration (decided 2026-06-05, cybersecurity grounds).** Every client interaction with the off-chain platform — buyer/seller UI, reviewer/compliance consoles, future partner platforms (FR-19) — passes through the **authenticated HTTP API** (§7.2): authN → authZ → validation → business logic → audit, in that order, on every route. No client reads or writes the data store, document store, or audit ledger directly, and no client ever holds the releaser key. The sole deliberate bypass is **wallet-signed on-chain transactions** (`approve`/`deposit`/`release`), which interact with the chain and are governed by the contract's own roles (§4.2), not the API. | BRD §10 (API security), §12, §15 item 14 |
 
 #### TR-2.* — cross-cutting architecture requirements
 
@@ -647,7 +649,15 @@ const InvoiceExtract = z.object({
   Audit appends bracket the chain write per AP-4/TR-2.3: an **intent** entry **before** signing `recordVerdict`, a **reconciliation** entry (txHash + receipt status) **after**.
 - **TR-6.2.1a** (idempotency, TR-4.6.5) — Re-uploading a document for a deal already past `Funded` MUST NOT fire a second `recordVerdict`: the route dedupes on `(dealId, transition)`, and returns the **existing** `txHash` (200) or **409** rather than submitting a duplicate tx or writing a duplicate intent entry.
 - **TR-6.2.2** (full product) — Additional routes, all returning structured results + audit refs: `POST /api/deals` (intake → escrow spec + TEA, FR-1/2/3), `POST /api/deals/:id/approve` (party approval, FR-3), `POST /api/deals/:id/objections` (raise/grade objection, FR-11), `GET /api/deals/:id` (state + ledger view, FR-16), `POST /api/kyc/screen` (FR-7). These are **🔵 deferred** in the MVP.
-- **TR-6.2.3** (security) — Routes that move state or hold secrets run **server-side only**; the releaser key (`RELEASER_PRIVATE_KEY`) is read from env, never exposed to the client bundle (§9.1). Input validation (Zod) precedes any business logic or chain write on every route. **MVP caveat:** `/api/check-document` is **unauthenticated and same-origin** — anyone who can reach it can trigger a releaser-signed `recordVerdict`, so the demo deployment MUST NOT be exposed publicly. Authentication, rate-limiting, and CORS hardening are deferred (required before FR-19 / any public surface).
+- **TR-6.2.3** (security) — Routes that move state or hold secrets run **server-side only**; the releaser key (`RELEASER_PRIVATE_KEY`) is read from env, never exposed to the client bundle (§9.1). Input validation (Zod) precedes any business logic or chain write on every route. **MVP caveat:** `/api/check-document` is **unauthenticated and same-origin** — anyone who can reach it can trigger a releaser-signed `recordVerdict`, so the demo deployment MUST NOT be exposed publicly. Authentication, rate-limiting, and CORS hardening are deferred (required before FR-19 / any public surface). **Note (2026-06-05):** this caveat now **diverges from the decided full-product posture** (AP-9 / TR-6.2.4–7). It is accepted *for the demo only*, on the strict condition the route stays localhost-bound; implementing TR-6.2.4–7 is the first post-demo hardening item.
+
+#### Full-API-integration requirements (AP-9, decided 2026-06-05) — TR-6.2.4 … TR-6.2.7
+
+- **TR-6.2.4** (authentication, full product) — Every off-chain HTTP route MUST authenticate the caller **before any other processing**. Party-facing routes use user sessions via short-lived signed tokens (e.g. JWT) **or** wallet-signature login (SIWE, EIP-4361) — mechanism is an open decision (§12 Q18). Service/partner access (FR-19 seam) uses per-client API keys: carried in a request header (never in URLs), issued and revocable individually, stored only as salted hashes server-side, rotated on schedule and on suspected compromise. Failed authentication returns `401` with a generic body (no information leakage about which part failed); an authenticated caller lacking rights returns `403` (TR-6.6 typed errors).
+- **TR-6.2.5** (authorization) — Authentication establishes *who*; each route additionally enforces **role + deal-scoped** authorization: a buyer may act only on deals where they are the recorded buyer (approve, raise objection), a seller only on theirs (document upload), reviewer/compliance/admin roles only on their respective consoles. The authorising identity is written to the audit entry's `actor` field (TR-5.4), making every API action attributable — the API layer is what populates the attribution the ledger promises.
+- **TR-6.2.6** (transport & abuse hardening) — TLS (HTTPS) on every surface, no plaintext fallback. Per-client rate limiting on all routes (`429` + `Retry-After`). Strict CORS allowlist — never `*` on authenticated routes. Request-size limits per TR-4.2. Secrets, tokens, and keys MUST never appear in URLs, logs, or error bodies. Repeated auth failures are logged and surfaced for monitoring (the releaser-signed routes are the highest-value target, §9.1).
+- **TR-6.2.7** (the API as sole mutation surface) — AP-9 makes the HTTP API the **only** off-chain mutation path in production: no admin scripts or consoles writing the store/ledger out-of-band (seed scripts are build/demo-time only, TR-9.3). The two non-API paths are deliberate and bounded: (a) wallet-signed on-chain transactions, governed by contract roles (§4.2); (b) the chain-event watcher, which is **read-only**. Any future internal console (reviewer sign-off, compliance) MUST itself call the authenticated API, not the database.
+- **MVP:** none of TR-6.2.4–7 is built — the slice has the single same-origin route under the TR-6.2.3 caveat. These four requirements are the gate between the demo and **any** public exposure, and a hard precondition for FR-19.
 
 ### 7.3 Client / UI interface (TR-6.3)
 
@@ -666,7 +676,7 @@ const InvoiceExtract = z.object({
 
 ### 7.6 API conventions (TR-6.6)
 
-- **TR-6.6** — All HTTP responses carry the structured result + an `auditRef` to the ledger entry (FR-14 traceability). Errors are typed (validation 400, auth 401/403, state-conflict 409 mirroring on-chain `InvalidState`). Money in API payloads is **string minor units** (TR-5 conventions). No endpoint returns or accepts a private key. **FR-19** (white-label/API) is a **seam only** — the off-chain HTTP API is the future external surface but is **not** hardened/authenticated for third parties in scope now.
+- **TR-6.6** — All HTTP responses carry the structured result + an `auditRef` to the ledger entry (FR-14 traceability). Errors are typed (validation 400, auth 401/403, state-conflict 409 mirroring on-chain `InvalidState`). Money in API payloads is **string minor units** (TR-5 conventions). No endpoint returns or accepts a private key. **FR-19** (white-label/API) is a **seam only** — the off-chain HTTP API is the future external surface but is **not** hardened/authenticated for third parties in scope now. The **full-API-integration decision (AP-9)** confirms this API as the canonical external surface; TR-6.2.4–7 define the hardening bar it must meet before FR-19 opens it to third parties.
 
 ---
 
@@ -802,7 +812,7 @@ const InvoiceExtract = z.object({
 | Spec swap after funding | Off-chain authority | `specHash` committed on-chain at `createDeal` binds funds to rules (TR-2.5, full product) |
 | Audit-ledger tampering | Off-chain record | Hash-chain (`prevHash`/`entryHash`) **+ an out-of-band anchor** (WORM store or periodic on-chain commit) — a self-contained chain the attacker fully controls can be re-computed. **MVP JSONL has no chaining → tamper-evidence NOT achieved in the slice** (deferred, TR-8.3.1) |
 | Secret leakage | Repo/CI | `.env*` gitignored; capability/privilege CI gates (TR-8.2.2, TR-8.5.2) |
-| Public route abuse (MVP) | HTTP | **Sharpest MVP vuln** — unauthenticated route signs releaser `recordVerdict`; bind localhost only, never expose (one tunnel/`--hostname 0.0.0.0` = live exploit); auth deferred (TR-6.2.3) |
+| Public route abuse (MVP) | HTTP | **Sharpest MVP vuln** — unauthenticated route signs releaser `recordVerdict`; bind localhost only, never expose (one tunnel/`--hostname 0.0.0.0` = live exploit); auth deferred (TR-6.2.3). Full-product posture now decided: AP-9 / TR-6.2.4–7 (authN, deal-scoped authZ, TLS, rate limiting, CORS allowlist) |
 
 ---
 
@@ -914,7 +924,9 @@ Every Must FR (FR-1…FR-15) has ≥1 acceptance criterion above; Should/Could/W
 | Q15 | **Privilege-gate gap** — `*`-granted `orchestrator` is exempt from the Bash/Write guardrails check | Move the guardrails check above the `*` short-circuit in `check_agent_security.py` (TR-8.2.2) |
 | Q16 | **MVP has no `cancel`** — a never-funded `Agreed` deal has no on-chain exit | Accept for demo, or add `cancel` to the MVP enum (§4.3) |
 | Q17 | **Releaser pre-verdict refund lever** — mitigate beyond key hygiene? | Multisig admin + monitoring now; consider a timelock / dual-control on `refund` for production (TR-8.1.2) |
+| Q18 | **API auth mechanism** (TR-6.2.4) — user sessions (JWT) vs wallet-signature login (SIWE) vs both; plus the partner API-key scheme | Decide before building TR-6.2.4. SIWE pairs naturally with the existing wallet UX (the party already proves control of the buyer/seller address); JWT/sessions needed anyway for reviewer/compliance roles with no wallet. The *integration model itself* is **settled** (BRD §15 item 14) — only the mechanism is open |
 
 ---
 
-*End of Technical Requirements v0.2. This document tracks BRD v0.1 (draft); re-baseline both once the §12 decisions are made.*
+*End of Technical Requirements v0.3. This document tracks BRD v0.2 (draft); re-baseline both once the §12 decisions are made.*
+

@@ -1,6 +1,6 @@
 # Business Requirements Document (BRD) — Blockmediary
 
-> **Status:** 🟡 DRAFT for discussion · **Version:** 0.1 · **Date:** 2026-05-31
+> **Status:** 🟡 DRAFT for discussion · **Version:** 0.2 · **Date:** 2026-06-05
 > **Owner:** Transakt (BEEM063 hackathon team) · **Author:** _[name]_
 >
 > **How to read this doc:** This is a *vague first draft* meant to frame tomorrow's
@@ -17,8 +17,8 @@
 | Field | Value |
 |-------|-------|
 | Document title | Blockmediary — Business Requirements Document |
-| Version | 0.1 (draft) |
-| Last updated | 2026-05-31 |
+| Version | 0.2 (draft) |
+| Last updated | 2026-06-05 |
 | Status | Draft — for meeting review |
 | Distribution | Transakt team |
 | Related docs | [product-blockmediary.md](product-blockmediary.md), [domain-rules.md](domain-rules.md), [architecture.md](architecture.md), [hackathon-context.md](hackathon-context.md) |
@@ -28,6 +28,7 @@
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2026-05-31 | _[name]_ | Initial draft for kickoff meeting |
+| 0.2 | 2026-06-05 | _[name]_ | Recorded the **full API integration** decision (CEO + team, cybersecurity grounds): new NFR row (§10), §11 API-layer row, §12 integration-model rail, §15 settled item 14, glossary entry |
 
 ---
 
@@ -287,6 +288,7 @@ required. *Protecting the seller from post-shipment renegotiation is core to the
 | Category | Requirement | Notes / `[DISCUSS]` |
 |----------|-------------|---------------------|
 | Security | Funds never held in a Blockmediary-controlled wallet | ✅ Direct smart-contract custody for MVP (no custodian) |
+| API security | **Full API integration (✅ decided 2026-06-05):** every client and partner interaction with the off-chain platform passes through Blockmediary's **authenticated API layer** — no direct database / document-store / audit-ledger access, no out-of-band mutation paths | Sole exception: wallet-signed on-chain transactions (deposit/release), which go to the chain, not the API. MVP demo route is not yet authenticated — accepted demo-only gap (see TRD §7.2) |
 | Portability | Escrow contract + deploy scripts kept chain-portable | Enables fast migration off Base Sepolia if it breaks (§12) |
 | Auditability | Immutable audit ledger is the regulator-facing source of truth | Write before every on-chain action |
 | Determinism | All money math in code, not LLM prose | Prevents arithmetic errors |
@@ -307,6 +309,7 @@ off-chain, and an authorised release function submits the verdict on-chain.
 | Layer | Responsibility |
 |-------|----------------|
 | Smart contract escrow | Hold + release stablecoin; enforce state transitions |
+| API layer | Sole authenticated entry point for **every** off-chain read/write (buyer/seller UI now; partner platforms post-MVP) — clients never touch the data store or ledger directly |
 | Off-chain workflow | Deal terms, escrow spec, document storage, OCR/AI extraction, rules engine, audit ledger |
 | Off-chain verification | Determine whether release conditions are satisfied |
 | Authorised release function | Submit the verdict on-chain |
@@ -328,6 +331,16 @@ off-chain, and an authorised release function submits the verdict on-chain.
   2026-05-31. AI/OCR extracts fields and proposes a verdict; a human reviewer signs off as the
   final gate before release. Matches the autonomy policy in §9.2 (auto-pass only above
   confidence + value thresholds; otherwise mandatory human review).
+- **Integration model — ✅ Full API integration.** Decided 2026-06-05 (CEO + team, on cybersecurity grounds).
+  All clients — the buyer/seller UI today, partner platforms later (§4.2.a / FR-19) — interact with
+  Blockmediary's off-chain platform **only** through its authenticated REST API: every request is
+  authenticated, authorised per role and per deal, validated, rate-limited, and audit-logged before it
+  touches business logic. Nothing reads or writes the database, document store, or audit ledger
+  directly, and no client ever holds the releaser key. **Scope limit (stated honestly):** wallet-signed
+  on-chain transactions (approve/deposit/release) are the one deliberate bypass — they go to the chain
+  and are governed by the smart contract's own roles, not the API. The decision is **binding for the
+  full product**; the hackathon demo's single route remains unauthenticated and same-origin (accepted
+  demo-only gap, never to be exposed publicly — TRD §7.2).
 - **Custody — ✅ Direct smart contract.** Decided 2026-05-31. Buyer deposits straight into the
   on-chain escrow contract; no regulated custody partner and no Blockmediary-controlled wallet
   in the MVP. (Reflected in §10 and §9.3.)
@@ -381,6 +394,7 @@ product spec plus the gaps above. ✅ = settled 2026-05-31.
 4. ✅ **Custody model** — **Direct smart contract** (no custody partner, no Blockmediary wallet). (§10, §12)
 5. ✅ **Dispute forum** — **set by the parties' agreement** (per-deal in the Trade Escrow Agreement); seed a default for the demo. (§12)
 6. ✅ **Target market / beachhead** — **UK / EU / Middle East corridors, goods-agnostic.** Now stated in §4.3 (no longer an open question).
+14. ✅ **Integration model** — **full API integration** (settled 2026-06-05, cybersecurity grounds): all client/partner interaction via the authenticated API layer; wallet-signed on-chain transactions are the only bypass. (§10, §12.) _Numbered 14 to keep items 7–13 stable — they are cross-referenced by the TRD._
 
 **Still open:**
 
@@ -401,6 +415,7 @@ product spec plus the gaps above. ✅ = settled 2026-05-31.
 | **Beachhead / target market** | Blockmediary's initial market: **UK / EU / Middle East** corridors, **goods-agnostic** (excluding sanctioned/prohibited high-risk goods). See §4.3. |
 | **Compliance verdict** | Document-verification outcome: Compliant / Discrepant / Rejected / Escalated. |
 | **Escrow specification** | Structured JSON generated at deal intake; authoritative for release rules. |
+| **Full API integration** | Integration model (decided 2026-06-05): every client or partner interaction with the off-chain platform passes through Blockmediary's authenticated REST API — no direct access to the database, document store, or audit ledger. Wallet-signed on-chain transactions are the only path that bypasses the API. |
 | **Notice of release** | Message issued when documents are compliant; starts the objection window. |
 | **Objection window** | Fixed period (default 48h) for the buyer to raise a *valid* objection. |
 | **Settlement chain** | Blockchain hosting the escrow contract. MVP: **Base Sepolia** (testnet, EVM L2); kept chain-portable for fast migration. |

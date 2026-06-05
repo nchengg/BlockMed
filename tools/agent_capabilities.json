@@ -1,13 +1,16 @@
 {
-  "_comment": "Capability manifest — the APPROVED tool set per agent. tools/check_agent_security.py fails CI if any agent's frontmatter `tools:` grants a tool NOT listed here, if an agent is missing from this file, or if a privileged agent drops its escalation guardrails. Widening an agent's privilege is therefore a deliberate, reviewable edit to THIS file — not something that can slip through a prose change. Keep entries sorted. '*' = all tools (most privileged; use sparingly).",
+  "_comment": "Capability manifest — the APPROVED tool set per agent. tools/check_agent_security.py fails CI if any agent's frontmatter `tools:` grants a tool NOT listed here, if an agent is missing from this file, or if a privileged agent drops its escalation guardrails. Widening an agent's privilege is therefore a deliberate, reviewable edit to THIS file — not something that can slip through a prose change. Keys are the agent's frontmatter `name` (env-prefixed: ops-* for agents/operations/, dev-* for agents/development/). The two environments are isolated. Keep entries sorted. '*' = all tools (most privileged; use sparingly).",
   "agents": {
-    "data-analyst":     ["Read", "Grep", "Glob", "Bash"],
-    "orchestrator":     ["*"],
-    "personal-log":     ["Read", "Grep", "Glob"],
-    "project-planner":  ["Read", "Write", "Grep", "Glob"],
-    "proposal-writer":  ["Read", "Grep", "Glob"],
-    "report-writer":    ["Read", "Write"],
-    "tldr":             ["Read", "Grep", "Glob", "Bash"]
+    "dev-data-analyst":    ["Read", "Grep", "Glob", "Bash"],
+    "dev-orchestrator":    ["*"],
+    "dev-personal-log":    ["Read", "Grep", "Glob"],
+    "dev-project-planner": ["Read", "Write", "Grep", "Glob"],
+    "dev-proposal-writer": ["Read", "Grep", "Glob"],
+    "dev-report-writer":   ["Read", "Write"],
+    "dev-tldr":            ["Read", "Grep", "Glob", "Bash"],
+    "ops-data-analyst":    ["Read", "Grep", "Glob", "Bash"],
+    "ops-orchestrator":    ["*"],
+    "ops-report-writer":   ["Read", "Write"]
   },
   "require_escalation_section_when_granted": ["Bash", "Write"]
 }

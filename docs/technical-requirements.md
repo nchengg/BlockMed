@@ -141,6 +141,7 @@ Mapping the BRD's own identifiers to the technical requirements that realise the
 | **Stablecoin — USDC/EURC** (testnet for demo) (BRD §12) | TR-3.2 (ERC-20), TR-5.1 (`payment.currency`) | ✅ USDC; 🔵 EURC |
 | **Document verification — AI-first + human review as final step** (decided) (BRD §12, §9.2) | TR-4.3 (AI extract), TR-7.3 (human sign-off gate) | ✅ AI; 🔵 human console |
 | **Custody — direct smart contract** (decided) (BRD §12) | TR-3.2, TR-8.1 | ✅ |
+| **Integration model — full API integration** (decided 2026-06-05, cybersecurity grounds) (BRD §10 API security, §12, §15 item 14) | AP-9; TR-6.2.4–TR-6.2.7 (authN, deal-scoped authZ, transport/abuse hardening, API as sole mutation surface); §2.2 NFR "API security" | 🔵 (MVP route unauthenticated + same-origin — accepted demo-only gap, TR-6.2.3) |
 | **Dispute forum — per-deal, set in the Trade Escrow Agreement; seed a demo default** (decided) (BRD §12) | TR-5.1 carries a per-deal dispute-forum value in the escrow spec (field name a TR design choice, not a BRD-named field), TR-4.4 | 🔵 (seeded default) |
 | **eBL / document custody** — TBD partner, deferred (BRD §12, §4.2.a) | §12 open question (seam only) | 🔵 |
 | **Revenue model** (BRD §13): per-deal fee / doc-review fee / dispute fee / SaaS | Fee mechanics **undefined in BRD** → §12 open question; no fee field asserted in TR-5.1 | 🔵 |

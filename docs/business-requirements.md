@@ -1,6 +1,6 @@
 # Business Requirements Document (BRD) — Blockmediary
 
-> **Status:** 🟡 DRAFT for discussion · **Version:** 0.2 · **Date:** 2026-06-05
+> **Status:** 🟡 DRAFT for discussion · **Version:** 0.3 · **Date:** 2026-06-10
 > **Owner:** Transakt (BEEM063 hackathon team) · **Author:** _[name]_
 >
 > **How to read this doc:** This is a *vague first draft* meant to frame tomorrow's
@@ -17,8 +17,8 @@
 | Field | Value |
 |-------|-------|
 | Document title | Blockmediary — Business Requirements Document |
-| Version | 0.2 (draft) |
-| Last updated | 2026-06-05 |
+| Version | 0.3 (draft) |
+| Last updated | 2026-06-10 |
 | Status | Draft — for meeting review |
 | Distribution | Transakt team |
 | Related docs | [product-blockmediary.md](product-blockmediary.md), [domain-rules.md](domain-rules.md), [architecture.md](architecture.md), [hackathon-context.md](hackathon-context.md) |
@@ -29,6 +29,7 @@
 |---------|------|--------|-------|
 | 0.1 | 2026-05-31 | _[name]_ | Initial draft for kickoff meeting |
 | 0.2 | 2026-06-05 | _[name]_ | Recorded the **full API integration** decision (CEO + team, cybersecurity grounds): new NFR row (§10), §11 API-layer row, §12 integration-model rail, §15 settled item 14, glossary entry |
+| 0.3 | 2026-06-10 | _[name]_ | Recorded the **onboarding / who-initiates** decision (§5, §15 item 11): onboarding supports **all three actor roles** — buyer-, seller-, and platform/intermediary-initiated; deal initiation made **role-agnostic** (FR-1, new §5 actor row). Flags the **auth-role consequence** to confirm (TRD §12 Q18). |
 
 ---
 
@@ -152,15 +153,30 @@ compliance, not on the nature of the goods.
 
 | Actor | Need | Role in the system |
 |-------|------|--------------------|
-| **Buyer** (importer) | Doesn't want to pay before shipment evidence | Funds the escrow at origination; gets refund / release per rules |
-| **Seller** (exporter) | Wants payment assurance before shipping | Sees funds locked, ships goods, submits documents to trigger release |
+| **Buyer** (importer) | Doesn't want to pay before shipment evidence | Funds the escrow at origination; gets refund / release per rules. **May initiate a deal** and invite the seller (§5 decision). |
+| **Seller** (exporter) | Wants payment assurance before shipping | Sees funds locked, ships goods, submits documents to trigger release. **May initiate a deal** and invite the buyer (§5 decision). |
+| **Platform / intermediary** (e.g. forwarder, marketplace, broker) | Brings a buyer + seller together; wants to set a deal up on their behalf | **May initiate a deal** and invite both counterparties; coordinates onboarding but is **not** a principal to the escrow (does not deposit/approve/release) |
 | **Blockmediary** | Operational layer | Creates escrow workflow, verifies documents, coordinates release logic |
 | **Smart contract** | On-chain enforcement | Holds stablecoin funds; enforces release/refund state transitions |
 | **Document reviewer** | Compliance check | Human or assisted review of document conformity to release rules |
 | **Dispute resolver** | Last-resort path | Named forum / arbitrator / expert determination for unresolved issues |
 
-> **`[DISCUSS]`** Who is the *first* customer we design for — the buyer, the seller, or
-> a platform that brings both? The "who initiates a deal" answer changes the onboarding UX.
+> **✅ Decided 2026-06-10 — onboarding supports all party roles.** Rather than designing for a
+> single first-customer type, the onboarding UX must support **deal initiation by any of the three
+> actor roles**: **buyer-initiated**, **seller-initiated**, and **platform/intermediary-initiated**.
+> Whoever initiates a deal, the counterparty (or, for a platform/intermediary, both counterparties)
+> is **invited** to join and approve before the escrow is created. Initiation is therefore
+> **role-agnostic** (see FR-1). This resolves §15 item 11.
+>
+> **Scope note (so this doesn't contradict §4.2.a):** supporting a platform/intermediary as a *deal
+> initiator in the onboarding UX* is **not** the same as white-label **API distribution** to partner
+> platforms — that distribution channel (FR-19) remains deferred past the MVP (§4.2.a).
+>
+> **Consequence to confirm (auth-role model):** role-agnostic initiation requires the API auth-role
+> model to cover all three roles — buyer/seller can authenticate via wallet/SIWE (they already prove
+> control of an address), but a platform/intermediary may have **no wallet** and likely needs an
+> account/JWT role. The auth *mechanism* is **not decided here** — it is flagged as a consequence on
+> the engineering side (TRD §12 Q18).
 
 ---
 
@@ -200,7 +216,7 @@ End states: **Released**, **Refunded**, **Cancelled**.
 
 | ID | Requirement | Priority |
 |----|-------------|----------|
-| FR-1 | Capture trade terms via structured form **and/or** uploaded sale-contract extraction. | M |
+| FR-1 | Capture trade terms via structured form **and/or** uploaded sale-contract extraction. Deal initiation is **role-agnostic**: any party role — **buyer, seller, or platform/intermediary** — may create/initiate a deal, with the counterparty (or both counterparties) **invited** to join and approve (§5 decision, 2026-06-10). | M |
 | FR-2 | Generate a canonical escrow specification (JSON) that is authoritative for release rules. | M |
 | FR-3 | Generate a Trade Escrow Agreement (legal wrapper) for both parties to approve. | M |
 | FR-4 | Deploy / instantiate an on-chain escrow holding stablecoin funds. | M |
@@ -394,6 +410,7 @@ product spec plus the gaps above. ✅ = settled 2026-05-31.
 4. ✅ **Custody model** — **Direct smart contract** (no custody partner, no Blockmediary wallet). (§10, §12)
 5. ✅ **Dispute forum** — **set by the parties' agreement** (per-deal in the Trade Escrow Agreement); seed a default for the demo. (§12)
 6. ✅ **Target market / beachhead** — **UK / EU / Middle East corridors, goods-agnostic.** Now stated in §4.3 (no longer an open question).
+11. ✅ **First customer / who initiates** — **onboarding supports all party roles.** Deal initiation is **role-agnostic** — buyer-, seller-, or platform/intermediary-initiated, with the counterparty invited. Settled 2026-06-10. (§5, FR-1.) _Numbered 11 to keep the cross-referenced item numbers stable._ **Consequence to confirm:** the API auth-role model must cover all three roles (TRD §12 Q18) — buyer/seller via wallet/SIWE, platform/intermediary likely an account/JWT role.
 14. ✅ **Integration model** — **full API integration** (settled 2026-06-05, cybersecurity grounds): all client/partner interaction via the authenticated API layer; wallet-signed on-chain transactions are the only bypass. (§10, §12.) _Numbered 14 to keep items 7–13 stable — they are cross-referenced by the TRD._
 
 **Still open:**
@@ -402,7 +419,6 @@ product spec plus the gaps above. ✅ = settled 2026-05-31.
 8. **MVP value cap** — confirm **£50k** equivalent or change. (§9.2)
 9. **Objection window** — confirm **48h** default or change. (§9.2)
 10. **Primary revenue stream** — and a defensible fee level. (§13)
-11. **First customer / who initiates** — buyer, seller, or platform. (§5)
 12. **MVP doc set** — full six documents vs. a minimal core for the demo. (§8)
 13. **No-financing boundary** — confirm it's a firm-level boundary, not just an MVP cut. (§4.2.b)
 

@@ -2,8 +2,8 @@
 
 **Product:** Blockmediary — programmable documentary escrow for SME cross-border trade
 **Team:** Transakt (BEEM063 Hackathon, Exeter MSc FinTech)
-**Document status:** Draft v0.3 — derived from the Business Requirements Document (BRD v0.2)
-**Last updated:** 2026-06-05
+**Document status:** Draft v0.4 — derived from the Business Requirements Document (BRD v0.3)
+**Last updated:** 2026-06-10
 
 ---
 
@@ -21,7 +21,7 @@
 
 | Source | Role |
 |--------|------|
-| [`docs/business-requirements.md`](business-requirements.md) | **Primary — the BRD.** Functional reqs (FR-1…FR-19), NFRs, business rules, decided items, open questions. Status: 🟡 draft v0.2 (2026-06-05; adds the **full-API-integration** decision). |
+| [`docs/business-requirements.md`](business-requirements.md) | **Primary — the BRD.** Functional reqs (FR-1…FR-19), NFRs, business rules, decided items, open questions. Status: 🟡 draft v0.3 (2026-06-10; adds the **onboarding / all-party-roles** decision — role-agnostic deal initiation, §5/§15 item 11). |
 | [`docs/domain-rules.md`](domain-rules.md) | Business-rule detail: full state taxonomy, autonomy thresholds, valid objection grounds, money/standards conventions. |
 | [`docs/product-blockmediary.md`](product-blockmediary.md) | Supporting product narrative (positioning, actors, rails). Where it and the BRD differ, the **BRD wins** (e.g. target market — see note below). |
 | [`docs/architecture.md`](architecture.md) | On-chain/off-chain split and agent-team breakdown. |
@@ -141,6 +141,7 @@ Mapping the BRD's own identifiers to the technical requirements that realise the
 | **Stablecoin — USDC/EURC** (testnet for demo) (BRD §12) | TR-3.2 (ERC-20), TR-5.1 (`payment.currency`) | ✅ USDC; 🔵 EURC |
 | **Document verification — AI-first + human review as final step** (decided) (BRD §12, §9.2) | TR-4.3 (AI extract), TR-7.3 (human sign-off gate) | ✅ AI; 🔵 human console |
 | **Custody — direct smart contract** (decided) (BRD §12) | TR-3.2, TR-8.1 | ✅ |
+| **Integration model — full API integration** (decided 2026-06-05, cybersecurity grounds) (BRD §10 API security, §12, §15 item 14) | AP-9; TR-6.2.4–TR-6.2.7 (authN, deal-scoped authZ, transport/abuse hardening, API as sole mutation surface); §2.2 NFR "API security" | 🔵 (MVP route unauthenticated + same-origin — accepted demo-only gap, TR-6.2.3) |
 | **Dispute forum — per-deal, set in the Trade Escrow Agreement; seed a demo default** (decided) (BRD §12) | TR-5.1 carries a per-deal dispute-forum value in the escrow spec (field name a TR design choice, not a BRD-named field), TR-4.4 | 🔵 (seeded default) |
 | **eBL / document custody** — TBD partner, deferred (BRD §12, §4.2.a) | §12 open question (seam only) | 🔵 |
 | **Revenue model** (BRD §13): per-deal fee / doc-review fee / dispute fee / SaaS | Fee mechanics **undefined in BRD** → §12 open question; no fee field asserted in TR-5.1 | 🔵 |
@@ -377,7 +378,8 @@ End states: `Released`, `Refunded`, `Cancelled` (terminal — no transition out)
 - **TR-4.1.1** (FR-1) — Capture trade terms via **either** a structured form **or** extraction from an uploaded sale-contract PDF (`parse_sale_contract`). Per-field extraction confidence MUST be returned; any mandatory field below 0.9 confidence escalates to the intake user for confirmation (AP-7; BRD §9.2 term-extraction threshold). *(Which intake mode the demo uses is BRD-open §15 Q7 → §12.)*
 - **TR-4.1.2** (FR-2) — Produce the **canonical escrow specification** (JSON, schema §6.1) via `build_escrow_spec`. The spec is the single authority for release rules (BRD §9 Do; TR-2.5). Its content hash feeds `createDeal(specHash)` (TR-3.4).
 - **TR-4.1.3** (FR-3) — Generate the **Trade Escrow Agreement** (legal wrapper) referencing the spec, for buyer + seller approval; capture both approvals before `createDeal`. The TEA names the **per-deal dispute forum** (BRD §12 decision), which is copied into the escrow spec; seed a sensible default so the dispute path is exercisable in the demo.
-- **MVP:** deal-intake, TEA generation, and spec generation are **all deferred** — the slice hardcodes the spec in `rules.ts` and skips the TEA.
+- **TR-4.1.4** (FR-1; BRD §5 decision, 2026-06-10) — **Role-agnostic deal initiation.** Intake MUST support a deal being initiated by **any party role — buyer, seller, or platform/intermediary** — recording the **initiator's role** and **inviting** the counterparty (or, for a platform/intermediary, both counterparties) to join and approve before `createDeal`. This realises the BRD §5 / §15-item-11 decision that onboarding supports all party roles. **Auth dependency:** the initiator and invitee identities are established by the API auth-role model (TR-6.2.4–6.2.5; mechanism still open, §12 Q18) — buyer/seller fit wallet/SIWE naturally, whereas a platform/intermediary may have **no wallet** and likely needs an account/JWT role. **Scope boundary:** platform-initiated onboarding here is the *initiator role in the intake UX* — distinct from white-label **API distribution** to partner platforms, which remains deferred (BRD §4.2.a / FR-19).
+- **MVP:** deal-intake, TEA generation, and spec generation are **all deferred** — the slice hardcodes the spec in `rules.ts` and skips the TEA; **role-agnostic initiation (TR-4.1.4) is therefore a full-product requirement only** (the demo uses a single hardcoded deal, `?role=buyer|seller`).
 
 ### 5.2 document-checker + rules engine (TR-4.2, TR-4.3) — FR-6, FR-8, FR-9
 
@@ -654,7 +656,7 @@ const InvoiceExtract = z.object({
 #### Full-API-integration requirements (AP-9, decided 2026-06-05) — TR-6.2.4 … TR-6.2.7
 
 - **TR-6.2.4** (authentication, full product) — Every off-chain HTTP route MUST authenticate the caller **before any other processing**. Party-facing routes use user sessions via short-lived signed tokens (e.g. JWT) **or** wallet-signature login (SIWE, EIP-4361) — mechanism is an open decision (§12 Q18). Service/partner access (FR-19 seam) uses per-client API keys: carried in a request header (never in URLs), issued and revocable individually, stored only as salted hashes server-side, rotated on schedule and on suspected compromise. Failed authentication returns `401` with a generic body (no information leakage about which part failed); an authenticated caller lacking rights returns `403` (TR-6.6 typed errors).
-- **TR-6.2.5** (authorization) — Authentication establishes *who*; each route additionally enforces **role + deal-scoped** authorization: a buyer may act only on deals where they are the recorded buyer (approve, raise objection), a seller only on theirs (document upload), reviewer/compliance/admin roles only on their respective consoles. The authorising identity is written to the audit entry's `actor` field (TR-5.4), making every API action attributable — the API layer is what populates the attribution the ledger promises.
+- **TR-6.2.5** (authorization) — Authentication establishes *who*; each route additionally enforces **role + deal-scoped** authorization: a buyer may act only on deals where they are the recorded buyer (approve, raise objection), a seller only on theirs (document upload), reviewer/compliance/admin roles only on their respective consoles. The authorising identity is written to the audit entry's `actor` field (TR-5.4), making every API action attributable — the API layer is what populates the attribution the ledger promises. **Role model (BRD §5 decision, 2026-06-10):** the role set MUST additionally accommodate a **platform/intermediary initiator** — a non-principal party that may **create a deal and invite buyer + seller** (TR-4.1.4) but is **not** itself the escrow buyer/seller; its rights are scoped to **initiation/coordination only**, never deposit/approve/release. Because such a party may have **no wallet**, its auth mechanism is the open part of §12 Q18 (likely account/JWT) — flagged as a consequence to confirm, not decided here.
 - **TR-6.2.6** (transport & abuse hardening) — TLS (HTTPS) on every surface, no plaintext fallback. Per-client rate limiting on all routes (`429` + `Retry-After`). Strict CORS allowlist — never `*` on authenticated routes. Request-size limits per TR-4.2. Secrets, tokens, and keys MUST never appear in URLs, logs, or error bodies. Repeated auth failures are logged and surfaced for monitoring (the releaser-signed routes are the highest-value target, §9.1).
 - **TR-6.2.7** (the API as sole mutation surface) — AP-9 makes the HTTP API the **only** off-chain mutation path in production: no admin scripts or consoles writing the store/ledger out-of-band (seed scripts are build/demo-time only, TR-9.3). The two non-API paths are deliberate and bounded: (a) wallet-signed on-chain transactions, governed by contract roles (§4.2); (b) the chain-event watcher, which is **read-only**. Any future internal console (reviewer sign-off, compliance) MUST itself call the authenticated API, not the database.
 - **MVP:** none of TR-6.2.4–7 is built — the slice has the single same-origin route under the TR-6.2.3 caveat. These four requirements are the gate between the demo and **any** public exposure, and a hard precondition for FR-19.
@@ -664,7 +666,8 @@ const InvoiceExtract = z.object({
 - **TR-6.3.1** (FR-5, FR-6, FR-16) — Next.js (App Router) + wagmi v2 + RainbowKit. Wallet connect via `<ConnectButton/>`. Contract interaction via wagmi hooks: `useAccount`, `useReadContract` (state badge, balances), `useWriteContract` (`approve`, `deposit`, `release`), `useWaitForTransactionReceipt`, `useWatchContractEvent` (`StateChanged` → invalidate the state query, no polling).
 - **TR-6.3.2** — Buyer surface: USDC balance, **Approve** then **Deposit**. `approve` is a write **against the USDC token contract** (not the escrow) using `erc20Abi` — `approve(escrowAddress, amount)` — and **Deposit MUST be gated on the approve receipt** (`useWaitForTransactionReceipt`) before `deposit(dealId)` is enabled. Seller surface: document upload → `/api/check-document` → verdict pane → **Release** button (enabled when `state == ReleasePending`). All wagmi usage in `'use client'` components.
 - **TR-6.3.3** (SSR) — **MVP is CSR-only** (no cookie hydration — a deliberate `plans/mvp-slice.md` time-saving cut); the **full product** uses `cookieToInitialState` + `createStorage({ storage: cookieStorage })` + `ssr: true` per the wagmi SSR guide.
-- **MVP:** a **single page** keyed by `?role=buyer|seller`, one hardcoded `dealId`; no separate buyer/seller pages, no multi-deal dashboard, no reviewer console (all 🔵). Display USDC only (not ETH).
+- **TR-6.3.4** (FR-1, FR-16; BRD §5 decision, 2026-06-10) — **Role-based onboarding flows (full product).** The client MUST provide distinct onboarding/initiation flows per party role — **buyer, seller, and platform/intermediary** — any of which can start a deal and invite the counterparty/counterparties (realising the BRD §5 role-agnostic-initiation decision and TR-4.1.4). The acting role is established at **authentication** (TR-6.2.4–6.2.5), **not** via the demo's `?role=` query param (a deliberate MVP stand-in). **Auth dependency:** the platform/intermediary flow needs an account/JWT-style role (it may carry no buyer/seller wallet), reinforcing the §12 Q18 decision — confirm the mechanism before building.
+- **MVP:** a **single page** keyed by `?role=buyer|seller`, one hardcoded `dealId`; no separate buyer/seller pages, no platform/intermediary flow, no multi-deal dashboard, no reviewer console (all 🔵). Display USDC only (not ETH).
 
 ### 7.4 Internal tool interface (TR-6.4)
 
@@ -901,7 +904,7 @@ Every Must FR (FR-1…FR-15) has ≥1 acceptance criterion above; Should/Could/W
 | Q3 | **Objection window** — confirm **48h** default or change | 48h default, as **config** | TR-4.4.1, TR-7.3.1 |
 | Q4 | **Primary revenue stream** + **defensible fee level for the beachhead corridor** (BRD §13 asks both) | Likely per-deal fee (A); **no fee logic in scope**, no `fees` field asserted; fee level is a **pitch-deck** (Business Model / Financials) decision, not a build one | BRD §13 |
 | Q4b | **Commercial north-star metric** for "workable firm at launch" — N live deals / escrow volume / first paying customer (BRD §3.3) | Open; **not needed for the demo**, but turns "firm" into a target | BRD §3.3 |
-| Q5 | **First customer / who initiates** — buyer, seller, or platform | Open; affects onboarding UX | TR-4.1, TR-6.3 |
+| Q5 | **First customer / who initiates** — buyer, seller, or platform | **✅ Resolved 2026-06-10 (BRD §5 / §15 item 11): onboarding supports ALL party roles** — role-agnostic initiation (buyer-, seller-, and platform/intermediary-initiated), counterparty/counterparties invited. Realised by TR-4.1.4, TR-6.3.4, TR-6.2.5. **Consequence → Q18:** the auth-role model must cover all three roles (buyer/seller via wallet/SIWE; platform/intermediary likely account/JWT, possibly no wallet) — *mechanism* still to confirm. | TR-4.1.4, TR-6.3.4, TR-6.2.5, Q18 |
 | Q6 | **MVP doc set** — full six docs vs. invoice-only core | MVP = **invoice only** | TR-4.2, FR-6 |
 | Q7 | **No-financing boundary** — confirm **firm-level** boundary, not an MVP cut | Treated as permanent boundary (BRD §4.2.b) | §1.3, TR-8.3.3 |
 
@@ -924,9 +927,9 @@ Every Must FR (FR-1…FR-15) has ≥1 acceptance criterion above; Should/Could/W
 | Q15 | **Privilege-gate gap** — `*`-granted `orchestrator` is exempt from the Bash/Write guardrails check | Move the guardrails check above the `*` short-circuit in `check_agent_security.py` (TR-8.2.2) |
 | Q16 | **MVP has no `cancel`** — a never-funded `Agreed` deal has no on-chain exit | Accept for demo, or add `cancel` to the MVP enum (§4.3) |
 | Q17 | **Releaser pre-verdict refund lever** — mitigate beyond key hygiene? | Multisig admin + monitoring now; consider a timelock / dual-control on `refund` for production (TR-8.1.2) |
-| Q18 | **API auth mechanism** (TR-6.2.4) — user sessions (JWT) vs wallet-signature login (SIWE) vs both; plus the partner API-key scheme | Decide before building TR-6.2.4. SIWE pairs naturally with the existing wallet UX (the party already proves control of the buyer/seller address); JWT/sessions needed anyway for reviewer/compliance roles with no wallet. The *integration model itself* is **settled** (BRD §15 item 14) — only the mechanism is open |
+| Q18 | **API auth mechanism** (TR-6.2.4) — user sessions (JWT) vs wallet-signature login (SIWE) vs both; plus the partner API-key scheme | Decide before building TR-6.2.4. SIWE pairs naturally with the existing wallet UX (the party already proves control of the buyer/seller address); JWT/sessions needed anyway for reviewer/compliance roles with no wallet. The *integration model itself* is **settled** (BRD §15 item 14) — only the mechanism is open. **Update (2026-06-10, from Q5):** onboarding now resolved to support **all party roles**, so the mechanism MUST cover a **platform/intermediary initiator that may have no wallet** (pushing toward JWT/sessions for that role alongside SIWE for buyer/seller). Mechanism still open — confirm. |
 
 ---
 
-*End of Technical Requirements v0.3. This document tracks BRD v0.2 (draft); re-baseline both once the §12 decisions are made.*
+*End of Technical Requirements v0.4. This document tracks BRD v0.3 (draft); re-baseline both once the §12 decisions are made.*
 

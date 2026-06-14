@@ -1,6 +1,6 @@
 # Blockmediary — Legal & Compliance Risk Register
 **Role:** Chief Compliance Officer (CCO) — Badhri
-**Last updated:** 2026-06-09 (rev. 3)
+**Last updated:** 2026-06-14 (rev. 4)
 **Status:** Living document — update as research and build progress
 
 ---
@@ -37,6 +37,7 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 | 18 | Consumer / business protection | FCA PRIN, UCT Regulations | UK / EU | 🟡 Medium | Terms of service risk |
 | 19 | Governing law & dispute forum | Contractual | All | 🟡 Medium | Must be specified per deal |
 | 20 | Smart contract audit / security | FCA, VARA expectations | All | 🟡 Medium | Audit before production use |
+| 21 | Trade document checklist — Incoterms® 2020 | ICC Incoterms® 2020 | Global | 🟡 Medium | Integrate into document verification engine |
 
 ---
 
@@ -371,19 +372,89 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 
 ### 5.5 UCP 600 & Documentary Credit Standards
 
-**What it is:** The ICC's Uniform Customs and Practice for Documentary Credits (UCP 600) is the global standard governing letters of credit and documentary trade. Blockmediary frames its product as "UCP 600 logic without the issuing bank."
+**What it is:** The ICC's Uniform Customs and Practice for Documentary Credits (UCP 600, ICC Publication No. 600, 2007) is the global standard governing letters of credit and documentary trade. Blockmediary frames its product as "UCP 600 logic without the issuing bank." See [docs/UCP600.md](UCP600.md) for the full operational cheat sheet.
 
 **Risk:**
 - Blockmediary's release rules and document verification standards must be coherent with UCP 600 principles or clearly disclaim any departure.
 - If parties and judges expect UCP 600 compliance and the product deviates, this is both a legal and reputational risk.
 - UCP 600 applies to LCs issued under it — Blockmediary's Trade Escrow Agreement is a separate instrument and is not a letter of credit. This distinction must be clear in the legal documentation.
+- Missing a review deadline (equivalent of the 5-banking-day rule, Art. 14(a)) precludes the platform from later claiming documents were non-compliant — a systemic risk if the review pipeline is slow or blocked.
+
+**Key operational rules Blockmediary inherits from UCP 600:**
+
+| Article | Rule | Blockmediary implication |
+|---------|------|--------------------------|
+| Arts 4 & 5 | Autonomy principle — deal only in documents, not goods or performance | Once docs are compliant, funds **must** release even if buyer claims goods are defective. Disclose clearly in Trade Escrow Agreement. |
+| Art 14(a) | 5-banking-day examination window | Build a hard review deadline. Missing the window = funds release by default. |
+| Art 14(b) | Data need not be identical across docs but must not conflict | AI checker flags *conflicts* (e.g. "5,000 MT" invoice vs "5 MT" BoL), not mere phrasing variations. |
+| Art 14(c) | Transport doc must be presented within 21 days of shipment date | Build a shipment-date-to-presentation-deadline validation. |
+| Art 14(d) | Goods description in invoice must match credit exactly; other docs need only be not inconsistent | Invoice goods description check is strict; other docs use looser matching. |
+| Art 14(g) | Conditions without a named document are disregarded | Every compliance condition in our deal setup must map to a specific document. |
+| Art 15 | Complying presentation = mandatory honour | No discretion to delay release once compliance is confirmed. |
+| Art 16 | Refusal requires itemised discrepancy notice within 5 banking days | Our rejection workflow must list each discrepancy. Late notice = cannot claim non-compliance. Include a buyer waiver mechanism. |
+| Art 17 | At least one original of each required document must be presented | Document upload flow must collect originals or certified copies. For eDocs, reference eUCP. |
+| Art 18 | Invoice: issued by seller, consignee = buyer, currency matches deal, goods description exact | Invoice checklist must verify all four points. Currency match critical for USDC-denominated deals. |
+| Art 20 | Bill of lading: "on board" notation + date, named vessel, clean, port of loading/discharge match | Build BoL parser to check on-board notation, cleanliness clauses, vessel name, port codes. |
+| Art 27 | Clean transport document — no damage or condition clauses | Any damage clause = automatic hold for human review. |
+| Art 28 | Insurance: min 110% CIF/CIP value, covers shipment to destination, no cover notes | If insurance required (CIF/CIP Incoterms), check value threshold and reject cover notes per Art 28(c). |
+| Art 30 | Tolerance: ±10% on "about/approximately", ±5% on quantity not in units | Build tolerance logic into quantity/amount verification. |
 
 **Mitigation:**
 - In all marketing and legal documents: Blockmediary provides **UCP 600-inspired** documentary release logic, not a letter of credit.
-- Align document verification checklist with UCP 600 Article 14 (standard for examination of documents) and Article 20 (bills of lading).
-- Consider referencing **eUCP** (electronic UCP supplement) where electronic trade documents are used.
+- Implement the document verification engine against the above article-by-article checklist.
+- Reference **eUCP** (electronic UCP supplement) in document upload terms: presenter warrants authenticity of electronic records.
+- Include **ICC DOCDEX** as the first-line dispute mechanism in the Trade Escrow Agreement for documentary disputes (see also §5.3).
 
-**Key reference:** ICC UCP 600 (ICC Publication No. 600, 2007)
+**Key reference:** [docs/UCP600.md](UCP600.md) — ICC UCP 600 (ICC Publication No. 600, 2007)
+
+---
+
+### 5.6 Incoterms® 2020 — Document Checklist & Risk Transfer
+
+**What it is:** ICC Incoterms® 2020 (effective 1 January 2020) are the globally accepted standard trade terms defining where risk transfers, who pays freight and insurance, and which documents the seller must produce. See [docs/Incoterms2020.md](Incoterms2020.md) for the full cheat sheet.
+
+**Risk:**
+- The Incoterm agreed in a deal directly determines which documents Blockmediary must require. Using the wrong document checklist for the stated Incoterm means either (a) accepting incomplete presentations that expose the buyer, or (b) rejecting compliant ones that expose the seller.
+- CIF and CIP deals require insurance certificates — accepting a cover note (prohibited under UCP 600 Art 28(c)) is a document verification failure.
+- DDP deals require import customs clearance evidence; missing this creates incomplete presentations.
+- FOB/CIF/CFR are technically inappropriate for containerised cargo, yet widely used in practice — our document verification engine must handle the practical reality while flagging the technical mismatch.
+- Incoterms 2020 introduced the DAT→DPU rename and upgraded CIP insurance to ICC (A) all-risks. Any template or checklist built on Incoterms 2010 will be wrong for current deals.
+
+**Document checklist by Incoterm (build into deal setup):**
+
+| Incoterm | Must-Have Documents | Conditional |
+|----------|-------------------|-------------|
+| EXW | Invoice, packing list | Export customs (buyer handles — Blockmediary use discouraged) |
+| FCA | Invoice, packing list, carrier receipt, export customs | On-board BoL (if parties elect it per 2020 FCA rule) |
+| CPT | Invoice, transport doc (any mode), packing list, export customs | — |
+| CIP | Invoice, transport doc, **insurance cert (ICC A, 110%)**, packing list, export customs | — |
+| DAP | Invoice, transport doc to destination, packing list, export customs | — |
+| DPU | Invoice, transport doc, delivery/unloading confirmation, packing list, export customs | — |
+| DDP | Invoice, transport doc to destination, **import customs clearance**, packing list, export customs | Duty payment evidence |
+| FAS | Invoice, packing list, delivery receipt alongside ship, export customs | — |
+| FOB | Invoice, **on-board BoL**, packing list, export customs | — |
+| CFR | Invoice, **on-board BoL**, packing list, export customs | — |
+| CIF | Invoice, **on-board BoL**, **insurance cert (ICC C, 110%)**, packing list, export customs | — |
+
+**Key 2020 changes that affect Blockmediary:**
+- **DAT → DPU:** Any legacy deal template referencing DAT must be updated to DPU.
+- **CIP insurance upgraded to ICC (A):** CIP deals require all-risks cover; ICC (C) is no longer sufficient.
+- **FCA + on-board BoL:** Parties may now agree the buyer's carrier issues an on-board BoL to the seller — this solves the longstanding FCA/LC mismatch. Build this optional election into the deal setup form.
+
+**Common mistakes to flag in document review:**
+- FOB used for containerised cargo — verify BoL date reflects actual vessel loading, not inland depot handover.
+- CIF/CIP deal with a cover note instead of an insurance policy — reject per UCP 600 Art 28(c).
+- DDP deal missing import customs clearance documentation.
+- Insurance value below 110% of CIF/CIP invoice value.
+
+**Mitigation:**
+- Require the Incoterm to be specified at deal setup; dynamically generate the document checklist from it.
+- Build transport mode validation: flag if a sea-only Incoterm (FAS, FOB, CFR, CIF) is selected for an air or road shipment.
+- For CIP deals, validate that the insurance certificate specifies ICC (A) or equivalent all-risks cover.
+- Include a representation in the Trade Escrow Agreement that the stated Incoterm governs document obligations; disclaim any duty to verify physical delivery beyond documentary evidence.
+- EXW is **not recommended** on the platform for cross-border deals — seller has almost no documentary obligations, making our release logic unworkable.
+
+**Key reference:** [docs/Incoterms2020.md](Incoterms2020.md) — ICC Incoterms® 2020
 
 ---
 
@@ -402,6 +473,8 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 | 9 | Smart contract audit plan — identify auditor and timeline | CTO | 🟡 Medium | Pre-mainnet |
 | 10 | TBML red-flag checklist for document review workflow | Badhri + COO | 🟡 Medium | MVP |
 | 11 | Monitor FCA CP25/14 Policy Statement (expected Summer 2026) | Badhri | 🟢 Low | Ongoing |
+| 13 | Integrate Incoterms® 2020 document checklist into deal setup — dynamic checklist generation by Incoterm, transport mode validation, CIP ICC (A) check, FCA on-board BoL election | CTO + Badhri | 🔴 High | MVP build |
+| 14 | Update all deal templates: replace DAT with DPU, update CIP insurance requirement to ICC (A) | Badhri | 🟡 Medium | MVP |
 | 12 | ~~Monitor Turkey CBRT~~ — closed. Turkey excluded. Reopen only if regulatory position fundamentally changes. | Badhri | 🟢 Low | Closed |
 
 ---
@@ -427,7 +500,9 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 | PDPL (FL No. 45/2021) | UAE | Personal data protection | — |
 | DIFC DP Law 2020 | UAE (DIFC) | DIFC data protection framework | — |
 | ADGM DPR 2021 | UAE (ADGM) | ADGM data protection framework | — |
-| UCP 600 | Global | ICC documentary credit standards | — |
+| UCP 600 (ICC Pub. No. 600, 2007) | Global | ICC documentary credit standards — governs document examination and release logic | [docs/UCP600.md](UCP600.md) |
+| eUCP | Global | Electronic supplement to UCP 600 — governs electronic document presentations | — |
+| Incoterms® 2020 | Global | ICC trade terms — determines required documents, risk transfer, insurance obligations | [docs/Incoterms2020.md](Incoterms2020.md) |
 | ICC DOCDEX | Global | Documentary dispute resolution | [ICC](https://iccwbo.org/dispute-resolution/dispute-resolution-services/adr/docdex/) |
 
 ---

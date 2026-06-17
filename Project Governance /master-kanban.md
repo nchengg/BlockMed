@@ -19,7 +19,7 @@ All cards start in **Backlog**. Column position is set in the weekly meeting onc
 | **N3.** API layer |
 | **N4.** Document verification engine |
 
-*Subtasks deliberately left blank — Nick to define in 48h homework.*
+*Subtasks, Nick to define in 48h.*
 
 ---
 
@@ -103,4 +103,4 @@ Each owner returns for their workstream:
 1. Refined / challenged subtasks
 2. T-shirt size per subtask (XS = 3d · S = 7d · M = 12d · L = 20d · XL = 30d · XXL = 30+d)
 3. Dependencies on other workstreams
-4. Any blockers requiring CEO unblock
+

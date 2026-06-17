@@ -1,0 +1,4199 @@
+{\rtf1 \ansi 
+{\colortbl;
+\red0\green0\blue0;
+\red255\green255\blue255;
+\red255\green0\blue0;
+\red0\green255\blue0;
+\red0\green0\blue255;
+\red0\green255\blue255;
+\red255\green0\blue255;
+\red255\green255\blue0;
+\red0\green0\blue128;
+\red0\green128\blue128;
+\red0\green128\blue0;
+\red128\green0\blue128;
+\red128\green0\blue0;
+\red128\green128\blue0;
+\red128\green128\blue128;
+\red192\green192\blue192;
+\red170\green170\blue170;
+\red85\green85\blue85;
+\red110\green112\blue118;
+\red204\green65\blue0;
+\red31\green31\blue31;
+\red33\green33\blue33;
+\red0\green111\blue196;
+\red119\green119\blue119;
+\red37\green37\blue37;
+\red214\green214\blue214;
+\red247\green247\blue247;
+\red255\green255\blue102;
+\red102\green102\blue102;
+\red80\green80\blue80;
+\red61\green61\blue61;
+\red204\green204\blue204;
+\red106\green144\blue39;
+\red107\green107\blue106;
+\red86\green86\blue86;
+\red218\green218\blue218;
+\red33\green74\blue204;
+\red232\green233\blue232;
+\red56\green124\blue43;
+\red151\green151\blue151;
+\red246\green246\blue246;
+\red233\green233\blue233;
+\red0\green114\blue54;
+\red249\green249\blue249;
+\red214\green9\blue9;
+\red24\green140\blue181;
+\red236\green236\blue236;
+\red187\green187\blue187;
+\red240\green240\blue240;
+\red20\green93\blue164;
+\red255\green248\blue96;
+\red255\green255\blue174;
+\red182\green231\blue243;
+\red238\green238\blue238;
+\red255\green194\blue211;
+\red249\green250\blue251;
+\red228\green231\blue232;
+\red239\green122\blue2;
+\red190\green237\blue228;
+\red143\green34\blue26;
+\red21\green137\blue21;
+\red112\green112\blue112;
+\red181\green79\blue104;
+\red223\green223\blue223;
+\red239\green239\blue239;
+\red255\green255\blue198;
+\red188\green41\blue30;
+\red204\green255\blue255;
+\red240\green191\blue187;
+\red203\green203\blue203;
+\red240\green248\blue255;
+\red127\green127\blue127;
+\red229\green243\blue255;
+\red179\green218\blue255;
+\red220\green220\blue220;
+\red172\green172\blue172;
+\red9\green56\blue84;
+\red227\green227\blue227;
+\red105\green105\blue105;
+\red216\green216\blue216;
+\red14\green86\blue140;
+\red229\green244\blue255;
+\red0\green93\blue162;
+\red255\green204\blue153;
+\red254\green254\blue0;
+}
+{\fonttbl {
+\f0 Arial;}{
+\f1 Symbol;}{
+\f2 Times New Roman;}{
+\f3 Source Sans Pro;}{
+\f4 Georgia;}{
+\f5 sans-serif;}{
+\f6 serif;}
+}
+{\*\generator Apache XML Graphics RTF Library;}
+\fet0 \ftnbj 
+{\*\listtable
+{\list\listtemplateid-1378676774\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1730204755}
+{\list\listtemplateid89348994\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid492158610}
+{\list\listtemplateid-1543784659\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-2101291901}
+{\list\listtemplateid1657940512\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid891586022}
+{\list\listtemplateid145302461\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1043841228}
+{\list\listtemplateid1726105002\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1519441214}
+{\list\listtemplateid-1740306134\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-782669237}
+{\list\listtemplateid-714470415\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1658842974}
+{\list\listtemplateid-2121687576\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-852785610}
+{\list\listtemplateid2070534337\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid386656080}
+{\list\listtemplateid-931271852\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-727578324}
+{\list\listtemplateid-1155946993\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-641615003}
+{\list\listtemplateid-1973515512\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid424189259}
+{\list\listtemplateid-1924924562\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-584250608}
+{\list\listtemplateid1959028079\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid2090683648}
+{\list\listtemplateid1796989127\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-574758123}
+{\list\listtemplateid-1654635109\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid774279594}
+{\list\listtemplateid-1653422007\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-578336743}
+{\list\listtemplateid1706776149\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid445196417}
+{\list\listtemplateid588161950\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1274777572}
+{\list\listtemplateid-723919755\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-114568780}
+{\list\listtemplateid-1087399842\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid154767429}
+{\list\listtemplateid10404468\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1909105199}
+{\list\listtemplateid2119698376\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1460845851}
+{\list\listtemplateid-945567425\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid479440234}
+{\list\listtemplateid-1050616401\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1157379659}
+{\list\listtemplateid1394831949\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-1115650316}
+{\list\listtemplateid-2129700175\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid1591062626}
+{\list\listtemplateid214890227\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid987981554}
+{\list\listtemplateid1308675503\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid1827640139}
+{\list\listtemplateid-415506186\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid1581100626}
+{\list\listtemplateid-1793855368\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-985592183}
+{\list\listtemplateid-566618014\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid1220596502}
+{\list\listtemplateid-557917241\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-610461393}
+{\list\listtemplateid1478261401\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid553940790}
+{\list\listtemplateid1127990895\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-103919406}
+{\list\listtemplateid-821342546\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid432835012}
+{\list\listtemplateid-983170092\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-2119829173}
+{\list\listtemplateid-1290196237\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-642918831}
+{\list\listtemplateid96728477\listsimple{\listlevel\leveljc\levelfollow0\levelspace0\levelindent0{\leveltext\'01\u8226\'3f}{\levelnumbers}}{\listname ;}\listid-225135429}
+}
+{\*\listoverridetable
+{\*\listoverride{\listid-1730204755\listoverridecount0\ls1}}
+{\*\listoverride{\listid492158610\listoverridecount0\ls2}}
+{\*\listoverride{\listid-2101291901\listoverridecount0\ls3}}
+{\*\listoverride{\listid891586022\listoverridecount0\ls4}}
+{\*\listoverride{\listid-1043841228\listoverridecount0\ls5}}
+{\*\listoverride{\listid-1519441214\listoverridecount0\ls6}}
+{\*\listoverride{\listid-782669237\listoverridecount0\ls7}}
+{\*\listoverride{\listid-1658842974\listoverridecount0\ls8}}
+{\*\listoverride{\listid-852785610\listoverridecount0\ls9}}
+{\*\listoverride{\listid386656080\listoverridecount0\ls10}}
+{\*\listoverride{\listid-727578324\listoverridecount0\ls11}}
+{\*\listoverride{\listid-641615003\listoverridecount0\ls12}}
+{\*\listoverride{\listid424189259\listoverridecount0\ls13}}
+{\*\listoverride{\listid-584250608\listoverridecount0\ls14}}
+{\*\listoverride{\listid2090683648\listoverridecount0\ls15}}
+{\*\listoverride{\listid-574758123\listoverridecount0\ls16}}
+{\*\listoverride{\listid774279594\listoverridecount0\ls17}}
+{\*\listoverride{\listid-578336743\listoverridecount0\ls18}}
+{\*\listoverride{\listid445196417\listoverridecount0\ls19}}
+{\*\listoverride{\listid-1274777572\listoverridecount0\ls20}}
+{\*\listoverride{\listid-114568780\listoverridecount0\ls21}}
+{\*\listoverride{\listid154767429\listoverridecount0\ls22}}
+{\*\listoverride{\listid-1909105199\listoverridecount0\ls23}}
+{\*\listoverride{\listid-1460845851\listoverridecount0\ls24}}
+{\*\listoverride{\listid479440234\listoverridecount0\ls25}}
+{\*\listoverride{\listid-1157379659\listoverridecount0\ls26}}
+{\*\listoverride{\listid-1115650316\listoverridecount0\ls27}}
+{\*\listoverride{\listid1591062626\listoverridecount0\ls28}}
+{\*\listoverride{\listid987981554\listoverridecount0\ls29}}
+{\*\listoverride{\listid1827640139\listoverridecount0\ls30}}
+{\*\listoverride{\listid1581100626\listoverridecount0\ls31}}
+{\*\listoverride{\listid-985592183\listoverridecount0\ls32}}
+{\*\listoverride{\listid1220596502\listoverridecount0\ls33}}
+{\*\listoverride{\listid-610461393\listoverridecount0\ls34}}
+{\*\listoverride{\listid553940790\listoverridecount0\ls35}}
+{\*\listoverride{\listid-103919406\listoverridecount0\ls36}}
+{\*\listoverride{\listid432835012\listoverridecount0\ls37}}
+{\*\listoverride{\listid-2119829173\listoverridecount0\ls38}}
+{\*\listoverride{\listid-642918831\listoverridecount0\ls39}}
+{\*\listoverride{\listid-225135429\listoverridecount0\ls40}}
+}
+\paperw12240 \paperh15840 \margt1080 \margb1080 \margl1080 \margr1080 \headery720 \footery720 \itap0 \cols1 
+\sectd {\header {
+{\trowd \ltrrow \trleft0 
+\clpadb60 \clpadfb3 \clpadl400 \clpadfl3 \clbrdrt \clbrdrb \brdrcf17 \brdrw20 \brdrs \clbrdrl \trql \clvertalb \clwWidth9380 \cellx9380 
+\clpadb60 \clpadfb3 \clpadl400 \clpadfl3 \clbrdrt \clbrdrb \brdrcf17 \brdrw20 \brdrs \clbrdrr \trql \clwWidth700 \cellx10080 
+\intbl 
+{\b0 \cf1 \f0 \ri0 \i0 \ql \fs18 \li0 
+{\b0 \cf1 \f0 \ul0 \strike0 \i0 \fs18 
+}
+{\b1 \cf18 \f0 \i0 \fs18 
+{\b1 \cf18 \f0 \ul0 \strike0 \i0 \fs18 \sa0 \sb0 
+UCP 600, Practical Law UK Practice Note 3-381-3805
+}
+}
+{\b0 \cf1 \f0 \ul0 \strike0 \i0 \fs18 
+}
+}\b0 \cf1 \f0 \ri0 \ul0 \strike0 \i0 \ql \fs18 \li0 \sa0 \sb0 \intbl \cell \intbl 
+{\qr \b0 \cf1 \f0 \ri0 \i0 \fs18 \li0 
+}\qr \b0 \cf1 \f0 \ri0 \i0 \fs18 \li0 \intbl \cell \row }
+{\trowd \lastrow \trleft0 
+\clbrdrb \clbrdrl \trql \clwWidth10080 \cellx10080 
+\intbl 
+{\b0 \cf1 \f0 \ri0 \i0 \ql \fs18 \li0 
+}\b0 \cf1 \f0 \ri0 \i0 \ql \fs18 \li0 \intbl \cell \row }}\par }{\footer {
+{\trowd \lastrow \trleft0 
+\clpadl60 \clpadfl3 \clbrdrt \brdrcf17 \brdrw20 \brdrs \clbrdrb \clbrdrl \trql \clvertalb \clwWidth9300 \cellx9300 
+\clpadl60 \clpadfl3 \clbrdrt \brdrcf17 \brdrw20 \brdrs \clbrdrb \clbrdrr \trql \clwWidth700 \cellx10000 
+\intbl 
+{\b0 \cf29 \f0 \ri0 \i0 \ql \fs20 \li0 
+{\b0 \cf29 \f0 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u169\'3f 2026 Thomson Reuters. All rights reserved.
+}
+}\b0 \cf29 \f0 \ri0 \ul0 \strike0 \i0 \ql \fs20 \li0 \sa0 \sb0 \intbl \cell \intbl 
+{\qr \b0 \cf29 \f0 \ri0 \i0 \fs20 \li0 
+{\b0 \i0 \ul0 \fs20 \f0 \chpgn }
+}\qr \b0 \cf29 \f0 \ri0 \ul0 \strike0 \i0 \fs20 \li0 \intbl \cell \row }}\par }
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 \par}\sect\sbknone\pgncont\cols1{\ids0 
+{\b0 \cf21 \f2 \i0 \fs20 
+}
+{\b0 \cf30 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf30 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf30 \f2 \ri0 \i0 \qj \fs20 \li0 
+}
+{\b1 \cf31 \f2 \ri0 \i0 \ql \fs36 \li0 
+{\b1 \cf31 \f2 \ul0 \strike0 \i0 \fs36 \sa0 \sb0 
+UCP 600
+\par 
+}
+}
+{\b1 \cf30 \f2 \ri0 \i0 \ql \fs20 \li0 \brdrb \brdrcf32 \brdrw20 \brdrs 
+{\b1 \cf30 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+by\u160\'3f
+}
+{\b1 \cf30 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://www.fountaincourt.co.uk/people/raymond-cox/" }{\fldrslt 
+{\b1 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Raymond Cox KC
+}}}
+}
+{\b1 \cf30 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ and 
+}
+{\b1 \cf30 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://www.fountaincourt.co.uk/people/niamh-cleary/" }{\fldrslt 
+{\b1 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Niamh Cleary
+}}}
+}
+{\b1 \cf30 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, 
+}
+{\b1 \cf30 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://www.fountaincourt.co.uk/" }{\fldrslt 
+{\b1 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Fountain Court Chambers 
+}}}
+}
+{\b1 \cf30 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+ (based on a prior version by Alan Ward, Rowansbank Associates)
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs18 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs18 \sa0 \sb0 
+Practice notes | 
+}
+{\b1 \cf39 \f2 \i0 \fs18 
+{\b1 \cf39 \f2 \ul0 \strike0 \i0 \fs18 \sa0 \sb0 
+Maintained
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs18 \sa200 \sb0 
+ | England, Wales
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \brdrt \brdrcf32 \brdrw20 \brdrs \fs22 \li0 \brdrb \brdrcf32 \brdrw20 \brdrs 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs22 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs22 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs22 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs22 \sa0 \sb0 
+This note provides an overview of the Uniform Customs and Practice for Documentary Credits (UCP), 2007 Revision, ICC Publication No. 600 (UCP 600) which superseded the previous edition of the UCP, UCP 500. Where relevant this note also draws comparisons between the UCP 600, the UPC 500 and the International Standby Practices, ICC Publication No. 590 (ISP 98).
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs22 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs22 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs22 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs22 \sa0 \sb0 
+The UCP is a set of contractual rules which are frequently incorporated by express agreement into a documentary credit (also called a letter of credit) transaction.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs22 \sa220 \sb0 
+\u160\'3f\u160\'3f
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Scope of this note
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+This note provides an overview and commentary to the key provisions of the 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/3-107-7450?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Uniform Customs and Practice for Documentary Credits
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/3-107-7431?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+UCP
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+), 2007 Revision, ICC Publication No. 600 (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-7432?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+UCP 600
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+) which superseded the prior version of the UCP, UCP 500. Where UPC 600 made particularly significant changes to the provisions of UCP 500, this note also compares the provision of UCP 600 to the comparable one contained in UCP 500. This note approaches the provisions of UCP 600 as follows:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls1 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls1 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a713281_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Articles of general interest to all parties
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls2 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls2 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a793114_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Articles of particular interest to banks
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls3 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls3 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a934949_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Articles on document presentation and examination
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls4 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls4 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a360567_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Articles on transport documents
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls5 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls5 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a724252_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Other articles of interest
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+In addition, this note also considers the:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls6 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls6 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+International Standard Banking Practice for the Examination of Documents under UCP 600 (ICC Banking Commission publication No. 745) (ISBP 745), which sets out what international banking practice should be when it comes to applying UCP 600.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls7 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls7 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Uniform Rules for Bank-to-Bank Reimbursements, ICC Publication No. 725 (URR 725), and their predecessor URR 525, which provide for standard rules governing the process of bank-to-bank reimbursement.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The UCP 600 is designed for use with documentary letters of credits (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/0-107-6758?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+letters of credit
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ or credits) as distinguished from 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/3-107-7308?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+standby letters of credit
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ (standbys) for which the 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/3-386-2985?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+International Standby Practices
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, ICC Publication No. 590 (ISP 98) were designed. Since many parties apply UCP 600 rather than ISP 98 to standby letters of credit, this note considers some of the important differences between the UCP 600 and the ISP 98 as they relate to the different functions of documentary letters of credit and standby letters of credit. For more on the differences between different types of letters of credit, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Letters of credit: overview
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+This note is not a summary of the UCP 600 and should be read together with the UPC 600. The UCP 600 and related publications can be purchased from the ICC business bookstore, visit the ICC 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/4-106-3396?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+website
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ for more information. Of particular interest, the ICC have published ICC Banking Commission Opinions 2009-2011, ICC Publication No. 732. The opinions give guidance on how ICC rules are interpreted in practice by answering queries on various ICC publications, including UCP 600 and ISBP 745.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Background
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The UCP is a set of contractual rules published by the 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/2-107-6724?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+International Chamber of Commerce (ICC)
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+. It is a voluntary code which does not have the force of law. The purpose of the UCP is to standardise banking practice in the worldwide operation of letters of credit. It is a code of rules which enables letters of credit to be routinely dealt with by banks across the world on a common basis, and is therefore \u8220\'3ffundamental\u8221\'3f to the acceptability of letters of credit in international commerce: 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-101-7512?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Taurus Petroleum Ltd v State Oil Marketing Co of the Ministry of Oil, Iraq [2017] UKSC 64; [2018] AC 690 [61]
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The parties to a credit must agree to incorporate the UCP into the credit for the rules to be binding upon them. This is achieved by an express term in the credit that provides it is issued subject to the terms of the UCP. For background information on credits and the UCP, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Letters of credit: overview
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ and in particular the sections 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1003334" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+What is a letter of credit?
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ and 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1003341" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+The UCP
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The UCP is updated from time to time to cover technical developments, to incorporate ICC decisions on disputes under the rules and to try to undo any unwelcome consequences of litigation. The current version of the UCP, UCP 600, \u8220\'3fcame into effect\u8221\'3f on 1 July 2007 when it was approved by the ICC for use from that date and this was also the date on which provision could be made within the relevant 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/2-107-7356?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+SWIFT
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ message formats for its application (most credits are issued by SWIFT, for more information, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1003383" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Letters of credit: overview: Method of issue
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+). Although UCP 600 supersedes UCP 500, UCP 500 remains relevant to credits issued under UCP 500, to the extent that such credits remain in operation or are subject to litigation or arbitration proceedings.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The eUCP supplements UCP 600 to accommodate presentation of electronic records alone or in combination with paper documents, in circumstances where the eUCP are expressly incorporated. The current version of the eUCP is eUCP version 2.0, which came into effect on 1 July 2019. The eUCP rules have been intentionally developed with a version number in order that they can be updated regularly without impacting upon other existing ICC rules, thereby reducing the time required to develop any potential identified revision. Thus, an eUCP credit must indicate the applicable version of the eUCP.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+For more information on the eUCP, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1003503" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Letters of credit: overview: New technology: e-commerce and the eUCP
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a713281_1}{\*\bkmkend co_anchor_a713281_1}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Articles of general interest to all parties
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 1: Application of UCP
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Generally to credits
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 1 requires incorporation of the rules in a more pedantic manner than UCP 500. They apply only \ldblquote when the text of the credit expressly indicates that it is subject to these rules\rdblquote . For the avoidance of doubt, related documents, such as application forms and amendments, should also expressly incorporate the rules.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Many 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/6-502-0561?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+demand guarantees
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ will fall within the definition of a credit under UCP 600 and the provisions of UCP 600 can be applied to demand guarantees. However, a number of the provisions of UCP 600 are not compatible with a demand guarantee. As a result, their inclusion may cause uncertainty. For more information on a separate set of industry rules designed for use with demand guarantees, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/6-502-0655?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, URDG 758
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Once incorporated, the rules are binding on all parties to the credit \u8220\'3funless expressly modified or excluded\u8221\'3f by the credit. However, Article 1 does not require that language of modification, exclusion or the like be used. Rather, it is sufficient for a different effect to be provided for by an express term of a letter of credit that differs from the applicable provision of UCP 600, such that there is an \u8220\'3firreconcilable inconsistency\u8221\'3f between the two: 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-102-8954?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Forestal Mimosa Ltd v Oriental Credit Ltd [1986] 1 WLR 631, 639
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+; 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-102-3975?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Deutsche Bank AG, London Branch v CIMB Bank [2017] EWHC 3380 (Comm) [38]
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Standby letters of credit
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Although Article 1 states that the rules apply to standbys \ldblquote to the extent to which they may be applicable\rdblquote , the use of UCP 600 for standbys should be avoided where possible. The rules contain many provisions the application of which to standbys is problematic. This note highlights these provisions under each article, where relevant. 
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Problems can, however, be avoided by the use of ISP 98, specifically intended for standbys. For information on standbys, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/4-107-3649?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a151193" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Bonds, guarantees and standby credits: overview: Standby letters of credit
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 2: Definitions
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 2 of UCP 600 contains the definitions for the various terms used through-out its articles. Some of the key definitions contained in UCP 600 include:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Advising Bank
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The advising bank is defined as the bank that advises the credit at the request of the issuing bank. For information on bank roles (including the advising bank), see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1003348" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Letters of credit: overview: Role of the banks
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Where a second bank is used in the process of advising, that bank will not be an advising bank unless it also acts at the request of the issuing bank. The role of a \ldblquote second advising bank\rdblquote  is recognised in Article 9(c), see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a655650_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 9: Advising of Credits and Amendments
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+. Article 2 also draws a distinction between the roles of an advising bank and a nominated bank. For further details, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a534853_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Nominated bank
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Applicant
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The definition of applicant includes any person \ldblquote on whose request the credit is issued\rdblquote . By comparison, in Article 2 of UCP 500, the applicant was described as \ldblquote a customer\rdblquote  of the issuing bank on whose instructions the bank acted.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The broader definition may be important in determining to whom the commercial invoice should be addressed and who the issuing or confirming bank can approach for a waiver of discrepancies in the documents presented under the credit.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Banking Day
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+UCP 600 defines a banking day as \ldblquote a day on which a bank is regularly open at the place at which an act subject to these rules is to be performed\rdblquote .
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The intention was that the time limits in the rules (including the time limit for checking documents) would be determined by the days on which the bank, which is to perform the act under the credit, is regularly open for documentary credit business. This was to produce a level playing field for banks which might be open for retail banking on days when their trade finance department is closed. It is unfortunate that the drafting does not clearly reflect that intention.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+A literal reading would imply that, so long as a (any) bank is regularly open on the day in question at the place (arguably the city or town) where the act is to be performed, that day is a banking day. It would be irrelevant that the bank which is actually to perform the act (normally the nominated bank) is regularly closed for all business on that day.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+This ambiguity may give rise to litigation. A beneficiary whose documents have been rejected on the fifth of the nominated bank\u8217\'3fs banking days may claim that the time was incorrectly calculated if, by reference to the banking days of another bank in the same city, six banking days had elapsed. It could then be argued that the rejection notice issued under Article 16 was ineffective.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+It is unfortunate that, in following the general approach of ISP 98 to defining a banking day, the drafters of UCP 600 did not also incorporate a reference to the \ldblquote relevant\rdblquote  bank being open (see the definition of \ldblquote Banking Day\rdblquote  in the definition of \ldblquote Business Day\rdblquote  in 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+ISP 98, Rule 1.09 (a)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Beneficiary
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The definition of a beneficiary is limited to \ldblquote the party in whose favour the credit is issued\rdblquote . UCP 600 continues to leave the question of the position of successors in title to the beneficiary to be determined by local law or, in the unlikely event that the applicant has given express instructions, by the terms of the credit. 
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ISP 98, in contrast, includes provisions to enable the issuing bank or confirmer of a standby to treat a successor in title as a transferee by operation of law (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+ISP 98 Rules 6.11 and 6.12
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Complying presentation
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+A complying presentation is defined as \ldblquote a presentation that is in accordance with the terms and conditions of the credit, the applicable provisions of these rules and international standard banking practice\rdblquote . Documents presented under a UCP 500 credit were required only to be consistent with one another and to comply with \ldblquote the terms and conditions of the credit\rdblquote .
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+UCP 600 extends the meaning of complying presentation to compliance, not only with the terms and conditions of the credit, but also with the rules themselves and \ldblquote international standard banking practice\rdblquote . ISBP 745 sets out what international banking practice should be when it comes to applying UCP 600, although such practice includes but is not limited to the contents of the ISBP 745. For background information on the ISBP 745, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a196963" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Letters of credit: overview: International Standard Banking Practice for the Examination of Documents under Documentary Credits (ISBP)
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Confirming bank
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\rdblquote Confirming bank\rdblquote  means \ldblquote the bank that adds its confirmation to a credit upon the issuing bank\u8217\'3fs authorization or request\rdblquote . In 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-000-0269?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Fortis Bank S.A./N.V., Stemcor UK Limited v Indian Overseas Bank [2009] EWHC 2303 (Comm)
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, the High Court ruled on this definition. It held that if the issuing bank expressly states in a letter of credit that the nominated bank \ldblquote may add\rdblquote  its confirmation, then that wording constitutes relevant authorisation (from the issuing bank) for the purposes of Article 2 of UCP 600. For more information on this case, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/0-500-3927?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, Court confirms the rights of confirming and nominated banks
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Credit
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Credit means \u8220\'3fany arrangement, however named or described, that is irrevocable and thereby constitutes a definite undertaking of the issuing bank to honour a complying presentation\u8221\'3f. Based on this definition, UCP 600 defines a credit exclusively as an irrevocable undertaking.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+If a revocable credit is required, it will need to:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls8 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls8 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+State expressly that it is intended to be revocable notwithstanding Articles 2 and 3 of UCP 600.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls9 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls9 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Incorporate special provisions, similar to Article 8 of UCP 500, to permit amendment or cancellation without the beneficiary\rquote s consent, prior to payment or negotiation of the documents by the nominated bank.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Honour
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+UCP 600 introduces the concept of \ldblquote honour\rdblquote  as a term to encompass the various ways in which the issuing bank and confirming bank may be required to fulfil their obligations under the credit. This follows ISP 98, Rule 2.01. Honour is distinct from the ways in which a nominated bank may be authorised to act under the credit.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+For example, if the credit is available by negotiation, then the issuing bank\rquote s obligation is to reimburse the nominated bank which negotiates the beneficiary\rquote s complying presentation but if the beneficiary is unable to get its documents negotiated, the issuing bank is still bound to \ldblquote honour\rdblquote  by itself paying the beneficiary.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Similarly, if a nominated bank authorised to pay on behalf of the issuing bank does not do so, the beneficiary is entitled to call upon the issuing bank to \ldblquote honour\rdblquote  by personal payment. This express residual obligation of the issuing bank to honour extends to the confirming bank, unless the credit is available by negotiation with the confirming bank when that bank must negotiate.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Issuing bank
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Issuing bank means the bank that issues a credit at the request of an applicant or on its own behalf.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Negotiation
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Negotiation means \u8220\'3fthe purchase by the nominated bank of drafts (drawn on a bank other than the nominated bank) and/or documents under a complying presentation, by advancing or agreeing to advance funds to the beneficiary on or before the banking day on which reimbursement is due to the nominated bank.\u8221\'3f This definition has been considerably tightened, following continued controversy and litigation in the international banking community.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Under UCP 500 negotiation meant \ldblquote giving value\rdblquote  for the documents and not just checking them. UCP 600 redefines negotiation as the \ldblquote purchase\rdblquote  by the nominated bank of a complying presentation. Purchase is distinguished from payment, by defining it as \ldblquote advancing or agreeing to advance funds to the beneficiary on or before the banking day on which reimbursement is due to the nominated bank\rdblquote . Although there is some ambiguity in the wording, what is intended is that, in order to claim reimbursement from the issuing bank by stating that it has negotiated the documents, the nominated bank should have either actually advanced funds to the beneficiary or made an agreement to do so.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The term \u8220\'3fnegotiation\u8221\'3f is often used inaccurately in letters of credit to refer to the acceptance and payment against documents of the full amount of the credit. However, negotiation as contemplated by UCP 600 refers to where the paying bank pays less than the full amount since it is making payment to the beneficiary prior to the time required by the terms of the credit: 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-102-7040?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Yuchai Dongte Special Purpose Automobile Co Ltd v Suisse Credit Capital (2009) Ltd [2018] EWHC 2580 (Comm) [56]
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Where no funds have actually been advanced, the agreement to make an advance should provide that the nominated bank will credit funds to the beneficiary before or at the latest on the date when reimbursement is due to it from the issuing bank. That date can be estimated by reference to the time limit in Article 14(b). The other terms under which those funds are advanced to the beneficiary are the subject of individual agreement between the nominated bank and the beneficiary. If, however, the credit is available by negotiation with the confirming bank, that bank must negotiate the credit without recourse to the beneficiary (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 8(a)(ii)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a534853_1}{\*\bkmkend co_anchor_a534853_1}
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Nominated bank
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+To avoid repeating the various ways in which the beneficiary may receive funds under a credit, the nominated bank is defined simply as the bank with which the credit is \ldblquote available\rdblquote . A credit is available with a bank if that bank is authorised to pay, negotiate, accept the beneficiary\u8217\'3fs draft, incur a deferred payment undertaking or confirm the credit. A confirming bank is therefore, by definition, also a nominated bank. Where no bank is named, any bank which chooses to act on the basis of the issuing bank\rquote s undertaking to reimburse becomes the nominated bank. An advising bank is not a nominated bank unless the credit is also available with it, as will usually be the case.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+For information on the ways in which the beneficiary may receive funds under a credit, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1003386" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Letters of credit: overview: Methods of payment
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+. This practice note also explains in 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1003391" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Acceptance credits
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, the meaning of \ldblquote accept the beneficiary\rquote s draft\rdblquote  and in 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1003389" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Sight and deferred payment credits
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, the meaning of \ldblquote deferred payment credit\rdblquote .
+\par 
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 3: Interpretations
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Generally
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Broadly, the provisions on the interpretation of the rules in Article 3 cover matters such as the:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls10 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls10 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Identity of the issuing bank.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls11 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls11 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Type and form of a document to be presented under a credit.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls12 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls12 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Signatures on documents.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls13 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls13 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Time limits and tolerances.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+Some key provisions include:
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Irrevocability
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 3 reinforces the definition of a credit in terms of irrevocability by deeming that credits silent on the point are irrevocable.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Signing of documents
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 3 provides that any document may be signed by handwriting, facsimile or perforated signature, stamp, symbol or any other mechanical or electronic method of authentication. A stamp used by way of authenticating mark is a sufficient signature: there is no additional requirement that the mark contain some sort of signature, see: 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-102-3975?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Deutsche Bank AG, London Branch v CIMB Bank [2017] EWHC 3380 (Comm) [20]-[34]
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+. See also ISBP 745 Articles 31 and 35.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Situs of the debt
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Under English law, the situs of a debt is the debtor\rquote s residence which is the place where the debt is recoverable. The position of a bank with different branches has been specifically addressed by Article 3, which provides \u8220\'3fBranches of a bank in different countries are considered to be separate banks.\u8221\'3f Therefore, the situs of a debt due under a letter of credit is the branch of the issuing bank that issued the letter of credit in question and not where it is payable: 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-101-7512?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Taurus Petroleum Ltd v State Oil Marketing Co of the Ministry of Oil, Iraq [2017] UKSC 64, [2018] AC 690 [30]-[31]
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 6: Availability, expiry date and place for presentation
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Under Article 6, a credit is \ldblquote available with any bank\rdblquote  regardless of the mode of payment. It also makes clear that credits remain available with the issuing bank so that if the nominated bank does not pay, accept the beneficiary\rquote s draft, incur a deferred payment obligation or negotiate a complying presentation, the beneficiary can require the issuing bank or confirming bank to honour.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+It should be noted that, while the beneficiary may expect an advance of funds from the nominated bank upon its negotiation of the credit, the issuing bank is not obliged to negotiate but only to honour, that is, to pay the beneficiary as per the credit\rquote s terms. The beneficiary of a credit payable, say, 90 days after sight, may therefore receive an advance of funds from the negotiating bank within a few days of presentation. However, if the nominated bank decided not to negotiate, the issuing bank would only be liable to pay the beneficiary 90 days after deciding that the presentation complied.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 10: Amendments
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 10 deals with amendments to the credit. It states that a credit cannot be amended (or cancelled) without the consent of the beneficiary. Also of note, it contemplates that:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls14 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls14 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The advising bank is obliged to inform the bank, from which it received the amendment, if the beneficiary accepts or rejects the amendment, on being notified by the beneficiary (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 10(d)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+).
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls15 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls15 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+A partial acceptance of an amendment is not allowed, and that an attempt by the beneficiary to accept only part of an amendment will be deemed to be a rejection of the amendment (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 10(e)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+).
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls16 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls16 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Any attempt to impose acceptance by deeming an amendment effective unless rejected within a certain time period be disregarded (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 10(f)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+).
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+ISP 98 Rule 2.06(a) enables the parties to address the matter of amendments more flexibly by making provision for the issue of a standby subject to the automatic amendment of certain of its terms. Rule 2.06(a) provides that if a standby is issued subject to \ldblquote automatic amendment\rdblquote , for example, of its amount or expiry date, the amendment is effective automatically.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a162188_1}{\*\bkmkend co_anchor_a162188_1}
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 35: Disclaimer on transmission and translation
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 35 states that a bank assumes no liability for the consequences of loss of documents or errors in the transmission of messages even, apparently, where this is a result of the bank\rquote s negligence, provided they are \ldblquote transmitted or sent according to the requirements stated in the credit\rdblquote .
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+It also includes a provision requiring the issuing or confirming bank to negotiate, honour or reimburse the nominated bank where the nominated bank has determined that a presentation is complying \ldblquote even when the documents have been lost in transit between the nominated bank and the confirming or issuing bank\rdblquote .
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+This follows an opinion by the ICC Banking Commission in response to a member bank\rquote s query (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+ICC Opinion R. 548
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+) that the negotiating bank was entitled to reimbursement where the documents were lost in transit to the issuing bank, even though the credit expressly stated that the issuing bank would pay \ldblquote upon receipt of a full set of [complying] documents\rdblquote .
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 36: Force majeure
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 36 provides that a bank is not liable for the consequences arising out of the interruption of its business caused by \u8220\'3f
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Acts of God, riots, civil commotions, insurrections, wars, acts of terrorism, or by any strikes or lockouts or any other causes beyond its control
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.\u8221\'3f Like UCP 500, Article 36 continues to provide that a bank will not honour or negotiate a credit that expires during a force majeure closure. Presumably, although this is still not stated, this is to be understood as limited to a closure of the place for presentation.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+In the case of standbys, ISP 98 provides some protection for the beneficiary in these circumstances by requiring the issuing bank either to honour the credit if a complying presentation is made within 30 calendar days of the reopening of the place for presentation or to provide the beneficiary with a reasonable alternative place for presentation (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+ISP 98 Rules 3.13 and 3.14
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Following the outbreak of novel coronavirus (COVID-19) pandemic, the ICC issued guidance confirming its view that the pandemic did not fall within the scope of the force majeure provisions, as banks are generally open for business. For further information on this guidance, see, 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/w-024-9008?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, ICC publishes guidance on the impact of COVID-19 on trade finance transactions
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+This stance is unsurprising, given that the focus of the force majeure clause is on the paying bank\u8217\'3fs ability to fulfil its obligations, and is consistent with the response adopted by the ICC to the disruption caused by the eruption of the Icelandic volcano in 2010. However, the guidance acknowledges that whether COVID-19 constitutes a force majeure event within the scope of the UCP 600 in a given case remains a matter for determination by a court or tribunal having jurisdiction to do so. The guidance also considered the approach that parties should take in relation to:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls17 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls17 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Possible alternative solutions that involve the use of electronic documents, scanned materials and emailed images.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls18 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls18 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Various scenarios relating to the delivery of documents under UCP 600.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 38: Transferable credits
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+For background information on transferable credits, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-107-3740?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)#co_anchor_a1007849" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Letters of credit: overview: Assignment of proceeds and transferable credits
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 38 governs the transferability of credits. Points of particular note include:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls19 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls19 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+It makes clear that an issuing bank may be the transferring bank (Article 38(b) defines transferring bank as a bank that \ldblquote transfers the credit\rdblquote  and a transferred credit is one that has been made available by the transferring bank to a second beneficiary).
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls20 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls20 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+It requires that the transferred credit accurately reflects the terms and conditions of the original credit (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 38(g)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+).
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls21 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls21 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+It requires that the second beneficiary\u8217\'3fs documents be presented to the transferring bank (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 38(k)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+).
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls22 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls22 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+It no longer makes the payment of transfer fees a precondition of the transferring bank effecting the transfer (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 48(f), UCP 500
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+).
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls23 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls23 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The transferring bank\rquote s right to present the second beneficiary\rquote s documents to the issuing bank, rather than those of the first beneficiary, is extended to the situation where there are uncorrected discrepancies in the first beneficiary\u8217\'3fs documents (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 38(i)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+).
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+Under Article 38(d) of UCP 600, only a single transfer to a second beneficiary (or beneficiaries) of all or only part of the credit\rquote s value is allowed. A transferred credit cannot therefore be transferred at the request of a second beneficiary to any subsequent beneficiary.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+This differs for standbys under ISP 98 which allows sequential transfers of the full value of the credit to subsequent beneficiaries (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+ISP 98 Rules 6.02 and 6.03
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a793114_1}{\*\bkmkend co_anchor_a793114_1}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Articles of particular interest to banks
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a655650_1}{\*\bkmkend co_anchor_a655650_1}
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 9: Advising of credits and amendments
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 9 makes three important changes from the correlative provisions contained in UCP 500.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls24 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls24 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Article 7(a) of UCP 500 required the advising bank to take reasonable care to check the apparent authenticity of the credit. Under Article 9(b) of UCP 600 it need only \ldblquote satisfy itself\rdblquote  as to the apparent authenticity of the credit. The objective test in UCP 500 has been replaced by a subjective test in UCP 600. This also applies to advising an amendment to the credit.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls25 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls25 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+The advising bank must also now satisfy itself that the credit\rquote s terms and conditions are accurately reflected in its advice. This also applies to advising an amendment to the credit.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls26 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls26 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Provision is now made for the practice of an advising bank using the services of another bank (\rdblquote second advising bank\rdblquote ) to advise the credit. Article 9 subjects the second advising bank to the same obligations as the original advising bank.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+A second advising bank is necessary where the advising bank does not have a correspondent relationship with the beneficiary\u8217\'3fs bank. In practice, a second advising bank is used in two situations:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls27 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls27 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Where the issuing bank has an established correspondent relationship with a bank in the beneficiary\rquote s country but the beneficiary wishes to deal with another local bank with which the issuing bank has no such relationship. The issuing bank then authorises its correspondent as \ldblquote first\rdblquote  advising bank to use the other bank to actually deal with the beneficiary as \ldblquote second\rdblquote  advising bank.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls28 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls28 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+In cases where political relations mean that the issuing bank cannot deal directly with a bank in the beneficiary\rquote s country and so must use the services of an intermediary bank in a third country.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a541319_1}{\*\bkmkend co_anchor_a541319_1}
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 7(c): Issuing bank undertaking and Article 12(b): Nomination
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Under UCP 500, fraud by the beneficiary could become an issue for a nominated or confirming bank in the case of discounting deferred payment credits (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-000-4026?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Banco Santander SA v Banque Paribas [2000] 1 All ER (Comm) 776
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+In 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Banco Santander SA
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, the confirming bank had prepaid under a deferred payment credit, but it was later discovered that the documents presented by the beneficiary included fraudulent ones. The issuing bank refused to pay the confirming bank at maturity on the grounds that the confirming bank had no better right than the beneficiary who had been guilty of fraud. The court agreed and the confirming bank had to bear the loss consequent on the beneficiary\rquote s fraudulent actions. For a discussion of the Court of Appeal decision, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/3-101-2492?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, Letter of credit: fraud
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+. For a discussion of the original High Court decision, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/1-101-0390?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, Discounted deferred letters of credit
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+In order to remedy this problem, UCP 600 now expressly recognises the discounting of deferred payment credits by a nominated or confirming bank before maturity. The effect is to change the party who bears the risk of the beneficiary\u8217\'3fs fraud from the nominated or confirming bank to the buyer during the deferred payment period. In reality, the nominated or confirming bank\rquote s rights and liabilities are now the same under a deferred payment credit as they are (and were) under an acceptance credit. The relevant articles are Articles 7(c) and 12(b).
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 7(c) establishes a new definite undertaking by the issuing bank to reimburse the nominated or confirming bank who \u8220\'3fhas honoured or negotiated\u8221\'3f a complying presentation. The term \u8220\'3fhonour\u8221\'3f is defined in Article 2 to mean \u8220\'3fpay at sight\u8221\'3f. The right to reimbursement does not arise unless and until the confirming bank has paid the beneficiary: 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-101-4133?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Deutsche Bank AG, London v CIMB Bank Berhad [2017] EWHC 1264 (Comm)
+}}}
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The obligation arises on maturity, whether or not that bank prepaid or purchased its own deferred payment undertaking before maturity. The protection under Article 7(c) applies only to a nominated or confirming bank, not to a third party forfaiting bank. In 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-000-0269?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Fortis Bank S.A./N.V., Stemcor UK Limited v Indian Overseas Bank [2009] EWHC 2303 (Comm)
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, the High Court upheld the nominated or confirming bank\rquote s right to be reimbursed under Article 7(c). For more on this case, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/0-500-3927?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, Court confirms the rights of confirming and nominated banks
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 7(c) refers to forwarding documents to the issuing bank. In 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-000-1075?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Societe Generale SA v Saad Trading and another [2011] EWHC 2424 (Comm)
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, it was held that UCP 600, in particular Article 7(c), imposes a duty on the confirming bank to forward all of the documents presented to it under the credit to the issuing bank. Article 7(c) does not permit any exception to this. In this case, failure to do so did not excuse the issuing bank from its obligation to reimburse the confirming bank under Article 7(c), as the documents were compliant. For a detailed discussion of this case, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/8-513-1148?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, Letters of credit: confirming bank\rquote s indemnity protected despite not forwarding all documents (High Court)
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 12(b) further provides that, where a bank has been nominated by the issuing bank to incur a deferred payment undertaking, it is also authorised by the issuing bank to prepay or purchase the deferred payment undertaking incurred by that nominated bank. This applies equally to a confirming bank.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 12(b) therefore recognises that a nominated or confirming bank may pay the beneficiary immediately, at a discount (so the beneficiary need not approach a third party forfaiting bank to purchase the deferred payment undertaking). In effect, the nominated or confirming bank is put in the same position as if it were the holder in due course of an accepted draft under an acceptance credit. Its nomination authorises it to advance funds to the beneficiary against a complying presentation and await reimbursement by the issuing bank at maturity under Article 7(c). The issuing bank may not raise any defence based on the beneficiary\rquote s fraud, provided the nominated or confirming bank acted in good faith.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+A third party forfaiting bank considering discounting under a deferred payment credit available with another nominated or confirming bank should therefore ensure either that:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls29 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls29 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+An amendment is issued making the credit available with it (so it becomes a nominated bank and is protected by Article 7(c)).
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls30 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls30 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+The issuing bank expressly undertakes to pay it at maturity notwithstanding the supervening discovery of fraudulent documents.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+For more information on forfaiting, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/w-012-2202?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Forfaiting
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 7: Issuing bank undertaking
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 7(b) expressly provides that the issuing bank\u8217\'3fs obligations are binding upon issue of the credit but does not define issue for this purpose. It also requires the issuing bank to honour in the event that the nominated bank does not pay or negotiate (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 7(a)(ii), (iii), (iv) and (v))
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 7(c) provides that the issuing bank must reimburse the nominated or confirming bank at maturity when that bank has accepted a draft or incurred a deferred payment obligation whether or not that bank has prepaid or purchased that accepted draft or deferred payment undertaking before maturity. For more information on Article 7(c) see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a541319_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 7(c): Issuing Bank Undertaking and Article 12(b): Nomination
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 8: Confirming bank undertaking
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 8 largely repeats the provisions of Article 7 of UCP 600 except to provide expressly that the confirming bank\rquote s obligation commences when it adds its confirmation (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 8(b)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+It provides that the confirming bank\rquote s undertaking to reimburse a nominated bank is independent of its undertaking to the beneficiary (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 8(c)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+). It also reiterates the confirming bank\rquote s obligation to negotiate without recourse to the beneficiary where the credit is available by negotiation with the confirming bank (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 8(a)(ii)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 13: Bank-to-bank reimbursement arrangements
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+UCP 500 was published before the ICC issued its Uniform Rules for Bank-to-Bank Reimbursements, ICC Publication No. 525 (URR 525), in 1995 and therefore made specific provision for bank-to-bank reimbursements. Article 13(b) of UCP 600 continues to make similar provision for bank-to-bank reimbursements where the credit does not state that it is subject to URR 525.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Bank-to-bank reimbursement arrangements arise if, in order to claim reimbursement from the issuing bank, the nominated or confirming bank needs to claim those monies from another bank (because, for example, the issuing bank has an account with that bank).
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+URR 525 was revised and updated by URR 725 with effect from 1 October 2008. The revisions bring the rules relating to bank-to-bank reimbursements into line with UCP 600.
+\par 
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a934949_1}{\*\bkmkend co_anchor_a934949_1}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Articles on document presentation and examination
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+UPC 600 made attempts to clarify the rules relating the presentation and examination of documents presented under a credit in order to reduce the relatively high rate of documentary rejections on first presentation (see also, 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+eUCP Articles 6 and 7
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+). Key provisions of UCP 600 relating to these rules include:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 14(a): Nominated bank acts on its nomination
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 14(a) clarifies the role of banks in examining documents by acknowledging that the nominated bank in checking documents is \ldblquote acting on its nomination\rdblquote  rather than on behalf of the issuing bank. The issuing bank is not, therefore, bound by the nominated bank\rquote s decision on compliance, unless the documents are lost in transit between them (see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a162188_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 35: Disclaimer on Transmission and Translation
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 14(a): Standard of examination
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 14(a) no longer stipulates that the examination be made with reasonable care. The rationale for this change is apparently that the relevant test is of the documents\rquote  compliance with the credit\rquote s terms, the rules themselves and international standard banking practice rather than the standard of the bank\rquote s scrutiny of them (see the definition of \ldblquote complying presentation\rdblquote  in Article 2). It remains, however, implicit in the bank\rquote s relationship with the applicant that it must take reasonable care in applying that test.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 14(b): Time to examine documents
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 14(b) also addresses the issue of the time available to the banks to decide whether to accept or reject the documents. This has changed to a simple maximum of five (previously seven) banking days for each bank involved, with time running from the first banking day after receipt of the documents.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The five banking day limit is not affected by the occurrence of an expiry date or last date for presentation. It is no longer required that the decision on whether documents are compliant be made within a reasonable time as was the case under Article 13(b) of UCP 500.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Although intended to standardise practice, the effect of these changes will no doubt be that many banks will continue to take the maximum time allowed regardless of the number and nature of the documents presented, while others provide a better service to their clients.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Where the full five days are taken and the credit expires during that period, the beneficiary is denied the opportunity to get even the simplest of documents corrected and re-presented unless the expiry date of the credit is amended.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Beneficiaries of standbys, typically payable against a simple demand and perhaps a few copy documents, may well prefer ISP 98\rquote s approach of deeming a decision made within three business days to be reasonable and leaving it to the bank to justify taking any longer as reasonable if it is challenged (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+ISP 98 Rule 5.01
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+).
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 14(c): Presentation of original transport documents
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 14(c) provides that a presentation of documents under a credit which includes an 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+original
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ transport document must be made by the beneficiary within 21 calendar days after the date of shipment.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+This removes one of the difficulties in applying the UCP to a standby. Where a standby is payable against only 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+a copy 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/7-107-6496?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+bill of lading
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ (as is standard practice in the oil trade), Article 14(c) will not apply. As a result, a copy bill of lading should not be rejected under UCP 600 on the grounds it was not presented within the 21 calendar day period.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 14(d): Data in documents
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 14(d) provides data in a document need not be identical to but must not conflict with data in that document, in other stipulated documents or in the credit itself.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+A bank anxious to reject documents, whether under a credit or a standby, might note that the data required to be consistent is not apparently limited to data relevant to the credit\rquote s terms. This may lead to an increase in the already high rejection rate of first presentations.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 14(f): Poorly described documents
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 14(f) concerns documents (other than transport documents, insurance documents or commercial invoices) presented that are not specified by the terms of the credit. It provides that any document must be accepted if \ldblquote its content appears to fulfil the function of the required document\rdblquote . This may involve a substantial departure from the normal function of document checking by requiring a bank to evaluate the contents of a document rather than its compliance with specific criteria set out in the credit.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 14(h): Non-documentary conditions
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 14(h) deals with non-documentary conditions. It provides that, unless the credit requires a document to evidence compliance with a condition in the credit, that condition will be deemed not to be stated and can be disregarded. The relationship between Article 14(h) and Article 14(d) has become a source of difficulty.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+If the non-documentary condition contains data, for example, a date of shipment or port of loading, and the credit does not stipulate a transport document but another stipulated document which, when presented, shows a different date of shipment or port, should that document be rejected as discrepant?
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Read literally, if the bank is entitled to disregard the non-documentary condition, this would include the data within it under Article 14(h) and therefore there would be no conflict. An alternative reading is that Article 14(h) only permits the bank to disregard the condition to the extent that it need not have satisfied itself that it has been complied with before honouring an otherwise complying presentation.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+That does not mean that the bank can honour despite the evidence of data in a stipulated document conflicting with the non-documentary condition. Where a bank has chosen to accept its applicant\rquote s mandate to issue and honour a credit subject to a non-documentary condition, rather than follow best practice by insisting that a document be stipulated to evidence compliance, the better view is surely that the bank cannot rely on Article 14(h) to disregard evidence of non-compliance. Put shortly, although the bank need not look beyond the documents for compliance with a non-documentary condition, it should not be entitled to turn a blind eye to manifest non-compliance within the documents.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+In the case of standbys, ISP 98 requires only that documents presented must be consistent to the extent expressly required in the standby (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+ISP 98 Rule 4.03
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+). ISP 98 contains no equivalent rule to Article 14(c).
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 14(j): Addresses and contact details
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+In one respect, Article 14 relaxes the requirements of strict compliance and consistency of data to prevent documents being rejected as discrepant on this basis. Article 14(j) permits the addresses of the beneficiary and applicant to differ between one document and another and those stipulated in the credit, provided they are in the same country as the respective addresses in the credit.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 14(j) also provides that contact details stated as part of such addresses are to be disregarded. These concessions do not apply where the applicant\rquote s address and contact details appear on a transport document as the consignee or notify party.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 15: Complying presentation
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 15 is new and concerns the disposal of documents. It provides for the obligations of a bank that arise when it decides that a presentation complies with the credit and the rules.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls31 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls31 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Once this decision is made by an issuing bank, it must honour.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls32 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls32 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Once this decision is made by the confirming bank, it must honour or negotiate as the credit provides and forward the documents to the issuing bank.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls33 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls33 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Once this decision is made by the nominated bank, having honoured or negotiated, it must forward the documents to the issuing bank or confirming bank as appropriate.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+In each case \ldblquote when\rdblquote  does not mean immediately, but indicates the process of honour or negotiation must begin. In practice, it can take some time after determining that the documents comply to conclude the processing of the transaction, which could range from an hour to a day.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 7(c) refers to forwarding documents to the issuing bank. In 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-000-1075?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Societe Generale SA v Saad Trading and another [2011] EWHC 2424 (Comm)
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, it was held that UCP 600, in particular Article 7(c), imposes a duty on the confirming bank to forward all of the documents presented to it under the credit to the issuing bank. Article 7(c) does not permit any exception to this. For a detailed discussion of this case, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/8-513-1148?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, Letters of credit: confirming bank\rquote s indemnity protected despite not forwarding all documents (High Court)
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 16: Discrepant documents, waiver and notice
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+When a nominated bank acting on its nomination, a confirming bank, if any, or the issuing bank determines that a presentation does not comply, it may refuse to honour or negotiate the letter of credit. An effective rejection of discrepant documents under Article 16 requires a formal notice that the bank is refusing to honour or negotiate (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 16(c)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+) which states each discrepancy relied upon (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 16(c)(ii)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+). The purpose of setting out with clarity the alleged non-conformities is to provide the beneficiary with the opportunity to rectify such matters. Thus, the notice must identify discrepancies with sufficient clarity that it is clear what needs to be rectified, although the explanation need not descend to a very granular level of detail: 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/9-543-7105?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Bulgrains & Co Ltd v Shinhan Bank [2013] EWHC 2498 (QB)
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 16 also introduces two additional options regarding the disposal of documents in the light of 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-000-4028?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Credit Industriel et Commercial v China Merchants Bank [2002] 2 All ER (Comm) 427
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls34 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls34 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+First, the bank may indicate that it is holding the documents pending the applicant\u8217\'3fs decision regarding a waiver of the discrepancies or further instructions from the presenter in the interim (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 16(c)(iii)(b)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+). For general information on waiver, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/0-502-8838?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Practice note, Contracts: waiver
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls35 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls35 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Second, it may act in accordance with the presenter\u8217\'3fs previous instructions (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 16 (c)(iii)(d)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+).
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The rejection notice must be communicated to the presenter before the close of business on the fifth banking day following the day of receipt (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 16(d)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+).
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+In 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-000-0212?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Fortis Bank S.A./N.V. and another v Indian Overseas Bank [2011] EWCA Civ 58
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+, the Court of Appeal upheld a High Court ruling that a bank that has issued an Article 16(c) notice is obliged to act in accordance with that notice with reasonable promptness. Failure to do so meant the bank could not rely on the discrepancy and was obliged to reimburse the bank entitled to be reimbursed (under various letter of credit drawings in dispute). For further details, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/3-504-7053?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, Act in accordance with your notice: Court of Appeal confirms construction of article 16 of UCP 600
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+When an issuing bank determines that a presentation does not comply, it may in its sole judgement approach the applicant for a waiver of the discrepancies (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 16(b)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+). However, this provision does not abrogate the requirement of strict compliance under Article 1. In 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Punjab National Bank v Malayan Banking Berhad
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ [2020] 7 CLJ 177 [6]-[10], the Malaysian Court of Appeal reiterated the importance of strict compliance and noted that, while discrepancies may be forgiven under Article 16, this will not apply where there is a fundamental defect in the presentation (such as non-production of documents).
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+It should be noted that UCP 600 contains no provision for the practice of payment \ldblquote under reserve\rdblquote  or \ldblquote with indemnity\rdblquote , that is, paying the beneficiary despite discrepancies, on the understanding that if the issuing bank rejects the documents, the beneficiary will repay the bank. This was previously expressly recognised by Article 14(f) of UCP 500.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 17: Original documents and copies
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls36 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls36 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 17(b) defines \ldblquote original document\rdblquote . It provides a document is an original if it bears an \ldblquote apparently original signature, mark, stamp or label of the issuing bank of the document\rdblquote . This codifies the ICC\rquote s response to the decision in 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/D-000-4333?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=PLDocumentLink&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Glencore v Bank of China [1996] 1 Lloyd\rquote s Rep. 135
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls37 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls37 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Article 17(a) requires presentation of one original of each document specified in the credit. This may give rise to difficulties in the case of standbys which are often payable against the beneficiary\rquote s demand and only copy documents. There is therefore no similar provision in ISP 98.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls38 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls38 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Article 17(d) allows the presentation of an original even when a copy is stipulated. Further details of the practice relating to original and copy documents can be found in ISBP 745 Rules 28 to 33. 
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 18: Commercial invoice
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 18 concerns commercial invoices. Article 18(a)(iii) expressly requires that a commercial invoice be made out in the same currency as the credit. This avoids any potential exchange rate issues.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 18(c) extends the requirement that the description of \ldblquote goods\rdblquote  corresponds with that in the credit to the description of \ldblquote services or performance\rdblquote .
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+On a related subject, ISBP 745 Rule 23 states that it is \ldblquote expected\rdblquote  that documents issued by the beneficiary will be in the same language as the credit. In practice, banks will reject documents in another language unless the credit expressly allows for it.
+\par 
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a360567_1}{\*\bkmkend co_anchor_a360567_1}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Articles on transport documents
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Articles 19 to 24 focus on transport documents and will be of interest to finance lawyers because transport documents will often be presented under a credit. The rules reflect transport industry practice and efforts have been made to make them easy to understand.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+In August 2010, the ICC published recommendations to help banks check whether transport documents presented under a credit comply with the transport documents articles relating to \ldblquote on board\rdblquote  notations. The ICC has opined on when \ldblquote on board\rdblquote  notations are required and what form they should take because there is often a mismatch between the form of the transport document for the relevant goods and what is required to be presented under the credit. For the meaning of \ldblquote on board\rdblquote  notation and further detail on the recommendations, see 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/8-503-1016?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Legal update, ICC recommendations concerning \ldblquote on board\rdblquote  notation requirements under UCP 600
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+General points on Articles 19 to 24
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Signed as agent
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Revised Articles 19 to 22 deal with documents relating to transport by sea. Other than under a charter party (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 22
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+), all clarify the details needed when signed by an agent, making it clear that the actual name of the vessel\rquote s master is not required. When signed by an agent, the document need only identify the principal by function, for example, as \ldblquote carrier\rdblquote  or \ldblquote master\rdblquote . This reflects industry practice that often an agent will not know the name of the master of a vessel at the time the transport document is issued.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Signed only
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The reference to \ldblquote otherwise authenticated\rdblquote  as an alternative to \ldblquote signed\rdblquote  in Article 26(a)(i) of UCP 500 no longer appears. This is because the interpretation of \ldblquote signing\rdblquote  in Article 3 includes a reference to \ldblquote any other mechanical or electronic method of authentication\rdblquote .
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Sailing vessels
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The days of the transport of goods under sail are finally recognised as over, paradoxically, by virtue of the rules\rquote  failure to repeat a long-standing prohibition of documents evidencing this practice.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Transhipment
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Transhipment occurs when the goods are unloaded from one vessel and reloaded onto another vessel during the course of their journey to the buyer.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Although transhipment may be prohibited by the credit, it remains, as under UCP 500, almost impossible to prevent it. As long as the entire carriage of the goods between the places specified in the credit is covered by one transport document, see for example Article 20(c)(i), a transport document indicating that transhipment has occurred is generally acceptable even where the credit prohibits it, see for example Article 20(a)(c)(ii). ISBP 745 provides that a credit requiring presentation of a bill of lading and containing a prohibition against transhipment will, in most cases, have to exclude UCP 600 sub-article 20(c) to make the prohibition against transhipment effective. See 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "#co_anchor_a737774_1" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 20: Bill of lading
+}}}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+This reflects standard shipping industry practice that transhipment often occurs when goods are shipped in containers, trailers or LASH barges (A LASH barge is a small barge that is loaded onto a larger barge, along with other LASH barges).
+\par 
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Articles on specific transport documents
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+More detailed provisions relating to certain transport documents include:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Article 19: Transport document covering at least two different modes of transport
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The transport document articles deal first with multi-modal transport, recognising its increased importance in international trade. The term covers any document evidencing the use of more than one means of transport but that document must still show that the goods were transported between the places specified in the credit.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Since the rules require presentation of at least one original of each document (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 17 (a)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+), where the mode of transport chosen means that no original transport document is available to the beneficiary, the credit must expressly provide that a copy is acceptable.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a737774_1}{\*\bkmkend co_anchor_a737774_1}
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Article 20: Bill of lading
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+A 
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \i1 \fs20 
+{\field {\*\fldinst HYPERLINK "https://uk.practicallaw.thomsonreuters.com/7-107-6496?originationContext=document&vr=3.0&rs=PLUK1.0&transitionType=DocumentItem&contextData=(sc.Default)" }{\fldrslt 
+{\b0 \cf23 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+bill of lading
+}}}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+ must still show shipment from the port of loading to the port of discharge as indicated in the credit. Article 20(c)(ii) adds to the general rules relating to transhipment, that a bill of lading indicating transhipment must be accepted, despite express prohibition in the credit, provided it evidences shipment of goods in a container, a trailer or a LASH barge.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Article 21: Non-negotiable sea waybill
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+A non-negotiable sea waybill is a receipt for goods produced by the carrier sharing all the characteristics of a bill of lading except that, as non-negotiable, it cannot serve to transfer title to the goods in transit. The provisions of Article 21 resemble those in Article 20.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Article 22: Charter party bill of lading
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+A charter party bill of lading is a bill of lading issued by, or on behalf of, a party to the contract to charter (hire) the vessel on which the goods are to be carried. For example, an oil exporter may charter a tanker to carry only its oil or a shipper may charter a vessel mainly for its own goods, but also to carry those of another shipper. The main differences between such bills and normal bills of lading are that the charter party bill:
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 {\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls39 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls39 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+Does not normally contain the conditions of carriage.
+\par {\pntext }
+}
+}
+}
+}{\fi-360 \li {\*\pn \pnlvlblt \ilvl0 \ls40 \pnindent0 \pnf1 {\f2 \pntxtb \u8226\'3f}}{\listtext \b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 \u8226\'3f\tab }\ls40 {\pntext }
+{\pard }\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li480 
+{\b0 \cf21 \f2 \ri0 \i0 \ql \fs20 \li480 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa180 \sb0 
+May be issued by a party other than the ship owner or master or in either case, its agent.
+\par {\pntext }
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri100 \i0 \qj \fs20 \li100 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb200 
+Article 22 resembles Article 20, except for the necessary addition of the charterer and an agent of the charterer to the list of persons who may sign the bill. There is also provision for such bills to show a range of ports or geographical area as the port of discharge if so stated in the credit, for example, \ldblquote any Indian port\rdblquote .
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Article 23: Air transport document
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Formerly known as \ldblquote air waybills\rdblquote , an air transport document indicating transhipment (unloading from one aircraft and reloading onto another aircraft) is acceptable even where the credit prohibits it (
+}
+{\b0 \cf21 \f2 \i1 \fs20 
+{\b0 \cf21 \f2 \ul0 \strike0 \i1 \fs20 \sa0 \sb0 
+Article 23 (c) (ii)
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+). The date of issue must be shown on the document and it will be considered to be the date of shipment of the goods unless the document bears a notation of the actual date of shipment.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Article 24: Road, rail or inland waterway transport documents
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Transhipment is defined in the same terms as in Article 20.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Article 27: Clean transport document
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 27 provides a bank will only accept a clean transport document, that is, one which does not indicate a defect in the condition of the goods or their packaging.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 27 also provides that even though a clean transport document is required, the word \ldblquote clean\rdblquote  need not appear on the transport document, even if the credit requires the transport document to be \ldblquote clean on board\rdblquote . UCP 500 was ambiguous on this point, leading some document examiners to insist that the word \ldblquote clean\rdblquote  needed to appear on a transport document.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb160 
+Article 28: Insurance document and coverage
+\par 
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 28(f)(iii) expressly requires that the insurance document evidence that risks are covered during transport of the goods between the places specified in the credit.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Under Article 28(a), the parties who can sign the insurance document include a proxy and it is provided that the signature of an agent or proxy must indicate whether it is for or on behalf of the insurance company or underwriter.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Consistent with current insurance industry practice, Article 28(c) of UCP 600 contains a blanket prohibition of any cover notes (a cover note is a document confirming that recently purchased insurance is in force and is used if a claim arises before the full contract arrives).
+\par 
+}
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart co_anchor_a724252_1}{\*\bkmkend co_anchor_a724252_1}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Other articles of interest
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 29: Extension of expiry date or last day for presentation
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Article 29 provides that if the expiry date of a credit or the last day for presentation falls on a day when the bank is closed, the expiry date or the last day for presentation will be extended to the first following banking day.
+\par 
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs24 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs24 \sa0 \sb0 
+Article 30: Tolerance in credit amount, quantity and unit prices
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+The tolerance in Article 30 of 10% more or less in the credit amount, quantity and unit prices now applies only where they are qualified by the words \ldblquote about\rdblquote  or \ldblquote approximately\rdblquote  in the credit. The words \ldblquote circa\rdblquote  \ldblquote or similar expressions\rdblquote , found in UCP 500, no longer attract the allowance.
+\par 
+}
+}
+}
+}
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf31 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf31 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Comment
+\par 
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+UCP 600 builds on the success of previous iterations of the UCP, establishing a body of contractual rules which allow for uniformity in the practice relating to letters of credit. However, a number of factors continue to bedevil the smooth operation of these rules.
+\par 
+}
+}
+}
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+\u160\'3f
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+{\b0 \cf21 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+Some issues are caused by the misuse of certain terms (such as negotiation) by the contracting parties; whereas others are caused by linguistic ambiguities in the text of the rules themselves. In resolving these ambiguities, there is, as always, a risk of divergent practice from jurisdiction to jurisdiction. However, the continued acceptance of UCP 600 by practitioners with widely divergent economic and judicial systems demonstrates just how successful the project has been to date.
+\par 
+}
+}
+}
+}
+}
+{\b1 \cf30 \f2 \ri0 \i0 \qj \fs20 \li0 {
+{\trowd \lastrow \trkeep \trleft0 
+\clbrdrt \brdrcf40 \brdrw20 \brdrs \clbrdrb \clbrdrl \trql \clwWidth3911 \cellx3911 
+\clbrdrt \brdrcf40 \brdrw20 \brdrs \clbrdrb \brdrcf40 \brdrw20 \brdrs \clbrdrl \brdrcf40 \brdrw20 \brdrs \clbrdrr \brdrcf40 \brdrw20 \brdrs \trql \clwWidth2267 \cellx6178 
+\clbrdrt \brdrcf40 \brdrw20 \brdrs \clbrdrb \clbrdrr \trql \clwWidth3911 \cellx10089 
+\intbl 
+{\b1 \qc \cf30 \f2 \ri0 \i0 \fs20 \li0 
+}\b1 \qc \cf30 \f2 \ri0 \i0 \fs20 \li0 \intbl \cell \intbl 
+{\b1 \qc \cf30 \f2 \ri0 \i0 \fs20 \li0 
+{\b1 \cf30 \f2 \ul0 \strike0 \i0 \fs20 \sa0 \sb0 
+END OF DOCUMENT
+}
+}\b1 \qc \cf30 \f2 \ri0 \ul0 \strike0 \i0 \fs20 \li0 \sa0 \sb0 \intbl \cell \intbl 
+{\b1 \qc \cf30 \f2 \ri0 \i0 \fs20 \li0 
+}\b1 \qc \cf30 \f2 \ri0 \i0 \fs20 \li0 \intbl \cell \row }}\par 
+}
+{\b0 \cf21 \f2 \i0 \fs20 
+{\*\bkmkstart kh_relatedContentOffset_1}{\*\bkmkend kh_relatedContentOffset_1}
+\par 
+}
+{\b0 \cf21 \f2 \ri0 \i0 \qj \fs20 \li0 
+}
+}
+}
+}\sect }

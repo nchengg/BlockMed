@@ -36,5 +36,9 @@ app/data/audit-ledger.jsonl
 # OS / editor noise
 .DS_Store
 Thumbs.db
+desktop.ini
 .vscode/
 .idea/
+
+# Manual point-in-time deck backups (use git history, not sibling files)
+proposal/*_backup-*.pptx

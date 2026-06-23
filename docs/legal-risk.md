@@ -1,6 +1,6 @@
 # Blockmediary — Legal & Compliance Risk Register
 **Role:** Chief Compliance Officer (CCO) — Badhri
-**Last updated:** 2026-06-14 (rev. 4)
+**Last updated:** 2026-06-23 (rev. 5)
 **Status:** Living document — update as research and build progress
 
 ---
@@ -38,6 +38,16 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 | 19 | Governing law & dispute forum | Contractual | All | 🟡 Medium | Must be specified per deal |
 | 20 | Smart contract audit / security | FCA, VARA expectations | All | 🟡 Medium | Audit before production use |
 | 21 | Trade document checklist — Incoterms® 2020 | ICC Incoterms® 2020 | Global | 🟡 Medium | Integrate into document verification engine |
+| 22 | specHash committed to public blockchain — personal data GDPR gap | GDPR Arts 5, 17 | UK / EU | 🔴 High | Architecture decision needed before mainnet |
+| 23 | Platform/intermediary deal initiation — third-party KYC reliance chain | MLR 2017 Reg 39, 6AMLD Art 25 | UK / EU | 🔴 High | Must be specified in TEA and compliance gate |
+| 24 | Releaser key compromise — customer funds loss + breach notification | FCA CASP / PSR breach reporting, VARA incident reporting | All | 🔴 High | Key management policy required |
+| 25 | Pause power as censorship lever — seller funds withheld post-compliance | Contract liability, FCA Consumer Duty, VARA conduct | All | 🟡 Medium | TEA must define permissible pause grounds |
+| 26 | Electronic trade documents legal validity | UK Electronic Trade Documents Act 2023 (ETDA), UNCITRAL MLETR | UK / Global | 🟡 Medium | Accept eDocs only under ETDA-compliant terms |
+| 27 | Export controls — dual-use and controlled goods | UK Export Control Order 2008, EU Dual-Use Reg 2021/821, US EAR/ITAR | UK / EU / Global | 🔴 High | Goods-category screen required at deal intake |
+| 28 | FCA Consumer Duty — retail SME outcomes | FCA PS22/9 Consumer Duty (July 2023) | UK | 🟡 Medium | Assess whether SME users are retail customers |
+| 29 | EU Digital Operational Resilience — ICT risk + incident reporting | DORA (EU Reg 2022/2554, in force Jan 2025) | EU | 🟡 Medium | Required alongside MiCA CASP authorisation |
+| 30 | Electronic signature enforceability — Trade Escrow Agreement | eIDAS 2.0 (EU Reg 2024/1183), UK ECA 2000 | UK / EU | 🟡 Medium | Specify signature standard in TEA |
+| 31 | Proceeds of Crime Act 2002 — criminal AML liability | POCA 2002 s.330 (UK) | UK | 🔴 High | MLRO SAR obligation; criminal liability for firm |
 
 ---
 
@@ -95,7 +105,7 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 
 ### 1.4 AML / KYB / KYC — Money Laundering Regulations 2017 & 6AMLD
 
-**What it is:** The UK Money Laundering, Terrorist Financing and Transfer of Funds Regulations 2017 (MLR 2017, as amended) require cryptoasset businesses to apply customer due diligence, transaction monitoring, and suspicious activity reporting. The EU's 6th Anti-Money Laundering Directive (6AMLD) tightens AML obligations across the EU.
+**What it is:** The UK Money Laundering, Terrorist Financing and Transfer of Funds Regulations 2017 (MLR 2017, as amended) require cryptoasset businesses to apply customer due diligence, transaction monitoring, and suspicious activity reporting. The EU's 6th Anti-Money Laundering Directive (6AMLD) tightens AML obligations across the EU. Underlying the MLR regime is the **Proceeds of Crime Act 2002 (POCA)**, which makes money laundering a criminal offence in the UK and creates the Nominated Officer's (MLRO's) mandatory Suspicious Activity Report (SAR) obligation under s.330. Failure to file a SAR where one is required is a criminal offence for both the firm and the individual MLRO — POCA is the statute under which prosecution occurs, not MLR 2017 (which sets the procedural framework). The Terrorism Act 2000 (TA 2000, s.19) creates a parallel obligation for terrorist financing suspicions.
 
 **Risk to Blockmediary:**
 - Blockmediary is a VASP (Virtual Asset Service Provider) by FATF definition — it facilitates transfers and custody of virtual assets. This triggers full AML/CFT obligations.
@@ -106,8 +116,9 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 - Implement a **compliance gate before funding**: both parties must complete KYB/KYC, sanctions screening, wallet screening, and goods/corridor eligibility before escrow is funded. (Already built into the MVP_FLOW.md design.)
 - Use a reputable KYB/KYC provider (e.g. Sumsub, Jumio, Onfido) with sanctions and PEP screening.
 - Maintain a **TBML risk checklist** for trade documents — watch for: invoice price inconsistent with market rates, unusual shipment routes, vague goods descriptions, discrepancies between documents.
-- File Suspicious Activity Reports (SARs) where required.
-- Appoint a UK Money Laundering Reporting Officer (MLRO) for production.
+- File Suspicious Activity Reports (SARs) where required under POCA s.330. The MLRO must file before any "prohibited act" (completing the transaction) where a suspicion exists — this is the "consent" SAR route.
+- Appoint a UK Money Laundering Reporting Officer (MLRO) for production. The MLRO has personal criminal liability under POCA s.330 for failure to disclose.
+- **Platform/intermediary-initiated deals (BRD §5, decided 2026-06-10):** When a third-party platform or freight forwarder initiates a deal and invites both buyer and seller, Blockmediary must ensure KYC/KYB on all principals is performed by either (a) Blockmediary directly, or (b) a third party under MLR 2017 Reg 39 (reliance on third parties). Third-party reliance requires: the third party is itself subject to AML obligations equivalent to the UK regime; a written reliance agreement is in place; Blockmediary can obtain the KYC data on request within 2 business days. This reliance arrangement must be documented in the TEA and the compliance gate. Do not allow a platform-initiated deal to fund before KYC of the underlying buyer and seller is confirmed.
 
 **Key reference:** [FATF 2025 Virtual Assets Targeted Update](https://www.fatf-gafi.org/en/publications/Fatfrecommendations/targeted-update-virtual-assets-vasps-2025.html)
 
@@ -136,6 +147,7 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 
 **Risk to Blockmediary:**
 - **On-chain immutability vs. right to erasure (Art. 17 GDPR):** If any personal data (names, addresses, wallet addresses linked to identity) is written on-chain, it cannot be deleted — directly conflicting with GDPR's right to erasure.
+- **specHash on a public blockchain (TRD §6.1 — active architecture risk):** The full-product design commits the keccak256 hash of the canonical escrow specification to Base Sepolia at `createDeal`. The spec contains party names and KYC reference IDs. Even though a hash is not the plaintext data, where Blockmediary controls both the spec store (off-chain, containing the names) and the on-chain hash, the hash can be linked back to identified individuals — making it personal data under GDPR's functional definition. Committing it to an immutable public chain creates a permanent, non-erasable record linked to personal data, in direct conflict with GDPR Art. 17. This is a live architectural risk requiring a design decision before mainnet deployment.
 - **Wallet address as personal data:** The EDPB and many DPAs consider blockchain wallet addresses to be personal data where they can be linked to an identified individual. Because Blockmediary links wallets to verified legal identities, this linkage is clearly personal data.
 - **KYC document storage:** Passports, ID images, business registration documents, and beneficial ownership information are all personal and sensitive data requiring secure, GDPR-compliant storage.
 - **Cross-border data transfers:** If using cloud infrastructure or KYB providers that process data outside the UK/EU/EEA, standard contractual clauses (SCCs) or UK IDTA must be in place.
@@ -144,6 +156,7 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 - **All personal data is kept off-chain (confirmed architecture decision).** The smart contract stores only: wallet addresses, deal amounts, state transitions, and document hashes. No names, no documents, no KYC data on-chain. This is not aspirational — it is the implemented design.
 - Store KYC/KYB data in an off-chain, GDPR-compliant database (encrypted at rest and in transit).
 - Use **pseudonymisation** — link on-chain wallet addresses to off-chain identity records via an internal reference ID, not the individual's name.
+- **For the specHash problem:** three options — (a) omit personal data entirely from the spec before hashing (use only deal IDs and amount, strip names); (b) hash only a subset of the spec that contains no personal data; (c) use a zero-knowledge commitment scheme so the on-chain commitment reveals nothing about the spec content. Option (a) is simplest for the MVP. Chosen option must be decided before mainnet and documented as an architecture decision.
 - Publish a Privacy Notice explaining lawful basis (contract performance + legal obligation), data retention periods, and data subject rights.
 - Appoint a Data Protection Officer (DPO) or equivalent for production.
 - Implement a data breach notification procedure (72-hour notification to ICO under UK GDPR).
@@ -170,6 +183,47 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 
 ---
 
+### 1.8 UK Electronic Trade Documents Act 2023 (ETDA)
+
+**What it is:** The Electronic Trade Documents Act 2023 (in force September 2023) is the first UK law to give electronic trade documents — including electronic bills of lading (eBLs), ship's delivery orders, sea waybills, and warehouse receipts — the same legal status as paper originals under English law. It is based on UNCITRAL's Model Law on Electronic Transferable Records (MLETR). Equivalent laws have been adopted in Singapore, Bahrain, and within the DIFC — relevant for the UK/EU/ME corridors Blockmediary targets.
+
+**Risk to Blockmediary:**
+- Blockmediary is a digital platform that accepts uploaded trade documents as the basis for fund release. The legal validity of those documents — particularly whether an eBL constitutes a "document of title" giving the holder right to claim the goods — depends on whether the ETDA (or equivalent MLETR law) is satisfied.
+- If a seller submits an electronic bill of lading that does not meet ETDA requirements (e.g. it is not issued via a qualifying electronic system, or the "control" requirement is not met), it may not be legally equivalent to a paper original. Releasing funds against a legally invalid document exposes Blockmediary to liability.
+- UCP 600 Art. 17 requires at least one original of each required document. The eUCP supplement governs what counts as an "original" in electronic form. The ETDA operates alongside eUCP but is a separate UK statute — compliance with eUCP alone does not guarantee ETDA compliance.
+- The ETDA "control" requirement: a person has control of an electronic trade document if they can use it, transfer it, and prevent others from doing so. An electronic document that can be freely copied (e.g. a PDF emailed to multiple parties) does not satisfy this — it must be on a system that enforces singularity of control.
+
+**Mitigation:**
+- In the Blockmediary platform terms and Trade Escrow Agreement: require that any electronic bill of lading submitted via the platform is issued on an **ETDA-qualifying electronic system** (e.g.BOLERO, essDOCS, WaveBL, TradeLens successors, or carrier-native eBL platforms) — not a simple PDF.
+- For scanned paper documents: these remain valid paper originals and are not subject to the ETDA — accept them as-is (with the presenter warranty from eUCP).
+- Include a representation in the document upload terms: the presenter confirms that any electronic transferable record submitted satisfies the requirements of the applicable law governing electronic trade documents (ETDA for English-law deals; MLETR-equivalent for UAE/DIFC deals).
+- For the MVP: accept scanned PDFs only (which avoids the ETDA question entirely) and document the eBL pathway as a post-MVP feature requiring ETDA-qualifying system integration.
+- Monitor equivalent MLETR adoptions in UAE (DIFC already adopted) and EU (EU digital transport documents under eFTI Regulation 2020/1056).
+
+**Key reference:** UK Electronic Trade Documents Act 2023; UNCITRAL MLETR; [docs/UCP600.md](UCP600.md) Art. 17
+
+---
+
+### 1.9 FCA Consumer Duty (PS22/9, July 2023)
+
+**What it is:** The FCA's Consumer Duty (Policy Statement PS22/9, in force July 2023) substantially replaced and expanded the Principles for Business (PRIN) framework for retail-facing UK financial services firms. It requires firms to deliver "good outcomes" across four pillars: (1) products and services, (2) price and value, (3) consumer understanding, and (4) consumer support. The Duty applies to firms in the "distribution chain" — including firms whose products reach retail customers indirectly.
+
+**Risk to Blockmediary:**
+- The key question is whether Blockmediary's SME buyer and seller users are "retail customers" under FCA rules. The FCA definition of retail customer excludes "eligible counterparties" (large institutions) but **includes most SMEs** unless they qualify as "professional clients" (which requires financial sophistication thresholds most SMEs won't meet). If Blockmediary's users are retail customers, Consumer Duty applies in full.
+- The four pillars create specific obligations beyond old PRIN: the "consumer understanding" pillar requires that communications are clear, fair and not misleading in a way that is specifically tested against a "retail customer" standard; the "price and value" pillar requires that the fee structure delivers fair value; the "consumer support" pillar requires accessible complaint and support channels.
+- Consumer Duty also imposes a **proactive obligation** — firms must not just avoid harm but must actively pursue good outcomes. This includes monitoring and reviewing whether the product continues to deliver good outcomes for users.
+- The existing row 18 ("FCA PRIN, UCT Regulations") in the register understates this risk. Consumer Duty is a materially heavier obligation.
+
+**Mitigation:**
+- Conduct a **retail/professional client classification** exercise for Blockmediary's target SME users. If most users will be retail customers (likely), design the product and communications to satisfy Consumer Duty from the outset.
+- Apply the "consumer understanding" test to all marketing, terms of service, fee disclosures, and the Trade Escrow Agreement — would a reasonable SME in the target market understand what they are agreeing to and what the risks are?
+- Build a complaints handling process that satisfies FCA DISP (Dispute Resolution) rules — including an 8-week written response obligation and Financial Ombudsman Service (FOS) referral rights for eligible complainants.
+- For the hackathon: note that Consumer Duty applies to the production product but is not triggered in a testnet/MVP context with no real users.
+
+**Key references:** FCA PS22/9 Consumer Duty; FCA PRIN 2A; FCA DISP
+
+---
+
 ## 2. EU Regulatory Risks
 
 ### 2.1 MiCA — Markets in Crypto-Assets Regulation
@@ -193,6 +247,47 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 **Key references:**
 - [EBA MiCA page](https://www.eba.europa.eu/regulation-and-policy/asset-referenced-and-e-money-tokens-mica)
 - [ESMA MiCA page](https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/markets-crypto-assets-regulation-mica)
+
+---
+
+### 2.2 DORA — Digital Operational Resilience Act (EU Regulation 2022/2554)
+
+**What it is:** DORA came into full force on 17 January 2025 and applies to financial entities operating in the EU, including crypto-asset service providers (CASPs) authorised under MiCA. It establishes a harmonised framework for ICT (information and communication technology) risk management across EU financial services. Key requirements: an ICT risk management framework, mandatory ICT incident reporting to competent authorities, digital operational resilience testing (including threat-led penetration testing for significant firms), and contractual requirements for third-party ICT providers.
+
+**Risk to Blockmediary:**
+- DORA is not a standalone licence — it is a compliance obligation that comes with MiCA CASP authorisation (already flagged as required in §2.1). Firms cannot hold a MiCA CASP licence without also satisfying DORA.
+- Blockmediary's architecture depends on multiple third-party ICT providers: Anthropic Claude (AI/OCR), cloud infrastructure (document storage, audit ledger), KYB/KYC provider (TBD), blockchain node provider (Base Sepolia / mainnet RPC). Each of these is a "third-party ICT provider" under DORA, requiring: risk assessment, written contractual terms (including audit rights, exit plans, SLA commitments), and inclusion in Blockmediary's ICT risk register.
+- DORA's incident reporting obligation: significant ICT incidents must be reported to the national competent authority. For Blockmediary, a releaser key compromise (§5.9 below), a prolonged outage of the document verification service, or a data breach affecting the KYC database would all be reportable incidents.
+- Major incidents must be reported: initial notification within 4 hours of classification; intermediate report within 72 hours; final report within 1 month.
+
+**Mitigation:**
+- Do not treat DORA as a separate workstream from MiCA — build the ICT risk framework at the same time as the MiCA CASP authorisation process.
+- Maintain a **third-party ICT provider register** listing all providers, their role, risk classification, and contractual terms.
+- Draft DORA-compliant ICT contracts with Anthropic (Claude API), cloud provider, and KYB/KYC vendor before EU launch.
+- Implement an ICT incident classification and reporting procedure; designate an ICT risk function (can be combined with the CCO role at MVP stage).
+- For hackathon: document the DORA compliance pathway alongside MiCA; note it is not triggered until EU launch.
+
+**Key reference:** DORA (EU Reg 2022/2554); EBA/ESMA/EIOPA Joint Guidelines under DORA
+
+---
+
+### 2.3 eIDAS 2.0 — Electronic Identification and Trust Services (EU Regulation 2024/1183)
+
+**What it is:** eIDAS 2.0 (EU Regulation 2024/1183, published April 2024, superseding the original eIDAS 910/2014) governs electronic identification and trust services across the EU. It introduces the EU Digital Identity Wallet (EUDIW) and updates the legal framework for electronic signatures. For financial services contracts, the key provision is that a **Qualified Electronic Signature (QES)** has the same legal effect as a handwritten signature across all EU member states. For the UK post-Brexit, the equivalent framework is the Electronic Communications Act 2000 (ECA 2000) and the retained eIDAS Order 2021.
+
+**Risk to Blockmediary:**
+- The Trade Escrow Agreement (TEA) is a legally binding contract between buyer, seller, and Blockmediary. For it to be enforceable across EU jurisdictions, it must be signed using a legally recognised electronic signature method.
+- If the TEA is signed via a simple click-wrap ("I agree" button) or basic email confirmation, it may not be enforceable as an "advanced" or "qualified" electronic signature in some EU member states where higher standards are required for certain contract types.
+- The new FCA Consumer Duty and contract law standards in the UK also require that consumers can demonstrate they understood and agreed to terms — a click-wrap alone may not satisfy this.
+- SIWE (Sign-In with Ethereum) wallet signatures do not currently qualify as a QES under eIDAS — they are not issued by a qualified trust service provider (QTSP). However, they are a form of "advanced" electronic signature in the sense that they are uniquely linked to the signatory (their private key) and capable of detecting subsequent changes. Legal advice is needed on whether SIWE signatures satisfy the relevant enforceability threshold for the TEA.
+
+**Mitigation:**
+- For EU deals: specify in the TEA that parties agree to be bound by electronic signature and identify the signature method used (click-wrap, SIWE, DocuSign, etc.).
+- For high-value or disputed deals: consider offering an **Advanced Electronic Signature (AdES)** option via a trust service provider (e.g. DocuSign eIDAS-compliant, Adobe Sign, Signicat) — this gives a verifiable legal trail.
+- For the UK: the ECA 2000 takes a functional approach — an electronic signature is valid if the parties intend to be bound by it. Click-wrap and SIWE should both satisfy ECA 2000, but include an explicit consent clause in the TEA.
+- Include in the TEA: "Each party agrees that their electronic approval of this Agreement (whether by wallet signature, click-acceptance, or other agreed method) constitutes a valid and binding electronic signature under the Electronic Communications Act 2000 (UK) and, where applicable, Regulation (EU) 2024/1183 (eIDAS 2.0)."
+
+**Key references:** eIDAS 2.0 (EU Reg 2024/1183); UK ECA 2000; ETSI electronic signature standards (AdES)
 
 ---
 
@@ -368,6 +463,32 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 - Implement role-based access control, multi-sig for the release authority, and time-lock mechanisms.
 - Bug bounty programme post-audit.
 
+**5.4.1 — Releaser Key Compromise (🔴 High, new — from TRD §3.4)**
+
+The TRD names releaser key compromise as "the top security risk." The `RELEASER_ROLE` private key is the sole bridge from off-chain verdicts to on-chain state transitions (`recordVerdict`, `refund`). Compromise means:
+- An attacker can call `recordVerdict` on any deal, moving it to `ReleasePending` — triggering permissionless `release` to the seller even if documents were non-compliant.
+- An attacker can call `refund` on funded deals, redirecting buyer funds.
+- Blockmediary cannot stop in-flight transactions once submitted.
+
+This is not just a security incident — it is a **customer funds loss event** triggering: FCA breach notification (under PSR/CASP regimes), VARA incident reporting (within 24 hours under VARA Rulebook v2.0), potential criminal liability under POCA 2002, and civil liability to affected buyers and sellers.
+
+**Mitigation:**
+- Use a **hardware security module (HSM)** or threshold signature scheme (TSS/MPC) for the releaser key in production — never a hot wallet.
+- For testnet/MVP: use a dedicated EOA wallet with the private key in an environment variable; clearly document this is a demo-only setup.
+- Implement **role rotation** via `DEFAULT_ADMIN_ROLE` so the releaser key can be replaced immediately on suspected compromise without redeploying the contract.
+- `pause()` the contract immediately on suspected key compromise — the admin role (separate key, ideally multisig) can pause all fund movements while the releaser key is rotated.
+- Maintain a **key compromise incident response plan**: pause → revoke → rotate → audit ledger review → regulatory notification → user notification.
+
+**5.4.2 — Pause Power as Censorship Lever (🟡 Medium, new — from TRD TR-3.4)**
+
+The TRD explicitly acknowledges: "`whenNotPaused` on `release` re-introduces a censorship lever — admin can pause to block a compliant seller's payout." Once a deal is in `ReleasePending` (documents verified compliant, objection window expired, no valid objection), the seller has a contractual right to payment. If Blockmediary invokes `pause` at this point, the seller has a claim for breach of contract and potentially for financial loss caused by delayed payment.
+
+**Mitigation:**
+- The TEA must define **exhaustive permissible grounds for `pause`**: (a) suspected smart contract exploit or critical vulnerability; (b) regulatory requirement (regulator direction or court order); (c) confirmed sanctions hit post-verdict. Any other use of `pause` to delay a compliant payout is a breach.
+- `pause` must not be used as a routine operational lever — it is an emergency control only.
+- If `pause` is invoked on a deal in `ReleasePending`, Blockmediary must notify both parties immediately with the stated reason and an estimated resolution timeline.
+- Build an internal approval requirement before `pause` is invoked (e.g. CCO + CTO co-approval) — prevent single-person censorship.
+
 ---
 
 ### 5.5 UCP 600 & Documentary Credit Standards
@@ -458,6 +579,51 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 
 ---
 
+### 5.7 Export Controls — Dual-Use and Controlled Goods
+
+**What it is:** Export control regimes impose positive obligations to obtain an export licence before shipping certain categories of goods — regardless of whether the buyer or seller is sanctioned. Key regimes:
+- **UK Export Control Order 2008 (ECO):** administered by HMRC/DBIT (formerly DIT). Covers military goods (Schedule 1), dual-use goods (Schedule 2, mirroring the EU dual-use list), and other controlled items. Exporters need a licence from the Export Control Joint Unit (ECJU).
+- **EU Dual-Use Regulation (2021/821):** Updated in 2021, covers goods, software, and technology with both civilian and military applications (encryption, certain chemicals, optical equipment, electronics, aircraft parts). Applies to EU-origin goods and EU exporters.
+- **US EAR/ITAR:** The US Export Administration Regulations (EAR, administered by BIS) and International Traffic in Arms Regulations (ITAR, administered by DDTC) apply to US-origin goods, US technology, and transactions involving US persons — regardless of where Blockmediary is incorporated. If a seller ships US-origin goods subject to EAR, an export licence may be needed from BIS even if the transaction is structured through a UK or UAE entity.
+
+**Risk to Blockmediary:**
+- A cross-border trade escrow platform that releases payment for a shipment of export-controlled goods, without checking whether an export licence exists, could be **facilitating an illegal export**. This is a criminal offence under the ECO, and under EAR/ITAR if US persons or US-origin goods are involved.
+- The sanctions screening gate (§5.1) catches *who* you're dealing with — export controls catch *what* you're shipping. These are separate checks.
+- Dual-use goods are not self-evidently "weapons" — they include: encryption software, certain chemicals, precision optics, drone components, thermal imaging, high-performance computers. An SME exporter may not know their goods are controlled.
+- The "goods-agnostic" target market in BRD §4.3 explicitly excludes "sanctioned corridors and prohibited high-risk regulated goods" — export controls define part of that exclusion. But the BRD does not specify a mechanism for checking export licence status.
+
+**Mitigation:**
+- Add an **export control goods-category screen** to the deal intake compliance gate, running before escrow funding. This is a distinct check from sanctions screening.
+- At deal intake, collect: goods description, HS code (Harmonised System), origin country of goods, destination country. Cross-reference against the UK/EU dual-use control lists and the US Commerce Control List (CCL) / USML.
+- If goods fall on a controlled list: require the seller to confirm they hold a valid export licence and upload a copy as part of the document set (or confirm licence not required with stated basis).
+- Maintain a **controlled goods category list** in the platform rules engine; flag any goods category that commonly triggers dual-use controls for manual review.
+- For US-origin goods or US-person transactions: consult US export counsel before onboarding that corridor.
+- For hackathon: document the export control check in the compliance design; use a simplified goods-category eligibility question in the demo flow.
+
+**Key references:** UK Export Control Order 2008; EU Dual-Use Regulation 2021/821; US EAR (15 CFR Parts 730-774); US ITAR (22 CFR Parts 120-130); [docs/domain-rules.md](domain-rules.md) (blocked goods)
+
+---
+
+### 5.8 Platform / Intermediary Deal Initiation — AML Chain of Responsibility
+
+**What it is:** BRD v0.3 (decided 2026-06-10) introduced role-agnostic deal initiation: a third-party platform or freight forwarder can create a deal on behalf of a buyer and seller. This creates a specific AML risk: the direct contractual relationship is between the intermediary and Blockmediary, but the underlying principals (buyer and seller) must also be KYC'd.
+
+**Risk to Blockmediary:**
+- If a licensed freight forwarder or trade finance platform initiates a deal, Blockmediary may be tempted to rely on the intermediary's assertion that KYC has been done. This is legally permissible under MLR 2017 Reg 39 (third-party reliance) only under strict conditions — and getting it wrong makes Blockmediary criminally liable under POCA 2002.
+- The intermediary may itself be a VASP or CASP with AML obligations, or it may be an unregulated entity (e.g. a trade broker or freight forwarder with no AML obligations). Blockmediary cannot rely on KYC from an unregulated entity.
+- Even where the intermediary is regulated, Blockmediary must still: check the intermediary itself; confirm the reliance arrangement is in writing; and be able to obtain the underlying KYC data on request within 2 business days.
+
+**Mitigation:**
+- Before allowing any platform/intermediary to initiate deals on behalf of others: conduct **onboarding KYB on the intermediary itself** (registered entity, beneficial owners, AML status, regulated status).
+- If relying on the intermediary's KYC under MLR 2017 Reg 39: obtain a **written third-party reliance agreement** confirming: (a) the intermediary is subject to AML obligations equivalent to the UK regime; (b) the intermediary agrees to provide KYC data on request within 2 business days; (c) the intermediary has conducted CDD on the underlying buyer and seller.
+- If the intermediary is not itself AML-regulated: Blockmediary must conduct KYC directly on the underlying buyer and seller — do not rely on the intermediary's assertions.
+- The TEA for intermediary-initiated deals must name all principals (buyer, seller, initiating intermediary) and their roles.
+- Build a **platform/intermediary onboarding tier** in the compliance gate, separate from the buyer/seller KYC flow.
+
+**Key references:** MLR 2017 Reg 39 (third-party reliance); FATF Guidance on CDD; §1.4 above (AML/KYC/POCA)
+
+---
+
 ## 6. Open Questions & Next Steps
 
 | # | Question / Action | Owner | Priority | Target |
@@ -475,6 +641,15 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 | 11 | Monitor FCA CP25/14 Policy Statement (expected Summer 2026) | Badhri | 🟢 Low | Ongoing |
 | 13 | Integrate Incoterms® 2020 document checklist into deal setup — dynamic checklist generation by Incoterm, transport mode validation, CIP ICC (A) check, FCA on-board BoL election | CTO + Badhri | 🔴 High | MVP build |
 | 14 | Update all deal templates: replace DAT with DPU, update CIP insurance requirement to ICC (A) | Badhri | 🟡 Medium | MVP |
+| 15 | Decide specHash GDPR architecture before mainnet: strip personal data from spec before hashing (recommended option (a)) | CTO + Badhri | 🔴 High | Pre-mainnet |
+| 16 | Add export control goods-category screen to deal intake compliance gate (HS code check against UK/EU dual-use lists) | CTO + Badhri | 🔴 High | MVP build |
+| 17 | Draft intermediary onboarding tier: KYB on the intermediary + MLR 2017 Reg 39 written reliance agreement template | Badhri | 🔴 High | Pre-launch |
+| 18 | Define releaser key management policy: HSM or MPC for production; incident response plan (pause → revoke → rotate → notify) | CTO | 🔴 High | Pre-mainnet |
+| 19 | Define permissible pause grounds in the TEA; build internal co-approval gate before pause can be invoked | CTO + Badhri | 🟡 Medium | MVP |
+| 20 | Confirm electronic document acceptance policy: scanned PDFs only for MVP; eBL pathway deferred to post-MVP (requires ETDA-qualifying system integration) | Badhri + CTO | 🟡 Medium | MVP |
+| 21 | Assess whether SME users are retail customers under FCA Consumer Duty; if yes, apply Consumer Duty to product and comms design | Badhri | 🟡 Medium | Pre-UK launch |
+| 22 | Build DORA ICT risk framework alongside MiCA CASP authorisation: third-party ICT register, DORA-compliant contracts with Anthropic/cloud/KYB vendor | Badhri + CTO | 🟡 Medium | Pre-EU launch |
+| 23 | Specify eIDAS/ECA 2000 signature clause in TEA template; confirm SIWE wallet signature satisfies enforceability threshold | Badhri + legal counsel | 🟡 Medium | MVP (TEA) |
 | 12 | ~~Monitor Turkey CBRT~~ — closed. Turkey excluded. Reopen only if regulatory position fundamentally changes. | Badhri | 🟢 Low | Closed |
 
 ---
@@ -504,6 +679,18 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 | eUCP | Global | Electronic supplement to UCP 600 — governs electronic document presentations | — |
 | Incoterms® 2020 | Global | ICC trade terms — determines required documents, risk transfer, insurance obligations | [docs/Incoterms2020.md](Incoterms2020.md) |
 | ICC DOCDEX | Global | Documentary dispute resolution | [ICC](https://iccwbo.org/dispute-resolution/dispute-resolution-services/adr/docdex/) |
+| UK ETDA 2023 | UK | Electronic Trade Documents Act — legal validity of eBLs and electronic trade documents under English law | — |
+| UNCITRAL MLETR | Global | Model Law on Electronic Transferable Records — basis for ETDA and equivalent laws in UAE/DIFC, Singapore | — |
+| UK Export Control Order 2008 | UK | Dual-use and military goods export licensing | — |
+| EU Dual-Use Regulation 2021/821 | EU | EU export controls for dual-use goods, software and technology | — |
+| US EAR (15 CFR 730-774) | US / Global | US Export Administration Regulations — applies to US-origin goods and US persons globally | — |
+| FCA PS22/9 Consumer Duty | UK | Consumer Duty — good outcomes obligation for retail-facing UK financial services firms (in force July 2023) | — |
+| DORA (EU Reg 2022/2554) | EU | Digital Operational Resilience Act — ICT risk framework, incident reporting, third-party risk (in force Jan 2025) | — |
+| eIDAS 2.0 (EU Reg 2024/1183) | EU | Electronic identification and trust services; Qualified Electronic Signatures | — |
+| UK ECA 2000 | UK | Electronic Communications Act 2000 — UK electronic signature validity | — |
+| POCA 2002 | UK | Proceeds of Crime Act 2002 — criminal AML offences; MLRO SAR obligation (s.330) | — |
+| Terrorism Act 2000 s.19 | UK | Terrorist financing disclosure obligation (parallel to POCA for TF) | — |
+| MLR 2017 Reg 39 | UK | Third-party reliance on KYC — conditions for intermediary-initiated deals | — |
 
 ---
 

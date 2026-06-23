@@ -48,6 +48,10 @@ Agents act automatically only inside these envelopes. Anything outside escalates
 - **DON'T** claim title or quality control over physical goods. Blockmediary releases on **document** compliance — not on actual receipt or condition of goods, unless an inspection certificate is in the release rules.
 - **DON'T** ingest real customer PII during the build — sandbox / synthetic data only (see [AGENTS.md](../AGENTS.md)).
 - **DON'T** make jurisdiction-specific regulatory claims without sourcing — cross-border AML/sanctions regimes differ.
+- **DON'T** allow a deal to fund without an export controls check in addition to sanctions screening. Sanctions screen catches *who* — export controls catch *what*. Collect the goods HS code and origin country at deal intake; cross-reference against the UK/EU dual-use control lists; require the seller to confirm export licence status if goods fall in a controlled category. See [legal-risk.md §5.7](legal-risk.md).
+- **DON'T** allow a platform/intermediary-initiated deal to fund until KYC of the underlying buyer and seller is confirmed — either directly by Blockmediary or via a written MLR 2017 Reg 39 third-party reliance agreement with an AML-regulated intermediary. An unregulated intermediary's assertion is not sufficient. See [legal-risk.md §5.8](legal-risk.md).
+- **DON'T** invoke `pause()` as a routine operational gate. Permissible grounds only: (a) confirmed smart contract exploit; (b) regulatory direction or court order; (c) confirmed post-verdict sanctions hit. Invoking pause on a deal in `ReleasePending` without these grounds is a breach of contract with the seller. See [legal-risk.md §5.4.2](legal-risk.md).
+- **DON'T** accept a PDF copy of a bill of lading emailed to multiple parties as an "original" — it does not satisfy the UK Electronic Trade Documents Act 2023 singularity-of-control requirement. For MVP, accept scanned paper originals only. See [UCP600.md](UCP600.md) and [legal-risk.md §1.8](legal-risk.md).
 
 ## Glossary
 

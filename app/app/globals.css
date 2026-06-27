@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #050A14;
+  --bg-mid: #0A1628;
+  --bg-surface: #111E35;
+  --text-primary: #F0F4FF;
+  --text-secondary: #8899BB;
+  --accent-blue: #2D7DD2;
+  --accent-glow: rgba(45, 125, 210, 0.25);
+  --ocean-dark: #061020;
+  --ocean-mid: #0B2040;
+  --ocean-light: #1A4060;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent-blue); color: white; }
+
+.scene-headline {
+  font-size: clamp(38px, 6.5vw, 84px);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--text-primary);
+}
+
+.scene-subline {
+  font-size: clamp(15px, 1.8vw, 20px);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 560px;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}

@@ -37,6 +37,7 @@ app/data/audit-ledger.jsonl
 .DS_Store
 Thumbs.db
 desktop.ini
+BlockMed.code-workspace
 .vscode/
 .idea/
 

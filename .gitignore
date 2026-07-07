@@ -43,3 +43,4 @@ BlockMed.code-workspace
 
 # Manual point-in-time deck backups (use git history, not sibling files)
 proposal/*_backup-*.pptx
+contracts/deployments/

@@ -11,6 +11,12 @@ const config: HardhatUserConfig = {
     version: "0.8.28",
   },
   networks: {
+    // Local demo chain (`npx hardhat node`) — pre-funded dev accounts, no env vars needed.
+    localhost: {
+      type: "http",
+      url: "http://127.0.0.1:8545",
+      chainId: 31337,
+    },
     baseSepolia: {
       type: "http",
       chainType: "op",

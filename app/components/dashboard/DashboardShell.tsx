@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import type { Role } from '@/data/dashboardDemo';
 import { useDeal } from '@/lib/dealStore';
+import { useSession, dashboardLensForRole } from '@/lib/sessionStore';
 import { LeftRail, MobileTopBar, type DashboardTab } from './LeftRail';
 import { DealSummaryBand } from './DealSummaryBand';
 import { NextActionBand } from './NextActionBand';
@@ -12,7 +13,10 @@ import { SettingsTab } from './tabs/SettingsTab';
 
 export function DashboardShell() {
   const { deal } = useDeal();
-  const [role, setRole] = useState<Role>('buyer');
+  const { session } = useSession();
+  // Default the dashboard lens to the signed-in party — same system, party's own
+  // view. The in-page role switcher can still change it for the demo.
+  const [role, setRole] = useState<Role>(session ? dashboardLensForRole(session.role) : 'buyer');
   const [activeTab, setActiveTab] = useState<DashboardTab>('Overview');
 
   return (

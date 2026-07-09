@@ -49,7 +49,7 @@ export default function RoleChoiceSection() {
 
         <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link
-            href="/buyer"
+            href="/login?party=buyer"
             style={{
               flex: '1 1 260px',
               maxWidth: 320,
@@ -73,7 +73,7 @@ export default function RoleChoiceSection() {
           </Link>
 
           <Link
-            href="/seller"
+            href="/login?party=seller"
             style={{
               flex: '1 1 260px',
               maxWidth: 320,
@@ -96,6 +96,13 @@ export default function RoleChoiceSection() {
             </span>
           </Link>
         </div>
+
+        <p style={{ marginTop: 20, fontSize: 14, color: 'var(--text-secondary)' }}>
+          Admin, developer or platform?{' '}
+          <Link href="/login" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
+            Sign in to your portal
+          </Link>
+        </p>
       </div>
     </section>
   );

@@ -1,137 +1,101 @@
-# Blockmediary — Claude Code Entry
+# Blockmediary — Frontend Spec
 
-> Cross-tool entry point for AI coding assistants (Claude Code, Cursor, Codex, Aider).
-> Read this file before touching any code.
+> This file is for the **landing page frontend only**. Read it before touching any component.
 
 ---
 
 ## What we're building
 
-**Blockmediary** is a programmable documentary escrow platform for SME cross-border trade — an accessible alternative to traditional Letters of Credit. It removes the need for banks as intermediaries.
-
-The flow is simple:
-1. **Buyer** locks USDC into a smart contract escrow (Base Sepolia testnet)
-2. **Seller** ships goods and uploads trade documents (starting with a commercial invoice)
-3. **Blockmediary** verifies the documents using Claude AI against the agreed release rules
-4. Funds automatically release to the seller on compliance — or are flagged for review if discrepancies are found
-
-Our frontend is the human-facing layer on top of this on-chain workflow. It needs to make a technically complex process feel effortless.
-
-Full specs: [`docs/product-blockmediary.md`](docs/product-blockmediary.md) · [`docs/technical-requirements.md`](docs/technical-requirements.md) · [`plans/implementation-phases.md`](plans/implementation-phases.md) · [`ROADMAP.md`](ROADMAP.md)
+Blockmediary is a programmable escrow platform for SME cross-border trade — a smart-contract alternative to Letters of Credit that removes banks from the payment flow. The frontend is a landing page that explains the product clearly and routes users into the buyer or seller workflow.
 
 ---
 
 ## North star
 
-> Build a **minimal, Apple-like frontend** for the escrow workflow that makes the process clear to anyone — regardless of their crypto or trade finance background.
+> **Apple-level minimalism. Cinematic scroll animations.** Every element earns its place. The page should feel like a product film — not a fintech dashboard, not a crypto app.
 
-Every screen should have a clear purpose, a clear next action, and no noise.
+The test: show it to someone with no crypto or trade finance background. They understand the product in 30 seconds and feel confident enough to use it.
 
 ---
 
 ## What good looks like
 
-- **Simple** — no unnecessary elements. If it doesn't help the user complete their task, it's not there.
-- **Elegant** — generous whitespace, clean typography (Inter), subtle shadows, rounded cards. Think Apple product pages, not a crypto dashboard.
-- **Professional** — it needs to feel like a fintech product a real SME would trust with a $50k trade.
-- **Easy to navigate** — a user should never wonder "what do I do next?" Every state has one clear call to action.
+| Reference | Why it matters |
+|-----------|---------------|
+| [apple.com](https://apple.com) | The benchmark for whitespace, type scale, and restraint. Nothing on screen that doesn't need to be there. |
+| [linear.app](https://linear.app) | Dark mode done right — subtle depth, precise motion, confident negative space. |
+| [stripe.com](https://stripe.com) | Complex product explained simply. One idea per section. Zero jargon. |
 
 ---
 
-## Dos
+## Design spec
 
-1. **Access external resources** when they improve the output. If designing a landing page, look up UI/UX references and industry standards for fintech products before writing components. If implementing a wagmi hook, check the current wagmi v2 docs. Don't guess — verify.
+### Colour palette
 
-2. **Spawn subagents** when they can do a discrete task better (e.g. a focused research agent to audit wagmi v2 patterns, or a design-reference agent to pull Apple HIG guidelines). Don't compromise on quality to save tokens — but don't burn tokens on tasks the main agent can handle directly either.
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--bg-deep` | `#0A0A0B` | Page background |
+| `--bg-mid` | `#111114` | Alternate section backgrounds |
+| `--bg-surface` | `#18181C` | Cards, borders |
+| `--accent` | `#F59E0B` | CTAs, key numbers, labels — amber/gold |
+| `--text-primary` | `#FAFAFA` | All headlines |
+| `--text-secondary` | `#71717A` | Body copy |
+| `--text-muted` | `#3F3F46` | Metadata, small labels |
 
-3. **Ask before assuming** on anything design-related. If a page layout or component behaviour isn't specified here, surface the question rather than inventing an answer.
+### Typography
 
----
+- **Font:** Inter (variable weight) — no other typefaces
+- **Display:** 800 weight · -0.03em tracking · `clamp(44px, 7.5vw, 96px)`
+- **Section headline:** 700 weight · -0.02em tracking · `clamp(34px, 5.5vw, 72px)`
+- **Body:** 400 weight · 1.7 line-height · 15–19px
+- **Section labels:** 600 weight · 0.2em tracking · 11px ALL CAPS · always in `--accent`
+- **Monospace numbers:** `font-family: monospace` for stats, amounts, step numbers
 
-## Don'ts
+### Motion principles
 
-1. **Do not change existing code** unless Mo explicitly asks for it in the current conversation. Suggesting changes is fine — making them is not.
-
-2. **Do not delete existing features or redesign pages** without a clear instruction to do so. Additions are safe; modifications and removals need explicit sign-off.
-
----
-
-## Tech stack
-
-| Layer | Choice | Notes |
-|-------|--------|-------|
-| Framework | Next.js 15 (App Router) | TypeScript, Tailwind CSS |
-| Wallet / Web3 | wagmi **v2** + viem 2.x + RainbowKit | v2 hooks only — see rules below |
-| Styling | Tailwind CSS + Inter font | Apple-inspired, no component library needed |
-| Icons | Lucide React | Clean, minimal line icons |
-| Off-chain AI | `@anthropic-ai/sdk` | Claude vision for document field extraction |
-| Validation | `zod` | LLM output validation before business logic |
-| Chain | Base Sepolia (chainId 84532) | USDC: `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
-| Package manager | pnpm | Not npm, not yarn |
-
----
-
-## Pages
-
-| Route | Purpose |
-|-------|---------|
-| `/` | Landing page — explains the product, leads to buyer/seller flows |
-| `/buyer` | Buyer dashboard — connect wallet, approve USDC, deposit into escrow |
-| `/seller` | Seller dashboard — see funds locked, upload invoice, trigger release |
-| `/dashboard` | Deal overview — escrow state, audit trail, participants |
+- **Scroll-scrubbed video** — hero drone footage tied directly to `video.currentTime` via GSAP `onUpdate`. No autoplay. Pinned with CSS `position: sticky` (never GSAP `pin: true`).
+- **Scroll reveals** — all sections fade + `translateY(32px → 0)` on entry. GSAP `fromTo`, `power2.out` easing.
+- **Line draws** — SVG/div connectors animate `scaleX: 0 → 1` from left. Used in the circuit diagram.
+- **Easing:** `power2.out` only. No bounce, no spring — this is a professional fintech product.
+- **Duration:** 0.5s minimum · 0.9s maximum for reveals. Scrub uses `scrub: 1.2`.
 
 ---
 
-## Escrow state machine (drives all frontend UI)
+## Landing page sections
 
-Every page's content is determined by the current state of the deal. Always read state from the chain — never from local state.
+### 1 — Hero (scroll-scrubbed video)
+Full-bleed drone footage of a cargo ship, pinned while the user scrolls 400vh. Three story beats reveal and fade as scroll progresses:
+- **Beat 1 (~25%):** "This ship is carrying $2.3 million in goods."
+- **Beat 2 (~50%):** "The seller shipped. The buyer hasn't paid."
+- **Beat 3 (~75%):** "Until now." (amber, oversized)
 
-```
-Draft → Agreed → Funded → ReleasePending → Released
-                         ↘ Refunded
-```
+### 2 — Problem
+Split-column timeline: **SELLER** vs **BUYER**. Shows the 90-day payment delay that destroys SME cash flow. Amber dots = done, grey circles = unpaid/waiting. Bottom line: "A Letter of Credit puts a bank in the middle — and charges 1–3% for the privilege."
 
-| State | Buyer sees | Seller sees |
-|-------|-----------|-------------|
-| `Draft` | Connect wallet prompt | Waiting for buyer |
-| `Agreed` | Approve USDC button | Waiting for buyer deposit |
-| `Funded` | "Funds locked ✓" | Upload invoice CTA |
-| `ReleasePending` | Objection window info | "Releasing..." |
-| `Released` | Deal complete | Payment received |
-| `Refunded` | Refund received | Deal cancelled |
+### 3 — Solution
+Circuit diagram: BUYER → BLOCKMEDIARY → SELLER. Connecting lines animate `scaleX` on scroll entry. Centre node glows amber. Stat row below: `~0% bank fees` · `<5 min AI verification` · `100% on-chain`.
 
----
+### 4 — How it works
+Three cards, staggered reveal:
+- **01** Buyer deposits — locks exact USDC amount in escrow
+- **02** Seller ships & uploads — commercial invoice through the dashboard
+- **03** AI verifies. Funds transfer. — Claude checks documents, escrow releases
 
-## MVP scope — what we are NOT building yet
+### 5 — Trust signals
+Four items in a row: Built on Base · Powered by Claude AI · Open-source contracts · Non-custodial. Fades in as a unit.
 
-Do not scaffold or suggest any of the following unless explicitly asked:
-- KYC / sanctions screening UI
-- Dispute or objection flow
-- Multi-deal management (the MVP uses a **single hardcoded deal**)
-- Deal creation form / sale-contract upload
-- Trade Escrow Agreement generation
-- Notifications or email flows
+### 6 — CTA
+"Ready to protect your next trade?" + two buttons: **I'm a Buyer** (amber filled → `/buyer`) · **I'm a Seller** (outlined → `/seller`). Nothing else on screen.
 
----
-
-## Demo deal setup
-
-The MVP runs on **one hardcoded deal** — `DEMO_DEAL_ID = keccak256("demo-deal-1")`. There is no deal creation flow. Users arrive at `/buyer` or `/seller` and the app reads the state of this fixed deal from the chain. All components should be wired to this single deal ID.
+### 7 — Footer
+`© 2026 Blockmediary. Built on Base.` · Privacy · Terms · GitHub
 
 ---
 
-## Hard rules (never break these)
+## Rules
 
-- **wagmi v2 only** — never use `configureChains`, `useContractRead`, `useContractWrite`, or `publicClient` (wagmi v1 APIs). Use `useReadContract`, `useWriteContract`, `useWaitForTransactionReceipt`, `useWatchContractEvent`.
-- **Money math in `app/lib/checker/rules.ts` only** — use `parseUnits` / bigint. Never compute amounts in prompts, component state, or agent free-text.
-- **Exact-amount USDC approval** — never `MaxUint256`. Gate the `deposit` call on the approve transaction receipt.
-- **`RELEASER_PRIVATE_KEY` is server-side only** — it must never appear in any client-side file or bundle. It lives exclusively in `app/app/api/check-document/route.ts`.
-- **`app/lib/chains.ts` is the single source of truth** for RPC URLs, contract addresses, and explorer config. Nothing else hardcodes chain values.
-
----
-
-## Claude-Code-specific notes
-
-- `.claude/agents/` and `.claude/skills/` are **generated** — do not edit them directly.
-- After editing anything in `agents/` or `skills/`, run `python tools/sync_agents.py`.
-- The pre-commit hook blocks commits when `.claude/` drifts from canonical.
+1. **One idea per section.** No section tries to do two things at once.
+2. **No component library.** Inline styles + Tailwind utilities only.
+3. **No changes without sign-off.** Suggest edits; don't make them unless explicitly asked.
+4. **Ask before inventing.** If a layout or behaviour isn't in this spec, ask — don't guess.
+5. **Mobile:** all sections stack single-column. Hero video degrades gracefully to its first frame.

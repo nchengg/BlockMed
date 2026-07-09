@@ -1,0 +1,9 @@
+$ next dev
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.16.20.48:3000
+✓ Ready in 1448ms
+
+ GET / 200 in 953ms (next.js: 404ms, application-code: 548ms)
+ GET / 200 in 150ms (next.js: 9ms, application-code: 140ms)
+ GET / 200 in 159ms (next.js: 25ms, application-code: 134ms)

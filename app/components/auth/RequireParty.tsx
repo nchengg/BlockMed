@@ -1,14 +1,16 @@
 'use client';
 // Client-side route guard for the mock role separation. Wrap a protected page's
-// content in <RequireParty allow={[...]}> so a party only ever sees its own view:
-// if the signed-in role isn't in `allow`, the user is bounced to /login.
+// content in <RequireParty allow={[...]}> so an account only ever sees the views
+// its type permits: if the logged-in account's type isn't in `allow`, the user
+// is bounced to /login (signed out) or to their own portal (wrong party).
 //
-// This is view separation for a DEMO, not a security boundary — real enforcement
-// belongs server-side once auth Q18 is settled. See lib/sessionStore.tsx.
+// The ACCOUNT is the source of truth for role (lib/authStore.tsx). This is view
+// separation for a DEMO, not a security boundary — real enforcement belongs
+// server-side once auth Q18 is settled.
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { partyGroup, roleHome, useSession, type PartyGroup } from '@/lib/sessionStore';
+import { groupHome, useAuth, type PartyGroup } from '@/lib/authStore';
 
 export function RequireParty({
   allow,
@@ -17,23 +19,22 @@ export function RequireParty({
   allow: PartyGroup[];
   children: React.ReactNode;
 }) {
-  const { session, hydrated } = useSession();
+  const { account, hydrated } = useAuth();
   const router = useRouter();
 
-  const permitted = session ? allow.includes(partyGroup[session.role]) : false;
+  const permitted = account ? allow.includes(account.type) : false;
 
   useEffect(() => {
     if (!hydrated) return;
-    if (!session) {
+    if (!account) {
       router.replace('/login');
     } else if (!permitted) {
-      // Signed in as the wrong party — send them to their own portal instead of
-      // exposing a view they shouldn't see.
-      router.replace(roleHome[session.role]);
+      // Signed in as the wrong party — send them to their own portal rather than
+      // exposing a view they shouldn't see (per-account separation).
+      router.replace(groupHome[account.type]);
     }
-  }, [hydrated, session, permitted, router]);
+  }, [hydrated, account, permitted, router]);
 
-  // Avoid flashing protected content before the redirect runs.
   if (!hydrated || !permitted) {
     return (
       <div

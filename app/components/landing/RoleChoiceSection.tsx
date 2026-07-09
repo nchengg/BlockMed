@@ -49,7 +49,7 @@ export default function RoleChoiceSection() {
 
         <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link
-            href="/login?party=buyer"
+            href="/login?email=buyer@meridian.demo"
             style={{
               flex: '1 1 260px',
               maxWidth: 320,
@@ -73,7 +73,7 @@ export default function RoleChoiceSection() {
           </Link>
 
           <Link
-            href="/login?party=seller"
+            href="/login?email=seller@solaris.demo"
             style={{
               flex: '1 1 260px',
               maxWidth: 320,
@@ -100,7 +100,11 @@ export default function RoleChoiceSection() {
         <p style={{ marginTop: 20, fontSize: 14, color: 'var(--text-secondary)' }}>
           Admin, developer or platform?{' '}
           <Link href="/login" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
-            Sign in to your portal
+            Sign in
+          </Link>
+          {' '}·{' '}
+          <Link href="/register" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
+            Create an account
           </Link>
         </p>
       </div>

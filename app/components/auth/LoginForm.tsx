@@ -1,210 +1,154 @@
 'use client';
 // ─────────────────────────────────────────────────────────────────────────────
-// MOCK LOGIN screen — pick a party, get routed to its view. DEMO ONLY.
+// MOCK LOGIN — account-first. You sign into a REGISTERED ACCOUNT (mock registry
+// in lib/authStore.tsx). DEMO ONLY: there is NO password check. The account
+// carries the role; the wallet is linked later, inside the account.
 //
-// There is NO password field and NO credential check on purpose: this scaffold
-// exists to demonstrate view SEPARATION per party, not to authenticate anyone.
-// The real mechanism (SIWE vs JWT vs both, incl. a wallet-less platform role) is
-// an open team decision — TRD Q18. See the seam below and lib/sessionStore.tsx.
+// Real auth (SIWE vs JWT vs both, incl. a wallet-less platform role) is an open
+// team decision — TRD Q18. See the seam in authStore.tsx.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import {
-  roleHome,
-  useSession,
-  type PartyRole,
-} from '@/lib/sessionStore';
+import { DEMO_LOGINS, groupHome, typeLabel, useAuth } from '@/lib/authStore';
 
-type Tile = {
-  role: PartyRole;
-  title: string;
-  blurb: string;
-  tag: string;
-};
-
-// Top-level parties. "Client" is expressed as its three sub-roles so buyer,
-// seller and platform each get a distinct entry (buyer ≠ seller separation).
-const ADMIN_DEV: Tile[] = [
-  { role: 'admin', title: 'Administrator', blurb: 'Operator console — oversee deals, parties and releases.', tag: 'Operator' },
-  { role: 'developer', title: 'Developer', blurb: 'Technical view — contract state, events, API/webhooks.', tag: 'Internal' },
-];
-
-const CLIENTS: Tile[] = [
-  { role: 'buyer', title: 'Buyer', blurb: 'Importer — lock funds and start a deal.', tag: 'Client' },
-  { role: 'seller', title: 'Seller', blurb: 'Exporter — upload documents and get paid.', tag: 'Client' },
-  { role: 'platform', title: 'Platform / intermediary', blurb: 'Wallet-less party that facilitates the deal.', tag: 'Client' },
-];
-
-export function LoginForm({ initialRole }: { initialRole: PartyRole | null }) {
-  const { login } = useSession();
+export function LoginForm({ initialEmail }: { initialEmail: string }) {
+  const { login, account } = useAuth();
   const router = useRouter();
-  const [role, setRole] = useState<PartyRole | null>(initialRole);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(initialEmail);
+  const [error, setError] = useState<string | null>(null);
+
+  const signIn = (value: string) => {
+    const result = login(value);
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+    router.push(groupHome[result.account.type]);
+  };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!role) return;
-    // MOCK sign-in — records the picked party, no credential verified.
-    // TODO(integration: auth Q18) — swap for real SIWE/JWT verification here.
-    login(role, email);
-    router.push(roleHome[role]);
+    signIn(email);
   };
 
   return (
     <main
       style={{
-        minHeight: '100vh',
-        background: 'var(--bg-deep)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '48px 24px',
+        minHeight: '100vh', background: 'var(--bg-deep)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 24px',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 620 }}>
-        <div style={{ marginBottom: 28 }}>
-          <Link
-            href="/"
-            style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', textDecoration: 'none', letterSpacing: '-0.01em' }}
-          >
+      <div style={{ width: '100%', maxWidth: 460 }}>
+        <div style={{ marginBottom: 24 }}>
+          <Link href="/" style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', textDecoration: 'none', letterSpacing: '-0.01em' }}>
             Blockmediary
           </Link>
           <h1 style={{ fontSize: 'clamp(26px, 4vw, 34px)', fontWeight: 700, letterSpacing: '-0.02em', marginTop: 16 }}>
-            Sign in to your portal
+            Sign in
           </h1>
-          <p className="scene-subline" style={{ marginTop: 8, maxWidth: 520 }}>
-            Choose the party you want to sign in as. Each party sees only its own view.
+          <p className="scene-subline" style={{ marginTop: 8 }}>
+            Log into your account. Your account decides what you see — connect a wallet later, inside.
           </p>
         </div>
 
-        {/* Unmissable mock-auth notice — this is not real authentication. */}
+        {/* Already-signed-in shortcut. */}
+        {account && (
+          <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
+            Already signed in as <strong style={{ color: 'var(--text-primary)' }}>{account.displayName}</strong> ({typeLabel[account.type]}).{' '}
+            <Link href={groupHome[account.type]} style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
+              Continue →
+            </Link>
+          </div>
+        )}
+
+        {/* Mock-auth notice. */}
         <div
           role="note"
           style={{
-            display: 'flex',
-            gap: 10,
-            alignItems: 'flex-start',
-            background: 'var(--accent-dim)',
-            border: '1px solid var(--accent-border)',
-            borderRadius: 8,
-            padding: '12px 14px',
-            marginBottom: 24,
-            fontSize: 13,
-            color: 'var(--text-secondary)',
+            display: 'flex', gap: 10, alignItems: 'flex-start',
+            background: 'var(--accent-dim)', border: '1px solid var(--accent-border)',
+            borderRadius: 8, padding: '12px 14px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)',
           }}
         >
           <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--accent)', whiteSpace: 'nowrap', marginTop: 2 }}>
             MOCK LOGIN
           </span>
           <span>
-            Demo only — no password, no wallet, nothing verified. Just pick a party to preview its view.
-            Real auth (SIWE / JWT) is a pending team decision — <span className="mono">TRD Q18</span>.
+            Demo only — no password is checked and no wallet is required. Real auth (SIWE / JWT) is pending —{' '}
+            <span className="mono">TRD Q18</span>.
           </span>
         </div>
 
         <form onSubmit={submit}>
-          <PartyGroupBlock label="Operator side" tiles={ADMIN_DEV} selected={role} onSelect={setRole} />
-          <PartyGroupBlock label="Client — buyer, seller & platform" tiles={CLIENTS} selected={role} onSelect={setRole} />
-
-          <label style={{ display: 'block', marginTop: 8, marginBottom: 24 }}>
-            <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6 }}>
-              Email (optional, not checked)
-            </span>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder={role ? `${role}@demo.blockmediary` : 'you@company.com'}
-              autoComplete="off"
-              style={{
-                width: '100%',
-                background: 'var(--bg-surface)',
-                border: '1px solid var(--border)',
-                borderRadius: 8,
-                padding: '11px 14px',
-                fontSize: 14,
-                color: 'var(--text-primary)',
-                outline: 'none',
-              }}
-            />
+          <label style={{ display: 'block', marginBottom: 6, fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)' }}>
+            Account email
           </label>
+          <input
+            type="email"
+            value={email}
+            onChange={e => { setEmail(e.target.value); setError(null); }}
+            placeholder="you@company.com"
+            autoComplete="off"
+            style={{
+              width: '100%', background: 'var(--bg-surface)', border: `1px solid ${error ? 'var(--error-border)' : 'var(--border)'}`,
+              borderRadius: 8, padding: '11px 14px', fontSize: 14, color: 'var(--text-primary)', outline: 'none',
+            }}
+          />
+
+          {/* Password field is intentionally omitted — nothing is verified. A
+              labelled placeholder keeps it honest without faking a check. */}
+          <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6 }}>
+            No password field — this is a mock login. <span className="mono">TODO(integration: auth Q18)</span>
+          </p>
+
+          {error && <p style={{ fontSize: 13, color: 'var(--error)', marginTop: 10 }}>{error}</p>}
 
           <button
             type="submit"
-            disabled={!role}
+            disabled={!email.trim()}
             style={{
-              width: '100%',
-              background: role ? 'var(--accent)' : 'var(--bg-card)',
-              color: role ? '#0A0A0B' : 'var(--text-muted)',
-              border: 'none',
-              borderRadius: 8,
-              padding: '13px 16px',
-              fontSize: 15,
-              fontWeight: 700,
-              cursor: role ? 'pointer' : 'not-allowed',
-              transition: 'background 0.2s',
+              width: '100%', marginTop: 16,
+              background: email.trim() ? 'var(--accent)' : 'var(--bg-card)',
+              color: email.trim() ? '#0A0A0B' : 'var(--text-muted)',
+              border: 'none', borderRadius: 8, padding: '13px 16px', fontSize: 15, fontWeight: 700,
+              cursor: email.trim() ? 'pointer' : 'not-allowed', transition: 'background 0.2s',
             }}
           >
-            {role ? `Enter as ${tileTitle(role)}` : 'Select a party to continue'}
+            Sign in
           </button>
         </form>
+
+        <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 16 }}>
+          No account yet?{' '}
+          <Link href="/register" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
+            Create an account
+          </Link>
+        </p>
+
+        {/* One-click demo accounts — covers every party, incl. dual-hat and the
+            wallet-less platform account. */}
+        <div style={{ marginTop: 28, borderTop: '1px solid var(--border)', paddingTop: 20 }}>
+          <p className="section-label" style={{ marginBottom: 12 }}>Quick demo login</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 8 }}>
+            {DEMO_LOGINS.map(d => (
+              <button
+                key={d.email}
+                type="button"
+                onClick={() => signIn(d.email)}
+                style={{
+                  textAlign: 'left', background: 'var(--bg-surface)', border: '1px solid var(--border)',
+                  borderRadius: 8, padding: '10px 12px', cursor: 'pointer',
+                }}
+              >
+                <span style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{d.label}</span>
+                <span style={{ display: 'block', fontSize: 11, color: 'var(--text-muted)', fontFamily: 'monospace', marginTop: 2 }}>{d.email}</span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </main>
-  );
-}
-
-function tileTitle(role: PartyRole): string {
-  return [...ADMIN_DEV, ...CLIENTS].find(t => t.role === role)?.title ?? role;
-}
-
-function PartyGroupBlock({
-  label,
-  tiles,
-  selected,
-  onSelect,
-}: {
-  label: string;
-  tiles: Tile[];
-  selected: PartyRole | null;
-  onSelect: (r: PartyRole) => void;
-}) {
-  return (
-    <div style={{ marginBottom: 20 }}>
-      <p className="section-label" style={{ marginBottom: 10 }}>{label}</p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10 }}>
-        {tiles.map(t => {
-          const active = t.role === selected;
-          return (
-            <button
-              key={t.role}
-              type="button"
-              onClick={() => onSelect(t.role)}
-              aria-pressed={active}
-              style={{
-                textAlign: 'left',
-                background: active ? 'var(--accent-dim)' : 'var(--bg-surface)',
-                border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
-                borderRadius: 8,
-                padding: '14px 16px',
-                cursor: 'pointer',
-                transition: 'border-color 0.15s, background 0.15s',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-                <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>{t.title}</span>
-                <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                  {t.tag}
-                </span>
-              </div>
-              <span style={{ display: 'block', marginTop: 6, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                {t.blurb}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
   );
 }

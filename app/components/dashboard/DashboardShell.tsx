@@ -16,6 +16,12 @@ import { SettingsTab } from './tabs/SettingsTab';
 // account's own hat(s). A single client account may hold BOTH buyer and seller
 // hats and switch between them (the dual-hat exception); a buyer-only account is
 // locked to the buyer view, and so on.
+//
+// TODO(follow-up: per-account data isolation) — isolation today is at the
+// view/action level only. There is still a single shared demo deal (dealStore),
+// so every account sees the same deal data. Real isolation must filter deals by
+// the account's participation (buyer/seller/operator address) so an account only
+// sees ITS OWN deals. Tracked as a known gap in the PR.
 export function DashboardShell() {
   const { deal } = useDeal();
   const { account, activeHat, setActiveHat } = useAuth();

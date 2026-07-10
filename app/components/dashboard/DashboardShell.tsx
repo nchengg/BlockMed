@@ -10,6 +10,7 @@ import { OverviewTab } from './tabs/OverviewTab';
 import { DocumentsTab } from './tabs/DocumentsTab';
 import { AuditTrailTab } from './tabs/AuditTrailTab';
 import { SettingsTab } from './tabs/SettingsTab';
+import { EscrowConsole } from './EscrowConsole';
 
 // The logged-in CLIENT portal — the #26 dashboard, now scoped to the signed-in
 // account. Per-account isolation runs at TWO levels:
@@ -77,6 +78,7 @@ export function DashboardShell() {
             <div className="dashboard-content" style={{ padding: '28px 32px', maxWidth: 1200 }}>
               {activeTab === 'Overview' && <OverviewTab role={role} onViewAuditTrail={() => setActiveTab('Audit trail')} />}
               {activeTab === 'Documents' && <DocumentsTab role={role} />}
+              {activeTab === 'Escrow' && <EscrowConsole hat={currentHat} />}
               {activeTab === 'Audit trail' && <AuditTrailTab />}
               {activeTab === 'Settings' && <SettingsTab />}
             </div>

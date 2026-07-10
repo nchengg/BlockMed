@@ -10,27 +10,38 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { groupHome, useAuth, type PartyGroup } from '@/lib/authStore';
+import { groupHome, useAuth, type ClientHat, type PartyGroup } from '@/lib/authStore';
 
 export function RequireParty({
   allow,
+  requireHat,
   children,
 }: {
   allow: PartyGroup[];
+  // HAT-LEVEL gate (clients only). When set, a client account must actually hold
+  // this hat to view the page — e.g. /buyer requires 'buyer', /seller requires
+  // 'seller'. A dual-hat account holds both and passes either. Group membership
+  // (allow) alone is NOT enough: a seller-only client is in the `client` group
+  // but must still be bounced off /buyer. Admin/developer are governed by `allow`
+  // only (they carry no hats), so this never applies to them.
+  requireHat?: ClientHat;
   children: React.ReactNode;
 }) {
   const { account, hydrated } = useAuth();
   const router = useRouter();
 
-  const permitted = account ? allow.includes(account.type) : false;
+  const permitted = account
+    ? allow.includes(account.type) && (!requireHat || account.hats.includes(requireHat))
+    : false;
 
   useEffect(() => {
     if (!hydrated) return;
     if (!account) {
       router.replace('/login');
     } else if (!permitted) {
-      // Signed in as the wrong party — send them to their own portal rather than
-      // exposing a view they shouldn't see (per-account separation).
+      // Wrong party (group) OR a client missing the required hat — send them to
+      // their own portal rather than exposing a view they shouldn't see. A
+      // seller-only client hitting /buyer lands back on their dashboard.
       router.replace(groupHome[account.type]);
     }
   }, [hydrated, account, permitted, router]);

@@ -1,15 +1,13 @@
 import { BuyerFlowShell } from '@/components/buyer/BuyerFlowShell';
 import { RequireParty } from '@/components/auth/RequireParty';
 
-// Client-only view. Admin / developer parties are redirected to their own portal.
-//
-// TODO(follow-up: hat-level route gating) — this only gates to the CLIENT group,
-// not to the buyer hat. A client account without a 'buyer' hat (e.g. seller-only)
-// can still open this flow. Gate on account.hats.includes('buyer') and redirect
-// hatless clients to their own context. Tracked as a known gap in the PR.
+// Client + BUYER-hat only. Admin / developer are redirected by the group gate;
+// a client without the 'buyer' hat (e.g. a seller-only account) is bounced back
+// to its own dashboard by the hat gate. The dual-hat account holds 'buyer' and
+// passes.
 export default function BuyerPage() {
   return (
-    <RequireParty allow={['client']}>
+    <RequireParty allow={['client']} requireHat="buyer">
       <BuyerFlowShell />
     </RequireParty>
   );

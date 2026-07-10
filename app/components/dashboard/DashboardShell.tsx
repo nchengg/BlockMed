@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { Role } from '@/data/dashboardDemo';
 import { useDeal } from '@/lib/dealStore';
-import { useAuth, hatToLens } from '@/lib/authStore';
+import { useAuth, hatToLens, type ClientHat } from '@/lib/authStore';
 import { LeftRail, MobileTopBar, type DashboardTab } from './LeftRail';
 import { DealSummaryBand } from './DealSummaryBand';
 import { NextActionBand } from './NextActionBand';
@@ -26,13 +26,21 @@ import { SettingsTab } from './tabs/SettingsTab';
 // data included. When not impersonating, viewerAccount === the logged-in account.
 export function DashboardShell() {
   const { deal, visibleDeals } = useDeal();
-  const { viewerAccount, activeHat, setActiveHat } = useAuth();
+  const { viewerAccount, activeHat, setActiveHat, impersonating } = useAuth();
   const account = viewerAccount;
   const [activeTab, setActiveTab] = useState<DashboardTab>('Overview');
+  // When a developer previews a dual-hat account, hat switching is LOCAL to the
+  // preview — it must not write to the developer's own session. Off-preview this
+  // stays null and the real session hat is used.
+  const [previewHat, setPreviewHat] = useState<ClientHat | null>(null);
 
   // Client accounts only ever wear their own hats; default to the first one.
   const hats = account?.hats ?? [];
-  const currentHat = activeHat ?? hats[0] ?? 'buyer';
+  const sessionHat = impersonating ? previewHat : activeHat;
+  const rawHat = sessionHat ?? hats[0] ?? 'buyer';
+  // Clamp to a hat this account actually holds (guards target switches in preview).
+  const currentHat: ClientHat = hats.includes(rawHat) ? rawHat : (hats[0] ?? 'buyer');
+  const changeHat = impersonating ? setPreviewHat : setActiveHat;
   const role: Role = hatToLens(currentHat);
 
   // Freshly-registered client with no deals yet — nothing to isolate into view.
@@ -45,7 +53,7 @@ export function DashboardShell() {
         dealId={deal.dealId}
         hats={hats}
         activeHat={currentHat}
-        onHatChange={setActiveHat}
+        onHatChange={changeHat}
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
@@ -56,7 +64,7 @@ export function DashboardShell() {
           dealId={deal.dealId}
           hats={hats}
           activeHat={currentHat}
-          onHatChange={setActiveHat}
+          onHatChange={changeHat}
           activeTab={activeTab}
           onTabChange={setActiveTab}
         />

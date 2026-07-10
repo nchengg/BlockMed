@@ -10,9 +10,11 @@
 // Flagged for team confirmation before it's treated as a settled role.
 
 import { useDeal } from '@/lib/dealStore';
-import { useAuth } from '@/lib/authStore';
+import { hatLabel, typeLabel, useAuth, type Account } from '@/lib/authStore';
 import { Card, EyebrowLabel } from '@/components/dashboard/ui';
 import { DealSwitcher } from '@/components/dashboard/DealSwitcher';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
+import { AdminPortal } from '@/components/admin/AdminPortal';
 
 const CONTRACT_STATES = ['Created', 'Funded', 'DocsSubmitted', 'Checking', 'Released', 'Refunded', 'Cancelled'] as const;
 
@@ -30,7 +32,19 @@ export function DeveloperView() {
     deal, lockFunds, startUpload, markUploadFailed, markReceived,
     startDocumentCheck, resolveVerification, resetDocumentForReupload, resetDemo,
   } = useDeal();
-  const { account, accounts, activeHat, connectWallet, disconnectWallet } = useAuth();
+  const {
+    account, accounts, activeHat, connectWallet, disconnectWallet,
+    impersonating, impersonatedAccount, impersonate, stopImpersonating,
+  } = useAuth();
+
+  // VIEW-AS PREVIEW — when impersonating, the whole console is replaced by the
+  // previewed party's own view, rendered through the same isolation + lens they'd
+  // get. The dev's real session is untouched (SessionBar still shows developer),
+  // and a persistent banner keeps the preview obvious and exitable.
+  if (impersonating && impersonatedAccount) {
+    return <ImpersonationPreview target={impersonatedAccount} onExit={stopImpersonating} />;
+  }
+
   const active = currentContractState(deal.paymentStatus, deal.documentStatus);
 
   return (
@@ -50,6 +64,10 @@ export function DeveloperView() {
       <Card style={{ marginBottom: 20 }}>
         <DealSwitcher />
       </Card>
+
+      {/* View-as preview — dev-only impersonation of any party's isolated view. */}
+      <ViewAsControl accounts={accounts} selfId={account?.id ?? null} onView={impersonate} />
+
 
       {/* Every state transition — the "all buttons" testing surface. */}
       <Card style={{ marginBottom: 20 }}>
@@ -162,9 +180,131 @@ export function DeveloperView() {
           <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: wallet, TR-6.3)</span> — real wallet connect + ownership proof. Currently a stub address.</li>
           <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: on-chain)</span> — wire escrow reads/writes to <span className="mono">contracts/</span>. No RPC/wallet here.</li>
           <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: data, TR-6.1/6.2)</span> — real per-account deal scoping. Isolation is mocked here (in-memory seeded deals filtered by viewer); wire to the real deal service, authorised server-side.</li>
+          <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: auth Q18)</span> — server-side gating for &ldquo;view as&rdquo; (who may impersonate whom + audit). Developer + view-as is a PRODUCT ADDITION, not in the current BRD/TRD role model — pending team confirmation.</li>
         </ul>
       </Card>
     </main>
+  );
+}
+
+// ── View-as preview (dev-only impersonation) ──────────────────────────────────
+// PRODUCT ADDITION — not in the current BRD/TRD role model. Lets a developer
+// preview ANY party's dashboard exactly as that party would see it, INCLUDING
+// their isolated data (reads flow through lib/dealStore's viewer filter). It is
+// an explicit preview, never a real role change — see authStore.impersonate.
+function ViewAsControl({
+  accounts, selfId, onView,
+}: {
+  accounts: Account[];
+  selfId: string | null;
+  onView: (accountId: string) => void;
+}) {
+  return (
+    <Card style={{ marginBottom: 20, borderColor: 'var(--accent-border)' }}>
+      <EyebrowLabel>View as party — developer preview</EyebrowLabel>
+      <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 6, marginBottom: 12, lineHeight: 1.6 }}>
+        Preview any party&apos;s view rendered as they&apos;d see it — with THEIR isolated deals. This is an
+        impersonation <strong>preview</strong>, not a role change: your developer session stays intact and a
+        banner keeps it obvious. <span className="mono" style={{ color: 'var(--text-muted)' }}>developer + view-as</span> is a
+        product addition (not in BRD/TRD) — <span className="mono" style={{ color: 'var(--text-muted)' }}>TODO(integration: auth Q18)</span>.
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {accounts.map(a => {
+          const isSelf = a.id === selfId;
+          const hats = a.hats.length ? a.hats.map(h => hatLabel[h].split(' ')[0]).join(' + ') : '—';
+          return (
+            <button
+              key={a.id}
+              type="button"
+              onClick={() => onView(a.id)}
+              style={{
+                textAlign: 'left', cursor: 'pointer', background: 'var(--bg-mid)',
+                border: '1px solid var(--border)', borderRadius: 8, padding: '10px 12px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap',
+              }}
+            >
+              <span style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {a.displayName}
+                  {isSelf && <span style={{ color: 'var(--text-muted)', fontWeight: 500 }}> · you</span>}
+                </span>
+                <span className="mono" style={{ fontSize: 11, color: 'var(--text-muted)' }}>{a.email}</span>
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 600 }}>
+                  {typeLabel[a.type]}{a.type === 'client' ? ` · ${hats}` : ''}
+                </span>
+                <span style={{ fontSize: 12, color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 6, padding: '3px 9px' }}>
+                  View as →
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </Card>
+  );
+}
+
+// The whole console is replaced by this while impersonating. A sticky, clearly
+// marked banner sits above the previewed party's real view.
+function ImpersonationPreview({ target, onExit }: { target: Account; onExit: () => void }) {
+  const hats = target.hats.length ? target.hats.map(h => hatLabel[h].split(' ')[0]).join(' + ') : '';
+  const roleText = `${typeLabel[target.type]}${target.type === 'client' && hats ? ` · ${hats}` : ''}`;
+
+  return (
+    <div style={{ minHeight: '100vh', background: 'var(--bg-deep)' }}>
+      <div
+        style={{
+          position: 'sticky', top: 0, zIndex: 50,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap',
+          padding: '10px 20px', background: 'var(--accent-dim)',
+          borderBottom: '1px solid var(--accent-border)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+          <span
+            style={{
+              fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--accent)',
+              border: '1px solid var(--accent-border)', borderRadius: 4, padding: '2px 6px',
+            }}
+          >
+            DEVELOPER PREVIEW
+          </span>
+          <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+            Viewing as{' '}
+            <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{target.displayName}</span>
+            <span style={{ color: 'var(--text-muted)' }}> · {roleText}</span>
+            <span style={{ color: 'var(--text-muted)' }}> — showing their isolated data. Your developer session is unchanged.</span>
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={onExit}
+          style={{
+            background: 'var(--accent)', color: 'var(--bg-deep)', border: 'none', borderRadius: 6,
+            padding: '6px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap',
+          }}
+        >
+          Exit preview
+        </button>
+      </div>
+
+      {/* key by target id so per-preview local state (e.g. dashboard hat) resets
+          cleanly when switching between previewed parties. */}
+      {target.type === 'client' && <DashboardShell key={target.id} />}
+      {target.type === 'admin' && <AdminPortal key={target.id} />}
+      {target.type === 'developer' && (
+        <main style={{ maxWidth: 720, margin: '0 auto', padding: '48px 24px' }}>
+          <Card>
+            <EyebrowLabel>Nothing to preview</EyebrowLabel>
+            <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 8, lineHeight: 1.7 }}>
+              That&apos;s the developer console — the view you&apos;re already in. Exit the preview to use it.
+            </p>
+          </Card>
+        </main>
+      )}
+    </div>
   );
 }
 

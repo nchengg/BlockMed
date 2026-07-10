@@ -13,6 +13,7 @@ import {
   useDeal, paymentStatusLabel, paymentStatusTone, documentStatusLabel,
 } from '@/lib/dealStore';
 import { Card, StatusPill, AddressChip, EyebrowLabel } from '@/components/dashboard/ui';
+import { DealSwitcher } from '@/components/dashboard/DealSwitcher';
 
 export function AdminPortal() {
   const { deal, resolveVerification } = useDeal();
@@ -32,6 +33,11 @@ export function AdminPortal() {
           Operational authority for Blockmediary staff. Curated to live business actions — not a debug console.
         </p>
       </header>
+
+      {/* Staff oversight spans EVERY deal — pick which one to act on. */}
+      <Card style={{ marginBottom: 16 }}>
+        <DealSwitcher />
+      </Card>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, margin: '24px 0' }}>
         <Card>

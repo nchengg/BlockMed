@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { hatLabel, type ClientHat } from '@/lib/authStore';
+import { DealSwitcher } from './DealSwitcher';
 
 const tabs = ['Overview', 'Documents', 'Audit trail', 'Settings'] as const;
 export type DashboardTab = (typeof tabs)[number];
@@ -61,6 +62,9 @@ export function LeftRail({ accountName, dealId, hats, activeHat, onHatChange, ac
           );
         })}
       </nav>
+
+      {/* Isolation-scoped deal list — only this account's deals. */}
+      <DealSwitcher />
 
       <div style={{ marginTop: 'auto' }}>
         <div className="section-label" style={{ marginBottom: 10, fontSize: 10 }}>
@@ -144,6 +148,11 @@ export function MobileTopBar({ accountName, dealId, hats, activeHat, onHatChange
             </button>
           );
         })}
+      </div>
+
+      {/* Isolation-scoped deal list — only this account's deals (compact). */}
+      <div style={{ marginTop: 12 }}>
+        <DealSwitcher compact />
       </div>
     </div>
   );

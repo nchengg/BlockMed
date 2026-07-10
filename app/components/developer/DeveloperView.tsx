@@ -12,6 +12,7 @@
 import { useDeal } from '@/lib/dealStore';
 import { useAuth } from '@/lib/authStore';
 import { Card, EyebrowLabel } from '@/components/dashboard/ui';
+import { DealSwitcher } from '@/components/dashboard/DealSwitcher';
 
 const CONTRACT_STATES = ['Created', 'Funded', 'DocsSubmitted', 'Checking', 'Released', 'Refunded', 'Cancelled'] as const;
 
@@ -45,9 +46,14 @@ export function DeveloperView() {
         This console is the full-control counterpart to the curated Admin console.
       </div>
 
+      {/* Developer sees ALL deals — pick which one the controls below drive. */}
+      <Card style={{ marginBottom: 20 }}>
+        <DealSwitcher />
+      </Card>
+
       {/* Every state transition — the "all buttons" testing surface. */}
       <Card style={{ marginBottom: 20 }}>
-        <EyebrowLabel>State controls (drives shared deal store)</EyebrowLabel>
+        <EyebrowLabel>State controls (drives the selected deal)</EyebrowLabel>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
           <DebugButton label="lockFunds()" onClick={() => lockFunds(deal.amount)} />
           <DebugButton label="startUpload()" onClick={startUpload} />
@@ -121,7 +127,7 @@ export function DeveloperView() {
       </Card>
 
       <Card style={{ marginBottom: 20 }}>
-        <EyebrowLabel>Deal object (shared store)</EyebrowLabel>
+        <EyebrowLabel>Deal object (selected deal)</EyebrowLabel>
         <pre className="mono" style={preStyle}>
           {JSON.stringify(
             {
@@ -155,7 +161,7 @@ export function DeveloperView() {
           <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: auth Q18)</span> — real auth (SIWE vs JWT vs both; wallet-less platform role). Currently mock account login.</li>
           <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: wallet, TR-6.3)</span> — real wallet connect + ownership proof. Currently a stub address.</li>
           <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: on-chain)</span> — wire escrow reads/writes to <span className="mono">contracts/</span>. No RPC/wallet here.</li>
-          <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: data)</span> — per-account deal scoping (single shared demo deal today).</li>
+          <li><span className="mono" style={{ color: 'var(--text-primary)' }}>TODO(integration: data, TR-6.1/6.2)</span> — real per-account deal scoping. Isolation is mocked here (in-memory seeded deals filtered by viewer); wire to the real deal service, authorised server-side.</li>
         </ul>
       </Card>
     </main>

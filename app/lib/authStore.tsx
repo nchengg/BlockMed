@@ -145,6 +145,12 @@ type AuthContextValue = {
   hydrated: boolean;
   accounts: Account[]; // the mock registry (developer console can inspect it)
   account: Account | null; // current logged-in account — role source of truth
+  // The account whose LENS the content is rendered through. Normally identical to
+  // `account`; a developer using "view as" (dev-only impersonation) points this at
+  // the previewed party while `account` stays the real developer session. Data
+  // isolation (lib/dealStore) reads THIS, so previews respect the same scoping.
+  // Impersonation is wired in a later step; for now viewerAccount === account.
+  viewerAccount: Account | null;
   activeHat: ClientHat | null; // current client lens (buyer/seller/platform)
   group: PartyGroup | null;
   login: (email: string) => AuthResult; // MOCK — no password checked
@@ -258,7 +264,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo<AuthContextValue>(
     () => ({
-      hydrated, accounts, account, activeHat, group: account?.type ?? null,
+      hydrated, accounts, account, viewerAccount: account, activeHat, group: account?.type ?? null,
       login, register, logout, setActiveHat, connectWallet, disconnectWallet,
     }),
     [hydrated, accounts, account, activeHat, login, register, logout, setActiveHat, connectWallet, disconnectWallet]

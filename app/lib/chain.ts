@@ -61,4 +61,5 @@ export const STATE_NAMES = [
   "ReleasePending",
   "Released",
   "Refunded",
+  "Cancelled",
 ] as const;

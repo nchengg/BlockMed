@@ -27,7 +27,8 @@ contract Escrow is AccessControl, Pausable, ReentrancyGuard {
         Funded,
         ReleasePending,
         Released,
-        Refunded
+        Refunded,
+        Cancelled
     }
 
     struct Deal {
@@ -46,6 +47,7 @@ contract Escrow is AccessControl, Pausable, ReentrancyGuard {
     event VerdictRecorded(bytes32 indexed dealId);
     event Released(bytes32 indexed dealId, uint256 amount);
     event Refunded(bytes32 indexed dealId, uint256 amount);
+    event Cancelled(bytes32 indexed dealId);
     event StateChanged(bytes32 indexed dealId, State from, State to);
 
     error InvalidState(bytes32 dealId, State expected, State actual);
@@ -118,6 +120,17 @@ contract Escrow is AccessControl, Pausable, ReentrancyGuard {
         _transition(dealId, State.Funded, State.Refunded);
         emit Refunded(dealId, deal.amount);
         token.safeTransfer(deal.buyer, deal.amount);
+    }
+
+    /// @notice Admin exit for a deal that was agreed but never funded (TR-3.4): the buyer
+    ///         walked away, terms were wrong, or an incident requires unwinding. Only legal
+    ///         before funding — once money is in, the exits are refund (pre-verdict) or the
+    ///         normal release path; a funded deal can never be "cancelled" out from under
+    ///         either party. Moves no funds, so it works while paused (incident response).
+    function cancel(bytes32 dealId) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _requireState(dealId, State.Agreed);
+        _transition(dealId, State.Agreed, State.Cancelled);
+        emit Cancelled(dealId);
     }
 
     /// @notice Emergency stop (TR-3.4): halts deposit, release, and refund — including an

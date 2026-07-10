@@ -11,6 +11,7 @@ export const State = {
   ReleasePending: 3,
   Released: 4,
   Refunded: 5,
+  Cancelled: 6,
 } as const;
 
 export async function deployFixture(viem: any) {

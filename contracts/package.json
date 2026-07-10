@@ -1,0 +1,19 @@
+{
+  "name": "blockmediary-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Blockmediary escrow smart contracts (TRD §4) — Hardhat 3 + viem + node:test",
+  "scripts": {
+    "build": "hardhat compile",
+    "test": "hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "@types/node": "^22.0.0",
+    "hardhat": "^3.0.0",
+    "typescript": "~5.8.0",
+    "viem": "^2.30.0"
+  }
+}

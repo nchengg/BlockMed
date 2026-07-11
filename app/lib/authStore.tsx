@@ -145,6 +145,12 @@ type AuthContextValue = {
   hydrated: boolean;
   accounts: Account[]; // the mock registry (developer console can inspect it)
   account: Account | null; // current logged-in account — role source of truth
+  // The account whose LENS the content is rendered through. Normally identical to
+  // `account`; a developer using "view as" (dev-only impersonation) points this at
+  // the previewed party while `account` stays the real developer session. Data
+  // isolation (lib/dealStore) reads THIS, so previews respect the same scoping.
+  // Impersonation is wired in a later step; for now viewerAccount === account.
+  viewerAccount: Account | null;
   activeHat: ClientHat | null; // current client lens (buyer/seller/platform)
   group: PartyGroup | null;
   login: (email: string) => AuthResult; // MOCK — no password checked
@@ -153,6 +159,18 @@ type AuthContextValue = {
   setActiveHat: (hat: ClientHat) => void; // dual-hat switching for clients
   connectWallet: (address?: string) => void; // secondary, optional
   disconnectWallet: () => void;
+  // ── Developer "view as" (dev-only impersonation PREVIEW) ────────────────────
+  // PRODUCT ADDITION: "developer + view-as" is NOT in the current BRD/TRD role
+  // model — it's a developer convenience for previewing other parties' isolated
+  // views, pending team confirmation. This is an explicit IMPERSONATION PREVIEW,
+  // not a real role change: the developer's own session (`account`) is untouched;
+  // only `viewerAccount` — the lens the content renders through — is redirected.
+  // TODO(integration: auth Q18) — real server-side gating (who may impersonate
+  // whom, audit logging) belongs with the real auth decision.
+  impersonating: boolean;
+  impersonatedAccount: Account | null;
+  impersonate: (accountId: string) => void; // dev-only; no-op otherwise
+  stopImpersonating: () => void;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -161,6 +179,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [accounts, setAccounts] = useState<Account[]>(SEED_ACCOUNTS);
   const [session, setSession] = useState<Session | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  // Dev-only impersonation target. Kept in memory (not persisted) so a reload
+  // always returns to the real developer console — a preview is never sticky.
+  const [impersonatedAccountId, setImpersonatedAccountId] = useState<string | null>(null);
 
   // Hydrate registry + session from localStorage once on mount (client-only).
   useEffect(() => {
@@ -201,6 +222,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
   const activeHat = session?.activeHat ?? null;
 
+  // Impersonation is honoured ONLY for a developer session — a hard gate so no
+  // other role can ever redirect its own lens. viewerAccount is what content and
+  // data isolation render through; account stays the real developer identity.
+  const impersonatedAccount = useMemo(
+    () => (impersonatedAccountId ? accounts.find(a => a.id === impersonatedAccountId) ?? null : null),
+    [accounts, impersonatedAccountId]
+  );
+  const impersonating = !!impersonatedAccount && account?.type === 'developer';
+  const viewerAccount = impersonating ? impersonatedAccount : account;
+
   const login = useCallback((email: string): AuthResult => {
     // TODO(integration: auth Q18) — real auth verifies a credential/signature and
     // resolves the account server-side. Here we just look up a registered email.
@@ -230,7 +261,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { ok: true, account: next };
   }, [accounts]);
 
-  const logout = useCallback(() => setSession(null), []);
+  const logout = useCallback(() => {
+    setSession(null);
+    setImpersonatedAccountId(null); // never carry a preview across sessions
+  }, []);
+
+  const impersonate = useCallback((accountId: string) => {
+    // Dev-only, hard-gated. TODO(integration: auth Q18) — real server-side gating
+    // (authorisation to impersonate + audit trail) lands with the real auth flow.
+    if (account?.type !== 'developer') return;
+    if (!accounts.some(a => a.id === accountId)) return;
+    setImpersonatedAccountId(accountId);
+  }, [account, accounts]);
+
+  const stopImpersonating = useCallback(() => setImpersonatedAccountId(null), []);
 
   const setActiveHat = useCallback((hat: ClientHat) => {
     setSession(prev => {
@@ -258,10 +302,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo<AuthContextValue>(
     () => ({
-      hydrated, accounts, account, activeHat, group: account?.type ?? null,
+      hydrated, accounts, account, viewerAccount, activeHat, group: account?.type ?? null,
       login, register, logout, setActiveHat, connectWallet, disconnectWallet,
+      impersonating, impersonatedAccount, impersonate, stopImpersonating,
     }),
-    [hydrated, accounts, account, activeHat, login, register, logout, setActiveHat, connectWallet, disconnectWallet]
+    [hydrated, accounts, account, viewerAccount, activeHat, login, register, logout,
+      setActiveHat, connectWallet, disconnectWallet,
+      impersonating, impersonatedAccount, impersonate, stopImpersonating]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

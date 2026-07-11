@@ -9,6 +9,13 @@ import { Card, EyebrowLabel } from '@/components/dashboard/ui';
 // the shared deal store so /dashboard can reflect the same simulated states.
 type ZoneState = 'empty' | 'dragging' | 'wrong_type' | 'added' | 'uploading' | 'upload_failed' | 'received';
 
+// TODO(integration) — this step simulates the upload + AI check on the mock
+// dealStore. The real path collects the B/L fields and calls the seller submit
+// action, which runs the deterministic rules engine + records the verdict on-chain:
+//   import { submitBol, actorFrom } from '@/lib/escrow/client'; // POSTs /api/escrow/submit-bol
+//   const verdict = await submitBol(fields, actorFrom(account, activeHat));
+// That flow is already wired end-to-end in components/dashboard/EscrowConsole.tsx
+// (Escrow tab, seller hat). This wizard stays on the mock flow for now.
 export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void }) {
   const { startUpload, markUploadFailed, markReceived } = useDeal();
   const [state, setState] = useState<ZoneState>('empty');

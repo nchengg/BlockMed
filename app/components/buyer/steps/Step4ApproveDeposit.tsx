@@ -4,6 +4,13 @@ import { Card, EyebrowLabel } from '@/components/dashboard/ui';
 
 type RowState = 'waiting' | 'awaiting_signature' | 'confirmed' | 'failed';
 
+// TODO(integration) — this step simulates approve+deposit with timers. To make it
+// real, replace runApprove/runDeposit with the buyer fund action:
+//   import { fund, actorFrom } from '@/lib/escrow/client'; // POSTs /api/escrow/fund
+//   const { account, activeHat } = useAuth();
+//   await fund(actorFrom(account, activeHat)); // signs approve + deposit on-chain
+// The on-chain equivalent is already wired end-to-end in components/dashboard/
+// EscrowConsole.tsx (Escrow tab); this wizard stays on the mock dealStore for now.
 export function Step4ApproveDeposit({ onComplete }: { onComplete: () => void }) {
   const [approve, setApprove] = useState<RowState>('waiting');
   const [deposit, setDeposit] = useState<RowState>('waiting');

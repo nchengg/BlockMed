@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { hatLabel, type ClientHat } from '@/lib/authStore';
 import { DealSwitcher } from './DealSwitcher';
 
-const tabs = ['Overview', 'Documents', 'Audit trail', 'Settings'] as const;
+const tabs = ['Overview', 'Documents', 'Escrow', 'Audit trail', 'Settings'] as const;
 export type DashboardTab = (typeof tabs)[number];
 
 // Short labels for the context switcher (full labels are in hatLabel).

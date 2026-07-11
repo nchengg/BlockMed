@@ -1,28 +1,99 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { sellerDemo } from '@/data/sellerDemo';
+import { useAuth } from '@/lib/authStore';
 import { useDeal } from '@/lib/dealStore';
+import { actorFrom, fetchStatus, submitBol, type StatusResponse } from '@/lib/escrow/client';
+import type { BolFields, RuleResult } from '@/lib/escrow/rules';
 import { Card, EyebrowLabel } from '@/components/dashboard/ui';
 
 // Local, pre-upload UI states (no file yet / file staged) live only in this
 // component. Once an upload attempt actually starts, we mirror progress into
-// the shared deal store so /dashboard can reflect the same simulated states.
+// the shared deal store so /dashboard can reflect the same states.
 type ZoneState = 'empty' | 'dragging' | 'wrong_type' | 'added' | 'uploading' | 'upload_failed' | 'received';
 
-// TODO(integration) — this step simulates the upload + AI check on the mock
-// dealStore. The real path collects the B/L fields and calls the seller submit
-// action, which runs the deterministic rules engine + records the verdict on-chain:
-//   import { submitBol, actorFrom } from '@/lib/escrow/client'; // POSTs /api/escrow/submit-bol
-//   const verdict = await submitBol(fields, actorFrom(account, activeHat));
-// That flow is already wired end-to-end in components/dashboard/EscrowConsole.tsx
-// (Escrow tab, seller hat). This wizard stays on the mock flow for now.
+// WIRED (integration) — when the shared escrow deal is Funded on the live local chain,
+// this step performs the REAL B/L submission via lib/escrow/client → /api/escrow/submit-bol,
+// the same action the Escrow tab (components/dashboard/EscrowConsole.tsx, seller hat)
+// drives. The route runs the deterministic rules engine (lib/escrow/rules.ts) against the
+// on-chain agreed terms and, on a Compliant verdict, records it on-chain — but only on
+// localhost (the releaser-signing guard in submit-bol/route.ts is left intact). The B/L
+// fields below are prefilled from the REAL on-chain terms (status.terms) so a Compliant
+// verdict is reachable, and are editable so a discrepancy can be demonstrated.
+//
+// Honest seams that remain (see report):
+//   1. The graded terms come from the SINGLE global escrow deal (lib/escrow/store.ts),
+//      not from the per-account dealStore id — so this submits the one shared escrow
+//      deal; the wizard's active deal is UI context. On success we mirror `markReceived`
+//      into the mock dealStore so /dashboard stays consistent.
+//   2. The wizard has no propose/agree/fund steps, so the shared deal must already be
+//      Funded (set up via the Escrow tab) for a real submit. When it isn't — or no local
+//      chain is running — we degrade gracefully to the original labelled simulation so
+//      the demo still completes (same posture as EscrowConsole).
+//   3. Step3DocumentCheck still runs its own simulated check + outcome selector; in the
+//      real path the authoritative verdict is already produced HERE at submit time.
 export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void }) {
-  const { startUpload, markUploadFailed, markReceived } = useDeal();
+  const { account } = useAuth();
+  const { deal, startUpload, markUploadFailed, markReceived } = useDeal();
+
+  const [status, setStatus] = useState<StatusResponse | null>(null);
+  const [loaded, setLoaded] = useState(false);
   const [state, setState] = useState<ZoneState>('empty');
   const [file, setFile] = useState<{ name: string; size: string } | null>(null);
   const [progress, setProgress] = useState(0);
   const [attempt, setAttempt] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Real-path grading state.
+  const [grading, setGrading] = useState(false);
+  const [verdict, setVerdict] = useState<{ verdict: 'Compliant' | 'Discrepant'; rules: RuleResult[]; txHash?: string } | null>(null);
+  const [gradeError, setGradeError] = useState<string | null>(null);
+
+  // Read the live chain once on mount to decide real-vs-simulated.
+  const refresh = useCallback(async () => {
+    try {
+      setStatus(await fetchStatus());
+    } catch (e) {
+      setStatus({ ok: false, error: (e as Error).message });
+    } finally {
+      setLoaded(true);
+    }
+  }, []);
+  useEffect(() => { void refresh(); }, [refresh]);
+
+  const chainDown = loaded && status?.ok === false;
+  const chainState = status?.state ?? null;
+  // A real B/L submit is only valid while the shared deal is Funded (mirrors the
+  // route's own state guard). Everything else falls back to the simulation.
+  const realMode = status?.ok === true && chainState === 'Funded';
+
+  // Prefill the B/L fields from the REAL on-chain terms so a Compliant verdict is
+  // reachable; fall back to the mock deal for display when terms aren't loaded yet.
+  const terms = status?.terms ?? null;
+  const [fields, setFields] = useState<BolFields>({
+    blNumber: '',
+    shipperName: '',
+    consigneeName: '',
+    amountUsdc: '',
+    shipmentDate: '',
+  });
+  // Seed the form once the on-chain terms arrive (or from the mock deal as a fallback).
+  useEffect(() => {
+    if (!loaded) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFields({
+      blNumber: `BL-${deal.dealReference}`,
+      shipperName: terms?.sellerName ?? deal.seller.businessName,
+      consigneeName: terms?.buyerName ?? deal.buyer.businessName,
+      amountUsdc: terms?.amountUsdc ?? deal.amount.toFixed(2),
+      shipmentDate: terms?.shipmentDeadline ?? '',
+    });
+    // Seed only when the loaded terms change; user edits afterwards are preserved.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loaded, terms?.sellerName, terms?.buyerName, terms?.amountUsdc, terms?.shipmentDeadline]);
+
+  const setField = (k: keyof BolFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setFields(f => ({ ...f, [k]: e.target.value }));
 
   const isAccepted = (name: string) => {
     const ext = name.split('.').pop()?.toLowerCase() ?? '';
@@ -50,7 +121,50 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void 
     setState('empty');
   };
 
-  const submit = () => {
+  // This page is the seller flow, so we always act with the seller hat regardless
+  // of a dual-hat account's active lens — the submit route gates on it.
+  const actor = actorFrom(account, 'seller');
+
+  // ── REAL PATH ── grade the B/L against the on-chain terms; Compliant records the
+  // verdict on-chain (localhost only) and advances to the release step.
+  const submitReal = useCallback(async () => {
+    if (!file) return;
+    setGrading(true);
+    setGradeError(null);
+    setVerdict(null);
+    startUpload();
+    try {
+      const r = await submitBol(fields, actor);
+      if (r.ok === false && !r.verdict) {
+        setGradeError(r.error || 'Submission was rejected.');
+        markUploadFailed();
+        return;
+      }
+      setVerdict({ verdict: r.verdict, rules: r.rules, txHash: r.txHash });
+      if (r.verdict === 'Compliant') {
+        // Mirror the real submission into the isolated mock store so /dashboard
+        // reflects it, then advance to the release/check step.
+        markReceived();
+        setState('received');
+        // Surface a non-fatal note (e.g. releaser skipped off localhost) but still proceed.
+        if (r.ok === false && r.error) setGradeError(r.error);
+        setTimeout(onSubmitted, 900);
+      } else {
+        setGradeError(null);
+        markUploadFailed();
+      }
+    } catch (e) {
+      setGradeError((e as Error).message);
+      markUploadFailed();
+    } finally {
+      setGrading(false);
+    }
+    // actor derives from account; account is the only real dep.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, fields, file, onSubmitted, startUpload, markReceived, markUploadFailed]);
+
+  // ── SIMULATED PATH ── original browser-only upload + first-attempt failure demo.
+  const submitSim = () => {
     if (!file) return;
     setState('uploading');
     setProgress(0);
@@ -78,6 +192,8 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void 
     }, 1150);
   };
 
+  const showFilePanel = state === 'added' || state === 'uploading' || state === 'upload_failed' || state === 'received';
+
   return (
     <div>
       <EyebrowLabel>SELLER</EyebrowLabel>
@@ -85,117 +201,204 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void 
         Upload your commercial invoice.
       </h1>
       <p style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 32, maxWidth: 480 }}>
-        Accepted formats: PDF, PNG, JPG. Blockmediary checks the invoice against the deal terms.
+        {realMode
+          ? 'Blockmediary grades the bill-of-lading details below against the agreed on-chain terms. A compliant result records the verdict on-chain and releases the check.'
+          : 'Accepted formats: PDF, PNG, JPG. Blockmediary checks the invoice against the deal terms.'}
       </p>
 
-      <Card>
-        {state === 'added' || state === 'uploading' || state === 'upload_failed' || state === 'received' ? (
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '14px 16px', borderRadius: 8, background: 'var(--bg-mid)', border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-                <FileIcon />
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 14, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {file?.name}
+      {!loaded && (
+        <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Checking the live chain…</p>
+      )}
+
+      {loaded && (
+        <ModeBanner mode={realMode ? 'real' : chainDown ? 'chaindown' : 'sim'} state={chainState} />
+      )}
+
+      {loaded && (
+        <Card>
+          {showFilePanel ? (
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '14px 16px', borderRadius: 8, background: 'var(--bg-mid)', border: '1px solid var(--border)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
+                  <FileIcon />
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 14, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {file?.name}
+                    </div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{file?.size}</div>
                   </div>
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{file?.size}</div>
                 </div>
+                {state === 'added' && !grading && (
+                  <button onClick={removeFile} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16 }} aria-label="Remove file">
+                    ✕
+                  </button>
+                )}
+                {state === 'received' && (
+                  <span style={{ fontSize: 12, color: 'var(--success)', fontWeight: 600, whiteSpace: 'nowrap' }}>Received ✓</span>
+                )}
               </div>
-              {state === 'added' && (
-                <button onClick={removeFile} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16 }} aria-label="Remove file">
-                  ✕
-                </button>
+
+              {state === 'uploading' && (
+                <div style={{ marginTop: 14 }}>
+                  <div style={{ height: 4, borderRadius: 2, background: 'var(--bg-mid)', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${progress}%`, background: 'var(--accent)', transition: 'width 0.13s linear' }} />
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>Uploading… (simulated)</div>
+                </div>
               )}
+
+              {state === 'upload_failed' && !realMode && (
+                <div style={{ marginTop: 14, fontSize: 13, color: 'var(--error)' }}>
+                  Upload failed — retry
+                </div>
+              )}
+
               {state === 'received' && (
-                <span style={{ fontSize: 12, color: 'var(--success)', fontWeight: 600, whiteSpace: 'nowrap' }}>Received ✓</span>
+                <div style={{ marginTop: 14, fontSize: 13, color: 'var(--text-secondary)' }}>
+                  Document received. Starting the check…
+                </div>
               )}
             </div>
-
-            {state === 'uploading' && (
-              <div style={{ marginTop: 14 }}>
-                <div style={{ height: 4, borderRadius: 2, background: 'var(--bg-mid)', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${progress}%`, background: 'var(--accent)', transition: 'width 0.13s linear' }} />
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>Uploading… (simulated)</div>
+          ) : (
+            <div
+              onDragOver={e => { e.preventDefault(); setState('dragging'); }}
+              onDragLeave={() => setState('empty')}
+              onDrop={handleDrop}
+              onClick={() => inputRef.current?.click()}
+              style={{
+                border: `1.5px dashed ${state === 'dragging' ? 'var(--accent)' : 'var(--border)'}`,
+                background: state === 'dragging' ? 'var(--accent-dim)' : 'transparent',
+                borderRadius: 8,
+                padding: '48px 24px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s, background 0.2s',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+                <UploadIcon active={state === 'dragging'} />
               </div>
-            )}
-
-            {state === 'upload_failed' && (
-              <div style={{ marginTop: 14, fontSize: 13, color: 'var(--error)' }}>
-                Upload failed — retry
+              <div style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>
+                Drop file or click to browse
               </div>
-            )}
+              {state === 'wrong_type' && (
+                <div style={{ fontSize: 13, color: 'var(--error)', marginTop: 12 }}>Unsupported file type</div>
+              )}
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".pdf,.png,.jpg,.jpeg"
+                style={{ display: 'none' }}
+                onChange={e => {
+                  const f = e.target.files?.[0];
+                  if (f) handleFile(f);
+                  e.target.value = '';
+                }}
+              />
+            </div>
+          )}
 
-            {state === 'received' && (
-              <div style={{ marginTop: 14, fontSize: 13, color: 'var(--text-secondary)' }}>
-                Document received. Starting the check…
+          {/* REAL PATH — editable B/L details graded by the rules engine. */}
+          {realMode && (state === 'added' || state === 'upload_failed' || (state === 'uploading' && grading)) && (
+            <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div className="section-label" style={{ fontSize: 10 }}>BILL OF LADING DETAILS (GRADED ON-CHAIN)</div>
+              <Field label="B/L number" value={fields.blNumber} onChange={setField('blNumber')} />
+              <Field label="Shipper (seller)" value={fields.shipperName} onChange={setField('shipperName')} />
+              <Field label="Consignee (buyer)" value={fields.consigneeName} onChange={setField('consigneeName')} />
+              <Field label="Amount on B/L (USDC)" value={fields.amountUsdc} onChange={setField('amountUsdc')} />
+              <Field label="Shipment date (YYYY-MM-DD)" value={fields.shipmentDate} onChange={setField('shipmentDate')} />
+            </div>
+          )}
+
+          {/* Discrepancy breakdown from the real rules engine. */}
+          {verdict && verdict.verdict === 'Discrepant' && (
+            <div style={{ marginTop: 16, padding: '12px 14px', borderRadius: 6, border: '1px solid var(--error-border)', background: 'var(--error-dim)' }}>
+              <div style={{ fontSize: 13, color: 'var(--error)', fontWeight: 600, marginBottom: 8 }}>Discrepancy found — fix and resubmit</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {verdict.rules.filter(r => !r.pass).map(r => (
+                  <div key={r.rule} style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                    ✗ {r.rule} — expected <strong>{r.expected}</strong>, got <strong>{r.actual}</strong>
+                  </div>
+                ))}
               </div>
-            )}
-          </div>
-        ) : (
-          <div
-            onDragOver={e => { e.preventDefault(); setState('dragging'); }}
-            onDragLeave={() => setState('empty')}
-            onDrop={handleDrop}
-            onClick={() => inputRef.current?.click()}
+            </div>
+          )}
+
+          {gradeError && (
+            <div style={{ marginTop: 14, fontSize: 13, color: 'var(--error)', lineHeight: 1.5 }}>{gradeError}</div>
+          )}
+
+          <button
+            onClick={realMode ? submitReal : submitSim}
+            disabled={realMode ? (grading || (state !== 'added' && state !== 'upload_failed')) : (state !== 'added' && state !== 'upload_failed')}
             style={{
-              border: `1.5px dashed ${state === 'dragging' ? 'var(--accent)' : 'var(--border)'}`,
-              background: state === 'dragging' ? 'var(--accent-dim)' : 'transparent',
+              width: '100%',
+              marginTop: 20,
+              padding: '14px 20px',
               borderRadius: 8,
-              padding: '48px 24px',
-              textAlign: 'center',
-              cursor: 'pointer',
-              transition: 'border-color 0.2s, background 0.2s',
+              border: 'none',
+              fontSize: 15,
+              fontWeight: 600,
+              cursor: (state === 'added' || state === 'upload_failed') && !grading ? 'pointer' : 'not-allowed',
+              background: (state === 'added' || state === 'upload_failed') && !grading ? 'var(--accent)' : 'var(--bg-mid)',
+              color: (state === 'added' || state === 'upload_failed') && !grading ? '#0A0A0B' : 'var(--text-muted)',
+              opacity: state === 'uploading' || state === 'received' ? 0.7 : 1,
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
-              <UploadIcon active={state === 'dragging'} />
-            </div>
-            <div style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>
-              Drop file or click to browse
-            </div>
-            {state === 'wrong_type' && (
-              <div style={{ fontSize: 13, color: 'var(--error)', marginTop: 12 }}>Unsupported file type</div>
-            )}
-            <input
-              ref={inputRef}
-              type="file"
-              accept=".pdf,.png,.jpg,.jpeg"
-              style={{ display: 'none' }}
-              onChange={e => {
-                const f = e.target.files?.[0];
-                if (f) handleFile(f);
-                e.target.value = '';
-              }}
-            />
-          </div>
-        )}
-
-        <button
-          onClick={submit}
-          disabled={state !== 'added' && state !== 'upload_failed'}
-          style={{
-            width: '100%',
-            marginTop: 20,
-            padding: '14px 20px',
-            borderRadius: 8,
-            border: 'none',
-            fontSize: 15,
-            fontWeight: 600,
-            cursor: state === 'added' || state === 'upload_failed' ? 'pointer' : 'not-allowed',
-            background: state === 'added' || state === 'upload_failed' ? 'var(--accent)' : 'var(--bg-mid)',
-            color: state === 'added' || state === 'upload_failed' ? '#0A0A0B' : 'var(--text-muted)',
-            opacity: state === 'uploading' || state === 'received' ? 0.7 : 1,
-          }}
-        >
-          {state === 'upload_failed' ? 'Retry' : state === 'received' ? 'Received' : 'Submit for document check'}
-        </button>
-      </Card>
+            {realMode
+              ? (grading ? 'Grading on-chain…' : verdict?.verdict === 'Discrepant' ? 'Resubmit B/L for grading' : 'Submit B/L for grading')
+              : (state === 'upload_failed' ? 'Retry' : state === 'received' ? 'Received' : 'Submit for document check')}
+          </button>
+        </Card>
+      )}
 
       <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 16 }}>
-        Demo only — this upload and document check are simulated in the browser. No file leaves your device and no real AI verification runs.
+        {realMode
+          ? 'Live chain — the grading runs the deterministic rules engine against the on-chain terms and, on a compliant result, records the verdict with the local releaser key (localhost only).'
+          : 'Demo only — this upload and document check are simulated in the browser. No file leaves your device and no real AI verification runs.'}
       </p>
     </div>
+  );
+}
+
+function ModeBanner({ mode, state }: { mode: 'real' | 'sim' | 'chaindown'; state: string | null }) {
+  if (mode === 'real') {
+    return (
+      <div style={bannerStyle('accent')}>
+        Live chain detected — submitting grades the B/L on-chain. Deal state: <strong>{state}</strong>.
+      </div>
+    );
+  }
+  const text = mode === 'chaindown'
+    ? 'No local chain detected — showing a local simulation so the demo still completes. Start the Hardhat node and deploy to grade a real B/L.'
+    : `Deal is not Funded on-chain yet${state ? ` (state: ${state})` : ''} — showing a local simulation. Fund the deal on the Escrow tab first to grade a real B/L.`;
+  return <div style={bannerStyle('muted')}>{text}</div>;
+}
+
+function bannerStyle(tone: 'accent' | 'muted'): React.CSSProperties {
+  return {
+    fontSize: 12,
+    lineHeight: 1.5,
+    marginBottom: 16,
+    padding: '8px 12px',
+    borderRadius: 6,
+    color: tone === 'accent' ? 'var(--accent)' : 'var(--text-muted)',
+    border: `1px dashed ${tone === 'accent' ? 'var(--accent-border)' : 'var(--border)'}`,
+    background: tone === 'accent' ? 'var(--accent-dim)' : 'transparent',
+  };
+}
+
+const inputStyle: React.CSSProperties = {
+  width: '100%', padding: '9px 12px', borderRadius: 6, fontSize: 13, boxSizing: 'border-box',
+  background: 'var(--bg-deep)', color: 'var(--text-primary)', border: '1px solid var(--border)',
+};
+
+function Field({ label, ...rest }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <label style={{ display: 'block' }}>
+      <span style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 5 }}>{label}</span>
+      <input style={inputStyle} {...rest} />
+    </label>
   );
 }
 

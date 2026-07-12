@@ -5,6 +5,12 @@
 // This is the seam between #27's account model and #25's on-chain wiring: the UI
 // (components/dashboard/EscrowConsole.tsx) reads useAuth(), builds an ActorCtx, and
 // passes it here — it never talks to the routes directly.
+//
+// PER-DEAL SCOPING (feat/store-reconciliation) — every call now also takes the
+// `dealId`: the per-account active deal id from lib/dealStore.tsx (useDeal). The
+// routes scope the off-chain record to that id, so an account drives ITS active
+// deal instead of one shared global deal. Callers pass the id of a deal the viewer
+// can see (dealStore's visibleDealsFor already enforces that), preserving isolation.
 import type { Account, ClientHat } from "@/lib/authStore";
 import type { BolFields, Verdict } from "@/lib/escrow/rules";
 import type { DealTerms } from "@/lib/escrow/store";
@@ -52,33 +58,33 @@ async function post<T>(path: string, body: Record<string, unknown>): Promise<T> 
   return json;
 }
 
-export function fetchStatus(): Promise<StatusResponse> {
-  return fetch("/api/escrow/status", { cache: "no-store" }).then(r => r.json());
+export function fetchStatus(dealId: string): Promise<StatusResponse> {
+  return fetch(`/api/escrow/status?dealId=${encodeURIComponent(dealId)}`, { cache: "no-store" }).then(r => r.json());
 }
 
-export function propose(terms: DealTerms, actor: ActorCtx) {
-  return post<{ ok: boolean; error?: string }>("/api/escrow/propose", { ...terms, actor });
+export function propose(dealId: string, terms: DealTerms, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string }>("/api/escrow/propose", { dealId, ...terms, actor });
 }
 
-export function agree(actor: ActorCtx) {
-  return post<{ ok: boolean; error?: string; dealId?: string; txHash?: string }>("/api/escrow/agree", { actor });
+export function agree(dealId: string, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; dealId?: string; txHash?: string }>("/api/escrow/agree", { dealId, actor });
 }
 
-export function fund(actor: ActorCtx) {
-  return post<{ ok: boolean; error?: string; approveHash?: string; depositHash?: string }>("/api/escrow/fund", { actor });
+export function fund(dealId: string, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; approveHash?: string; depositHash?: string }>("/api/escrow/fund", { dealId, actor });
 }
 
-export function submitBol(fields: BolFields, actor: ActorCtx) {
+export function submitBol(dealId: string, fields: BolFields, actor: ActorCtx) {
   return post<Verdict & { ok: boolean; error?: string; txHash?: string; recordVerdictSkipped?: boolean }>(
     "/api/escrow/submit-bol",
-    { ...fields, actor },
+    { dealId, ...fields, actor },
   );
 }
 
-export function release(actor: ActorCtx) {
-  return post<{ ok: boolean; error?: string; txHash?: string }>("/api/escrow/release", { actor });
+export function release(dealId: string, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; txHash?: string }>("/api/escrow/release", { dealId, actor });
 }
 
-export function reset(actor: ActorCtx) {
-  return post<{ ok: boolean; error?: string }>("/api/escrow/reset", { actor });
+export function reset(dealId: string, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string }>("/api/escrow/reset", { dealId, actor });
 }

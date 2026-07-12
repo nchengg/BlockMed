@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
 import { keccak256, parseUnits, toHex } from "viem";
 import { loadDeployment, publicClient, walletFor, escrowAbi, type Deployment } from "@/lib/escrow/chain";
-import { getStore, saveStore, appendAudit } from "@/lib/escrow/store";
+import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
 import { readActor, requireHat, partyRef } from "@/lib/escrow/actor";
 
 // Step 2 — BUYER agrees to the proposal; the platform (releaser key) registers the
 // deal on-chain: createDeal → Draft→Agreed. (TRD: createDeal is RELEASER_ROLE-gated.)
 // #27 adaptation: gated to the buyer hat; the buyer account is recorded.
+//
+// Reconciliation: scoped to the caller's active app deal id (lib/dealStore); the
+// on-chain bytes32 id is derived from it, salted by the monotonic counter so a
+// re-run of the same app deal never collides with a prior on-chain deal.
 //
 // ─────────────────────────────────────────────────────────────────────────────
 // CRITICAL — RELEASER SIGNS HERE, SERVER-SIDE, WITHOUT VERIFIED AUTH.
@@ -21,23 +25,29 @@ import { readActor, requireHat, partyRef } from "@/lib/escrow/actor";
 // settled this endpoint stays local-only. (Mirrors submit-bol/route.ts.)
 // ─────────────────────────────────────────────────────────────────────────────
 export async function POST(req: Request) {
-  const actor = readActor(await req.json().catch(() => ({})));
+  const body = await req.json().catch(() => ({}));
+  const actor = readActor(body);
   const denied = requireHat(actor, "buyer");
   if (denied) return denied;
 
+  const appDealId = readDealId(body);
+  if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
+
   const store = getStore();
-  if (!store.terms) return NextResponse.json({ error: "No proposal to agree to." }, { status: 409 });
-  if (store.dealId) return NextResponse.json({ error: "Deal already created." }, { status: 409 });
+  const deal = getDeal(store, appDealId);
+  if (!deal?.terms) return NextResponse.json({ error: "No proposal to agree to." }, { status: 409 });
+  if (deal.onChainDealId) return NextResponse.json({ error: "Deal already created." }, { status: 409 });
 
   const dep = loadDeployment();
   const pc = publicClient(dep);
   const releaser = walletFor("releaser", dep);
 
-  const dealId = keccak256(toHex(`demo-deal-${store.dealCounter + 1}`));
-  const amountMinor = parseUnits(store.terms.amountUsdc, 6);
+  // Derive the on-chain id from the app deal id + counter salt (unique per run).
+  const onChainDealId = keccak256(toHex(`${appDealId}#${store.dealCounter + 1}`));
+  const amountMinor = parseUnits(deal.terms.amountUsdc, 6);
 
-  store.parties.buyer = partyRef(actor, "buyer");
-  appendAudit(store, { actor: "buyer", action: "Agreed to proposed terms", accountId: actor?.accountId });
+  deal.parties.buyer = partyRef(actor, "buyer");
+  appendAudit(deal, { actor: "buyer", action: "Agreed to proposed terms", accountId: actor?.accountId });
 
   // Refuse to sign the releaser call anywhere but the local dev chain.
   const localGuard = assertLocalReleaser(dep);
@@ -50,20 +60,20 @@ export async function POST(req: Request) {
     address: dep.escrow,
     abi: escrowAbi,
     functionName: "createDeal",
-    args: [dealId, dep.accounts.buyer, dep.accounts.seller, amountMinor],
+    args: [onChainDealId, dep.accounts.buyer, dep.accounts.seller, amountMinor],
   });
   await pc.waitForTransactionReceipt({ hash });
 
   store.dealCounter += 1;
-  store.dealId = dealId;
-  appendAudit(store, {
+  deal.onChainDealId = onChainDealId;
+  appendAudit(deal, {
     actor: "platform",
     action: "Deal registered on-chain (createDeal)",
     detail: "State: Draft → Agreed",
     txHash: hash,
   });
   saveStore(store);
-  return NextResponse.json({ ok: true, dealId, txHash: hash });
+  return NextResponse.json({ ok: true, dealId: onChainDealId, txHash: hash });
 }
 
 // Hard stop: the server-held releaser key may only sign against the local Hardhat

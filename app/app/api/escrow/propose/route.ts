@@ -1,15 +1,20 @@
 import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
-import { getStore, saveStore, appendAudit, type DealTerms } from "@/lib/escrow/store";
+import { getStore, saveStore, ensureDeal, appendAudit, readDealId, type DealTerms } from "@/lib/escrow/store";
 import { readActor, requireHat, partyRef } from "@/lib/escrow/actor";
 
 // Step 1 — SELLER proposes the escrow terms (off-chain; nothing on-chain yet).
 // #27 adaptation: gated to the seller hat, and the seller account is recorded.
+// Reconciliation: scoped to the caller's active deal id (lib/dealStore), so the
+// terms attach to THAT deal's record — not to one shared global deal.
 export async function POST(req: Request) {
-  const body = (await req.json()) as Partial<DealTerms> & { actor?: unknown };
+  const body = (await req.json()) as Partial<DealTerms> & { dealId?: unknown; actor?: unknown };
   const actor = readActor(body);
   const denied = requireHat(actor, "seller");
   if (denied) return denied;
+
+  const dealId = readDealId(body);
+  if (!dealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
 
   const { goods, amountUsdc, sellerName, buyerName, shipmentDeadline } = body;
 
@@ -30,22 +35,23 @@ export async function POST(req: Request) {
   }
 
   const store = getStore();
-  if (store.terms) {
-    return NextResponse.json({ error: "A proposal already exists — reset to start over." }, { status: 409 });
+  const deal = ensureDeal(store, dealId);
+  if (deal.terms) {
+    return NextResponse.json({ error: "A proposal already exists for this deal — reset to start over." }, { status: 409 });
   }
 
-  store.terms = {
+  deal.terms = {
     goods: goods.trim(),
     amountUsdc: amountUsdc!.trim(),
     sellerName: sellerName.trim(),
     buyerName: buyerName.trim(),
     shipmentDeadline,
   };
-  store.parties.seller = partyRef(actor, "seller");
-  appendAudit(store, {
+  deal.parties.seller = partyRef(actor, "seller");
+  appendAudit(deal, {
     actor: "seller",
     action: "Proposed escrow terms",
-    detail: `${store.terms.goods} — ${store.terms.amountUsdc} USDC, ship by ${shipmentDeadline}`,
+    detail: `${deal.terms.goods} — ${deal.terms.amountUsdc} USDC, ship by ${shipmentDeadline}`,
     accountId: actor?.accountId,
   });
   saveStore(store);

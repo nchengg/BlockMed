@@ -8,12 +8,21 @@
 // This talks ONLY to app/api/escrow/* (via lib/escrow/client.ts), which drives the
 // real local Hardhat chain. It is the genuinely end-to-end piece of this port.
 //
+// PER-DEAL RECONCILIATION (feat/store-reconciliation) — the console now drives the
+// LOGGED-IN ACCOUNT'S ACTIVE DEAL. It reads useDeal() (lib/dealStore), which already
+// returns only a deal the current viewer is allowed to see (visibleDealsFor), and
+// passes that deal's id to every lifecycle call + the status read. So a buyer acts
+// on THEIR active deal, not on one shared global deal — and isolation holds because
+// the id we send is always a visible one.
+//
 // TODO(integration) — the existing buyer/seller wizards (components/buyer/*,
 // components/seller/*) still run the MOCK dealStore flow. Wiring those steps to these
-// same actions is the remaining integration; seams are marked in Step4ApproveDeposit
-// and Step2UploadDocuments. This console is the operator-facing driver in the meantime.
+// same actions (now that the client takes the active dealId) is the remaining
+// integration; seams are marked in Step4ApproveDeposit and Step2UploadDocuments.
+// This console is the operator-facing driver in the meantime.
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth, type ClientHat } from '@/lib/authStore';
+import { useDeal, EMPTY_DEAL } from '@/lib/dealStore';
 import {
   actorFrom, fetchStatus, propose, agree, fund, submitBol, release, reset,
   type StatusResponse,
@@ -30,19 +39,27 @@ export function EscrowConsole({ hat }: { hat: ClientHat }) {
   const { account, activeHat } = useAuth();
   const actor = actorFrom(account, activeHat);
 
+  // The deal the console acts on = the viewer's ACTIVE, VISIBLE deal (isolation
+  // already applied by dealStore). EMPTY_DEAL is the "no visible deal" placeholder.
+  const { deal } = useDeal();
+  const appDealId = deal.dealId;
+  const hasActiveDeal = appDealId !== EMPTY_DEAL.dealId;
+
   const [status, setStatus] = useState<StatusResponse | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [msg, setMsg] = useState<{ tone: 'ok' | 'err'; text: string } | null>(null);
 
   const refresh = useCallback(async () => {
+    if (!hasActiveDeal) { setStatus(null); return; }
     try {
-      setStatus(await fetchStatus());
+      setStatus(await fetchStatus(appDealId));
     } catch (e) {
       setStatus({ ok: false, error: (e as Error).message });
     }
-  }, []);
+  }, [appDealId, hasActiveDeal]);
 
-  useEffect(() => { void refresh(); }, [refresh]);
+  // Re-read whenever the active deal changes (e.g. the viewer switches deals).
+  useEffect(() => { setMsg(null); void refresh(); }, [refresh]);
 
   // Run a lifecycle action, surface the result, and re-read chain status.
   const run = useCallback(async (label: string, fn: () => Promise<{ ok: boolean; error?: string }>) => {
@@ -64,9 +81,32 @@ export function EscrowConsole({ hat }: { hat: ClientHat }) {
   const hasTerms = !!status?.terms;
   const hasDeal = !!status?.dealId;
 
+  // No visible deal for this viewer — nothing to drive. (dealStore returns the
+  // EMPTY_DEAL placeholder for an account with no deals it's a party to.)
+  if (!hasActiveDeal) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <LocalOnlyBanner />
+        <Card>
+          <EyebrowLabel>NO ACTIVE DEAL</EyebrowLabel>
+          <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            You have no deal selected to act on. When a deal you’re a party to appears
+            in your dashboard, pick it in the deal switcher to drive its escrow here.
+          </p>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <LocalOnlyBanner />
+
+      {/* Which deal this console is acting on — the viewer's active, visible deal. */}
+      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+        Driving deal <span style={{ fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{appDealId}</span>
+        {deal.dealReference ? ` · ${deal.dealReference}` : ''}
+      </div>
 
       {chainDown && (
         <Card>
@@ -111,24 +151,25 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
         }}>{msg.text}</div>
       )}
 
-      {/* Role-gated actions, driven by the on-chain state machine. */}
+      {/* Role-gated actions, driven by the on-chain state machine. All scoped to
+          the active deal id (appDealId). */}
       {hat === 'seller' && !hasTerms && (
-        <ProposeForm disabled={!!busy} onSubmit={t => run('Propose terms', () => propose(t, actor))} />
+        <ProposeForm disabled={!!busy} onSubmit={t => run('Propose terms', () => propose(appDealId, t, actor))} />
       )}
       {hat === 'buyer' && hasTerms && !hasDeal && (
         <ActionCard title="BUYER ACTION" label="Agree & register deal on-chain"
           helper="Registers the agreed terms (createDeal → Draft→Agreed)."
-          busy={busy === 'Agree'} onClick={() => run('Agree', () => agree(actor))} />
+          busy={busy === 'Agree'} onClick={() => run('Agree', () => agree(appDealId, actor))} />
       )}
       {hat === 'buyer' && state === 'Agreed' && (
         <ActionCard title="BUYER ACTION" label="Fund escrow (approve + deposit)"
           helper="Locks the exact USDC amount. Two transactions: approve, then deposit."
-          busy={busy === 'Fund'} onClick={() => run('Fund', () => fund(actor))} />
+          busy={busy === 'Fund'} onClick={() => run('Fund', () => fund(appDealId, actor))} />
       )}
       {hat === 'seller' && state === 'Funded' && (
         <SubmitBolForm disabled={!!busy}
           onSubmit={f => run('Submit B/L', async () => {
-            const r = await submitBol(f, actor);
+            const r = await submitBol(appDealId, f, actor);
             if (r.ok && r.verdict) setMsg({ tone: r.verdict === 'Compliant' ? 'ok' : 'err', text: `Verdict: ${r.verdict}` });
             return r;
           })} />
@@ -136,7 +177,7 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
       {state === 'ReleasePending' && (
         <ActionCard title="SETTLEMENT (PERMISSIONLESS)" label="Release funds to seller"
           helper="Once the verdict is recorded, anyone may trigger settlement."
-          busy={busy === 'Release'} onClick={() => run('Release', () => release(actor))} />
+          busy={busy === 'Release'} onClick={() => run('Release', () => release(appDealId, actor))} />
       )}
 
       {(hat === 'platform') && (
@@ -151,7 +192,7 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
 
       {account && (account.type === 'admin' || account.type === 'developer' || hat === 'platform') && (
         <button
-          onClick={() => run('Reset', () => reset(actor))}
+          onClick={() => run('Reset', () => reset(appDealId, actor))}
           disabled={busy === 'Reset'}
           style={{
             alignSelf: 'flex-start', fontSize: 12, color: 'var(--text-secondary)',

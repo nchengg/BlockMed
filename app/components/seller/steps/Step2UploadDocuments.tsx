@@ -52,13 +52,13 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void 
   // Read the live chain once on mount to decide real-vs-simulated.
   const refresh = useCallback(async () => {
     try {
-      setStatus(await fetchStatus());
+      setStatus(await fetchStatus(deal.dealId));
     } catch (e) {
       setStatus({ ok: false, error: (e as Error).message });
     } finally {
       setLoaded(true);
     }
-  }, []);
+  }, [deal.dealId]);
   useEffect(() => { void refresh(); }, [refresh]);
 
   const chainDown = loaded && status?.ok === false;
@@ -134,7 +134,7 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void 
     setVerdict(null);
     startUpload();
     try {
-      const r = await submitBol(fields, actor);
+      const r = await submitBol(deal.dealId, fields, actor);
       if (r.ok === false && !r.verdict) {
         setGradeError(r.error || 'Submission was rejected.');
         markUploadFailed();
@@ -161,7 +161,7 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void 
     }
     // actor derives from account; account is the only real dep.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, fields, file, onSubmitted, startUpload, markReceived, markUploadFailed]);
+  }, [account, deal.dealId, fields, file, onSubmitted, startUpload, markReceived, markUploadFailed]);
 
   // ── SIMULATED PATH ── original browser-only upload + first-attempt failure demo.
   const submitSim = () => {

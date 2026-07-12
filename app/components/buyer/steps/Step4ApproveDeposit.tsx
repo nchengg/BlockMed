@@ -40,13 +40,13 @@ export function Step4ApproveDeposit({ onComplete }: { onComplete: () => void }) 
   // Escrow console). No party gate on the read.
   const refresh = useCallback(async () => {
     try {
-      setStatus(await fetchStatus());
+      setStatus(await fetchStatus(deal.dealId));
     } catch (e) {
       setStatus({ ok: false, error: (e as Error).message });
     } finally {
       setLoaded(true);
     }
-  }, []);
+  }, [deal.dealId]);
   useEffect(() => { void refresh(); }, [refresh]);
 
   const chainDown = loaded && status?.ok === false;
@@ -68,7 +68,7 @@ export function Step4ApproveDeposit({ onComplete }: { onComplete: () => void }) 
     setApprove('awaiting_signature');
     setDeposit('waiting');
     try {
-      const r = await fund(actor);
+      const r = await fund(deal.dealId, actor);
       if (r.ok === false) {
         setApprove('failed');
         setError(r.error || 'Deposit was rejected on-chain.');
@@ -88,7 +88,7 @@ export function Step4ApproveDeposit({ onComplete }: { onComplete: () => void }) 
     }
     // actor is derived from account each render; account is the only real dep.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, onComplete]);
+  }, [account, deal.dealId, onComplete]);
 
   // ── SIMULATED PATH ─────────────────────────────────────────────────────────
   // No agreed on-chain deal / no local chain: keep the original two-prompt

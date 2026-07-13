@@ -4,7 +4,8 @@ import { sellerDemo } from '@/data/sellerDemo';
 import { useAuth } from '@/lib/authStore';
 import { useDeal } from '@/lib/dealStore';
 import { actorFrom, fetchStatus, submitBol, type StatusResponse } from '@/lib/escrow/client';
-import type { BolFields, RuleResult } from '@/lib/escrow/rules';
+import type { BolFields, RuleResult, Verdict } from '@/lib/escrow/rules';
+import type { Step2Result } from '../SellerFlowShell';
 import { Card, EyebrowLabel } from '@/components/dashboard/ui';
 
 // Local, pre-upload UI states (no file yet / file staged) live only in this
@@ -22,17 +23,19 @@ type ZoneState = 'empty' | 'dragging' | 'wrong_type' | 'added' | 'uploading' | '
 // verdict is reachable, and are editable so a discrepancy can be demonstrated.
 //
 // Honest seams that remain (see report):
-//   1. The graded terms come from the SINGLE global escrow deal (lib/escrow/store.ts),
-//      not from the per-account dealStore id — so this submits the one shared escrow
-//      deal; the wizard's active deal is UI context. On success we mirror `markReceived`
-//      into the mock dealStore so /dashboard stays consistent.
-//   2. The wizard has no propose/agree/fund steps, so the shared deal must already be
-//      Funded (set up via the Escrow tab) for a real submit. When it isn't — or no local
-//      chain is running — we degrade gracefully to the original labelled simulation so
-//      the demo still completes (same posture as EscrowConsole).
-//   3. Step3DocumentCheck still runs its own simulated check + outcome selector; in the
-//      real path the authoritative verdict is already produced HERE at submit time.
-export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void }) {
+//   1. This submits the seller's ACTIVE per-account deal (deal.dealId, threaded into
+//      submitBol by feat/store-reconciliation) and mirrors `markReceived` into the mock
+//      dealStore so /dashboard stays consistent.
+//   2. The wizard has no propose/agree/fund steps, so the deal must already be Funded
+//      (set up via the Escrow tab) for a real submit. When it isn't — or no local chain
+//      is running — we degrade gracefully to the original labelled simulation so the
+//      demo still completes (same posture as EscrowConsole).
+//   3. The authoritative verdict is produced HERE at submit time and threaded up to
+//      SellerFlowShell (onSubmitted) so Step3 renders the REAL result: a Compliant
+//      verdict advances to Step3; a discrepancy stays here with the real breakdown to
+//      fix and resubmit; a simulated / no-chain submit hands Step3 a null verdict and it
+//      falls back to its clearly-labelled simulation. We never fabricate a verdict.
+export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: Step2Result) => void }) {
   const { account } = useAuth();
   const { deal, startUpload, markUploadFailed, markReceived } = useDeal();
 
@@ -148,7 +151,8 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void 
         setState('received');
         // Surface a non-fatal note (e.g. releaser skipped off localhost) but still proceed.
         if (r.ok === false && r.error) setGradeError(r.error);
-        setTimeout(onSubmitted, 900);
+        // Thread the REAL verdict up to SellerFlowShell so Step3 renders it.
+        setTimeout(() => onSubmitted({ verdict: { verdict: r.verdict, rules: r.rules } }), 900);
       } else {
         setGradeError(null);
         markUploadFailed();
@@ -187,7 +191,9 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: () => void 
         setProgress(100);
         markReceived();
         setState('received');
-        setTimeout(onSubmitted, 700);
+        // Simulated path — no real on-chain deal was graded, so hand Step3 a null
+        // verdict and let it run its clearly-labelled simulation.
+        setTimeout(() => onSubmitted({ verdict: null }), 700);
       }
     }, 1150);
   };

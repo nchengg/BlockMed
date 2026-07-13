@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { loadDeployment, publicClient, walletFor, escrowAbi, type Deployment } from "@/lib/escrow/chain";
-import { getStore, saveStore, appendAudit } from "@/lib/escrow/store";
+import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
 import { gradeBol, type BolFields } from "@/lib/escrow/rules";
 import { readActor, requireHat } from "@/lib/escrow/actor";
 
@@ -9,6 +9,8 @@ import { readActor, requireHat } from "@/lib/escrow/actor";
 // the verdict on-chain: Funded → ReleasePending. Discrepant = no chain write.
 //
 // #27 adaptation: submission is gated to the seller hat.
+// Reconciliation: scoped to the caller's active app deal id (lib/dealStore) — the
+// B/L is graded against THAT deal's terms and the verdict recorded on its on-chain id.
 //
 // ─────────────────────────────────────────────────────────────────────────────
 // CRITICAL — RELEASER SIGNS HERE, SERVER-SIDE, WITHOUT VERIFIED AUTH.
@@ -26,14 +28,18 @@ import { readActor, requireHat } from "@/lib/escrow/actor";
 //   Until Q18 is settled this endpoint stays local-only.
 // ─────────────────────────────────────────────────────────────────────────────
 export async function POST(req: Request) {
-  const body = (await req.json()) as BolFields & { actor?: unknown };
+  const body = (await req.json()) as BolFields & { dealId?: unknown; actor?: unknown };
   const actor = readActor(body);
   const denied = requireHat(actor, "seller");
   if (denied) return denied;
 
+  const appDealId = readDealId(body);
+  if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
+
   const fields = body as BolFields;
   const store = getStore();
-  if (!store.dealId || !store.terms) {
+  const deal = getDeal(store, appDealId);
+  if (!deal?.onChainDealId || !deal.terms) {
     return NextResponse.json({ error: "No funded deal." }, { status: 409 });
   }
 
@@ -45,14 +51,14 @@ export async function POST(req: Request) {
     address: dep.escrow,
     abi: escrowAbi,
     functionName: "state",
-    args: [store.dealId],
+    args: [deal.onChainDealId],
   })) as number;
   if (state !== 2 /* Funded */) {
     return NextResponse.json({ error: "Deal is not in Funded state." }, { status: 409 });
   }
 
-  const verdict = gradeBol(fields, store.terms);
-  appendAudit(store, {
+  const verdict = gradeBol(fields, deal.terms);
+  appendAudit(deal, {
     actor: "seller",
     action: `Submitted B/L ${fields.blNumber || "(no number)"} — verdict: ${verdict.verdict}`,
     detail: verdict.rules.map((r) => `${r.pass ? "✓" : "✗"} ${r.rule}`).join(" · "),
@@ -76,10 +82,10 @@ export async function POST(req: Request) {
     address: dep.escrow,
     abi: escrowAbi,
     functionName: "recordVerdict",
-    args: [store.dealId],
+    args: [deal.onChainDealId],
   });
   await pc.waitForTransactionReceipt({ hash });
-  appendAudit(store, {
+  appendAudit(deal, {
     actor: "platform",
     action: "Verdict recorded on-chain (recordVerdict)",
     detail: "State: Funded → ReleasePending — release is now permissionless",

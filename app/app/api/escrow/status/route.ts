@@ -1,16 +1,22 @@
 import { NextResponse } from "next/server";
 import { formatUnits } from "viem";
 import { loadDeployment, publicClient, usdcAbi, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
-import { getStore } from "@/lib/escrow/store";
+import { getStore, getDeal } from "@/lib/escrow/store";
 
 export const dynamic = "force-dynamic";
 
 // Read-only snapshot of the live chain + off-chain store. No party gate (read).
-export async function GET() {
+// Reconciliation: scoped to ?dealId= (the caller's active app deal id) — the deal
+// fields (on-chain id, terms, parties, state, audit) come from THAT deal's record.
+// The USDC balances are per-address and chain-global, so they stay as-is.
+export async function GET(req: Request) {
   try {
     const dep = loadDeployment();
     const pc = publicClient(dep);
     const store = getStore();
+
+    const appDealId = new URL(req.url).searchParams.get("dealId");
+    const deal = appDealId ? getDeal(store, appDealId) : undefined;
 
     const balanceOf = (addr: string) =>
       pc.readContract({
@@ -27,12 +33,12 @@ export async function GET() {
     ]);
 
     let stateName: string | null = null;
-    if (store.dealId) {
+    if (deal?.onChainDealId) {
       const s = (await pc.readContract({
         address: dep.escrow,
         abi: escrowAbi,
         functionName: "state",
-        args: [store.dealId],
+        args: [deal.onChainDealId],
       })) as number;
       stateName = STATE_NAMES[s];
     }
@@ -45,11 +51,11 @@ export async function GET() {
         seller: formatUnits(sellerBal, 6),
         escrow: formatUnits(escrowBal, 6),
       },
-      dealId: store.dealId,
-      terms: store.terms,
-      parties: store.parties,
+      dealId: deal?.onChainDealId ?? null,
+      terms: deal?.terms ?? null,
+      parties: deal?.parties ?? {},
       state: stateName,
-      audit: store.audit,
+      audit: deal?.audit ?? [],
     });
   } catch (err) {
     return NextResponse.json(

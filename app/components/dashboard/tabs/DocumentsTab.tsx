@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { demoDocuments, type Role } from '@/data/dashboardDemo';
+import { demoDocuments, invoiceFieldsFor, type Role } from '@/data/dashboardDemo';
 import { useDeal, type DocumentStatus } from '@/lib/dealStore';
 import { Card, EyebrowLabel, StatusPill } from '../ui';
 
@@ -13,6 +13,8 @@ export function DocumentsTab({ role }: { role: Role }) {
   // Extracted fields only make sense to show once the (simulated) check has
   // actually looked at the document — not while it's still uploading.
   const showExtractedFields = ['checking', 'verified', 'failed', 'manual_review'].includes(deal.documentStatus);
+  // Derived from the active deal, so the tab reflects whichever deal is in view.
+  const invoiceFields = invoiceFieldsFor(deal);
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 20 }} className="dashboard-documents-grid">
@@ -69,13 +71,13 @@ export function DocumentsTab({ role }: { role: Role }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         <Card>
           <EyebrowLabel>DOCUMENT DETAIL</EyebrowLabel>
-          {isInvoice && showExtractedFields ? (
+          {isInvoice && showExtractedFields && invoiceFields ? (
             <>
               <h3 style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16 }}>
                 {selected.name}
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {selected.extractedFields?.map(f => (
+                {invoiceFields.map(f => (
                   <div key={f.label} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 13, borderBottom: '1px solid var(--border)', paddingBottom: 8 }}>
                     <span style={{ color: 'var(--text-secondary)' }}>{f.label}</span>
                     <span style={{ fontFamily: 'monospace', color: 'var(--text-primary)' }}>{f.value}</span>
@@ -86,6 +88,10 @@ export function DocumentsTab({ role }: { role: Role }) {
                 Fields shown are simulated for this demo — no real document parsing occurs.
               </p>
             </>
+          ) : isInvoice && showExtractedFields ? (
+            <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+              No invoice details are available for this deal yet.
+            </p>
           ) : isInvoice && deal.documentStatus === 'uploading' ? (
             <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
               The seller is uploading this document now (simulated).

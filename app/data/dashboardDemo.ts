@@ -3,6 +3,8 @@
 // payment/document status, and audit trail all live in the shared store so
 // they stay consistent with /buyer and /seller.
 
+import type { DealState } from '@/lib/dealStore';
+
 export type Role = 'buyer' | 'seller' | 'operator';
 
 export type DocumentStatus = 'required_mvp' | 'coming_next';
@@ -11,24 +13,17 @@ export type DemoDocument = {
   id: string;
   name: string;
   status: DocumentStatus;
-  extractedFields?: { label: string; value: string }[];
 };
 
-// Extracted fields shown for the commercial invoice once it's been uploaded.
-// Upload/discrepancy state itself comes from the shared deal store.
+// The document CHECKLIST (names + which are MVP vs later) is static. The
+// per-invoice "extracted fields" are NOT — they derive from the active deal
+// (see invoiceFieldsFor), so the Documents tab always reflects whichever deal
+// is in view rather than a single hardcoded one.
 export const demoDocuments: DemoDocument[] = [
   {
     id: 'commercial-invoice',
     name: 'Commercial invoice',
     status: 'required_mvp',
-    extractedFields: [
-      { label: 'Invoice number', value: 'INV-2026-0417' },
-      { label: 'Invoice total', value: '$48,600.00' },
-      { label: 'Escrow amount', value: '$48,250.00' },
-      { label: 'Seller', value: 'Solaris Textiles Co.' },
-      { label: 'Buyer', value: 'Meridian Imports Ltd.' },
-      { label: 'Invoice date', value: '2026-06-30' },
-    ],
   },
   {
     id: 'packing-list',
@@ -41,6 +36,25 @@ export const demoDocuments: DemoDocument[] = [
     status: 'coming_next',
   },
 ];
+
+// Derives the commercial invoice's "extracted fields" from the ACTIVE deal so
+// the Documents tab shows that deal's own parties and amounts — not a leftover
+// hardcoded deal. Returns null when the active deal carries no meaningful data
+// (the empty placeholder), so the tab can fall back to a neutral message
+// instead of surfacing another deal's details.
+export function invoiceFieldsFor(deal: DealState): { label: string; value: string }[] | null {
+  const hasData = deal.dealReference !== '—' && deal.amount > 0;
+  if (!hasData) return null;
+  const money = `${deal.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} ${deal.currency}`;
+  return [
+    { label: 'Invoice number', value: deal.dealReference },
+    { label: 'Invoice total', value: money },
+    { label: 'Escrow amount', value: money },
+    { label: 'Seller', value: deal.seller.businessName },
+    { label: 'Buyer', value: deal.buyer.businessName },
+    { label: 'Invoice date', value: deal.createdDate },
+  ];
+}
 
 export const demoSettings = {
   releaseRule: 'Funds release automatically when the uploaded invoice matches the deal terms: invoice total, seller details, and deal reference.',

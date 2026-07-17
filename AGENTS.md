@@ -114,3 +114,5 @@ python tools/sync_agents.py --check || {
 If you're using Codex, Cursor, Aider, ChatGPT, or another tool: ignore `.claude/`.
 Read this file plus everything under `agents/`, `skills/`, and `docs/`. That's the
 complete spec.
+
+## Imported Claude Cowork project instructions

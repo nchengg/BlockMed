@@ -27,6 +27,7 @@ node_modules/
 contracts/artifacts/
 contracts/cache/
 contracts/ignition/deployments/
+contracts/deployments/
 contracts/typechain-types/
 
 # App runtime data (Phase 3+)

@@ -130,10 +130,16 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
             <EyebrowLabel>ON-CHAIN STATE</EyebrowLabel>
             <StatusPill label={state ?? 'No deal yet'} tone={state ? STATE_TONE[state] ?? 'pending' : 'pending'} />
           </div>
+          {/* First cell is THIS deal's locked amount (deals(dealId).amount, only while
+              the contract actually holds it). The wallet/contract balances are per-address
+              and chain-global — labelled as such so two funded deals don't both appear
+              to hold the contract's total. */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 14 }}>
-            <Balance label="Buyer" value={status.balances?.buyer} />
-            <Balance label="Seller" value={status.balances?.seller} />
-            <Balance label="Escrow (locked)" value={status.balances?.escrow} />
+            <Balance label="Locked in this deal"
+              value={hasDeal ? (state === 'Funded' || state === 'ReleasePending' ? status.dealAmount ?? '0' : '0') : undefined} />
+            <Balance label="Buyer wallet (all deals)" value={status.balances?.buyer} />
+            <Balance label="Seller wallet (all deals)" value={status.balances?.seller} />
+            <Balance label="Escrow total (all deals)" value={status.balances?.escrow} />
           </div>
           {status.addresses && (
             <div style={{ marginTop: 14, display: 'flex', flexWrap: 'wrap', gap: 8 }}>

@@ -148,7 +148,11 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
           action card; the seller sees what they proposed. Fix for the agree-blind
           consent gap: the API returned terms but nothing rendered them. */}
       {!chainDown && terms && (
-        <TermsCard terms={terms} hasDeal={hasDeal} hat={hat} />
+        <TermsCard terms={terms} hasDeal={hasDeal} hat={hat}
+          acceptAction={hat === 'buyer' && !hasDeal ? {
+            busy: busy === 'Agree',
+            onClick: () => run('Agree', () => agree(appDealId, actor)),
+          } : undefined} />
       )}
 
       {msg && (
@@ -164,11 +168,6 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
           the active deal id (appDealId). */}
       {hat === 'seller' && !hasTerms && (
         <ProposeForm disabled={!!busy} onSubmit={t => run('Propose terms', () => propose(appDealId, t, actor))} />
-      )}
-      {hat === 'buyer' && hasTerms && !hasDeal && (
-        <ActionCard title="BUYER ACTION" label="Agree & register deal on-chain"
-          helper="Registers the terms shown above (createDeal → Draft→Agreed). No funds move yet — funding is a separate step."
-          busy={busy === 'Agree'} onClick={() => run('Agree', () => agree(appDealId, actor))} />
       )}
       {hat === 'buyer' && state === 'Agreed' && (
         <ActionCard title="BUYER ACTION"
@@ -229,7 +228,10 @@ function LocalOnlyBanner() {
 
 type Terms = NonNullable<StatusResponse['terms']>;
 
-function TermsCard({ terms, hasDeal, hat }: { terms: Terms; hasDeal: boolean; hat: ClientHat }) {
+function TermsCard({ terms, hasDeal, hat, acceptAction }: {
+  terms: Terms; hasDeal: boolean; hat: ClientHat;
+  acceptAction?: { busy: boolean; onClick: () => void };
+}) {
   const eyebrow = hasDeal
     ? 'AGREED TERMS'
     : hat === 'buyer'
@@ -250,6 +252,22 @@ function TermsCard({ terms, hasDeal, hat }: { terms: Terms; hasDeal: boolean; ha
         <TermsRow label="Buyer (consignee)" value={terms.buyerName} />
         <TermsRow label="Ship by" value={terms.shipmentDeadline} mono />
       </div>
+      {acceptAction && (
+        <div style={{ marginTop: 18 }}>
+          <button
+            onClick={acceptAction.onClick} disabled={acceptAction.busy}
+            style={{
+              width: '100%', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+              background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+              cursor: acceptAction.busy ? 'not-allowed' : 'pointer', opacity: acceptAction.busy ? 0.7 : 1,
+            }}
+          >{acceptAction.busy ? 'Working…' : 'Accept terms & register deal on-chain'}</button>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
+            Accepting registers these exact terms (createDeal → Draft→Agreed). No funds move yet —
+            funding is a separate step.
+          </p>
+        </div>
+      )}
     </Card>
   );
 }

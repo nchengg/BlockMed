@@ -27,6 +27,7 @@ node_modules/
 contracts/artifacts/
 contracts/cache/
 contracts/ignition/deployments/
+contracts/deployments/
 contracts/typechain-types/
 
 # App runtime data (Phase 3+)
@@ -37,6 +38,7 @@ app/data/audit-ledger.jsonl
 .DS_Store
 Thumbs.db
 desktop.ini
+BlockMed.code-workspace
 .vscode/
 .idea/
 

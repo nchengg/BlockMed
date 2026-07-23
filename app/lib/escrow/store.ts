@@ -57,6 +57,9 @@ export interface DealRecord {
   appDealId: string; // the per-account deal id this record is scoped to
   onChainDealId: string | null; // bytes32 hex, set once createDeal runs on-chain
   terms: DealTerms | null;
+  // Notice-of-release review (FR-10/11): set when a Compliant B/L opens the buyer's
+  // objection window; cleared/replaced on a corrected resubmission. See review.ts.
+  review?: import("./review").Review | null;
   // #27 adaptation: the accounts participating in this deal, captured as they act.
   parties: { seller?: PartyRef; buyer?: PartyRef };
   audit: AuditEntry[];

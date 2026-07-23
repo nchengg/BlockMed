@@ -27,6 +27,7 @@ import {
   actorFrom, fetchStatus, propose, agree, fund, submitBol, release, reset,
   type StatusResponse,
 } from '@/lib/escrow/client';
+import { RECORDED_FIELDS, type BolFields } from '@/lib/escrow/rules';
 import { Card, EyebrowLabel, StatusPill, AddressChip } from './ui';
 import type { StatusTone } from './ui';
 
@@ -182,7 +183,7 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
           busy={busy === 'Fund'} onClick={() => run('Fund', () => fund(appDealId, actor))} />
       )}
       {hat === 'seller' && state === 'Funded' && (
-        <SubmitBolForm disabled={!!busy}
+        <SubmitBolForm disabled={!!busy} terms={terms}
           onSubmit={f => run('Submit B/L', async () => {
             const r = await submitBol(appDealId, f, actor);
             if (r.ok && r.verdict) setMsg({ tone: r.verdict === 'Compliant' ? 'ok' : 'err', text: `Verdict: ${r.verdict}` });
@@ -359,32 +360,61 @@ function ProposeForm({ disabled, onSubmit }: { disabled: boolean; onSubmit: (t: 
   );
 }
 
-function SubmitBolForm({ disabled, onSubmit }: { disabled: boolean; onSubmit: (f: {
-  blNumber: string; shipperName: string; consigneeName: string; amountUsdc: string; shipmentDate: string;
-}) => void }) {
-  const [f, setF] = useState({
-    blNumber: 'BL-2026-0417', shipperName: 'Solaris Textiles Co.',
-    consigneeName: 'Meridian Imports Ltd.', amountUsdc: '2500.00', shipmentDate: '2026-08-20',
+// Field set mirrors a real ocean B/L (see lib/escrow/rules.ts). Graded fields are
+// prefilled from the agreed terms; recorded-only fields are captured for the audit
+// trail / examiner but not machine-graded. When AI extraction lands, it autofills
+// this exact schema from the uploaded document.
+function SubmitBolForm({ disabled, terms, onSubmit }: {
+  disabled: boolean;
+  terms: Terms | null;
+  onSubmit: (f: BolFields) => void;
+}) {
+  const [f, setF] = useState<BolFields>({
+    blNumber: 'MAEU-2260714',
+    shipperName: terms?.sellerName ?? '',
+    consigneeName: terms?.buyerName ?? '',
+    goodsDescription: terms?.goods ?? '',
+    shippedOnBoardDate: '',
+    vessel: 'MAERSK ATLANTIC',
+    voyageNumber: '421W',
+    portOfLoading: 'Jebel Ali',
+    portOfDischarge: 'Felixstowe',
+    containerNumber: 'MSKU-1234567',
+    packages: '480 cartons',
+    grossWeight: '8,640 kg',
   });
-  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
+  const set = (k: keyof BolFields) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
   return (
     <Card>
       <EyebrowLabel>SELLER ACTION — SUBMIT BILL OF LADING</EyebrowLabel>
       <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12, lineHeight: 1.5 }}>
-        The deterministic rules engine grades these against the agreed terms. Compliant →
-        the platform records the verdict on-chain; discrepant → no chain write.
+        Enter the details exactly as they appear on the carrier&apos;s B/L. The first five are
+        graded against the agreed terms in code; the rest are recorded on the audit trail
+        for the documentary review. (Note: a real B/L carries no invoice amount — the escrow
+        amount is enforced by the deposit itself.)
       </p>
+      <div style={{ fontSize: 11, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
+        Graded against terms
+      </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Field label="B/L number" value={f.blNumber} onChange={set('blNumber')} />
         <Field label="Shipper (seller)" value={f.shipperName} onChange={set('shipperName')} />
         <Field label="Consignee (buyer)" value={f.consigneeName} onChange={set('consigneeName')} />
-        <Field label="Amount on B/L (USDC)" value={f.amountUsdc} onChange={set('amountUsdc')} />
-        <Field label="Shipment date (YYYY-MM-DD)" value={f.shipmentDate} onChange={set('shipmentDate')} />
-        <button
-          onClick={() => onSubmit(f)} disabled={disabled}
-          style={{ padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600, background: 'var(--accent)', color: '#0A0A0B', border: 'none', cursor: disabled ? 'not-allowed' : 'pointer' }}
-        >Submit B/L for grading</button>
+        <Field label="Description of goods" value={f.goodsDescription} onChange={set('goodsDescription')} />
+        <Field label="Shipped on board date (YYYY-MM-DD)" value={f.shippedOnBoardDate} onChange={set('shippedOnBoardDate')} />
       </div>
+      <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '16px 0 8px' }}>
+        Recorded on the B/L (not machine-graded)
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+        {RECORDED_FIELDS.map(({ key, label }) => (
+          <Field key={key} label={label} value={f[key]} onChange={set(key)} />
+        ))}
+      </div>
+      <button
+        onClick={() => onSubmit(f)} disabled={disabled}
+        style={{ marginTop: 16, width: '100%', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600, background: 'var(--accent)', color: '#0A0A0B', border: 'none', cursor: disabled ? 'not-allowed' : 'pointer' }}
+      >Submit B/L for grading</button>
     </Card>
   );
 }

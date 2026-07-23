@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadDeployment, publicClient, walletFor, escrowAbi, type Deployment } from "@/lib/escrow/chain";
 import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
-import { gradeBol, type BolFields } from "@/lib/escrow/rules";
+import { gradeBol, RECORDED_FIELDS, type BolFields } from "@/lib/escrow/rules";
 import { readActor, requireHat } from "@/lib/escrow/actor";
 
 // Step 4 — SELLER submits the bill-of-lading details. The deterministic rules engine
@@ -58,10 +58,15 @@ export async function POST(req: Request) {
   }
 
   const verdict = gradeBol(fields, deal.terms);
+  // Graded rules + the recorded-only B/L particulars (vessel, ports, container…) —
+  // the latter aren't machine-checked but belong on the record for documentary review.
+  const recorded = RECORDED_FIELDS
+    .map(({ key, label }) => `${label}: ${(fields[key] ?? "").toString().trim() || "—"}`)
+    .join(" · ");
   appendAudit(deal, {
     actor: "seller",
     action: `Submitted B/L ${fields.blNumber || "(no number)"} — verdict: ${verdict.verdict}`,
-    detail: verdict.rules.map((r) => `${r.pass ? "✓" : "✗"} ${r.rule}`).join(" · "),
+    detail: `${verdict.rules.map((r) => `${r.pass ? "✓" : "✗"} ${r.rule}`).join(" · ")} | ${recorded}`,
     accountId: actor?.accountId,
   });
 

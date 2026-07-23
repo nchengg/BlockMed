@@ -49,7 +49,7 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: St
 
   // Real-path grading state.
   const [grading, setGrading] = useState(false);
-  const [verdict, setVerdict] = useState<{ verdict: 'Compliant' | 'Discrepant'; rules: RuleResult[]; txHash?: string } | null>(null);
+  const [verdict, setVerdict] = useState<{ verdict: 'Compliant' | 'Discrepant'; rules: RuleResult[] } | null>(null);
   const [gradeError, setGradeError] = useState<string | null>(null);
 
   // Read the live chain once on mount to decide real-vs-simulated.
@@ -143,7 +143,7 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: St
         markUploadFailed();
         return;
       }
-      setVerdict({ verdict: r.verdict, rules: r.rules, txHash: r.txHash });
+      setVerdict({ verdict: r.verdict, rules: r.rules });
       if (r.verdict === 'Compliant') {
         // Mirror the real submission into the isolated mock store so /dashboard
         // reflects it, then advance to the release/check step.

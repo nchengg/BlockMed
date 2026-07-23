@@ -66,6 +66,7 @@ export async function GET(req: Request) {
       dealId: deal?.onChainDealId ?? null,
       dealAmount,
       terms: deal?.terms ?? null,
+      review: deal?.review ?? null,
       parties: deal?.parties ?? {},
       state: stateName,
       audit: deal?.audit ?? [],

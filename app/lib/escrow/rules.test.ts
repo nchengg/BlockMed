@@ -3,10 +3,13 @@
 // This is the code that decides whether escrow money releases, so the suite is
 // deliberately exhaustive: one fully-compliant baseline, then a table that flips
 // exactly one field at a time to isolate each rule, plus boundary/edge cases
-// (exact minor-unit amounts, case/whitespace-insensitive party matching, the
+// (case/whitespace-insensitive party matching, goods token containment, the
 // shipment-date deadline boundary, missing/malformed fields, cross-field failure).
 //
-// All amounts are compared in USDC minor units (6 dp) as bigint — never floats.
+// NOTE: no amount rule — real B/Ls carry no invoice value; the escrow amount is
+// enforced by the on-chain deposit, and amount_match returns with the commercial
+// invoice document. Recorded-only fields (vessel, ports, container…) are captured
+// for the audit trail but deliberately NOT graded, asserted below.
 import { describe, it, expect } from "vitest";
 import { gradeBol, type BolFields, type Verdict } from "./rules";
 import type { DealTerms } from "./store";
@@ -25,18 +28,25 @@ const COMPLIANT: BolFields = {
   blNumber: "BL-0001",
   shipperName: "Acme Exports Ltd",
   consigneeName: "Globex Imports LLC",
-  amountUsdc: "2500.00",
-  shipmentDate: "2026-07-15",
+  goodsDescription: "500 units surgical gloves, nitrile, 50 cartons",
+  shippedOnBoardDate: "2026-07-15",
+  vessel: "MAERSK ATLANTIC",
+  voyageNumber: "421W",
+  portOfLoading: "Jebel Ali",
+  portOfDischarge: "Felixstowe",
+  containerNumber: "MSKU-1234567",
+  packages: "50 cartons",
+  grossWeight: "1,250 kg",
 };
 
 // Rule identifiers as emitted by gradeBol — assert against these exact strings so a
 // rename of a rule is caught by the tests.
 const RULE = {
   doc: "document_present (B/L number)",
-  amount: "amount_match (USDC minor units)",
   shipper: "party_match (shipper = seller)",
   consignee: "party_match (consignee = buyer)",
-  shipment: "shipment_by (date ≤ deadline)",
+  goods: "goods_match (description covers agreed goods)",
+  shipment: "shipment_by (shipped-on-board date ≤ deadline)",
 } as const;
 
 const grade = (over: Partial<BolFields>): Verdict =>
@@ -59,9 +69,9 @@ describe("gradeBol — structural invariants", () => {
     const v = grade({});
     expect(v.rules.map((r) => r.rule)).toEqual([
       RULE.doc,
-      RULE.amount,
       RULE.shipper,
       RULE.consignee,
+      RULE.goods,
       RULE.shipment,
     ]);
   });
@@ -74,10 +84,17 @@ describe("gradeBol — structural invariants", () => {
     }
   });
 
-  it("reports amounts as USDC minor units, not the decimal string", () => {
-    const amountRule = grade({}).rules.find((r) => r.rule === RULE.amount)!;
-    expect(amountRule.expected).toBe("2500000000"); // 2500.00 * 1e6
-    expect(amountRule.actual).toBe("2500000000");
+  it("recorded-only fields never affect the verdict", () => {
+    const v = grade({
+      vessel: "",
+      voyageNumber: "",
+      portOfLoading: "totally wrong port",
+      portOfDischarge: "",
+      containerNumber: "garbage",
+      packages: "",
+      grossWeight: "-1",
+    });
+    expect(v.verdict).toBe("Compliant");
   });
 });
 
@@ -97,17 +114,6 @@ const CASES: Case[] = [
   { name: "whitespace-only B/L number fails document_present", over: { blNumber: "   " }, verdict: "Discrepant", fails: [RULE.doc] },
   { name: "B/L number with surrounding whitespace still passes", over: { blNumber: "  BL-0001  " }, verdict: "Compliant", fails: [] },
 
-  // ── amount_match (exact, tolerance 0, minor units) ────────────────────────
-  { name: "amount one cent low fails amount_match", over: { amountUsdc: "2499.99" }, verdict: "Discrepant", fails: [RULE.amount] },
-  { name: "amount one cent high fails amount_match", over: { amountUsdc: "2500.01" }, verdict: "Discrepant", fails: [RULE.amount] },
-  { name: "amount one MINOR UNIT high fails (tolerance is zero)", over: { amountUsdc: "2500.000001" }, verdict: "Discrepant", fails: [RULE.amount] },
-  { name: "amount equal to the minor-unit boundary passes", over: { amountUsdc: "2500.000000" }, verdict: "Compliant", fails: [] },
-  { name: "trailing-zero form is numerically equal and passes", over: { amountUsdc: "2500" }, verdict: "Compliant", fails: [] },
-  { name: "amount with surrounding whitespace is trimmed then passes", over: { amountUsdc: "  2500.00  " }, verdict: "Compliant", fails: [] },
-  { name: "empty amount parses to 0 minor units and fails amount_match", over: { amountUsdc: "" }, verdict: "Discrepant", fails: [RULE.amount] },
-  { name: "unparseable amount (thousands comma) fails amount_match", over: { amountUsdc: "2,500.00" }, verdict: "Discrepant", fails: [RULE.amount] },
-  { name: "non-numeric amount fails amount_match", over: { amountUsdc: "abc" }, verdict: "Discrepant", fails: [RULE.amount] },
-
   // ── party_match (case- and whitespace-insensitive) ────────────────────────
   { name: "wrong shipper fails party_match (shipper)", over: { shipperName: "Someone Else Ltd" }, verdict: "Discrepant", fails: [RULE.shipper] },
   { name: "wrong consignee fails party_match (consignee)", over: { consigneeName: "Not Globex" }, verdict: "Discrepant", fails: [RULE.consignee] },
@@ -116,32 +122,40 @@ const CASES: Case[] = [
   { name: "consignee differing only by case passes", over: { consigneeName: "globex imports llc" }, verdict: "Compliant", fails: [] },
   { name: "empty shipper fails party_match (shipper)", over: { shipperName: "" }, verdict: "Discrepant", fails: [RULE.shipper] },
 
+  // ── goods_match (terms tokens must all appear in the B/L description) ─────
+  { name: "description with extra B/L detail still passes (containment, not equality)", over: { goodsDescription: "SHIPPER'S LOAD: 500 UNITS SURGICAL GLOVES — 50 CARTONS, 1x40FT" }, verdict: "Compliant", fails: [] },
+  { name: "reordered tokens pass", over: { goodsDescription: "surgical gloves — units 500" }, verdict: "Compliant", fails: [] },
+  { name: "different goods fail goods_match", over: { goodsDescription: "ceramic tiles" }, verdict: "Discrepant", fails: [RULE.goods] },
+  { name: "partially matching description fails (a terms token missing)", over: { goodsDescription: "500 units latex products" }, verdict: "Discrepant", fails: [RULE.goods] },
+  { name: "empty description fails goods_match", over: { goodsDescription: "" }, verdict: "Discrepant", fails: [RULE.goods] },
+  { name: "case/punctuation differences alone pass", over: { goodsDescription: "500 UNITS, SURGICAL GLOVES." }, verdict: "Compliant", fails: [] },
+
   // ── shipment_by (date ≤ deadline; string form is ISO so lexicographic) ────
-  { name: "shipment date well before deadline passes", over: { shipmentDate: "2026-01-01" }, verdict: "Compliant", fails: [] },
-  { name: "shipment date exactly on the deadline passes (≤ boundary)", over: { shipmentDate: "2026-08-01" }, verdict: "Compliant", fails: [] },
-  { name: "shipment one day after deadline fails shipment_by", over: { shipmentDate: "2026-08-02" }, verdict: "Discrepant", fails: [RULE.shipment] },
-  { name: "malformed shipment date (not zero-padded) fails shipment_by", over: { shipmentDate: "2026-8-1" }, verdict: "Discrepant", fails: [RULE.shipment] },
-  { name: "empty shipment date fails shipment_by", over: { shipmentDate: "" }, verdict: "Discrepant", fails: [RULE.shipment] },
-  { name: "non-date shipment string fails shipment_by", over: { shipmentDate: "soon" }, verdict: "Discrepant", fails: [RULE.shipment] },
+  { name: "shipment date well before deadline passes", over: { shippedOnBoardDate: "2026-01-01" }, verdict: "Compliant", fails: [] },
+  { name: "shipment date exactly on the deadline passes (≤ boundary)", over: { shippedOnBoardDate: "2026-08-01" }, verdict: "Compliant", fails: [] },
+  { name: "shipment one day after deadline fails shipment_by", over: { shippedOnBoardDate: "2026-08-02" }, verdict: "Discrepant", fails: [RULE.shipment] },
+  { name: "malformed shipment date (not zero-padded) fails shipment_by", over: { shippedOnBoardDate: "2026-8-1" }, verdict: "Discrepant", fails: [RULE.shipment] },
+  { name: "empty shipment date fails shipment_by", over: { shippedOnBoardDate: "" }, verdict: "Discrepant", fails: [RULE.shipment] },
+  { name: "non-date shipment string fails shipment_by", over: { shippedOnBoardDate: "soon" }, verdict: "Discrepant", fails: [RULE.shipment] },
 
   // ── cross-field: multiple simultaneous discrepancies ──────────────────────
   {
-    name: "amount + shipper + late date all fail together",
-    over: { amountUsdc: "1000.00", shipperName: "Wrong Co", shipmentDate: "2027-01-01" },
+    name: "goods + shipper + late date all fail together",
+    over: { goodsDescription: "steel pipes", shipperName: "Wrong Co", shippedOnBoardDate: "2027-01-01" },
     verdict: "Discrepant",
-    fails: [RULE.amount, RULE.shipper, RULE.shipment],
+    fails: [RULE.goods, RULE.shipper, RULE.shipment],
   },
   {
     name: "every rule can fail at once",
     over: {
       blNumber: "",
-      amountUsdc: "1.00",
       shipperName: "X",
       consigneeName: "Y",
-      shipmentDate: "2030-01-01",
+      goodsDescription: "??",
+      shippedOnBoardDate: "2030-01-01",
     },
     verdict: "Discrepant",
-    fails: [RULE.doc, RULE.amount, RULE.shipper, RULE.consignee, RULE.shipment],
+    fails: [RULE.doc, RULE.shipper, RULE.consignee, RULE.goods, RULE.shipment],
   },
 ];
 

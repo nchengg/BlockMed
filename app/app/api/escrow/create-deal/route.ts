@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
 import { getStore, saveStore, getDeal, ensureDeal, appendAudit, type DealTerms } from "@/lib/escrow/store";
 import { readActor } from "@/lib/escrow/actor";
+import { TRADING_COMPANIES } from "@/app/api/escrow/companies/route";
 import type { DealRole } from "@/lib/escrow/roles";
 
 // CREATE A DEAL FROM SCRATCH (BRD FR-1) — the step the main dashboard never had.
@@ -36,10 +37,18 @@ export async function POST(req: Request) {
   }
   const role = creatorRole as DealRole;
 
-  const counterpartyName = typeof body.counterpartyName === "string" ? body.counterpartyName.trim() : "";
-  if (!counterpartyName) {
-    return NextResponse.json({ error: "Name the counterparty." }, { status: 400 });
+  // The counterparty must be a REAL account, not free text — otherwise the deal is
+  // addressed to nobody and never appears in anyone's list but the creator's.
+  const counterpartyAccountId =
+    typeof body.counterpartyAccountId === "string" ? body.counterpartyAccountId.trim() : "";
+  const counterparty = TRADING_COMPANIES.find((c) => c.accountId === counterpartyAccountId);
+  if (!counterparty) {
+    return NextResponse.json({ error: "Pick a counterparty company." }, { status: 400 });
   }
+  if (actor?.accountId && counterparty.accountId === actor.accountId) {
+    return NextResponse.json({ error: "You cannot be your own counterparty." }, { status: 400 });
+  }
+  const counterpartyName = counterparty.displayName;
 
   const { goods, amountUsdc, shipmentDeadline } = body;
   if (!goods?.trim()) return NextResponse.json({ error: "Describe the goods." }, { status: 400 });
@@ -76,16 +85,12 @@ export async function POST(req: Request) {
     buyerName,
     shipmentDeadline,
   };
-  // Both parties recorded up front — this is what roleInDeal() reads later.
-  // The counterparty has no accountId until they join; the name is the demo's
-  // stand-in for the invite the full product would send.
-  const counterpartyAccountId =
-    typeof body.counterpartyAccountId === "string" && body.counterpartyAccountId.trim()
-      ? body.counterpartyAccountId.trim()
-      : undefined;
+  // Both parties recorded up front, each with a REAL account id — this is what
+  // roleInDeal() reads later, and it is why the deal shows up in the
+  // counterparty's own list the moment it is created.
   deal.parties[role] = { accountId: actor?.accountId, displayName: creatorName, hat: role };
   deal.parties[role === "buyer" ? "seller" : "buyer"] = {
-    accountId: counterpartyAccountId,
+    accountId: counterparty.accountId,
     displayName: counterpartyName,
     hat: role === "buyer" ? "seller" : "buyer",
   };

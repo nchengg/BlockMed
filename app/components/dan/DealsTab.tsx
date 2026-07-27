@@ -8,7 +8,10 @@
 // There is no hat switcher on this surface, by design.
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/authStore';
-import { actorFrom, createDeal, fetchDeals, type DealListItem } from '@/lib/escrow/client';
+import {
+  actorFrom, createDeal, fetchDeals, fetchCompanies,
+  type DealListItem, type TradingCompany,
+} from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
 
 const STATE_TONE: Record<string, { fg: string; bg: string }> = {
@@ -27,6 +30,7 @@ export function DealsTab() {
   const { account, activeHat } = useAuth();
   const actor = actorFrom(account, activeHat);
   const [deals, setDeals] = useState<DealListItem[] | null>(null);
+  const [companies, setCompanies] = useState<TradingCompany[]>([]);
   const [creating, setCreating] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,6 +45,13 @@ export function DealsTab() {
   }, [account?.id]);
 
   useEffect(() => { void refresh(); }, [refresh]);
+
+  // Counterparties you can address a deal to — real, loggable accounts.
+  useEffect(() => {
+    void fetchCompanies(account?.id)
+      .then(r => setCompanies(r.companies ?? []))
+      .catch(() => setCompanies([]));
+  }, [account?.id]);
 
   const submit = async (input: Parameters<typeof createDeal>[0]) => {
     setBusy(true);
@@ -87,6 +98,7 @@ export function DealsTab() {
         <CreateDealForm
           busy={busy}
           creatorName={account?.displayName ?? 'You'}
+          companies={companies}
           onCancel={() => setCreating(false)}
           onSubmit={submit}
         />
@@ -158,29 +170,33 @@ function DealRow({ deal }: { deal: DealListItem }) {
   );
 }
 
-function CreateDealForm({ busy, creatorName, onCancel, onSubmit }: {
+function CreateDealForm({ busy, creatorName, companies, onCancel, onSubmit }: {
   busy: boolean;
   creatorName: string;
+  companies: TradingCompany[];
   onCancel: () => void;
   onSubmit: (input: {
-    creatorRole: DealRole; counterpartyName: string;
+    creatorRole: DealRole; counterpartyAccountId: string;
     goods: string; amountUsdc: string; shipmentDeadline: string;
     sellerName: string; buyerName: string;
   }) => void;
 }) {
   const [role, setRole] = useState<DealRole>('seller');
-  const [counterpartyName, setCounterpartyName] = useState('');
+  const [counterpartyAccountId, setCounterpartyAccountId] = useState('');
   const [goods, setGoods] = useState('');
   const [amountUsdc, setAmountUsdc] = useState('');
   const [shipmentDeadline, setShipmentDeadline] = useState(plusDays(30));
 
+  const counterpartyName =
+    companies.find(c => c.accountId === counterpartyAccountId)?.displayName ?? '';
+
   const submit = () => onSubmit({
     creatorRole: role,
-    counterpartyName,
+    counterpartyAccountId,
     goods,
     amountUsdc,
     shipmentDeadline,
-    // Server recomputes these from creatorRole; sent for type completeness.
+    // Server recomputes these from creatorRole + the picked company.
     sellerName: role === 'seller' ? creatorName : counterpartyName,
     buyerName: role === 'buyer' ? creatorName : counterpartyName,
   });
@@ -223,12 +239,26 @@ function CreateDealForm({ busy, creatorName, onCancel, onSubmit }: {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
-        <Field
-          label={role === 'seller' ? 'Buyer (counterparty)' : 'Seller (counterparty)'}
-          value={counterpartyName}
-          placeholder="Company legal name"
-          onChange={e => setCounterpartyName(e.target.value)}
-        />
+        {/* A real account, not free text — so the deal is genuinely addressed and
+            appears in the counterparty's own Deals list. */}
+        <label style={{ display: 'block' }}>
+          <span style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 5 }}>
+            {role === 'seller' ? 'Buyer (counterparty)' : 'Seller (counterparty)'}
+          </span>
+          <select
+            value={counterpartyAccountId}
+            onChange={e => setCounterpartyAccountId(e.target.value)}
+            style={{
+              width: '100%', padding: '9px 12px', borderRadius: 6, fontSize: 13, boxSizing: 'border-box',
+              background: 'var(--bg-deep)', color: 'var(--text-primary)', border: '1px solid var(--border)',
+            }}
+          >
+            <option value="">Select a company…</option>
+            {companies.map(c => (
+              <option key={c.accountId} value={c.accountId}>{c.displayName}</option>
+            ))}
+          </select>
+        </label>
         <Field label="Goods" value={goods} placeholder="e.g. Cotton textiles, 1x40ft" onChange={e => setGoods(e.target.value)} />
         <Field label="Amount (USDC)" value={amountUsdc} placeholder="2500.00" onChange={e => setAmountUsdc(e.target.value)} />
         <Field label="Shipment deadline" type="date" value={shipmentDeadline} onChange={e => setShipmentDeadline(e.target.value)} />
@@ -236,8 +266,12 @@ function CreateDealForm({ busy, creatorName, onCancel, onSubmit }: {
 
       <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5, margin: '14px 0 0' }}>
         You are <strong style={{ color: 'var(--text-secondary)' }}>{creatorName}</strong>, the{' '}
-        <strong style={{ color: 'var(--accent)' }}>{role}</strong> on this deal. These terms become the
-        rulebook the bill of lading is checked against. Nothing goes on-chain until the counterparty agrees.
+        <strong style={{ color: 'var(--accent)' }}>{role}</strong> on this deal
+        {counterpartyName && (
+          <> — it will appear in <strong style={{ color: 'var(--text-secondary)' }}>{counterpartyName}</strong>&apos;s
+          dashboard for them to agree</>
+        )}. These terms become the rulebook the bill of lading is checked against. Nothing goes on-chain
+        until the counterparty agrees.
       </p>
 
       <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>

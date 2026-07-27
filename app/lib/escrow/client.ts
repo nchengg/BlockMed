@@ -70,9 +70,17 @@ export function fetchStatus(dealId: string): Promise<StatusResponse> {
 // counterparty; both parties are recorded on the deal (lib/escrow/roles.ts).
 export type CreateDealInput = DealTerms & {
   creatorRole: DealRole;
-  counterpartyName: string;
-  counterpartyAccountId?: string;
+  counterpartyAccountId: string;
 };
+
+export type TradingCompany = { accountId: string; displayName: string; email: string };
+
+// The companies a deal can be addressed to — each is a real, loggable account,
+// so both sides of a deal can be tested by signing in as each in turn.
+export function fetchCompanies(excludeAccountId: string | undefined): Promise<{ ok: boolean; companies: TradingCompany[] }> {
+  const q = excludeAccountId ? `?exclude=${encodeURIComponent(excludeAccountId)}` : "";
+  return fetch(`/api/escrow/companies${q}`, { cache: "no-store" }).then(r => r.json());
+}
 
 export function createDeal(input: CreateDealInput, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string; dealId?: string; role?: DealRole }>(

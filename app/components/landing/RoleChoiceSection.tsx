@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { CompanySignIn } from '@/components/dan/CompanySignIn';
 
 export default function RoleChoiceSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -130,36 +131,13 @@ export default function RoleChoiceSection() {
             Dan&apos;s Dashboard
           </h3>
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 24 }}>
-            A separate workspace. Start with an empty dashboard.
+            A separate workspace. Sign in as a company — you pick which side you are on
+            per deal, so the same company can buy on one deal and sell on another.
           </p>
 
-          <Link
-            href="/dan"
-            style={{
-              display: 'inline-block',
-              padding: '14px 28px',
-              borderRadius: 8,
-              background: 'transparent',
-              border: '1px solid var(--accent)',
-              color: 'var(--accent)',
-              fontSize: 15,
-              fontWeight: 600,
-              textDecoration: 'none',
-              transition: 'background 0.2s, color 0.2s',
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = 'var(--accent)';
-              el.style.color = '#0A0A0B';
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = 'transparent';
-              el.style.color = 'var(--accent)';
-            }}
-          >
-            Log in to Dan&apos;s Dashboard
-          </Link>
+          {/* Signs in AND lands on /dan, so both sides of a deal are testable by
+              signing in as each company in turn. */}
+          <CompanySignIn />
         </div>
       </div>
     </section>

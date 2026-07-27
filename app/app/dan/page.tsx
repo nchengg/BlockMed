@@ -16,13 +16,17 @@
 // Both tabs are intentionally empty for now — the flow gets built in step by step.
 import { useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/lib/authStore';
 import { DealsTab } from '@/components/dan/DealsTab';
+import { CompanySignIn } from '@/components/dan/CompanySignIn';
 
 const TABS = ['Dashboard', 'Deals'] as const;
 type DanTab = (typeof TABS)[number];
 
 export default function DanDashboard() {
   const [activeTab, setActiveTab] = useState<DanTab>('Dashboard');
+  const { account } = useAuth();
+  const [switching, setSwitching] = useState(false);
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-deep)' }}>
@@ -65,10 +69,32 @@ export default function DanDashboard() {
           })}
         </nav>
 
+        {/* Who you are acting as. Switching company is the whole point of this
+            surface: be the seller in one window, the buyer in another. */}
         <div style={{ marginTop: 'auto' }}>
+          <div className="section-label" style={{ marginBottom: 10, fontSize: 10 }}>SIGNED IN AS</div>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 10 }}>
+            {account?.displayName ?? 'Not signed in'}
+          </div>
+
+          {switching ? (
+            <CompanySignIn variant="compact" />
+          ) : (
+            <button
+              onClick={() => setSwitching(true)}
+              style={{
+                width: '100%', textAlign: 'left', background: 'transparent',
+                color: 'var(--accent)', border: '1px solid var(--border)', borderRadius: 6,
+                padding: '8px 12px', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              }}
+            >
+              {account ? 'Switch company' : 'Sign in'}
+            </button>
+          )}
+
           <Link
             href="/"
-            style={{ fontSize: 13, color: 'var(--text-secondary)', textDecoration: 'none' }}
+            style={{ display: 'block', marginTop: 14, fontSize: 13, color: 'var(--text-secondary)', textDecoration: 'none' }}
           >
             Back to site
           </Link>
@@ -112,8 +138,23 @@ export default function DanDashboard() {
         </div>
 
         <div className="dan-content" style={{ padding: '28px 32px', maxWidth: 1200 }}>
-          {activeTab === 'Dashboard' && <EmptyTab title="Dashboard" />}
-          {activeTab === 'Deals' && <DealsTab />}
+          {!account ? (
+            <>
+              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+                Sign in as a company
+              </div>
+              <p style={{ margin: '10px 0 22px', fontSize: 14, lineHeight: 1.7, color: 'var(--text-secondary)', maxWidth: 560 }}>
+                Deals are addressed between companies. Pick one to act as — you choose which
+                side you are on when you create each deal.
+              </p>
+              <CompanySignIn />
+            </>
+          ) : (
+            <>
+              {activeTab === 'Dashboard' && <EmptyTab title="Dashboard" />}
+              {activeTab === 'Deals' && <DealsTab />}
+            </>
+          )}
         </div>
       </div>
 

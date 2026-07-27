@@ -14,6 +14,7 @@
 import type { Account, ClientHat } from "@/lib/authStore";
 import type { BolFields, Verdict } from "@/lib/escrow/rules";
 import type { Review, ObjectionGround } from "@/lib/escrow/review";
+import type { DealRole } from "@/lib/escrow/roles";
 import type { DealTerms } from "@/lib/escrow/store";
 
 export type ActorCtx = {
@@ -63,6 +64,36 @@ async function post<T>(path: string, body: Record<string, unknown>): Promise<T> 
 
 export function fetchStatus(dealId: string): Promise<StatusResponse> {
   return fetch(`/api/escrow/status?dealId=${encodeURIComponent(dealId)}`, { cache: "no-store" }).then(r => r.json());
+}
+
+// FR-1: create a deal from scratch — the creator states their side and names the
+// counterparty; both parties are recorded on the deal (lib/escrow/roles.ts).
+export type CreateDealInput = DealTerms & {
+  creatorRole: DealRole;
+  counterpartyName: string;
+  counterpartyAccountId?: string;
+};
+
+export function createDeal(input: CreateDealInput, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; dealId?: string; role?: DealRole }>(
+    "/api/escrow/create-deal",
+    { ...input, actor },
+  );
+}
+
+export type DealListItem = {
+  dealId: string;
+  onChainDealId: string | null;
+  role: DealRole | null;
+  counterparty: string;
+  terms: DealTerms | null;
+  state: string | null;
+  createdAt: string | null;
+};
+
+export function fetchDeals(accountId: string | undefined): Promise<{ ok: boolean; deals: DealListItem[] }> {
+  const q = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
+  return fetch(`/api/escrow/deals${q}`, { cache: "no-store" }).then(r => r.json());
 }
 
 export function propose(dealId: string, terms: DealTerms, actor: ActorCtx) {

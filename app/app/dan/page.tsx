@@ -16,6 +16,7 @@
 // Both tabs are intentionally empty for now — the flow gets built in step by step.
 import { useState } from 'react';
 import Link from 'next/link';
+import { DealsTab } from '@/components/dan/DealsTab';
 
 const TABS = ['Dashboard', 'Deals'] as const;
 type DanTab = (typeof TABS)[number];
@@ -112,7 +113,7 @@ export default function DanDashboard() {
 
         <div className="dan-content" style={{ padding: '28px 32px', maxWidth: 1200 }}>
           {activeTab === 'Dashboard' && <EmptyTab title="Dashboard" />}
-          {activeTab === 'Deals' && <EmptyTab title="Deals" />}
+          {activeTab === 'Deals' && <DealsTab />}
         </div>
       </div>
 

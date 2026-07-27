@@ -107,6 +107,60 @@ export default function RoleChoiceSection() {
             Create an account
           </Link>
         </p>
+
+        {/* Second entry point — Dan's Dashboard: a parallel surface that rebuilds the
+            deal journey in product order (create a deal first). Separate from the
+            main dashboard above; same escrow backend underneath. */}
+        <div
+          style={{
+            marginTop: 56,
+            paddingTop: 40,
+            borderTop: '1px solid var(--border, #27272A)',
+          }}
+        >
+          <h3
+            style={{
+              fontSize: 'clamp(20px, 2.6vw, 26px)',
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              color: 'var(--text-primary)',
+              marginBottom: 8,
+            }}
+          >
+            Dan&apos;s Dashboard
+          </h3>
+          <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 24 }}>
+            A separate workspace. Start with an empty dashboard.
+          </p>
+
+          <Link
+            href="/dan"
+            style={{
+              display: 'inline-block',
+              padding: '14px 28px',
+              borderRadius: 8,
+              background: 'transparent',
+              border: '1px solid var(--accent)',
+              color: 'var(--accent)',
+              fontSize: 15,
+              fontWeight: 600,
+              textDecoration: 'none',
+              transition: 'background 0.2s, color 0.2s',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = 'var(--accent)';
+              el.style.color = '#0A0A0B';
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = 'transparent';
+              el.style.color = 'var(--accent)';
+            }}
+          >
+            Log in to Dan&apos;s Dashboard
+          </Link>
+        </div>
       </div>
     </section>
   );

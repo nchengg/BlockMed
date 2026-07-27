@@ -36,3 +36,29 @@ export function counterpartyOf(deal: Pick<DealRecord, "parties">, role: ViewerRo
   if (role === "seller") return deal.parties.buyer?.displayName ?? "—";
   return "—";
 }
+
+/**
+ * A freshly created deal is PENDING the counterparty's acceptance: the creator
+ * proposed it, the other side has not agreed yet. Once agreement puts the deal
+ * on-chain, the chain's own state takes over and this no longer applies.
+ */
+export function pendingOnRole(deal: Pick<DealRecord, "createdByRole">): DealRole | null {
+  if (!deal.createdByRole) return null;
+  return deal.createdByRole === "buyer" ? "seller" : "buyer";
+}
+
+/**
+ * Status label for a not-yet-on-chain deal, written from the VIEWER's side:
+ * the party who must act sees "Awaiting your acceptance", the proposer sees
+ * "Pending <counterparty>".
+ */
+export function pendingLabel(
+  deal: Pick<DealRecord, "createdByRole" | "parties">,
+  viewerRole: ViewerRole,
+): string {
+  const waitingOn = pendingOnRole(deal);
+  if (!waitingOn) return "Draft";
+  if (viewerRole && waitingOn === viewerRole) return "Awaiting your acceptance";
+  const them = counterpartyOf(deal, viewerRole);
+  return them === "—" ? "Pending acceptance" : `Pending ${them}`;
+}

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadDeployment, publicClient, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
 import { getStore } from "@/lib/escrow/store";
-import { roleInDeal, counterpartyOf } from "@/lib/escrow/roles";
+import { roleInDeal, counterpartyOf, pendingLabel, pendingOnRole } from "@/lib/escrow/roles";
 
 export const dynamic = "force-dynamic";
 
@@ -46,14 +46,18 @@ export async function GET(req: Request) {
           state = null;
         }
       }
+      // Before the deal reaches the chain it is pending the counterparty's
+      // acceptance; the label is written from this viewer's side.
+      const awaitingViewer = !state && !!d.terms && pendingOnRole(d) === role;
       return {
         dealId: d.appDealId,
         onChainDealId: d.onChainDealId,
         role,
         counterparty: counterpartyOf(d, role),
         terms: d.terms,
-        // Off-chain "Proposed" until the counterparty agrees and it hits the chain.
-        state: state ?? (d.terms ? "Proposed" : null),
+        state: state ?? (d.terms ? pendingLabel(d, role) : null),
+        // True when THIS viewer is the one who must accept — drives the call to action.
+        awaitingViewer,
         createdAt: d.audit[0]?.ts ?? null,
       };
     }),

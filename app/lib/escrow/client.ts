@@ -96,6 +96,8 @@ export type DealListItem = {
   counterparty: string;
   terms: DealTerms | null;
   state: string | null;
+  /** True when the signed-in viewer is the party who must accept the deal. */
+  awaitingViewer?: boolean;
   createdAt: string | null;
 };
 

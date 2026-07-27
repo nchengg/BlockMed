@@ -95,6 +95,8 @@ export async function POST(req: Request) {
     hat: role === "buyer" ? "seller" : "buyer",
   };
 
+  // The other side's acceptance is what's pending — see roles.ts/pendingOn.
+  deal.createdByRole = role;
   appendAudit(deal, {
     actor: role,
     action: `Deal created by the ${role}`,

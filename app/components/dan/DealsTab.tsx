@@ -15,7 +15,9 @@ import {
 import type { DealRole } from '@/lib/escrow/roles';
 
 const STATE_TONE: Record<string, { fg: string; bg: string }> = {
-  Proposed: { fg: 'var(--text-secondary)', bg: 'transparent' },
+  // Off-chain, pre-acceptance states (labels come from lib/escrow/roles.ts).
+  Pending: { fg: 'var(--text-secondary)', bg: 'transparent' },
+  Draft: { fg: 'var(--text-secondary)', bg: 'transparent' },
   Agreed: { fg: 'var(--accent)', bg: 'var(--accent-dim)' },
   Funded: { fg: 'var(--accent)', bg: 'var(--accent-dim)' },
   ReleasePending: { fg: 'var(--accent)', bg: 'var(--accent-dim)' },
@@ -127,10 +129,17 @@ export function DealsTab() {
 }
 
 function DealRow({ deal }: { deal: DealListItem }) {
-  const tone = STATE_TONE[deal.state ?? ''] ?? STATE_TONE.Proposed;
+  // "Awaiting your acceptance" is a call to action, so it gets the accent
+  // treatment and the row is outlined; "Pending <them>" stays quiet.
+  const awaiting = deal.awaitingViewer === true;
+  // Pre-acceptance labels are dynamic ("Pending Meridian Imports Ltd."), so they
+  // fall through to the quiet default rather than matching a key.
+  const tone = awaiting
+    ? { fg: 'var(--accent)', bg: 'var(--accent-dim)' }
+    : STATE_TONE[deal.state ?? ''] ?? STATE_TONE.Pending;
   return (
     <div style={{
-      border: '1px solid var(--border)', borderRadius: 10, padding: '16px 18px',
+      border: `1px solid ${awaiting ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10, padding: '16px 18px',
       background: 'var(--bg-surface)', display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap',
     }}>
       <div style={{ minWidth: 0, flex: '1 1 260px' }}>

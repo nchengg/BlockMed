@@ -98,6 +98,8 @@ export type DealListItem = {
   state: string | null;
   /** True when the signed-in viewer is the party who must accept the deal. */
   awaitingViewer?: boolean;
+  /** Notice-of-release review, once a Compliant B/L has opened one (FR-10/11). */
+  review?: Review | null;
   createdAt: string | null;
 };
 

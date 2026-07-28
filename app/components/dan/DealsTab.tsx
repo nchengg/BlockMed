@@ -10,8 +10,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/authStore';
 import {
   actorFrom, createDeal, fetchDeals, fetchCompanies, acceptDeal, fund,
+  submitBol, approveRelease, objectToRelease, finaliseRelease, release,
   type DealListItem, type TradingCompany,
 } from '@/lib/escrow/client';
+import { DealActions, type PostFundAction } from './DealActions';
+import { reviewStatus } from '@/lib/escrow/review';
 import type { DealRole } from '@/lib/escrow/roles';
 
 const STATE_TONE: Record<string, { fg: string; bg: string }> = {
@@ -130,12 +133,15 @@ export function DealsTab() {
                 setBusy(true);
                 setError(null);
                 try {
-                  const r =
-                    action === 'fund'
-                      ? await fund(d.dealId, actor)
-                      : await acceptDeal(d.dealId, actor, { decline: action === 'decline' });
+                  const r = await runDealAction(d.dealId, action, actor);
                   if (r.ok === false) setError(r.error ?? 'Action failed.');
-                  else await refresh();
+                  else if ('verdict' in r && r.verdict === 'Discrepant') {
+                    setError(
+                      'Discrepant — the documents do not match the agreed terms. ' +
+                      (r.rules ?? []).filter(x => !x.pass).map(x => x.rule).join('; '),
+                    );
+                    await refresh();
+                  } else await refresh();
                 } catch (e) {
                   setError((e as Error).message);
                 } finally {
@@ -150,7 +156,26 @@ export function DealsTab() {
   );
 }
 
-type DealAction = 'accept' | 'decline' | 'fund';
+type DealAction = 'accept' | 'decline' | 'fund' | PostFundAction;
+
+// One dispatcher for every lifecycle action a row can trigger, so the row itself
+// stays declarative and the API surface lives in one place.
+async function runDealAction(
+  dealId: string,
+  action: DealAction,
+  actor: ReturnType<typeof actorFrom>,
+): Promise<{ ok: boolean; error?: string; verdict?: string; rules?: { rule: string; pass: boolean }[] }> {
+  if (action === 'accept') return acceptDeal(dealId, actor);
+  if (action === 'decline') return acceptDeal(dealId, actor, { decline: true });
+  if (action === 'fund') return fund(dealId, actor);
+  switch (action.kind) {
+    case 'submit-bol': return submitBol(dealId, action.fields, actor);
+    case 'approve-release': return approveRelease(dealId, actor);
+    case 'object': return objectToRelease(dealId, action.ground, action.detail, actor);
+    case 'finalise-release': return finaliseRelease(dealId, actor);
+    case 'release': return release(dealId, actor);
+  }
+}
 
 function DealRow({ deal, busy, onAction }: {
   deal: DealListItem;
@@ -172,8 +197,18 @@ function DealRow({ deal, busy, onAction }: {
   const canFund = deal.state === 'Agreed' && deal.role === 'buyer';
   const awaitingFunding = deal.state === 'Agreed' && deal.role === 'seller';
 
-  // Outline any row that needs THIS viewer to act.
-  const needsYou = awaiting || canFund;
+  // Outline any row that needs THIS viewer to act, at any stage of the lifecycle.
+  const reviewOpen = deal.review ? reviewStatus(deal.review) : null;
+  const needsYou =
+    awaiting ||
+    canFund ||
+    // Funded: the seller owes documents (unless a clean notice is already open).
+    (deal.state === 'Funded' && deal.role === 'seller' && (!deal.review || reviewOpen === 'objected')) ||
+    // A notice is open: the buyer owes a decision.
+    (deal.state === 'Funded' && deal.role === 'buyer' && (reviewOpen === 'pending' || reviewOpen === 'expired')) ||
+    // The window lapsed quietly: the seller can finalise.
+    (deal.state === 'Funded' && deal.role === 'seller' && reviewOpen === 'expired') ||
+    deal.state === 'ReleasePending';
 
   return (
     <div style={{
@@ -249,7 +284,7 @@ function DealRow({ deal, busy, onAction }: {
             </p>
             <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
               <button
-                onClick={e => { e.stopPropagation(); onAccept(false); }}
+                onClick={e => { e.stopPropagation(); onAction('accept'); }}
                 disabled={busy}
                 style={{
                   padding: '11px 20px', borderRadius: 6, fontSize: 14, fontWeight: 600,
@@ -258,7 +293,7 @@ function DealRow({ deal, busy, onAction }: {
                 }}
               >{busy ? 'Working…' : 'Accept & register on-chain'}</button>
               <button
-                onClick={e => { e.stopPropagation(); onAccept(true); }}
+                onClick={e => { e.stopPropagation(); onAction('decline'); }}
                 disabled={busy}
                 style={{
                   padding: '11px 20px', borderRadius: 6, fontSize: 14, background: 'transparent',
@@ -297,6 +332,9 @@ function DealRow({ deal, busy, onAction }: {
             the status will change to <strong style={{ color: 'var(--text-secondary)' }}>Funded</strong>.
           </p>
         )}
+
+        {/* Everything after funding: documents, review, release. */}
+        <DealActions deal={deal} busy={busy} onAction={onAction} />
 
         {deal.onChainDealId && (
           <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text-muted)', margin: '16px 0 0', wordBreak: 'break-all' }}>

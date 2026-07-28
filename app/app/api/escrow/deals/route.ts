@@ -58,6 +58,9 @@ export async function GET(req: Request) {
         counterparty: counterpartyOf(d, role),
         terms: d.terms,
         state: state ?? (declined ? "Declined" : d.terms ? pendingLabel(d, role) : null),
+        // Notice-of-release review (FR-10/11), so the UI can show the buyer's
+        // approve/object panel and the seller's notice status.
+        review: d.review ?? null,
         // True when THIS viewer is the one who must accept — drives the call to action.
         awaitingViewer,
         createdAt: d.audit[0]?.ts ?? null,

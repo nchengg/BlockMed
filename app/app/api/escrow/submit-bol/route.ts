@@ -4,6 +4,7 @@ import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/esc
 import { gradeBol, RECORDED_FIELDS, type BolFields } from "@/lib/escrow/rules";
 import { openReview, reviewStatus } from "@/lib/escrow/review";
 import { readActor, requireHat } from "@/lib/escrow/actor";
+import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 
 // SELLER submits the bill-of-lading details. The deterministic rules engine grades
 // them against the agreed terms. A Compliant grading NO LONGER records the verdict
@@ -18,8 +19,6 @@ import { readActor, requireHat } from "@/lib/escrow/actor";
 export async function POST(req: Request) {
   const body = (await req.json()) as BolFields & { dealId?: unknown; actor?: unknown };
   const actor = readActor(body);
-  const denied = requireHat(actor, "seller");
-  if (denied) return denied;
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
@@ -29,6 +28,18 @@ export async function POST(req: Request) {
   const deal = getDeal(store, appDealId);
   if (!deal?.onChainDealId || !deal.terms) {
     return NextResponse.json({ error: "No funded deal." }, { status: 409 });
+  }
+
+  // Submitting documents is the seller's action. Prefer the caller's recorded role
+  // on THIS deal; fall back to the hat check when they aren't a recorded party.
+  const wrongRole = denyIfWrongRole(
+    deal, actor?.accountId, "seller",
+    "You are the buyer on this deal — the seller submits the bill of lading.",
+  );
+  if (wrongRole) return NextResponse.json({ error: wrongRole }, { status: 403 });
+  if (!roleInDeal(deal, actor?.accountId)) {
+    const denied = requireHat(actor, "seller");
+    if (denied) return denied;
   }
 
   // Resubmission policy: while a clean notice is pending (or quietly expired),

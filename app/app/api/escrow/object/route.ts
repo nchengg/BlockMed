@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
 import { reviewStatus, isValidGround, groundLabel } from "@/lib/escrow/review";
 import { readActor, requireHat } from "@/lib/escrow/actor";
+import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 
 // BUYER objects to the noticed release (FR-11) — only within the window, and only
 // on the CLOSED set of valid grounds (BRD §9.1). A standing objection blocks
@@ -11,8 +12,6 @@ import { readActor, requireHat } from "@/lib/escrow/actor";
 export async function POST(req: Request) {
   const body = (await req.json()) as { dealId?: unknown; actor?: unknown; ground?: unknown; detail?: unknown };
   const actor = readActor(body);
-  const denied = requireHat(actor, "buyer");
-  if (denied) return denied;
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
@@ -29,6 +28,17 @@ export async function POST(req: Request) {
   const deal = getDeal(store, appDealId);
   if (!deal?.review) {
     return NextResponse.json({ error: "No notice of release to object to." }, { status: 409 });
+  }
+
+  // Objecting is the buyer's right. Prefer the recorded role on THIS deal.
+  const wrongRole = denyIfWrongRole(
+    deal, actor?.accountId, "buyer",
+    "You are the seller on this deal — only the buyer may object.",
+  );
+  if (wrongRole) return NextResponse.json({ error: wrongRole }, { status: 403 });
+  if (!roleInDeal(deal, actor?.accountId)) {
+    const denied = requireHat(actor, "buyer");
+    if (denied) return denied;
   }
 
   const rs = reviewStatus(deal.review);

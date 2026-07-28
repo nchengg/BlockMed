@@ -38,6 +38,25 @@ export function counterpartyOf(deal: Pick<DealRecord, "parties">, role: ViewerRo
 }
 
 /**
+ * Authorisation for a per-deal action, preferring the caller's recorded position
+ * IN THIS DEAL over an account hat (an account is neither buyer nor seller).
+ *
+ * Returns an error message when the caller is a recorded party on the wrong side,
+ * or null to allow. A caller with no recorded party returns null too — routes then
+ * fall back to their hat check, so the main dashboard's flow is unaffected.
+ */
+export function denyIfWrongRole(
+  deal: Pick<DealRecord, "parties">,
+  accountId: string | undefined,
+  required: DealRole,
+  reason: string,
+): string | null {
+  const role = roleInDeal(deal, accountId);
+  if (!role) return null; // not a recorded party here — caller falls back to hats
+  return role === required ? null : reason;
+}
+
+/**
  * A freshly created deal is PENDING the counterparty's acceptance: the creator
  * proposed it, the other side has not agreed yet. Once agreement puts the deal
  * on-chain, the chain's own state takes over and this no longer applies.

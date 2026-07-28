@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/authStore';
 import {
-  actorFrom, createDeal, fetchDeals, fetchCompanies, acceptDeal,
+  actorFrom, createDeal, fetchDeals, fetchCompanies, acceptDeal, fund,
   type DealListItem, type TradingCompany,
 } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
@@ -126,11 +126,14 @@ export function DealsTab() {
               key={d.dealId}
               deal={d}
               busy={busy}
-              onAccept={async (decline) => {
+              onAction={async (action) => {
                 setBusy(true);
                 setError(null);
                 try {
-                  const r = await acceptDeal(d.dealId, actor, { decline });
+                  const r =
+                    action === 'fund'
+                      ? await fund(d.dealId, actor)
+                      : await acceptDeal(d.dealId, actor, { decline: action === 'decline' });
                   if (r.ok === false) setError(r.error ?? 'Action failed.');
                   else await refresh();
                 } catch (e) {
@@ -147,10 +150,12 @@ export function DealsTab() {
   );
 }
 
-function DealRow({ deal, busy, onAccept }: {
+type DealAction = 'accept' | 'decline' | 'fund';
+
+function DealRow({ deal, busy, onAction }: {
   deal: DealListItem;
   busy: boolean;
-  onAccept: (decline: boolean) => void;
+  onAction: (action: DealAction) => void;
 }) {
   const [open, setOpen] = useState(false);
   // "Awaiting your acceptance" is a call to action, so it gets the accent
@@ -163,10 +168,16 @@ function DealRow({ deal, busy, onAccept }: {
     : STATE_TONE[deal.state ?? ''] ?? STATE_TONE.Pending;
   // A proposal still awaiting this viewer can be accepted or declined here.
   const canRespond = awaiting;
+  // Once Agreed, the BUYER locks the funds — that is what makes it a real escrow.
+  const canFund = deal.state === 'Agreed' && deal.role === 'buyer';
+  const awaitingFunding = deal.state === 'Agreed' && deal.role === 'seller';
+
+  // Outline any row that needs THIS viewer to act.
+  const needsYou = awaiting || canFund;
 
   return (
     <div style={{
-      border: `1px solid ${awaiting ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10,
+      border: `1px solid ${needsYou ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10,
       background: 'var(--bg-surface)', overflow: 'hidden',
     }}>
     <div
@@ -218,7 +229,7 @@ function DealRow({ deal, busy, onAccept }: {
     {open && (
       <div style={{ borderTop: '1px solid var(--border)', padding: '18px', background: 'var(--bg-deep)' }}>
         <div className="section-label" style={{ fontSize: 10, marginBottom: 12 }}>
-          {canRespond ? 'REVIEW THE PROPOSED TERMS' : 'AGREED TERMS'}
+          {canRespond ? 'REVIEW THE PROPOSED TERMS' : canFund ? 'AGREED TERMS — READY TO FUND' : 'AGREED TERMS'}
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 14 }}>
           <Detail label="Goods" value={deal.terms?.goods ?? '—'} />
@@ -256,6 +267,35 @@ function DealRow({ deal, busy, onAccept }: {
               >Decline</button>
             </div>
           </>
+        )}
+
+        {/* Agreed → the buyer locks the funds. This is what turns an agreement
+            into a real escrow: the seller can see the money before shipping. */}
+        {canFund && (
+          <>
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: '16px 0 0' }}>
+              Both sides are bound to these terms. Locking {deal.terms?.amountUsdc} USDC in the escrow
+              contract lets {deal.counterparty} ship, knowing the money is held. Two transactions: an
+              exact-amount approve, then the deposit. The contract releases only against a compliant
+              bill of lading — or returns the funds to you.
+            </p>
+            <button
+              onClick={e => { e.stopPropagation(); onAction('fund'); }}
+              disabled={busy}
+              style={{
+                marginTop: 16, padding: '11px 20px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+                background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+                cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
+              }}
+            >{busy ? 'Working…' : `Lock ${deal.terms?.amountUsdc ?? ''} USDC in escrow`}</button>
+          </>
+        )}
+
+        {awaitingFunding && (
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: '16px 0 0' }}>
+            Waiting for {deal.counterparty} to lock the funds. Do not ship until the escrow is funded —
+            the status will change to <strong style={{ color: 'var(--text-secondary)' }}>Funded</strong>.
+          </p>
         )}
 
         {deal.onChainDealId && (

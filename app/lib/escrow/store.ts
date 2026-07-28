@@ -63,6 +63,9 @@ export interface DealRecord {
   // Which side proposed the deal — the OTHER side is the one whose acceptance is
   // pending. Set at creation; drives the "Pending <them>" / "Awaiting you" status.
   createdByRole?: "buyer" | "seller";
+  // Set when the counterparty declines the proposal. Terminal, off-chain only —
+  // no on-chain deal is ever created for a declined proposal.
+  declinedAt?: string | null;
   // #27 adaptation: the accounts participating in this deal, captured as they act.
   parties: { seller?: PartyRef; buyer?: PartyRef };
   audit: AuditEntry[];

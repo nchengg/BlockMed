@@ -106,6 +106,16 @@ export function fetchDeals(accountId: string | undefined): Promise<{ ok: boolean
   return fetch(`/api/escrow/deals${q}`, { cache: "no-store" }).then(r => r.json());
 }
 
+// FR-1 (counterparty half): accept a proposed deal — registers it on-chain
+// (createDeal → Draft→Agreed) — or decline it, which is off-chain and terminal.
+// Either side may be the accepter: whoever did not create the deal.
+export function acceptDeal(dealId: string, actor: ActorCtx, opts?: { decline?: boolean }) {
+  return post<{ ok: boolean; error?: string; txHash?: string; declined?: boolean }>(
+    "/api/escrow/accept-deal",
+    { dealId, actor, decline: opts?.decline === true },
+  );
+}
+
 export function propose(dealId: string, terms: DealTerms, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string }>("/api/escrow/propose", { dealId, ...terms, actor });
 }

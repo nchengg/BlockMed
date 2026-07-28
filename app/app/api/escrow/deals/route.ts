@@ -47,15 +47,17 @@ export async function GET(req: Request) {
         }
       }
       // Before the deal reaches the chain it is pending the counterparty's
-      // acceptance; the label is written from this viewer's side.
-      const awaitingViewer = !state && !!d.terms && pendingOnRole(d) === role;
+      // acceptance; the label is written from this viewer's side. A declined
+      // proposal is terminal and never awaits anyone.
+      const declined = !!d.declinedAt;
+      const awaitingViewer = !state && !declined && !!d.terms && pendingOnRole(d) === role;
       return {
         dealId: d.appDealId,
         onChainDealId: d.onChainDealId,
         role,
         counterparty: counterpartyOf(d, role),
         terms: d.terms,
-        state: state ?? (d.terms ? pendingLabel(d, role) : null),
+        state: state ?? (declined ? "Declined" : d.terms ? pendingLabel(d, role) : null),
         // True when THIS viewer is the one who must accept — drives the call to action.
         awaitingViewer,
         createdAt: d.audit[0]?.ts ?? null,

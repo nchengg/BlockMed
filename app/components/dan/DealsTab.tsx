@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/authStore';
 import {
-  actorFrom, createDeal, fetchDeals, fetchCompanies,
+  actorFrom, createDeal, fetchDeals, fetchCompanies, acceptDeal,
   type DealListItem, type TradingCompany,
 } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
@@ -121,14 +121,38 @@ export function DealsTab() {
         )
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {deals.map(d => <DealRow key={d.dealId} deal={d} />)}
+          {deals.map(d => (
+            <DealRow
+              key={d.dealId}
+              deal={d}
+              busy={busy}
+              onAccept={async (decline) => {
+                setBusy(true);
+                setError(null);
+                try {
+                  const r = await acceptDeal(d.dealId, actor, { decline });
+                  if (r.ok === false) setError(r.error ?? 'Action failed.');
+                  else await refresh();
+                } catch (e) {
+                  setError((e as Error).message);
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            />
+          ))}
         </div>
       )}
     </>
   );
 }
 
-function DealRow({ deal }: { deal: DealListItem }) {
+function DealRow({ deal, busy, onAccept }: {
+  deal: DealListItem;
+  busy: boolean;
+  onAccept: (decline: boolean) => void;
+}) {
+  const [open, setOpen] = useState(false);
   // "Awaiting your acceptance" is a call to action, so it gets the accent
   // treatment and the row is outlined; "Pending <them>" stays quiet.
   const awaiting = deal.awaitingViewer === true;
@@ -137,11 +161,21 @@ function DealRow({ deal }: { deal: DealListItem }) {
   const tone = awaiting
     ? { fg: 'var(--accent)', bg: 'var(--accent-dim)' }
     : STATE_TONE[deal.state ?? ''] ?? STATE_TONE.Pending;
+  // A proposal still awaiting this viewer can be accepted or declined here.
+  const canRespond = awaiting;
+
   return (
     <div style={{
-      border: `1px solid ${awaiting ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10, padding: '16px 18px',
-      background: 'var(--bg-surface)', display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap',
+      border: `1px solid ${awaiting ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10,
+      background: 'var(--bg-surface)', overflow: 'hidden',
     }}>
+    <div
+      onClick={() => setOpen(o => !o)}
+      style={{
+        padding: '16px 18px', display: 'flex', gap: 16, alignItems: 'center',
+        flexWrap: 'wrap', cursor: 'pointer',
+      }}
+    >
       <div style={{ minWidth: 0, flex: '1 1 260px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
@@ -175,6 +209,78 @@ function DealRow({ deal }: { deal: DealListItem }) {
       }}>
         {deal.state ?? 'Draft'}
       </span>
+
+      <span style={{ fontSize: 12, color: 'var(--text-muted)', width: 12, textAlign: 'center' }}>
+        {open ? '▾' : '▸'}
+      </span>
+    </div>
+
+    {open && (
+      <div style={{ borderTop: '1px solid var(--border)', padding: '18px', background: 'var(--bg-deep)' }}>
+        <div className="section-label" style={{ fontSize: 10, marginBottom: 12 }}>
+          {canRespond ? 'REVIEW THE PROPOSED TERMS' : 'AGREED TERMS'}
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 14 }}>
+          <Detail label="Goods" value={deal.terms?.goods ?? '—'} />
+          <Detail label="Amount" value={`${deal.terms?.amountUsdc ?? '—'} USDC`} mono />
+          <Detail label="Seller (shipper)" value={deal.terms?.sellerName ?? '—'} />
+          <Detail label="Buyer (consignee)" value={deal.terms?.buyerName ?? '—'} />
+          <Detail label="Ship by" value={deal.terms?.shipmentDeadline ?? '—'} mono />
+          <Detail label="Your role" value={deal.role ?? '—'} />
+        </div>
+
+        {canRespond && (
+          <>
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: '16px 0 0' }}>
+              {deal.counterparty} proposed these terms. Accepting registers the deal on-chain and
+              binds both sides to this rulebook — the bill of lading is checked against it later.
+              {deal.role === 'buyer' && ' You will then be asked to fund the escrow.'}
+            </p>
+            <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
+              <button
+                onClick={e => { e.stopPropagation(); onAccept(false); }}
+                disabled={busy}
+                style={{
+                  padding: '11px 20px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+                  background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+                  cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
+                }}
+              >{busy ? 'Working…' : 'Accept & register on-chain'}</button>
+              <button
+                onClick={e => { e.stopPropagation(); onAccept(true); }}
+                disabled={busy}
+                style={{
+                  padding: '11px 20px', borderRadius: 6, fontSize: 14, background: 'transparent',
+                  color: '#f87171', border: '1px solid #f87171', cursor: busy ? 'not-allowed' : 'pointer',
+                }}
+              >Decline</button>
+            </div>
+          </>
+        )}
+
+        {deal.onChainDealId && (
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text-muted)', margin: '16px 0 0', wordBreak: 'break-all' }}>
+            on-chain id {deal.onChainDealId}
+          </p>
+        )}
+      </div>
+    )}
+    </div>
+  );
+}
+
+function Detail({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div>
+      <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        {label}
+      </div>
+      <div style={{
+        fontSize: 13, color: 'var(--text-primary)', marginTop: 3,
+        fontFamily: mono ? 'monospace' : undefined, textTransform: label === 'Your role' ? 'capitalize' : undefined,
+      }}>
+        {value}
+      </div>
     </div>
   );
 }

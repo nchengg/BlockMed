@@ -12,12 +12,11 @@
 //
 // Layout deliberately mirrors DashboardShell/LeftRail (same tokens, 240px rail,
 // mobile top bar under 900px) so the two surfaces feel like one product.
-//
-// Both tabs are intentionally empty for now — the flow gets built in step by step.
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/authStore';
 import { DealsTab } from '@/components/dan/DealsTab';
+import { DashboardTab } from '@/components/dan/DashboardTab';
 import { CompanySignIn } from '@/components/dan/CompanySignIn';
 
 const TABS = ['Dashboard', 'Deals'] as const;
@@ -151,7 +150,7 @@ export default function DanDashboard() {
             </>
           ) : (
             <>
-              {activeTab === 'Dashboard' && <EmptyTab title="Dashboard" />}
+              {activeTab === 'Dashboard' && <DashboardTab onOpenDeals={() => setActiveTab('Deals')} />}
               {activeTab === 'Deals' && <DealsTab />}
             </>
           )}
@@ -169,21 +168,3 @@ export default function DanDashboard() {
   );
 }
 
-// Placeholder shown by both tabs until the flow is built in.
-function EmptyTab({ title }: { title: string }) {
-  return (
-    <>
-      <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-        {title}
-      </div>
-      <div
-        style={{
-          marginTop: 20, border: '1px dashed var(--border)', borderRadius: 10,
-          padding: '48px 32px', textAlign: 'center', background: 'var(--bg-surface)',
-        }}
-      >
-        <p style={{ fontSize: 14, color: 'var(--text-muted)', margin: 0 }}>Nothing here yet.</p>
-      </div>
-    </>
-  );
-}

@@ -103,6 +103,28 @@ export type DealListItem = {
   createdAt: string | null;
 };
 
+export type DealSummary = {
+  ok: boolean;
+  chainOk: boolean;
+  money: {
+    locked: string;
+    awaitingFunding: string;
+    released: string;
+    escrowTotalAllAccounts: string | null;
+    demoWallets: { buyer: string; seller: string } | null;
+  };
+  counts: {
+    total: number; active: number; settled: number;
+    asBuyer: number; asSeller: number; needsYou: number;
+  };
+};
+
+// Per-account dashboard figures, derived from that account's own deals.
+export function fetchSummary(accountId: string | undefined): Promise<DealSummary> {
+  const q = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
+  return fetch(`/api/escrow/summary${q}`, { cache: "no-store" }).then(r => r.json());
+}
+
 export function fetchDeals(accountId: string | undefined): Promise<{ ok: boolean; deals: DealListItem[] }> {
   const q = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
   return fetch(`/api/escrow/deals${q}`, { cache: "no-store" }).then(r => r.json());

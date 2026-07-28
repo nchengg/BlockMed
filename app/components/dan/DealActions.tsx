@@ -101,19 +101,45 @@ export function DealActions({ deal, busy, onAction }: {
 
 /* ───────────────────────── seller: bill of lading ───────────────────────── */
 
+// A stable, plausible-looking B/L number derived from the deal id, so the demo
+// value differs per deal instead of every deal quoting the same document.
+function demoBlNumber(dealId: string): string {
+  const suffix = dealId.replace(/[^A-Z0-9]/gi, '').slice(-7).toUpperCase();
+  return `MAEU-${suffix || '2260714'}`;
+}
+
+// Today, unless the agreed deadline has already passed — then use the deadline
+// itself, so the prefilled B/L always satisfies shipment_by (date ≤ deadline).
+function compliantShipDate(deadline: string | undefined): string {
+  const today = new Date().toISOString().slice(0, 10);
+  if (!deadline || !/^\d{4}-\d{2}-\d{2}$/.test(deadline)) return today;
+  return today <= deadline ? today : deadline;
+}
+
 function BolForm({ deal, busy, onSubmit }: {
   deal: DealListItem;
   busy: boolean;
   onSubmit: (f: BolFields) => void;
 }) {
+  // DEMO PREFILL — the form arrives ready to submit and pass, so the happy path is
+  // one click. Graded fields come from the agreed terms (so they match by
+  // construction); the shipped-on-board date is today, or the deadline if that has
+  // already passed, so shipment_by always passes. Carrier particulars are plausible
+  // placeholders — they are recorded, not machine-graded. Every field stays
+  // editable: change the goods or a party name to demo a Discrepant verdict.
   const [f, setF] = useState<BolFields>({
-    blNumber: '',
+    blNumber: demoBlNumber(deal.dealId),
     shipperName: deal.terms?.sellerName ?? '',
     consigneeName: deal.terms?.buyerName ?? '',
     goodsDescription: deal.terms?.goods ?? '',
-    shippedOnBoardDate: '',
-    vessel: '', voyageNumber: '', portOfLoading: '', portOfDischarge: '',
-    containerNumber: '', packages: '', grossWeight: '',
+    shippedOnBoardDate: compliantShipDate(deal.terms?.shipmentDeadline),
+    vessel: 'MAERSK ATLANTIC',
+    voyageNumber: '421W',
+    portOfLoading: 'Jebel Ali, AE',
+    portOfDischarge: 'Felixstowe, GB',
+    containerNumber: 'MSKU-1234567',
+    packages: '480 cartons',
+    grossWeight: '8,640 kg',
   });
   const set = (k: keyof BolFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setF(prev => ({ ...prev, [k]: e.target.value }));
@@ -124,9 +150,10 @@ function BolForm({ deal, busy, onSubmit }: {
         SUBMIT THE BILL OF LADING
       </div>
       <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
-        Enter the details exactly as they appear on the carrier&apos;s B/L. The first five are graded
-        against the agreed terms in code; the rest are recorded for the documentary review. A real
-        B/L carries no invoice amount — the escrow amount is already fixed by the deposit.
+        Prefilled with demo values that match the agreed terms — submit as-is to see a compliant
+        verdict, or edit any field (try the goods or a party name) to see a discrepancy caught. The
+        first five are graded against the terms in code; the rest are recorded for the documentary
+        review. A real B/L carries no invoice amount — the escrow amount is fixed by the deposit.
       </p>
 
       <div style={{ fontSize: 11, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>

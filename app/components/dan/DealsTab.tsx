@@ -6,16 +6,16 @@
 // per deal (lib/escrow/roles.ts). So this list can show "you're the seller" on
 // one row and "you're the buyer" on the next, for the same signed-in account.
 // There is no hat switcher on this surface, by design.
+//
+// Rows link to /dan/deals/[dealId] — the detail, actions and audit trail live
+// on that page rather than in an expanding row.
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/lib/authStore';
 import {
-  actorFrom, createDeal, fetchDeals, fetchCompanies, acceptDeal, fund,
-  submitBol, approveRelease, objectToRelease, finaliseRelease, release, refund,
+  actorFrom, createDeal, fetchDeals, fetchCompanies,
   type DealListItem, type TradingCompany,
 } from '@/lib/escrow/client';
-import { DealActions, type PostFundAction } from './DealActions';
-import { AuditTrail } from './AuditTrail';
-import { reviewStatus } from '@/lib/escrow/review';
 import type { DealRole } from '@/lib/escrow/roles';
 
 const STATE_TONE: Record<string, { fg: string; bg: string }> = {
@@ -27,7 +27,7 @@ const STATE_TONE: Record<string, { fg: string; bg: string }> = {
   ReleasePending: { fg: 'var(--accent)', bg: 'var(--accent-dim)' },
   Released: { fg: '#4ade80', bg: 'rgba(74,222,128,0.12)' },
   Refunded: { fg: '#f87171', bg: 'rgba(248,113,113,0.12)' },
-  Cancelled: { fg: '#f87171', bg: 'rgba(248,113,113,0.12)' },
+  Declined: { fg: '#f87171', bg: 'rgba(248,113,113,0.12)' },
 };
 
 const plusDays = (n: number) => new Date(Date.now() + n * 86_400_000).toISOString().slice(0, 10);
@@ -36,7 +36,6 @@ export function DealsTab() {
   const { account, activeHat } = useAuth();
   const actor = actorFrom(account, activeHat);
   const [deals, setDeals] = useState<DealListItem[] | null>(null);
-  const [chainId, setChainId] = useState<number | undefined>(undefined);
   const [companies, setCompanies] = useState<TradingCompany[]>([]);
   const [creating, setCreating] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -46,7 +45,6 @@ export function DealsTab() {
     try {
       const r = await fetchDeals(account?.id);
       setDeals(r.deals ?? []);
-      setChainId(r.chainId ?? undefined);
     } catch {
       setDeals([]);
     }
@@ -127,105 +125,33 @@ export function DealsTab() {
         )
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {deals.map(d => (
-            <DealRow
-              key={d.dealId}
-              deal={d}
-              busy={busy}
-              chainId={chainId}
-              onAction={async (action) => {
-                setBusy(true);
-                setError(null);
-                try {
-                  const r = await runDealAction(d.dealId, action, actor);
-                  if (r.ok === false) setError(r.error ?? 'Action failed.');
-                  else if ('verdict' in r && r.verdict === 'Discrepant') {
-                    setError(
-                      'Discrepant — the documents do not match the agreed terms. ' +
-                      (r.rules ?? []).filter(x => !x.pass).map(x => x.rule).join('; '),
-                    );
-                    await refresh();
-                  } else await refresh();
-                } catch (e) {
-                  setError((e as Error).message);
-                } finally {
-                  setBusy(false);
-                }
-              }}
-            />
-          ))}
+          {deals.map(d => <DealRow key={d.dealId} deal={d} />)}
         </div>
       )}
     </>
   );
 }
 
-type DealAction = 'accept' | 'decline' | 'fund' | PostFundAction;
-
-// One dispatcher for every lifecycle action a row can trigger, so the row itself
-// stays declarative and the API surface lives in one place.
-async function runDealAction(
-  dealId: string,
-  action: DealAction,
-  actor: ReturnType<typeof actorFrom>,
-): Promise<{ ok: boolean; error?: string; verdict?: string; rules?: { rule: string; pass: boolean }[] }> {
-  if (action === 'accept') return acceptDeal(dealId, actor);
-  if (action === 'decline') return acceptDeal(dealId, actor, { decline: true });
-  if (action === 'fund') return fund(dealId, actor);
-  switch (action.kind) {
-    case 'submit-bol': return submitBol(dealId, action.fields, actor);
-    case 'approve-release': return approveRelease(dealId, actor);
-    case 'object': return objectToRelease(dealId, action.ground, action.detail, actor);
-    case 'finalise-release': return finaliseRelease(dealId, actor);
-    case 'release': return release(dealId, actor);
-    case 'refund': return refund(dealId, actor, action.reason);
-  }
-}
-
-function DealRow({ deal, busy, chainId, onAction }: {
-  deal: DealListItem;
-  busy: boolean;
-  chainId?: number;
-  onAction: (action: DealAction) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  // "Awaiting your acceptance" is a call to action, so it gets the accent
-  // treatment and the row is outlined; "Pending <them>" stays quiet.
+// A row is a link into the deal page. Rows that need this viewer to act are
+// outlined; the detail and actions live on the page, not here.
+function DealRow({ deal }: { deal: DealListItem }) {
   const awaiting = deal.awaitingViewer === true;
-  // Pre-acceptance labels are dynamic ("Pending Meridian Imports Ltd."), so they
-  // fall through to the quiet default rather than matching a key.
+  const needsYou =
+    awaiting ||
+    (deal.state === 'Agreed' && deal.role === 'buyer') ||
+    deal.state === 'Funded' ||
+    deal.state === 'ReleasePending';
   const tone = awaiting
     ? { fg: 'var(--accent)', bg: 'var(--accent-dim)' }
     : STATE_TONE[deal.state ?? ''] ?? STATE_TONE.Pending;
-  // A proposal still awaiting this viewer can be accepted or declined here.
-  const canRespond = awaiting;
-  // Once Agreed, the BUYER locks the funds — that is what makes it a real escrow.
-  const canFund = deal.state === 'Agreed' && deal.role === 'buyer';
-  const awaitingFunding = deal.state === 'Agreed' && deal.role === 'seller';
-
-  // Outline any row that needs THIS viewer to act, at any stage of the lifecycle.
-  const reviewOpen = deal.review ? reviewStatus(deal.review) : null;
-  const needsYou =
-    awaiting ||
-    canFund ||
-    // Funded: the seller owes documents (unless a clean notice is already open).
-    (deal.state === 'Funded' && deal.role === 'seller' && (!deal.review || reviewOpen === 'objected')) ||
-    // A notice is open: the buyer owes a decision.
-    (deal.state === 'Funded' && deal.role === 'buyer' && (reviewOpen === 'pending' || reviewOpen === 'expired')) ||
-    // The window lapsed quietly: the seller can finalise.
-    (deal.state === 'Funded' && deal.role === 'seller' && reviewOpen === 'expired') ||
-    deal.state === 'ReleasePending';
 
   return (
-    <div style={{
-      border: `1px solid ${needsYou ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10,
-      background: 'var(--bg-surface)', overflow: 'hidden',
-    }}>
-    <div
-      onClick={() => setOpen(o => !o)}
+    <Link
+      href={`/dan/deals/${encodeURIComponent(deal.dealId)}`}
       style={{
-        padding: '16px 18px', display: 'flex', gap: 16, alignItems: 'center',
-        flexWrap: 'wrap', cursor: 'pointer',
+        border: `1px solid ${needsYou ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10,
+        background: 'var(--bg-surface)', padding: '16px 18px', textDecoration: 'none',
+        display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap',
       }}
     >
       <div style={{ minWidth: 0, flex: '1 1 260px' }}>
@@ -262,113 +188,8 @@ function DealRow({ deal, busy, chainId, onAction }: {
         {deal.state ?? 'Draft'}
       </span>
 
-      <span style={{ fontSize: 12, color: 'var(--text-muted)', width: 12, textAlign: 'center' }}>
-        {open ? '▾' : '▸'}
-      </span>
-    </div>
-
-    {open && (
-      <div style={{ borderTop: '1px solid var(--border)', padding: '18px', background: 'var(--bg-deep)' }}>
-        <div className="section-label" style={{ fontSize: 10, marginBottom: 12 }}>
-          {canRespond ? 'REVIEW THE PROPOSED TERMS' : canFund ? 'AGREED TERMS — READY TO FUND' : 'AGREED TERMS'}
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 14 }}>
-          <Detail label="Goods" value={deal.terms?.goods ?? '—'} />
-          <Detail label="Amount" value={`${deal.terms?.amountUsdc ?? '—'} USDC`} mono />
-          <Detail label="Seller (shipper)" value={deal.terms?.sellerName ?? '—'} />
-          <Detail label="Buyer (consignee)" value={deal.terms?.buyerName ?? '—'} />
-          <Detail label="Ship by" value={deal.terms?.shipmentDeadline ?? '—'} mono />
-          <Detail label="Your role" value={deal.role ?? '—'} />
-        </div>
-
-        {canRespond && (
-          <>
-            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: '16px 0 0' }}>
-              {deal.counterparty} proposed these terms. Accepting registers the deal on-chain and
-              binds both sides to this rulebook — the bill of lading is checked against it later.
-              {deal.role === 'buyer' && ' You will then be asked to fund the escrow.'}
-            </p>
-            <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
-              <button
-                onClick={e => { e.stopPropagation(); onAction('accept'); }}
-                disabled={busy}
-                style={{
-                  padding: '11px 20px', borderRadius: 6, fontSize: 14, fontWeight: 600,
-                  background: 'var(--accent)', color: '#0A0A0B', border: 'none',
-                  cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
-                }}
-              >{busy ? 'Working…' : 'Accept & register on-chain'}</button>
-              <button
-                onClick={e => { e.stopPropagation(); onAction('decline'); }}
-                disabled={busy}
-                style={{
-                  padding: '11px 20px', borderRadius: 6, fontSize: 14, background: 'transparent',
-                  color: '#f87171', border: '1px solid #f87171', cursor: busy ? 'not-allowed' : 'pointer',
-                }}
-              >Decline</button>
-            </div>
-          </>
-        )}
-
-        {/* Agreed → the buyer locks the funds. This is what turns an agreement
-            into a real escrow: the seller can see the money before shipping. */}
-        {canFund && (
-          <>
-            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: '16px 0 0' }}>
-              Both sides are bound to these terms. Locking {deal.terms?.amountUsdc} USDC in the escrow
-              contract lets {deal.counterparty} ship, knowing the money is held. Two transactions: an
-              exact-amount approve, then the deposit. The contract releases only against a compliant
-              bill of lading — or returns the funds to you.
-            </p>
-            <button
-              onClick={e => { e.stopPropagation(); onAction('fund'); }}
-              disabled={busy}
-              style={{
-                marginTop: 16, padding: '11px 20px', borderRadius: 6, fontSize: 14, fontWeight: 600,
-                background: 'var(--accent)', color: '#0A0A0B', border: 'none',
-                cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
-              }}
-            >{busy ? 'Working…' : `Lock ${deal.terms?.amountUsdc ?? ''} USDC in escrow`}</button>
-          </>
-        )}
-
-        {awaitingFunding && (
-          <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: '16px 0 0' }}>
-            Waiting for {deal.counterparty} to lock the funds. Do not ship until the escrow is funded —
-            the status will change to <strong style={{ color: 'var(--text-secondary)' }}>Funded</strong>.
-          </p>
-        )}
-
-        {/* Everything after funding: documents, review, release. */}
-        <DealActions deal={deal} busy={busy} onAction={onAction} />
-
-        {/* Full history: who did what, when, with on-chain proof (FR-14). */}
-        <AuditTrail audit={deal.audit ?? []} chainId={chainId} />
-
-        {deal.onChainDealId && (
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text-muted)', margin: '16px 0 0', wordBreak: 'break-all' }}>
-            on-chain id {deal.onChainDealId}
-          </p>
-        )}
-      </div>
-    )}
-    </div>
-  );
-}
-
-function Detail({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
-  return (
-    <div>
-      <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-        {label}
-      </div>
-      <div style={{
-        fontSize: 13, color: 'var(--text-primary)', marginTop: 3,
-        fontFamily: mono ? 'monospace' : undefined, textTransform: label === 'Your role' ? 'capitalize' : undefined,
-      }}>
-        {value}
-      </div>
-    </div>
+      <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>→</span>
+    </Link>
   );
 }
 

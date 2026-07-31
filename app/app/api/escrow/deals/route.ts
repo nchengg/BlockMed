@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { loadDeployment, publicClient, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
 import { getStore } from "@/lib/escrow/store";
-import { roleInDeal, counterpartyOf, pendingLabel, pendingOnRole } from "@/lib/escrow/roles";
+import { roleInDeal } from "@/lib/escrow/roles";
+import { chainReader, toDealView } from "@/lib/escrow/dealView";
 
 export const dynamic = "force-dynamic";
 
@@ -16,61 +16,10 @@ export async function GET(req: Request) {
   const store = getStore();
 
   // Chain reads are best-effort: the list still renders with no local chain.
-  let readState: ((onChainDealId: string) => Promise<string | null>) | null = null;
-  let chainId: number | null = null;
-  try {
-    const dep = loadDeployment();
-    const pc = publicClient(dep);
-    chainId = dep.chainId; // lets the UI link tx hashes to the right explorer
-    readState = async (onChainDealId: string) => {
-      const s = (await pc.readContract({
-        address: dep.escrow,
-        abi: escrowAbi,
-        functionName: "state",
-        args: [onChainDealId],
-      })) as number;
-      return STATE_NAMES[s] ?? null;
-    };
-  } catch {
-    readState = null;
-  }
+  const { readState, chainId } = chainReader();
 
   const mine = Object.values(store.deals).filter((d) => roleInDeal(d, accountId) !== null);
-
-  const deals = await Promise.all(
-    mine.map(async (d) => {
-      const role = roleInDeal(d, accountId);
-      let state: string | null = null;
-      if (d.onChainDealId && readState) {
-        try {
-          state = await readState(d.onChainDealId);
-        } catch {
-          state = null;
-        }
-      }
-      // Before the deal reaches the chain it is pending the counterparty's
-      // acceptance; the label is written from this viewer's side. A declined
-      // proposal is terminal and never awaits anyone.
-      const declined = !!d.declinedAt;
-      const awaitingViewer = !state && !declined && !!d.terms && pendingOnRole(d) === role;
-      return {
-        dealId: d.appDealId,
-        onChainDealId: d.onChainDealId,
-        role,
-        counterparty: counterpartyOf(d, role),
-        terms: d.terms,
-        state: state ?? (declined ? "Declined" : d.terms ? pendingLabel(d, role) : null),
-        // Notice-of-release review (FR-10/11), so the UI can show the buyer's
-        // approve/object panel and the seller's notice status.
-        review: d.review ?? null,
-        // Full history: who did what, when, and the on-chain proof (FR-14).
-        audit: d.audit,
-        // True when THIS viewer is the one who must accept — drives the call to action.
-        awaitingViewer,
-        createdAt: d.audit[0]?.ts ?? null,
-      };
-    }),
-  );
+  const deals = await Promise.all(mine.map((d) => toDealView(d, accountId, readState)));
 
   // Newest first.
   deals.sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));

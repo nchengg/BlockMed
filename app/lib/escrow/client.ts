@@ -127,6 +127,14 @@ export function fetchSummary(accountId: string | undefined): Promise<DealSummary
   return fetch(`/api/escrow/summary${q}`, { cache: "no-store" }).then(r => r.json());
 }
 
+// One deal for the deal page. Same shape as a list row.
+export function fetchDeal(
+  dealId: string, accountId: string | undefined,
+): Promise<{ ok: boolean; error?: string; chainId?: number | null; deal?: DealListItem }> {
+  const q = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
+  return fetch(`/api/escrow/deals/${encodeURIComponent(dealId)}${q}`, { cache: "no-store" }).then(r => r.json());
+}
+
 export function fetchDeals(
   accountId: string | undefined,
 ): Promise<{ ok: boolean; chainId?: number | null; deals: DealListItem[] }> {

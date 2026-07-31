@@ -17,6 +17,8 @@ import {
   type DealListItem, type TradingCompany,
 } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
+import { DealActions } from './DealActions';
+import { runDealAction, type DealAction } from './dealActionRunner';
 
 const STATE_TONE: Record<string, { fg: string; bg: string }> = {
   // Off-chain, pre-acceptance states (labels come from lib/escrow/roles.ts).
@@ -125,16 +127,47 @@ export function DealsTab() {
         )
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {deals.map(d => <DealRow key={d.dealId} deal={d} />)}
+          {deals.map(d => (
+            <DealRow
+              key={d.dealId}
+              deal={d}
+              busy={busy}
+              onAction={async (action) => {
+                setBusy(true);
+                setError(null);
+                try {
+                  const r = await runDealAction(d.dealId, action, actor);
+                  if (r.ok === false) setError(r.error ?? 'Action failed.');
+                  else if (r.verdict === 'Discrepant') {
+                    setError(
+                      'Discrepant — the documents do not match the agreed terms. ' +
+                      (r.rules ?? []).filter(x => !x.pass).map(x => x.rule).join('; '),
+                    );
+                  }
+                  await refresh();
+                } catch (e) {
+                  setError((e as Error).message);
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            />
+          ))}
         </div>
       )}
     </>
   );
 }
 
-// A row is a link into the deal page. Rows that need this viewer to act are
-// outlined; the detail and actions live on the page, not here.
-function DealRow({ deal }: { deal: DealListItem }) {
+// A row expands in place to whatever this viewer can DO next — so acting on a
+// deal never costs a page load. Everything else (full terms, references, the
+// audit trail) lives on the deal page, reached by "View full deal".
+function DealRow({ deal, busy, onAction }: {
+  deal: DealListItem;
+  busy: boolean;
+  onAction: (action: DealAction) => void;
+}) {
+  const [open, setOpen] = useState(false);
   const awaiting = deal.awaitingViewer === true;
   const needsYou =
     awaiting ||
@@ -146,12 +179,15 @@ function DealRow({ deal }: { deal: DealListItem }) {
     : STATE_TONE[deal.state ?? ''] ?? STATE_TONE.Pending;
 
   return (
-    <Link
-      href={`/dan/deals/${encodeURIComponent(deal.dealId)}`}
+    <div style={{
+      border: `1px solid ${needsYou ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10,
+      background: 'var(--bg-surface)', overflow: 'hidden',
+    }}>
+    <div
+      onClick={() => setOpen(o => !o)}
       style={{
-        border: `1px solid ${needsYou ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10,
-        background: 'var(--bg-surface)', padding: '16px 18px', textDecoration: 'none',
-        display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap',
+        padding: '16px 18px', display: 'flex', gap: 16, alignItems: 'center',
+        flexWrap: 'wrap', cursor: 'pointer',
       }}
     >
       <div style={{ minWidth: 0, flex: '1 1 260px' }}>
@@ -188,9 +224,116 @@ function DealRow({ deal }: { deal: DealListItem }) {
         {deal.state ?? 'Draft'}
       </span>
 
-      <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>→</span>
-    </Link>
+      <span style={{ fontSize: 12, color: 'var(--text-muted)', width: 12, textAlign: 'center' }}>
+        {open ? '▾' : '▸'}
+      </span>
+    </div>
+
+    {open && (
+      <div style={{ borderTop: '1px solid var(--border)', padding: '18px', background: 'var(--bg-deep)' }}>
+        <RowActions deal={deal} busy={busy} onAction={onAction} />
+
+        {/* The history and full record live on the deal page. */}
+        <Link
+          href={`/dan/deals/${encodeURIComponent(deal.dealId)}`}
+          onClick={e => e.stopPropagation()}
+          style={{
+            display: 'inline-block', marginTop: 18, fontSize: 13, fontWeight: 600,
+            color: 'var(--accent)', textDecoration: 'none',
+          }}
+        >
+          View full deal — terms, references and audit trail →
+        </Link>
+      </div>
+    )}
+    </div>
   );
+}
+
+// The pre-registration accept/decline pair, then everything after funding via
+// DealActions. Mirrors the deal page's NEXT STEP box.
+function RowActions({ deal, busy, onAction }: {
+  deal: DealListItem; busy: boolean; onAction: (a: DealAction) => void;
+}) {
+  if (deal.awaitingViewer) {
+    return (
+      <>
+        <div className="section-label" style={{ fontSize: 10, marginBottom: 10 }}>
+          REVIEW THE PROPOSED TERMS
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 14, marginBottom: 14 }}>
+          <Detail label="Goods" value={deal.terms?.goods ?? '—'} />
+          <Detail label="Amount" value={`${deal.terms?.amountUsdc ?? '—'} USDC`} mono />
+          <Detail label="Seller (shipper)" value={deal.terms?.sellerName ?? '—'} />
+          <Detail label="Buyer (consignee)" value={deal.terms?.buyerName ?? '—'} />
+          <Detail label="Ship by" value={deal.terms?.shipmentDeadline ?? '—'} mono />
+        </div>
+        <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 14px' }}>
+          {deal.counterparty} proposed these terms. Accepting registers the deal on-chain and binds
+          both sides to this rulebook.
+          {deal.role === 'buyer' && ' You will then be asked to fund the escrow.'}
+        </p>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <button
+            onClick={e => { e.stopPropagation(); onAction('accept'); }}
+            disabled={busy}
+            style={{
+              padding: '11px 20px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+              background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+              cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
+            }}
+          >{busy ? 'Working…' : 'Accept & register on-chain'}</button>
+          <button
+            onClick={e => { e.stopPropagation(); onAction('decline'); }}
+            disabled={busy}
+            style={{
+              padding: '11px 20px', borderRadius: 6, fontSize: 14, background: 'transparent',
+              color: '#f87171', border: '1px solid #f87171', cursor: busy ? 'not-allowed' : 'pointer',
+            }}
+          >Decline</button>
+        </div>
+      </>
+    );
+  }
+
+  if (deal.state === 'Agreed' && deal.role === 'buyer') {
+    return (
+      <>
+        <div className="section-label" style={{ fontSize: 10, marginBottom: 10 }}>READY TO FUND</div>
+        <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 14px' }}>
+          Both sides are bound to these terms. Locking {deal.terms?.amountUsdc} USDC lets{' '}
+          {deal.counterparty} ship, knowing the money is held.
+        </p>
+        <button
+          onClick={e => { e.stopPropagation(); onAction('fund'); }}
+          disabled={busy}
+          style={{
+            padding: '11px 20px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+            background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+            cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
+          }}
+        >{busy ? 'Working…' : `Lock ${deal.terms?.amountUsdc ?? ''} USDC in escrow`}</button>
+      </>
+    );
+  }
+
+  if (deal.state === 'Agreed' && deal.role === 'seller') {
+    return (
+      <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
+        Waiting for {deal.counterparty} to lock the funds. Do not ship until the escrow is funded.
+      </p>
+    );
+  }
+
+  if (deal.state === 'Declined') {
+    return (
+      <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
+        This proposal was declined. No on-chain deal was created.
+      </p>
+    );
+  }
+
+  return <DealActions deal={deal} busy={busy} onAction={onAction} />;
 }
 
 function CreateDealForm({ busy, creatorName, companies, onCancel, onSubmit }: {
@@ -313,6 +456,19 @@ function CreateDealForm({ busy, creatorName, companies, onCancel, onSubmit }: {
             color: 'var(--text-secondary)', border: '1px solid var(--border)', cursor: 'pointer',
           }}
         >Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+function Detail({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div>
+      <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        {label}
+      </div>
+      <div style={{ fontSize: 13, color: 'var(--text-primary)', marginTop: 3, fontFamily: mono ? 'monospace' : undefined }}>
+        {value}
       </div>
     </div>
   );

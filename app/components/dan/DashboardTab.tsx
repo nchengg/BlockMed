@@ -22,7 +22,12 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
     }
   }, [account?.id]);
 
-  useEffect(() => { void refresh(); }, [refresh]);
+  // Poll so the counterparty's actions move these figures without a reload.
+  useEffect(() => {
+    void refresh();
+    const id = setInterval(() => { void refresh(); }, 4000);
+    return () => clearInterval(id);
+  }, [refresh]);
 
   if (!s) {
     return (

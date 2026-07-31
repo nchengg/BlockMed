@@ -200,3 +200,11 @@ export function release(dealId: string, actor: ActorCtx) {
 export function reset(dealId: string, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string }>("/api/escrow/reset", { dealId, actor });
 }
+
+// Clear every deal this account is a party to — a clean slate before a demo.
+// Off-chain records only; anything already settled on-chain is untouched.
+export function resetMyDeals(actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; cleared?: number }>(
+    "/api/escrow/reset", { mine: true, actor },
+  );
+}

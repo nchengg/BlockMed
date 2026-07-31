@@ -13,7 +13,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/authStore';
 import {
-  actorFrom, createDeal, fetchDeals, fetchCompanies,
+  actorFrom, createDeal, fetchDeals, fetchCompanies, resetMyDeals,
   type DealListItem, type TradingCompany,
 } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
@@ -41,6 +41,7 @@ export function DealsTab() {
   const [companies, setCompanies] = useState<TradingCompany[]>([]);
   const [creating, setCreating] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
@@ -52,7 +53,15 @@ export function DealsTab() {
     }
   }, [account?.id]);
 
-  useEffect(() => { void refresh(); }, [refresh]);
+  // Poll so the other side's actions appear without a reload — the two-window
+  // demo (seller here, buyer there) depends on it. Paused while an action is in
+  // flight or the create form is open, so a refresh never clobbers your input.
+  useEffect(() => {
+    void refresh();
+    if (busy || creating) return;
+    const id = setInterval(() => { void refresh(); }, 4000);
+    return () => clearInterval(id);
+  }, [refresh, busy, creating]);
 
   // Counterparties you can address a deal to — real, loggable accounts.
   useEffect(() => {
@@ -153,6 +162,57 @@ export function DealsTab() {
               }}
             />
           ))}
+        </div>
+      )}
+
+      {/* Demo housekeeping: clear this company's deals for a clean run. Only
+          drops off-chain records — anything settled on-chain is untouched. */}
+      {deals && deals.length > 0 && (
+        <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          {confirmReset ? (
+            <>
+              <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+                Clear all {deals.length} of your deals? This cannot be undone.
+              </span>
+              <button
+                onClick={async () => {
+                  setBusy(true);
+                  setError(null);
+                  try {
+                    const r = await resetMyDeals(actor);
+                    if (r.ok === false) setError(r.error ?? 'Could not clear your deals.');
+                    else await refresh();
+                  } catch (e) {
+                    setError((e as Error).message);
+                  } finally {
+                    setBusy(false);
+                    setConfirmReset(false);
+                  }
+                }}
+                disabled={busy}
+                style={{
+                  fontSize: 12, fontWeight: 600, padding: '7px 14px', borderRadius: 6,
+                  background: '#f87171', color: '#0A0A0B', border: 'none',
+                  cursor: busy ? 'not-allowed' : 'pointer',
+                }}
+              >{busy ? 'Clearing…' : 'Yes, clear them'}</button>
+              <button
+                onClick={() => setConfirmReset(false)}
+                style={{
+                  fontSize: 12, padding: '7px 14px', borderRadius: 6, background: 'transparent',
+                  color: 'var(--text-secondary)', border: '1px solid var(--border)', cursor: 'pointer',
+                }}
+              >Cancel</button>
+            </>
+          ) : (
+            <button
+              onClick={() => setConfirmReset(true)}
+              style={{
+                fontSize: 12, color: 'var(--text-muted)', background: 'transparent',
+                border: '1px solid var(--border)', borderRadius: 6, padding: '7px 14px', cursor: 'pointer',
+              }}
+            >Clear my deals (demo reset)</button>
+          )}
         </div>
       )}
     </>

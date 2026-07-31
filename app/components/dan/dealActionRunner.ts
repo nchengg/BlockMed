@@ -2,7 +2,7 @@
 // deals list and the deal page so both drive the API identically.
 import {
   acceptDeal, fund, submitBol, approveRelease, objectToRelease,
-  finaliseRelease, release, refund, type ActorCtx,
+  finaliseRelease, release, refund, withdrawObjection, type ActorCtx,
 } from '@/lib/escrow/client';
 import type { PostFundAction } from './DealActions';
 
@@ -30,5 +30,6 @@ export async function runDealAction(
     case 'finalise-release': return finaliseRelease(dealId, actor);
     case 'release': return release(dealId, actor);
     case 'refund': return refund(dealId, actor, action.reason);
+    case 'withdraw-objection': return withdrawObjection(dealId, actor, action.reason);
   }
 }

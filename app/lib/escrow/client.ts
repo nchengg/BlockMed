@@ -181,6 +181,14 @@ export function objectToRelease(dealId: string, ground: ObjectionGround, detail:
   return post<{ ok: boolean; error?: string }>("/api/escrow/object", { dealId, ground, detail, actor });
 }
 
+// FR-13: the buyer withdraws a mistaken or resolved objection, restoring the
+// original notice without making the seller resubmit compliant documents.
+export function withdrawObjection(dealId: string, actor: ActorCtx, reason: string) {
+  return post<{ ok: boolean; error?: string }>(
+    "/api/escrow/withdraw-objection", { dealId, actor, reason },
+  );
+}
+
 // FR-10: seller/platform finalises after the window expired with no objection.
 export function finaliseRelease(dealId: string, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string; txHash?: string }>("/api/escrow/finalise-release", { dealId, actor });

@@ -21,7 +21,8 @@ export type PostFundAction =
   | { kind: 'object'; ground: ObjectionGround; detail: string }
   | { kind: 'finalise-release' }
   | { kind: 'release' }
-  | { kind: 'refund'; reason: string };
+  | { kind: 'refund'; reason: string }
+  | { kind: 'withdraw-objection'; reason: string };
 
 export function DealActions({ deal, busy, onAction }: {
   deal: DealListItem;
@@ -45,7 +46,9 @@ export function DealActions({ deal, busy, onAction }: {
         )
         : (
           <>
-            {review?.objection && <ObjectionNotice review={review} viewer="buyer" />}
+            {review?.objection && (
+              <ObjectionNotice review={review} viewer="buyer" busy={busy} onAction={onAction} />
+            )}
             <Note>
               Funds are locked. Waiting for {deal.counterparty} to ship and submit the bill of lading.
             </Note>
@@ -367,8 +370,17 @@ function RefundPanel({ deal, role, busy, onAction }: {
   );
 }
 
-function ObjectionNotice({ review, viewer }: { review: Review; viewer: DealRole }) {
+function ObjectionNotice({ review, viewer, busy, onAction }: {
+  review: Review;
+  viewer: DealRole;
+  busy?: boolean;
+  onAction?: (a: PostFundAction) => void;
+}) {
+  const [withdrawing, setWithdrawing] = useState(false);
+  const [reason, setReason] = useState('');
   const o = review.objection!;
+  const canWithdraw = viewer === 'buyer' && !!onAction;
+
   return (
     <div style={{
       marginTop: 16, padding: '12px 14px', borderRadius: 6,
@@ -383,8 +395,41 @@ function ObjectionNotice({ review, viewer }: { review: Review; viewer: DealRole 
       <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
         {viewer === 'seller'
           ? 'Release is blocked. Correct the documents and resubmit below — that opens a fresh notice.'
-          : 'Release is blocked until the seller submits corrected documents.'}
+          : 'Release is blocked. If you raised this in error, or it has been settled with the seller, withdraw it to restore the notice.'}
       </p>
+
+      {canWithdraw && (withdrawing ? (
+        <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <Field label="Why are you withdrawing? (recorded on the audit trail)" value={reason} onChange={e => setReason(e.target.value)} />
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button
+              onClick={e => { e.stopPropagation(); onAction!({ kind: 'withdraw-objection', reason }); }}
+              disabled={busy}
+              style={{
+                padding: '10px 18px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+                cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
+              }}
+            >{busy ? 'Working…' : 'Withdraw objection'}</button>
+            <button
+              onClick={e => { e.stopPropagation(); setWithdrawing(false); }}
+              disabled={busy}
+              style={{
+                padding: '10px 18px', borderRadius: 6, fontSize: 13, background: 'transparent',
+                color: 'var(--text-secondary)', border: '1px solid var(--border)', cursor: 'pointer',
+              }}
+            >Cancel</button>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={e => { e.stopPropagation(); setWithdrawing(true); }}
+          style={{
+            marginTop: 10, background: 'none', border: 'none', padding: 0, font: 'inherit',
+            fontSize: 12, color: 'var(--accent)', textDecoration: 'underline', cursor: 'pointer',
+          }}
+        >Withdraw this objection</button>
+      ))}
     </div>
   );
 }

@@ -1,0 +1,150 @@
+// Blockmediary — persistence for accounts and the escrow's off-chain record.
+//
+// Replaces the JSON stores (app/data/*.json) with one durable data layer, which
+// is what the TRD specs for the full product: a real store for the escrow
+// specification, parties and audit ledger rather than files.
+//
+// What is NOT here, deliberately:
+//   • Money and deal STATE live on-chain. This DB never duplicates them — a
+//     deal's state is always read from the contract (lib/escrow/chain.ts). We
+//     store the on-chain id and the off-chain record that surrounds it.
+//   • Wallets. Accounts are wallet-less for now; linking a proven wallet
+//     (SIWE) is a later step and needs only a nullable column.
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+// Prisma 7: the connection URL lives in prisma.config.ts, not here.
+datasource db {
+  provider = "sqlite"
+}
+
+/// A trading company (or staff account). Identity is account-first: an account
+/// exists and can act before any wallet is linked — the platform/intermediary
+/// case in the BRD's all-party-roles decision.
+model Account {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+
+  // Company identity. These fields are what KYB/KYB screening (FR-7) will need,
+  // so they are captured at signup rather than bolted on later.
+  companyName        String
+  registrationNumber String?
+  country            String
+  addressLine1       String
+  addressLine2       String?
+  city               String
+  postcode           String
+
+  // Who to contact at the company.
+  contactName String
+
+  /// "client" for trading companies; "admin"/"developer" for staff.
+  type String @default("client")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // A deal has exactly two parties; an account can be either on any given deal.
+  // Role is a position IN A DEAL, never a property of the account (lib/escrow/roles.ts).
+  dealsAsBuyer  Deal[]         @relation("BuyerDeals")
+  dealsAsSeller Deal[]         @relation("SellerDeals")
+  sessions      Session[]
+  auditEntries  AuditEntry[]
+}
+
+/// A server-side session. The cookie carries only this row's token; everything
+/// authoritative is looked up here, so a session can be revoked server-side.
+model Session {
+  token     String   @id
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([accountId])
+}
+
+/// The off-chain half of one escrow deal: the agreed terms (the rulebook the
+/// bill of lading is graded against), the parties, and the paper trail. The
+/// money and the state machine live on-chain.
+model Deal {
+  /// The app-level reference shown to users, e.g. "DEAL-4E88-0D57".
+  appDealId String @id
+  /// bytes32 hex, set once createDeal runs on-chain. Null until accepted.
+  onChainDealId String? @unique
+
+  // Agreed terms. Amount is a decimal STRING in USDC units — never a float
+  // (AP-5: money math is done in code with bigint, never in floating point).
+  goods            String?
+  amountUsdc       String?
+  sellerName       String?
+  buyerName        String?
+  shipmentDeadline String?
+
+  // Parties. Nullable because a counterparty may be invited before they join.
+  buyerId  String?
+  buyer    Account? @relation("BuyerDeals", fields: [buyerId], references: [id])
+  sellerId String?
+  seller   Account? @relation("SellerDeals", fields: [sellerId], references: [id])
+
+  /// Which side proposed it — the OTHER side owes the acceptance.
+  createdByRole String?
+  /// Set when the counterparty declines. Terminal, off-chain only.
+  declinedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  review Review?
+  audit  AuditEntry[]
+
+  @@index([buyerId])
+  @@index([sellerId])
+}
+
+/// Notice of release + objection window (FR-10/11). One per deal, replaced when
+/// a corrected bill of lading opens a fresh notice.
+model Review {
+  dealId String @id
+  deal   Deal   @relation(fields: [dealId], references: [appDealId], onDelete: Cascade)
+
+  /// The submitted B/L fields, as graded (JSON — a document snapshot, not queried).
+  fieldsJson String
+  /// The verdict object incl. per-rule results (JSON — evidence for the trail).
+  verdictJson String
+
+  noticeAt     DateTime
+  windowEndsAt DateTime
+  approvedAt   DateTime?
+
+  // The buyer's objection, if one stands. Cleared on withdrawal; the audit
+  // trail keeps the history either way.
+  objectionGround    String?
+  objectionDetail    String?
+  objectionRaisedAt  DateTime?
+}
+
+/// Append-only history: who did what, when, and the on-chain proof (FR-14).
+/// The regulator-facing artefact — entries are never edited or deleted.
+model AuditEntry {
+  id     Int    @id @default(autoincrement())
+  dealId String
+  deal   Deal   @relation(fields: [dealId], references: [appDealId], onDelete: Cascade)
+
+  ts     DateTime @default(now())
+  /// "buyer" | "seller" | "platform" | "anyone" — the acting side.
+  actor  String
+  action String
+  detail String?
+  txHash String?
+
+  /// The account behind the entry, when known. Kept even if the account is
+  /// later removed, so the trail never loses its attribution.
+  accountId String?
+  account   Account? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+
+  @@index([dealId, ts])
+}

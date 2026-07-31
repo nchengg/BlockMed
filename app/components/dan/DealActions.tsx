@@ -20,7 +20,8 @@ export type PostFundAction =
   | { kind: 'approve-release' }
   | { kind: 'object'; ground: ObjectionGround; detail: string }
   | { kind: 'finalise-release' }
-  | { kind: 'release' };
+  | { kind: 'release' }
+  | { kind: 'refund'; reason: string };
 
 export function DealActions({ deal, busy, onAction }: {
   deal: DealListItem;
@@ -39,6 +40,7 @@ export function DealActions({ deal, busy, onAction }: {
           <>
             {review?.objection && <ObjectionNotice review={review} viewer="seller" />}
             <BolForm deal={deal} busy={busy} onSubmit={fields => onAction({ kind: 'submit-bol', fields })} />
+            <RefundPanel deal={deal} role="seller" busy={busy} onAction={onAction} />
           </>
         )
         : (
@@ -47,6 +49,7 @@ export function DealActions({ deal, busy, onAction }: {
             <Note>
               Funds are locked. Waiting for {deal.counterparty} to ship and submit the bill of lading.
             </Note>
+            <RefundPanel deal={deal} role="buyer" busy={busy} onAction={onAction} />
           </>
         );
     }
@@ -92,6 +95,15 @@ export function DealActions({ deal, busy, onAction }: {
       <Note>
         Settled. {deal.terms?.amountUsdc} USDC was released from escrow to{' '}
         {role === 'seller' ? 'you' : deal.counterparty}.
+      </Note>
+    );
+  }
+
+  if (deal.state === 'Refunded') {
+    return (
+      <Note>
+        Refunded. {deal.terms?.amountUsdc} USDC was returned from escrow to{' '}
+        {role === 'buyer' ? 'you' : deal.counterparty}. This deal is closed.
       </Note>
     );
   }
@@ -285,6 +297,72 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// FR-13 escape hatch: return the locked funds to the buyer when a deal will not
+// complete (seller never shipped, deadline passed, mutual unwind). Only legal
+// while Funded, and the route blocks it while a clean notice of release stands.
+function RefundPanel({ deal, role, busy, onAction }: {
+  deal: DealListItem;
+  role: DealRole;
+  busy: boolean;
+  onAction: (a: PostFundAction) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState('');
+
+  if (!open) {
+    return (
+      <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginTop: 16 }}>
+        {role === 'buyer'
+          ? 'Shipment not coming? '
+          : 'Cannot fulfil this shipment? '}
+        <button
+          onClick={e => { e.stopPropagation(); setOpen(true); }}
+          style={{
+            background: 'none', border: 'none', padding: 0, font: 'inherit',
+            color: '#f87171', textDecoration: 'underline', cursor: 'pointer',
+          }}
+        >Request a refund</button>
+        {' '}to return the {deal.terms?.amountUsdc} USDC to the buyer.
+      </p>
+    );
+  }
+
+  return (
+    <div style={{
+      marginTop: 16, padding: '14px 16px', borderRadius: 8,
+      border: '1px solid #f87171', background: 'rgba(248,113,113,0.06)',
+    }}>
+      <div style={{ fontSize: 13, fontWeight: 600, color: '#f87171', marginBottom: 6 }}>
+        Refund the escrow
+      </div>
+      <p style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 12px' }}>
+        The contract returns {deal.terms?.amountUsdc} USDC to the buyer and closes the deal. This is
+        final — a refunded deal cannot be reopened. In production this needs a reviewer&apos;s sign-off.
+      </p>
+      <Field label="Reason (recorded on the audit trail)" value={reason} onChange={e => setReason(e.target.value)} />
+      <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+        <button
+          onClick={e => { e.stopPropagation(); onAction({ kind: 'refund', reason }); }}
+          disabled={busy}
+          style={{
+            padding: '10px 18px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+            background: '#f87171', color: '#0A0A0B', border: 'none',
+            cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
+          }}
+        >{busy ? 'Working…' : 'Confirm refund'}</button>
+        <button
+          onClick={e => { e.stopPropagation(); setOpen(false); }}
+          disabled={busy}
+          style={{
+            padding: '10px 18px', borderRadius: 6, fontSize: 14, background: 'transparent',
+            color: 'var(--text-secondary)', border: '1px solid var(--border)', cursor: 'pointer',
+          }}
+        >Cancel</button>
+      </div>
     </div>
   );
 }

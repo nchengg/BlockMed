@@ -10,10 +10,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/authStore';
 import {
   actorFrom, createDeal, fetchDeals, fetchCompanies, acceptDeal, fund,
-  submitBol, approveRelease, objectToRelease, finaliseRelease, release,
+  submitBol, approveRelease, objectToRelease, finaliseRelease, release, refund,
   type DealListItem, type TradingCompany,
 } from '@/lib/escrow/client';
 import { DealActions, type PostFundAction } from './DealActions';
+import { AuditTrail } from './AuditTrail';
 import { reviewStatus } from '@/lib/escrow/review';
 import type { DealRole } from '@/lib/escrow/roles';
 
@@ -35,6 +36,7 @@ export function DealsTab() {
   const { account, activeHat } = useAuth();
   const actor = actorFrom(account, activeHat);
   const [deals, setDeals] = useState<DealListItem[] | null>(null);
+  const [chainId, setChainId] = useState<number | undefined>(undefined);
   const [companies, setCompanies] = useState<TradingCompany[]>([]);
   const [creating, setCreating] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -44,6 +46,7 @@ export function DealsTab() {
     try {
       const r = await fetchDeals(account?.id);
       setDeals(r.deals ?? []);
+      setChainId(r.chainId ?? undefined);
     } catch {
       setDeals([]);
     }
@@ -129,6 +132,7 @@ export function DealsTab() {
               key={d.dealId}
               deal={d}
               busy={busy}
+              chainId={chainId}
               onAction={async (action) => {
                 setBusy(true);
                 setError(null);
@@ -174,12 +178,14 @@ async function runDealAction(
     case 'object': return objectToRelease(dealId, action.ground, action.detail, actor);
     case 'finalise-release': return finaliseRelease(dealId, actor);
     case 'release': return release(dealId, actor);
+    case 'refund': return refund(dealId, actor, action.reason);
   }
 }
 
-function DealRow({ deal, busy, onAction }: {
+function DealRow({ deal, busy, chainId, onAction }: {
   deal: DealListItem;
   busy: boolean;
+  chainId?: number;
   onAction: (action: DealAction) => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -335,6 +341,9 @@ function DealRow({ deal, busy, onAction }: {
 
         {/* Everything after funding: documents, review, release. */}
         <DealActions deal={deal} busy={busy} onAction={onAction} />
+
+        {/* Full history: who did what, when, with on-chain proof (FR-14). */}
+        <AuditTrail audit={deal.audit ?? []} chainId={chainId} />
 
         {deal.onChainDealId && (
           <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text-muted)', margin: '16px 0 0', wordBreak: 'break-all' }}>

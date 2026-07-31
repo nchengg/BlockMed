@@ -17,9 +17,11 @@ export async function GET(req: Request) {
 
   // Chain reads are best-effort: the list still renders with no local chain.
   let readState: ((onChainDealId: string) => Promise<string | null>) | null = null;
+  let chainId: number | null = null;
   try {
     const dep = loadDeployment();
     const pc = publicClient(dep);
+    chainId = dep.chainId; // lets the UI link tx hashes to the right explorer
     readState = async (onChainDealId: string) => {
       const s = (await pc.readContract({
         address: dep.escrow,
@@ -61,6 +63,8 @@ export async function GET(req: Request) {
         // Notice-of-release review (FR-10/11), so the UI can show the buyer's
         // approve/object panel and the seller's notice status.
         review: d.review ?? null,
+        // Full history: who did what, when, and the on-chain proof (FR-14).
+        audit: d.audit,
         // True when THIS viewer is the one who must accept — drives the call to action.
         awaitingViewer,
         createdAt: d.audit[0]?.ts ?? null,
@@ -70,5 +74,5 @@ export async function GET(req: Request) {
 
   // Newest first.
   deals.sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
-  return NextResponse.json({ ok: true, deals });
+  return NextResponse.json({ ok: true, chainId, deals });
 }

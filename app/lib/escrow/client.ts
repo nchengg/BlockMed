@@ -15,7 +15,7 @@ import type { Account, ClientHat } from "@/lib/authStore";
 import type { BolFields, Verdict } from "@/lib/escrow/rules";
 import type { Review, ObjectionGround } from "@/lib/escrow/review";
 import type { DealRole } from "@/lib/escrow/roles";
-import type { DealTerms } from "@/lib/escrow/store";
+import type { DealTerms, AuditEntry } from "@/lib/escrow/store";
 
 export type ActorCtx = {
   accountId?: string;
@@ -100,6 +100,8 @@ export type DealListItem = {
   awaitingViewer?: boolean;
   /** Notice-of-release review, once a Compliant B/L has opened one (FR-10/11). */
   review?: Review | null;
+  /** Every recorded action on this deal, oldest first (FR-14). */
+  audit?: AuditEntry[];
   createdAt: string | null;
 };
 
@@ -125,7 +127,9 @@ export function fetchSummary(accountId: string | undefined): Promise<DealSummary
   return fetch(`/api/escrow/summary${q}`, { cache: "no-store" }).then(r => r.json());
 }
 
-export function fetchDeals(accountId: string | undefined): Promise<{ ok: boolean; deals: DealListItem[] }> {
+export function fetchDeals(
+  accountId: string | undefined,
+): Promise<{ ok: boolean; chainId?: number | null; deals: DealListItem[] }> {
   const q = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
   return fetch(`/api/escrow/deals${q}`, { cache: "no-store" }).then(r => r.json());
 }
@@ -172,6 +176,13 @@ export function objectToRelease(dealId: string, ground: ObjectionGround, detail:
 // FR-10: seller/platform finalises after the window expired with no objection.
 export function finaliseRelease(dealId: string, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string; txHash?: string }>("/api/escrow/finalise-release", { dealId, actor });
+}
+
+// FR-13: return locked funds to the buyer when a deal will not complete.
+export function refund(dealId: string, actor: ActorCtx, reason: string) {
+  return post<{ ok: boolean; error?: string; txHash?: string }>(
+    "/api/escrow/refund", { dealId, actor, reason },
+  );
 }
 
 export function release(dealId: string, actor: ActorCtx) {

@@ -5,13 +5,13 @@
 import { use, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/authStore';
+import { useSession } from '@/lib/auth/useSession';
 import { DanShell } from '@/components/dan/DanShell';
 import { DealActions } from '@/components/dan/DealActions';
 import { AuditTrail } from '@/components/dan/AuditTrail';
-import { CompanySignIn } from '@/components/dan/CompanySignIn';
+import { AuthForms } from '@/components/dan/AuthForms';
 import { runDealAction, type DealAction } from '@/components/dan/dealActionRunner';
-import { actorFrom, fetchDeal, type DealListItem } from '@/lib/escrow/client';
+import { actorFromSession, fetchDeal, type DealListItem } from '@/lib/escrow/client';
 
 const STATE_TONE: Record<string, { fg: string; bg: string }> = {
   Agreed: { fg: 'var(--accent)', bg: 'var(--accent-dim)' },
@@ -24,9 +24,9 @@ const STATE_TONE: Record<string, { fg: string; bg: string }> = {
 
 export default function DealPage({ params }: { params: Promise<{ dealId: string }> }) {
   const { dealId } = use(params);
-  const { account, activeHat } = useAuth();
+  const { account } = useSession();
   const router = useRouter();
-  const actor = actorFrom(account, activeHat);
+  const actor = actorFromSession(account);
 
   const [deal, setDeal] = useState<DealListItem | null>(null);
   const [chainId, setChainId] = useState<number | undefined>(undefined);
@@ -74,11 +74,7 @@ export default function DealPage({ params }: { params: Promise<{ dealId: string 
   if (!account) {
     return (
       <DanShell activeTab="Deals">
-        <H1>Sign in as a company</H1>
-        <p style={{ margin: '10px 0 22px', fontSize: 14, lineHeight: 1.7, color: 'var(--text-secondary)', maxWidth: 560 }}>
-          Deals are visible only to the companies party to them.
-        </p>
-        <CompanySignIn />
+        <AuthForms />
       </DanShell>
     );
   }

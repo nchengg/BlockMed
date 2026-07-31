@@ -14,11 +14,11 @@
 // /dan/deals/[dealId] wear the same frame.
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useAuth } from '@/lib/authStore';
+import { useSession } from '@/lib/auth/useSession';
 import { DanShell, type DanTab } from '@/components/dan/DanShell';
 import { DealsTab } from '@/components/dan/DealsTab';
 import { DashboardTab } from '@/components/dan/DashboardTab';
-import { CompanySignIn } from '@/components/dan/CompanySignIn';
+import { AuthForms } from '@/components/dan/AuthForms';
 
 export default function DanDashboardPage() {
   return (
@@ -34,21 +34,12 @@ function DanDashboard() {
   const [activeTab, setActiveTab] = useState<DanTab>(
     search.get('tab') === 'deals' ? 'Deals' : 'Dashboard',
   );
-  const { account } = useAuth();
+  const { account, ready } = useSession();
 
   return (
     <DanShell activeTab={activeTab} onTabChange={setActiveTab}>
-      {!account ? (
-        <>
-          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-            Sign in as a company
-          </div>
-          <p style={{ margin: '10px 0 22px', fontSize: 14, lineHeight: 1.7, color: 'var(--text-secondary)', maxWidth: 560 }}>
-            Deals are addressed between companies. Pick one to act as — you choose which
-            side you are on when you create each deal.
-          </p>
-          <CompanySignIn />
-        </>
+      {!ready ? null : !account ? (
+        <AuthForms />
       ) : (
         <>
           {activeTab === 'Dashboard' && <DashboardTab onOpenDeals={() => setActiveTab('Deals')} />}

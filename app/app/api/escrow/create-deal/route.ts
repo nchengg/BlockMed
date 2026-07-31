@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
 import { getStore, saveStore, getDeal, ensureDeal, appendAudit, type DealTerms } from "@/lib/escrow/store";
 import { readActor } from "@/lib/escrow/actor";
-import { TRADING_COMPANIES } from "@/app/api/escrow/companies/route";
+import { prisma } from "@/lib/db";
 import type { DealRole } from "@/lib/escrow/roles";
 
 // CREATE A DEAL FROM SCRATCH (BRD FR-1) — the step the main dashboard never had.
@@ -41,10 +41,16 @@ export async function POST(req: Request) {
   // addressed to nobody and never appears in anyone's list but the creator's.
   const counterpartyAccountId =
     typeof body.counterpartyAccountId === "string" ? body.counterpartyAccountId.trim() : "";
-  const counterparty = TRADING_COMPANIES.find((c) => c.accountId === counterpartyAccountId);
-  if (!counterparty) {
+  const found = counterpartyAccountId
+    ? await prisma.account.findUnique({
+        where: { id: counterpartyAccountId },
+        select: { id: true, companyName: true },
+      })
+    : null;
+  if (!found) {
     return NextResponse.json({ error: "Pick a counterparty company." }, { status: 400 });
   }
+  const counterparty = { accountId: found.id, displayName: found.companyName };
   if (actor?.accountId && counterparty.accountId === actor.accountId) {
     return NextResponse.json({ error: "You cannot be your own counterparty." }, { status: 400 });
   }

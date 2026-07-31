@@ -24,6 +24,26 @@ export type ActorCtx = {
   hat?: ClientHat | null;
 };
 
+// Actor payload from a real signed-in session (Dan's surface).
+//
+// TRANSITIONAL: the routes still read the actor from the request body. Now that
+// a session cookie exists, the server should resolve identity itself and ignore
+// this entirely — that is the next step, and it is what turns the soft gate into
+// a real one. Until then this carries the true account id rather than a mock,
+// so per-deal roles resolve against real accounts.
+export function actorFromSession(
+  account: { id: string; companyName: string; type: string } | null,
+): ActorCtx {
+  if (!account) return {};
+  return {
+    accountId: account.id,
+    displayName: account.companyName,
+    type: account.type === 'client' ? 'client' : (account.type as ActorCtx['type']),
+    // No hat: role is derived per deal from the recorded parties (roles.ts).
+    hat: null,
+  };
+}
+
 // Build the actor payload the routes expect from the current account + active hat.
 export function actorFrom(account: Account | null, activeHat: ClientHat | null): ActorCtx {
   if (!account) return {};

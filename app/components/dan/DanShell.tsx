@@ -6,9 +6,7 @@
 // Layout mirrors components/dashboard/DashboardShell + LeftRail (same tokens,
 // same 900px breakpoint) so the two surfaces feel like one product.
 import Link from 'next/link';
-import { useState } from 'react';
-import { useAuth } from '@/lib/authStore';
-import { CompanySignIn } from './CompanySignIn';
+import { useSession } from '@/lib/auth/useSession';
 
 export type DanTab = 'Dashboard' | 'Deals';
 export const DAN_TABS: DanTab[] = ['Dashboard', 'Deals'];
@@ -19,8 +17,7 @@ export function DanShell({ activeTab, onTabChange, children }: {
   onTabChange?: (t: DanTab) => void;
   children: React.ReactNode;
 }) {
-  const { account } = useAuth();
-  const [switching, setSwitching] = useState(false);
+  const { account, logout } = useSession();
 
   const tabButton = (tab: DanTab, style: React.CSSProperties) => {
     const active = tab === activeTab;
@@ -74,22 +71,21 @@ export function DanShell({ activeTab, onTabChange, children }: {
 
         <div style={{ marginTop: 'auto' }}>
           <div className="section-label" style={{ marginBottom: 10, fontSize: 10 }}>SIGNED IN AS</div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 10 }}>
-            {account?.displayName ?? 'Not signed in'}
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
+            {account?.companyName ?? 'Not signed in'}
           </div>
-          {switching ? (
-            <CompanySignIn variant="compact" />
-          ) : (
-            <button
-              onClick={() => setSwitching(true)}
-              style={{
-                width: '100%', textAlign: 'left', background: 'transparent',
-                color: 'var(--accent)', border: '1px solid var(--border)', borderRadius: 6,
-                padding: '8px 12px', fontSize: 13, fontWeight: 600, cursor: 'pointer',
-              }}
-            >
-              {account ? 'Switch company' : 'Sign in'}
-            </button>
+          {account && (
+            <>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{account.email}</div>
+              <button
+                onClick={() => { void logout(); }}
+                style={{
+                  width: '100%', marginTop: 10, textAlign: 'left', background: 'transparent',
+                  color: 'var(--accent)', border: '1px solid var(--border)', borderRadius: 6,
+                  padding: '8px 12px', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                }}
+              >Sign out</button>
+            </>
           )}
           <Link href="/" style={{ display: 'block', marginTop: 14, fontSize: 13, color: 'var(--text-secondary)', textDecoration: 'none' }}>
             Back to site

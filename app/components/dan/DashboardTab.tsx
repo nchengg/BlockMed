@@ -7,11 +7,11 @@
 // whole chain's rather than this company's. The shared wallets are still shown
 // at the bottom, clearly labelled, because they are what actually moves on-chain.
 import { useCallback, useEffect, useState } from 'react';
-import { useAuth } from '@/lib/authStore';
+import { useSession } from '@/lib/auth/useSession';
 import { fetchSummary, type DealSummary } from '@/lib/escrow/client';
 
 export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
-  const { account } = useAuth();
+  const { account } = useSession();
   const [s, setS] = useState<DealSummary | null>(null);
 
   const refresh = useCallback(async () => {

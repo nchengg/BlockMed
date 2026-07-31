@@ -11,9 +11,9 @@
 // on that page rather than in an expanding row.
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/lib/authStore';
+import { useSession } from '@/lib/auth/useSession';
 import {
-  actorFrom, createDeal, fetchDeals, fetchCompanies, resetMyDeals,
+  actorFromSession, createDeal, fetchDeals, fetchCompanies, resetMyDeals,
   type DealListItem, type TradingCompany,
 } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
@@ -35,8 +35,8 @@ const STATE_TONE: Record<string, { fg: string; bg: string }> = {
 const plusDays = (n: number) => new Date(Date.now() + n * 86_400_000).toISOString().slice(0, 10);
 
 export function DealsTab() {
-  const { account, activeHat } = useAuth();
-  const actor = actorFrom(account, activeHat);
+  const { account } = useSession();
+  const actor = actorFromSession(account);
   const [deals, setDeals] = useState<DealListItem[] | null>(null);
   const [companies, setCompanies] = useState<TradingCompany[]>([]);
   const [creating, setCreating] = useState(false);
@@ -114,7 +114,7 @@ export function DealsTab() {
       {creating && (
         <CreateDealForm
           busy={busy}
-          creatorName={account?.displayName ?? 'You'}
+          creatorName={account?.companyName ?? 'You'}
           companies={companies}
           onCancel={() => setCreating(false)}
           onSubmit={submit}

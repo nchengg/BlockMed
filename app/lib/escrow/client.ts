@@ -39,6 +39,7 @@ export type StatusResponse = {
   addresses?: { escrow: string; usdc: string; releaser: string; buyer: string; seller: string };
   balances?: { buyer: string; seller: string; escrow: string };
   dealId?: string | null;
+  dealAmount?: string | null;
   terms?: DealTerms | null;
   parties?: { seller?: { displayName?: string }; buyer?: { displayName?: string } };
   state?: string | null;

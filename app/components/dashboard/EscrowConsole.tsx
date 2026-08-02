@@ -78,7 +78,8 @@ export function EscrowConsole({ hat }: { hat: ClientHat }) {
 
   const chainDown = status && status.ok === false;
   const state = status?.state ?? null;
-  const hasTerms = !!status?.terms;
+  const terms = status?.terms ?? null;
+  const hasTerms = !!terms;
   const hasDeal = !!status?.dealId;
 
   // No visible deal for this viewer — nothing to drive. (dealStore returns the
@@ -129,10 +130,16 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
             <EyebrowLabel>ON-CHAIN STATE</EyebrowLabel>
             <StatusPill label={state ?? 'No deal yet'} tone={state ? STATE_TONE[state] ?? 'pending' : 'pending'} />
           </div>
+          {/* First cell is THIS deal's locked amount (deals(dealId).amount, only while
+              the contract actually holds it). The wallet/contract balances are per-address
+              and chain-global — labelled as such so two funded deals don't both appear
+              to hold the contract's total. */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 14 }}>
-            <Balance label="Buyer" value={status.balances?.buyer} />
-            <Balance label="Seller" value={status.balances?.seller} />
-            <Balance label="Escrow (locked)" value={status.balances?.escrow} />
+            <Balance label="Locked in this deal"
+              value={hasDeal ? (state === 'Funded' || state === 'ReleasePending' ? status.dealAmount ?? '0' : '0') : undefined} />
+            <Balance label="Buyer wallet (all deals)" value={status.balances?.buyer} />
+            <Balance label="Seller wallet (all deals)" value={status.balances?.seller} />
+            <Balance label="Escrow total (all deals)" value={status.balances?.escrow} />
           </div>
           {status.addresses && (
             <div style={{ marginTop: 14, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -140,6 +147,18 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
             </div>
           )}
         </Card>
+      )}
+
+      {/* The deal's terms — ALWAYS shown to both parties once proposed. The buyer
+          must see exactly what they are agreeing to (and later funding) before any
+          action card; the seller sees what they proposed. Fix for the agree-blind
+          consent gap: the API returned terms but nothing rendered them. */}
+      {!chainDown && terms && (
+        <TermsCard terms={terms} hasDeal={hasDeal} hat={hat}
+          acceptAction={hat === 'buyer' && !hasDeal ? {
+            busy: busy === 'Agree',
+            onClick: () => run('Agree', () => agree(appDealId, actor)),
+          } : undefined} />
       )}
 
       {msg && (
@@ -156,14 +175,10 @@ npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
       {hat === 'seller' && !hasTerms && (
         <ProposeForm disabled={!!busy} onSubmit={t => run('Propose terms', () => propose(appDealId, t, actor))} />
       )}
-      {hat === 'buyer' && hasTerms && !hasDeal && (
-        <ActionCard title="BUYER ACTION" label="Agree & register deal on-chain"
-          helper="Registers the agreed terms (createDeal → Draft→Agreed)."
-          busy={busy === 'Agree'} onClick={() => run('Agree', () => agree(appDealId, actor))} />
-      )}
       {hat === 'buyer' && state === 'Agreed' && (
-        <ActionCard title="BUYER ACTION" label="Fund escrow (approve + deposit)"
-          helper="Locks the exact USDC amount. Two transactions: approve, then deposit."
+        <ActionCard title="BUYER ACTION"
+          label={terms ? `Fund escrow — lock ${terms.amountUsdc} USDC` : 'Fund escrow (approve + deposit)'}
+          helper="Locks the exact agreed amount shown above. Two transactions: approve, then deposit."
           busy={busy === 'Fund'} onClick={() => run('Fund', () => fund(appDealId, actor))} />
       )}
       {hat === 'seller' && state === 'Funded' && (
@@ -213,6 +228,63 @@ function LocalOnlyBanner() {
     }}>
       Local demo only — signs with public Hardhat dev keys against localhost:8545.
       The releaser call is disabled off the local chain (TODO integration: auth Q18).
+    </div>
+  );
+}
+
+type Terms = NonNullable<StatusResponse['terms']>;
+
+function TermsCard({ terms, hasDeal, hat, acceptAction }: {
+  terms: Terms; hasDeal: boolean; hat: ClientHat;
+  acceptAction?: { busy: boolean; onClick: () => void };
+}) {
+  const eyebrow = hasDeal
+    ? 'AGREED TERMS'
+    : hat === 'buyer'
+      ? 'PROPOSED TERMS — REVIEW BEFORE AGREEING'
+      : 'PROPOSED TERMS — AWAITING BUYER';
+  return (
+    <Card>
+      <EyebrowLabel>{eyebrow}</EyebrowLabel>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 14 }}>
+        <span style={{ fontFamily: 'monospace', fontSize: 26, fontWeight: 700, color: 'var(--accent)' }}>
+          {terms.amountUsdc}
+        </span>
+        <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>USDC</span>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14 }}>
+        <TermsRow label="Goods" value={terms.goods} />
+        <TermsRow label="Seller (shipper)" value={terms.sellerName} />
+        <TermsRow label="Buyer (consignee)" value={terms.buyerName} />
+        <TermsRow label="Ship by" value={terms.shipmentDeadline} mono />
+      </div>
+      {acceptAction && (
+        <div style={{ marginTop: 18 }}>
+          <button
+            onClick={acceptAction.onClick} disabled={acceptAction.busy}
+            style={{
+              width: '100%', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+              background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+              cursor: acceptAction.busy ? 'not-allowed' : 'pointer', opacity: acceptAction.busy ? 0.7 : 1,
+            }}
+          >{acceptAction.busy ? 'Working…' : 'Accept terms & register deal on-chain'}</button>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
+            Accepting registers these exact terms (createDeal → Draft→Agreed). No funds move yet —
+            funding is a separate step.
+          </p>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+function TermsRow({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div>
+      <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</div>
+      <div style={{ fontSize: 14, color: 'var(--text-primary)', marginTop: 4, fontFamily: mono ? 'monospace' : undefined }}>
+        {value}
+      </div>
     </div>
   );
 }

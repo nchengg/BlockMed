@@ -33,14 +33,26 @@ export async function GET(req: Request) {
     ]);
 
     let stateName: string | null = null;
+    let dealAmount: string | null = null;
     if (deal?.onChainDealId) {
-      const s = (await pc.readContract({
-        address: dep.escrow,
-        abi: escrowAbi,
-        functionName: "state",
-        args: [deal.onChainDealId],
-      })) as number;
+      const [s, d] = await Promise.all([
+        pc.readContract({
+          address: dep.escrow,
+          abi: escrowAbi,
+          functionName: "state",
+          args: [deal.onChainDealId],
+        }) as Promise<number>,
+        // deals(dealId) → { buyer, seller, amount } — THIS deal's registered amount,
+        // as opposed to the chain-global wallet/contract balances below.
+        pc.readContract({
+          address: dep.escrow,
+          abi: escrowAbi,
+          functionName: "deals",
+          args: [deal.onChainDealId],
+        }) as Promise<[string, string, bigint]>,
+      ]);
       stateName = STATE_NAMES[s];
+      dealAmount = d[2] > 0n ? formatUnits(d[2], 6) : null;
     }
 
     return NextResponse.json({
@@ -52,6 +64,7 @@ export async function GET(req: Request) {
         escrow: formatUnits(escrowBal, 6),
       },
       dealId: deal?.onChainDealId ?? null,
+      dealAmount,
       terms: deal?.terms ?? null,
       parties: deal?.parties ?? {},
       state: stateName,

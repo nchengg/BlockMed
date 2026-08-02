@@ -4,6 +4,7 @@ import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/esc
 import { reviewStatus } from "@/lib/escrow/review";
 import { assertLocalReleaser, recordVerdictOnChain } from "@/lib/escrow/settlement";
 import { readActor, requireHat } from "@/lib/escrow/actor";
+import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 
 // BUYER approves the release after reviewing the noticed documents (FR-10): an
 // explicit waiver of the remaining objection window. Only then does the platform
@@ -11,8 +12,6 @@ import { readActor, requireHat } from "@/lib/escrow/actor";
 export async function POST(req: Request) {
   const body = (await req.json()) as { dealId?: unknown; actor?: unknown };
   const actor = readActor(body);
-  const denied = requireHat(actor, "buyer");
-  if (denied) return denied;
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
@@ -21,6 +20,17 @@ export async function POST(req: Request) {
   const deal = getDeal(store, appDealId);
   if (!deal?.onChainDealId || !deal.review) {
     return NextResponse.json({ error: "No notice of release to approve." }, { status: 409 });
+  }
+
+  // Approving release is the buyer's call. Prefer the recorded role on THIS deal.
+  const wrongRole = denyIfWrongRole(
+    deal, actor?.accountId, "buyer",
+    "You are the seller on this deal — the buyer approves the release.",
+  );
+  if (wrongRole) return NextResponse.json({ error: wrongRole }, { status: 403 });
+  if (!roleInDeal(deal, actor?.accountId)) {
+    const denied = requireHat(actor, "buyer");
+    if (denied) return denied;
   }
 
   const rs = reviewStatus(deal.review);

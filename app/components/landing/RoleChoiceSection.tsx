@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { CompanySignIn } from '@/components/dan/CompanySignIn';
 
 export default function RoleChoiceSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -107,6 +108,37 @@ export default function RoleChoiceSection() {
             Create an account
           </Link>
         </p>
+
+        {/* Second entry point — Dan's Dashboard: a parallel surface that rebuilds the
+            deal journey in product order (create a deal first). Separate from the
+            main dashboard above; same escrow backend underneath. */}
+        <div
+          style={{
+            marginTop: 56,
+            paddingTop: 40,
+            borderTop: '1px solid var(--border, #27272A)',
+          }}
+        >
+          <h3
+            style={{
+              fontSize: 'clamp(20px, 2.6vw, 26px)',
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              color: 'var(--text-primary)',
+              marginBottom: 8,
+            }}
+          >
+            Dan&apos;s Dashboard
+          </h3>
+          <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 24 }}>
+            A separate workspace. Sign in as a company — you pick which side you are on
+            per deal, so the same company can buy on one deal and sell on another.
+          </p>
+
+          {/* Signs in AND lands on /dan, so both sides of a deal are testable by
+              signing in as each company in turn. */}
+          <CompanySignIn />
+        </div>
       </div>
     </section>
   );

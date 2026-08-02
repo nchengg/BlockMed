@@ -14,7 +14,8 @@
 import type { Account, ClientHat } from "@/lib/authStore";
 import type { BolFields, Verdict } from "@/lib/escrow/rules";
 import type { Review, ObjectionGround } from "@/lib/escrow/review";
-import type { DealTerms } from "@/lib/escrow/store";
+import type { DealRole } from "@/lib/escrow/roles";
+import type { DealTerms, AuditEntry } from "@/lib/escrow/store";
 
 export type ActorCtx = {
   accountId?: string;
@@ -22,6 +23,26 @@ export type ActorCtx = {
   type?: "admin" | "developer" | "client";
   hat?: ClientHat | null;
 };
+
+// Actor payload from a real signed-in session (Dan's surface).
+//
+// TRANSITIONAL: the routes still read the actor from the request body. Now that
+// a session cookie exists, the server should resolve identity itself and ignore
+// this entirely — that is the next step, and it is what turns the soft gate into
+// a real one. Until then this carries the true account id rather than a mock,
+// so per-deal roles resolve against real accounts.
+export function actorFromSession(
+  account: { id: string; companyName: string; type: string } | null,
+): ActorCtx {
+  if (!account) return {};
+  return {
+    accountId: account.id,
+    displayName: account.companyName,
+    type: account.type === 'client' ? 'client' : (account.type as ActorCtx['type']),
+    // No hat: role is derived per deal from the recorded parties (roles.ts).
+    hat: null,
+  };
+}
 
 // Build the actor payload the routes expect from the current account + active hat.
 export function actorFrom(account: Account | null, activeHat: ClientHat | null): ActorCtx {
@@ -65,6 +86,92 @@ export function fetchStatus(dealId: string): Promise<StatusResponse> {
   return fetch(`/api/escrow/status?dealId=${encodeURIComponent(dealId)}`, { cache: "no-store" }).then(r => r.json());
 }
 
+// FR-1: create a deal from scratch — the creator states their side and names the
+// counterparty; both parties are recorded on the deal (lib/escrow/roles.ts).
+export type CreateDealInput = DealTerms & {
+  creatorRole: DealRole;
+  counterpartyAccountId: string;
+};
+
+export type TradingCompany = { accountId: string; displayName: string; email: string };
+
+// The companies a deal can be addressed to — each is a real, loggable account,
+// so both sides of a deal can be tested by signing in as each in turn.
+export function fetchCompanies(excludeAccountId: string | undefined): Promise<{ ok: boolean; companies: TradingCompany[] }> {
+  const q = excludeAccountId ? `?exclude=${encodeURIComponent(excludeAccountId)}` : "";
+  return fetch(`/api/escrow/companies${q}`, { cache: "no-store" }).then(r => r.json());
+}
+
+export function createDeal(input: CreateDealInput, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; dealId?: string; role?: DealRole }>(
+    "/api/escrow/create-deal",
+    { ...input, actor },
+  );
+}
+
+export type DealListItem = {
+  dealId: string;
+  onChainDealId: string | null;
+  role: DealRole | null;
+  counterparty: string;
+  terms: DealTerms | null;
+  state: string | null;
+  /** True when the signed-in viewer is the party who must accept the deal. */
+  awaitingViewer?: boolean;
+  /** Notice-of-release review, once a Compliant B/L has opened one (FR-10/11). */
+  review?: Review | null;
+  /** Every recorded action on this deal, oldest first (FR-14). */
+  audit?: AuditEntry[];
+  createdAt: string | null;
+};
+
+export type DealSummary = {
+  ok: boolean;
+  chainOk: boolean;
+  money: {
+    locked: string;
+    awaitingFunding: string;
+    released: string;
+    escrowTotalAllAccounts: string | null;
+    demoWallets: { buyer: string; seller: string } | null;
+  };
+  counts: {
+    total: number; active: number; settled: number;
+    asBuyer: number; asSeller: number; needsYou: number;
+  };
+};
+
+// Per-account dashboard figures, derived from that account's own deals.
+export function fetchSummary(accountId: string | undefined): Promise<DealSummary> {
+  const q = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
+  return fetch(`/api/escrow/summary${q}`, { cache: "no-store" }).then(r => r.json());
+}
+
+// One deal for the deal page. Same shape as a list row.
+export function fetchDeal(
+  dealId: string, accountId: string | undefined,
+): Promise<{ ok: boolean; error?: string; chainId?: number | null; deal?: DealListItem }> {
+  const q = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
+  return fetch(`/api/escrow/deals/${encodeURIComponent(dealId)}${q}`, { cache: "no-store" }).then(r => r.json());
+}
+
+export function fetchDeals(
+  accountId: string | undefined,
+): Promise<{ ok: boolean; chainId?: number | null; deals: DealListItem[] }> {
+  const q = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
+  return fetch(`/api/escrow/deals${q}`, { cache: "no-store" }).then(r => r.json());
+}
+
+// FR-1 (counterparty half): accept a proposed deal — registers it on-chain
+// (createDeal → Draft→Agreed) — or decline it, which is off-chain and terminal.
+// Either side may be the accepter: whoever did not create the deal.
+export function acceptDeal(dealId: string, actor: ActorCtx, opts?: { decline?: boolean }) {
+  return post<{ ok: boolean; error?: string; txHash?: string; declined?: boolean }>(
+    "/api/escrow/accept-deal",
+    { dealId, actor, decline: opts?.decline === true },
+  );
+}
+
 export function propose(dealId: string, terms: DealTerms, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string }>("/api/escrow/propose", { dealId, ...terms, actor });
 }
@@ -94,9 +201,24 @@ export function objectToRelease(dealId: string, ground: ObjectionGround, detail:
   return post<{ ok: boolean; error?: string }>("/api/escrow/object", { dealId, ground, detail, actor });
 }
 
+// FR-13: the buyer withdraws a mistaken or resolved objection, restoring the
+// original notice without making the seller resubmit compliant documents.
+export function withdrawObjection(dealId: string, actor: ActorCtx, reason: string) {
+  return post<{ ok: boolean; error?: string }>(
+    "/api/escrow/withdraw-objection", { dealId, actor, reason },
+  );
+}
+
 // FR-10: seller/platform finalises after the window expired with no objection.
 export function finaliseRelease(dealId: string, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string; txHash?: string }>("/api/escrow/finalise-release", { dealId, actor });
+}
+
+// FR-13: return locked funds to the buyer when a deal will not complete.
+export function refund(dealId: string, actor: ActorCtx, reason: string) {
+  return post<{ ok: boolean; error?: string; txHash?: string }>(
+    "/api/escrow/refund", { dealId, actor, reason },
+  );
 }
 
 export function release(dealId: string, actor: ActorCtx) {
@@ -105,4 +227,12 @@ export function release(dealId: string, actor: ActorCtx) {
 
 export function reset(dealId: string, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string }>("/api/escrow/reset", { dealId, actor });
+}
+
+// Clear every deal this account is a party to — a clean slate before a demo.
+// Off-chain records only; anything already settled on-chain is untouched.
+export function resetMyDeals(actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; cleared?: number }>(
+    "/api/escrow/reset", { mine: true, actor },
+  );
 }

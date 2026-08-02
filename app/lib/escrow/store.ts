@@ -60,6 +60,12 @@ export interface DealRecord {
   // Notice-of-release review (FR-10/11): set when a Compliant B/L opens the buyer's
   // objection window; cleared/replaced on a corrected resubmission. See review.ts.
   review?: import("./review").Review | null;
+  // Which side proposed the deal — the OTHER side is the one whose acceptance is
+  // pending. Set at creation; drives the "Pending <them>" / "Awaiting you" status.
+  createdByRole?: "buyer" | "seller";
+  // Set when the counterparty declines the proposal. Terminal, off-chain only —
+  // no on-chain deal is ever created for a declined proposal.
+  declinedAt?: string | null;
   // #27 adaptation: the accounts participating in this deal, captured as they act.
   parties: { seller?: PartyRef; buyer?: PartyRef };
   audit: AuditEntry[];

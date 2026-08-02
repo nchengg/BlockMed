@@ -13,6 +13,7 @@
 // can see (dealStore's visibleDealsFor already enforces that), preserving isolation.
 import type { Account, ClientHat } from "@/lib/authStore";
 import type { BolFields, Verdict } from "@/lib/escrow/rules";
+import type { Review, ObjectionGround } from "@/lib/escrow/review";
 import type { DealTerms } from "@/lib/escrow/store";
 
 export type ActorCtx = {
@@ -41,6 +42,7 @@ export type StatusResponse = {
   dealId?: string | null;
   dealAmount?: string | null;
   terms?: DealTerms | null;
+  review?: Review | null;
   parties?: { seller?: { displayName?: string }; buyer?: { displayName?: string } };
   state?: string | null;
   audit?: { ts: string; actor: string; action: string; detail?: string; txHash?: string }[];
@@ -76,10 +78,25 @@ export function fund(dealId: string, actor: ActorCtx) {
 }
 
 export function submitBol(dealId: string, fields: BolFields, actor: ActorCtx) {
-  return post<Verdict & { ok: boolean; error?: string; txHash?: string; recordVerdictSkipped?: boolean }>(
-    "/api/escrow/submit-bol",
-    { dealId, ...fields, actor },
-  );
+  return post<Verdict & {
+    ok: boolean; error?: string; recordVerdictSkipped?: boolean;
+    notice?: { noticeAt: string; windowEndsAt: string };
+  }>("/api/escrow/submit-bol", { dealId, ...fields, actor });
+}
+
+// FR-10: buyer approves the noticed release (waives the remaining window).
+export function approveRelease(dealId: string, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; txHash?: string }>("/api/escrow/approve-release", { dealId, actor });
+}
+
+// FR-11: buyer objects within the window, on a closed valid ground.
+export function objectToRelease(dealId: string, ground: ObjectionGround, detail: string, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string }>("/api/escrow/object", { dealId, ground, detail, actor });
+}
+
+// FR-10: seller/platform finalises after the window expired with no objection.
+export function finaliseRelease(dealId: string, actor: ActorCtx) {
+  return post<{ ok: boolean; error?: string; txHash?: string }>("/api/escrow/finalise-release", { dealId, actor });
 }
 
 export function release(dealId: string, actor: ActorCtx) {

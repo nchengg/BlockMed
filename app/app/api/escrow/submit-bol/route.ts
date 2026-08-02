@@ -1,32 +1,20 @@
 import { NextResponse } from "next/server";
-import { loadDeployment, publicClient, walletFor, escrowAbi, type Deployment } from "@/lib/escrow/chain";
+import { loadDeployment, publicClient, escrowAbi } from "@/lib/escrow/chain";
 import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
 import { gradeBol, RECORDED_FIELDS, type BolFields } from "@/lib/escrow/rules";
+import { openReview, reviewStatus } from "@/lib/escrow/review";
 import { readActor, requireHat } from "@/lib/escrow/actor";
 
-// Step 4 — SELLER submits the bill-of-lading details. The deterministic rules engine
-// grades them against the agreed terms; on Compliant the platform (releaser) records
-// the verdict on-chain: Funded → ReleasePending. Discrepant = no chain write.
+// SELLER submits the bill-of-lading details. The deterministic rules engine grades
+// them against the agreed terms. A Compliant grading NO LONGER records the verdict
+// on-chain directly (FR-10/11): it issues a NOTICE OF RELEASE to the buyer and opens
+// the objection window (see lib/escrow/review.ts). recordVerdict happens later via
+// approve-release (buyer waives the window) or finalise-release (window expired
+// quietly) — never while an objection stands. Discrepant = no notice, no chain write.
 //
 // #27 adaptation: submission is gated to the seller hat.
 // Reconciliation: scoped to the caller's active app deal id (lib/dealStore) — the
-// B/L is graded against THAT deal's terms and the verdict recorded on its on-chain id.
-//
-// ─────────────────────────────────────────────────────────────────────────────
-// CRITICAL — RELEASER SIGNS HERE, SERVER-SIDE, WITHOUT VERIFIED AUTH.
-// On a Compliant verdict this route makes the platform's RELEASER_ROLE call
-// (recordVerdict) using the server-held key. In this port that key is ONLY the
-// public Hardhat dev key (lib/escrow/chain.ts) and this route REFUSES TO SIGN
-// unless it is talking to the local dev chain (see assertLocalReleaser below).
-// It must never be exposed on a public deployment with a real releaser key.
-//
-// TODO(integration: auth Q18) — before this can run outside localhost:
-//   1. The verdict must be produced/authorised by the trusted operator path, not
-//      by an unauthenticated POST from whoever submits the B/L.
-//   2. The releaser key must be a server secret, and the recordVerdict trigger
-//      must sit behind verified operator identity (requireOperator + real auth).
-//   Until Q18 is settled this endpoint stays local-only.
-// ─────────────────────────────────────────────────────────────────────────────
+// B/L is graded against THAT deal's terms.
 export async function POST(req: Request) {
   const body = (await req.json()) as BolFields & { dealId?: unknown; actor?: unknown };
   const actor = readActor(body);
@@ -41,6 +29,29 @@ export async function POST(req: Request) {
   const deal = getDeal(store, appDealId);
   if (!deal?.onChainDealId || !deal.terms) {
     return NextResponse.json({ error: "No funded deal." }, { status: 409 });
+  }
+
+  // Resubmission policy: while a clean notice is pending (or quietly expired),
+  // the seller cannot replace it — the path forward is buyer approval or
+  // finalise-release. Only a raised objection reopens submission.
+  if (deal.review) {
+    const rs = reviewStatus(deal.review);
+    if (rs === "pending") {
+      return NextResponse.json(
+        { error: "A notice of release is pending buyer review — resubmission is only possible after an objection." },
+        { status: 409 },
+      );
+    }
+    if (rs === "expired") {
+      return NextResponse.json(
+        { error: "The objection window expired with no objection — finalise the release instead of resubmitting." },
+        { status: 409 },
+      );
+    }
+    // rs === "objected": corrected resubmission allowed (the objection stays on the
+    // audit trail; the review record is replaced below on a Compliant grading).
+    // rs === "approved" is unreachable here: approval implies recordVerdict, so the
+    // on-chain state guard below (must be Funded) already rejects.
   }
 
   const dep = loadDeployment();
@@ -75,46 +86,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, ...verdict });
   }
 
-  // Refuse to sign the releaser call anywhere but the local dev chain.
-  const localGuard = assertLocalReleaser(dep);
-  if (localGuard) {
-    saveStore(store); // keep the verdict in the audit trail; just don't sign
-    return localGuard;
-  }
-
-  const releaser = walletFor("releaser", dep);
-  const hash = await releaser.writeContract({
-    address: dep.escrow,
-    abi: escrowAbi,
-    functionName: "recordVerdict",
-    args: [deal.onChainDealId],
-  });
-  await pc.waitForTransactionReceipt({ hash });
+  // Compliant → open (or replace, after an objection) the buyer's review window.
+  deal.review = openReview(fields, verdict);
   appendAudit(deal, {
     actor: "platform",
-    action: "Verdict recorded on-chain (recordVerdict)",
-    detail: "State: Funded → ReleasePending — release is now permissionless",
-    txHash: hash,
+    action: "Notice of release issued to buyer",
+    detail: `Documents graded Compliant. Buyer may approve now or object on valid grounds until ${deal.review.windowEndsAt}. recordVerdict is held until then.`,
   });
   saveStore(store);
-  return NextResponse.json({ ok: true, ...verdict, txHash: hash });
-}
-
-// Hard stop: the server-held releaser key may only sign against the local Hardhat
-// dev chain (chainId 31337). On any other network, or in a production build, this
-// route returns 501 instead of signing — the real releaser path is TODO(auth Q18).
-function assertLocalReleaser(dep: Deployment): NextResponse | null {
-  const isLocalChain = dep.chainId === 31337;
-  const isProd = process.env.NODE_ENV === "production";
-  if (isLocalChain && !isProd) return null;
-  return NextResponse.json(
-    {
-      ok: false,
-      error:
-        "Releaser signing is disabled outside the local dev chain. Wire the trusted " +
-        "operator + real releaser key first (TODO integration: auth Q18).",
-      recordVerdictSkipped: true,
-    },
-    { status: 501 },
-  );
+  return NextResponse.json({
+    ok: true,
+    ...verdict,
+    notice: { noticeAt: deal.review.noticeAt, windowEndsAt: deal.review.windowEndsAt },
+  });
 }

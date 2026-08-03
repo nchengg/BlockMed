@@ -45,10 +45,14 @@ export type SessionAccount = {
   contactName: string;
   country: string;
   type: string;
+  /** The linked wallet, or null until one is proven via SIWE. */
+  walletAddress: string | null;
+  walletLinkedAt: Date | null;
 };
 
 const ACCOUNT_FIELDS = {
   id: true, email: true, companyName: true, contactName: true, country: true, type: true,
+  walletAddress: true, walletLinkedAt: true,
 } as const;
 
 /** Issue a session and set the cookie. Called after signup and after login. */

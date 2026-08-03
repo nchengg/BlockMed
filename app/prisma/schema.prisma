@@ -41,6 +41,15 @@ model Account {
   // Who to contact at the company.
   contactName String
 
+  // The wallet this company signs on-chain actions with. Null until linked:
+  // identity is account-first, and a platform/intermediary may never link one
+  // (they coordinate, they never deposit). Unique so two companies cannot claim
+  // the same address — otherwise the contract's per-deal party checks would be
+  // ambiguous. Only set after a signature proves ownership (SIWE, EIP-4361);
+  // an address alone proves nothing, since anyone can type someone else's.
+  walletAddress  String?   @unique
+  walletLinkedAt DateTime?
+
   /// "client" for trading companies; "admin"/"developer" for staff.
   type String @default("client")
 
@@ -61,6 +70,21 @@ model Session {
   token     String   @id
   accountId String
   account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([accountId])
+}
+
+/// A one-time challenge for wallet linking (SIWE, EIP-4361).
+///
+/// The server issues the nonce, the wallet signs a message containing it, and
+/// the server verifies the signature recovers to the claimed address. The row is
+/// deleted on use, so a captured signature cannot be replayed — which is the
+/// whole point of the nonce. Short-lived: unused rows expire.
+model WalletNonce {
+  nonce     String   @id
+  accountId String
   createdAt DateTime @default(now())
   expiresAt DateTime
 

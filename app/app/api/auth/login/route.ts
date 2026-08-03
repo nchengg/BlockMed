@@ -41,6 +41,8 @@ export async function POST(req: Request) {
       contactName: account.contactName,
       country: account.country,
       type: account.type,
+      walletAddress: account.walletAddress,
+      walletLinkedAt: account.walletLinkedAt,
     },
   });
 }

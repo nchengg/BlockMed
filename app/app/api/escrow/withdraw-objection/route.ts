@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { reviewStatus, groundLabel } from "@/lib/escrow/review";
-import { readActor, requireHat } from "@/lib/escrow/actor";
+import { readActor, requireHat, requireAuth } from "@/lib/escrow/actor";
 import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 
 // WITHDRAW AN OBJECTION (FR-13, resolution branch) — the buyer's way back from a
@@ -19,7 +19,9 @@ import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 // window lapse. The objection stays on the audit trail; it is never erased.
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
   const reason = typeof body?.reason === "string" ? body.reason.trim().slice(0, 300) : "";
 
   const appDealId = readDealId(body);

@@ -3,7 +3,7 @@ import { loadDeployment, publicClient, escrowAbi } from "@/lib/escrow/chain";
 import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { gradeBol, RECORDED_FIELDS, type BolFields } from "@/lib/escrow/rules";
 import { openReview, reviewStatus } from "@/lib/escrow/review";
-import { readActor, requireHat } from "@/lib/escrow/actor";
+import { readActor, requireHat, requireAuth } from "@/lib/escrow/actor";
 import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 
 // SELLER submits the bill-of-lading details. The deterministic rules engine grades
@@ -18,7 +18,9 @@ import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 // B/L is graded against THAT deal's terms.
 export async function POST(req: Request) {
   const body = (await req.json()) as BolFields & { dealId?: unknown; actor?: unknown };
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });

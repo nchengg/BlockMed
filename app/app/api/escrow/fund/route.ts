@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
 import { loadDeployment, publicClient, walletFor, escrowAbi, usdcAbi } from "@/lib/escrow/chain";
 import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
-import { readActor, requireHat } from "@/lib/escrow/actor";
+import { readActor, requireHat, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal } from "@/lib/escrow/roles";
 
 // Step 3 — BUYER locks the funds: exact-amount USDC approve, then deposit.
@@ -18,7 +18,9 @@ import { roleInDeal } from "@/lib/escrow/roles";
 // dashboard's flow), so both surfaces keep working.
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAllDeals, removeDeal, removeAllDeals, readDealId } from "@/lib/escrow/store";
-import { readActor, requireStaff } from "@/lib/escrow/actor";
+import { readActor, requireStaff, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal } from "@/lib/escrow/roles";
 
 // Start a fresh demo run. The old on-chain deal stays on-chain (terminal state);
@@ -20,7 +20,9 @@ import { roleInDeal } from "@/lib/escrow/roles";
 // demo-honest scoping, not a security boundary.
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
 
   const appDealId = readDealId(body);
   if (appDealId) {

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { loadDeployment, publicClient, walletFor, escrowAbi } from "@/lib/escrow/chain";
 import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { assertLocalReleaser } from "@/lib/escrow/settlement";
-import { readActor } from "@/lib/escrow/actor";
+import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal } from "@/lib/escrow/roles";
 import { reviewStatus } from "@/lib/escrow/review";
 
@@ -26,7 +26,9 @@ import { reviewStatus } from "@/lib/escrow/review";
 // until the releaser key sits behind verified operator identity.
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
   const reason = typeof body?.reason === "string" ? body.reason.trim().slice(0, 300) : "";
 
   const appDealId = readDealId(body);

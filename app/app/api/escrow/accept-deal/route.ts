@@ -3,7 +3,7 @@ import { keccak256, parseUnits, toHex } from "viem";
 import { loadDeployment, publicClient, walletFor, escrowAbi } from "@/lib/escrow/chain";
 import { getDeal, appendAudit, readDealId, saveDeal, nextDealCounter } from "@/lib/escrow/store";
 import { assertLocalReleaser } from "@/lib/escrow/settlement";
-import { readActor } from "@/lib/escrow/actor";
+import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal, pendingOnRole } from "@/lib/escrow/roles";
 
 // ACCEPT (or DECLINE) a proposed deal — the counterparty's half of FR-1.
@@ -24,7 +24,9 @@ import { roleInDeal, pendingOnRole } from "@/lib/escrow/roles";
 // ─────────────────────────────────────────────────────────────────────────────
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
   const decline = body?.decline === true;
 
   const appDealId = readDealId(body);

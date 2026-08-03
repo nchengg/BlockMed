@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { reviewStatus, isValidGround, groundLabel } from "@/lib/escrow/review";
-import { readActor, requireHat } from "@/lib/escrow/actor";
+import { readActor, requireHat, requireAuth } from "@/lib/escrow/actor";
 import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 
 // BUYER objects to the noticed release (FR-11) — only within the window, and only
@@ -11,7 +11,9 @@ import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 // is protected from post-shipment renegotiation.
 export async function POST(req: Request) {
   const body = (await req.json()) as { dealId?: unknown; actor?: unknown; ground?: unknown; detail?: unknown };
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });

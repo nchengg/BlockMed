@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
 import { ensureDeal, appendAudit, readDealId, type DealTerms, saveDeal } from "@/lib/escrow/store";
-import { readActor, requireHat, partyRef } from "@/lib/escrow/actor";
+import { readActor, requireHat, partyRef, requireAuth } from "@/lib/escrow/actor";
 
 // Step 1 — SELLER proposes the escrow terms (off-chain; nothing on-chain yet).
 // #27 adaptation: gated to the seller hat, and the seller account is recorded.
@@ -9,7 +9,9 @@ import { readActor, requireHat, partyRef } from "@/lib/escrow/actor";
 // terms attach to THAT deal's record — not to one shared global deal.
 export async function POST(req: Request) {
   const body = (await req.json()) as Partial<DealTerms> & { dealId?: unknown; actor?: unknown };
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
   const denied = requireHat(actor, "seller");
   if (denied) return denied;
 

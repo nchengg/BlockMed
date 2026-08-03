@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { keccak256, parseUnits, toHex } from "viem";
 import { loadDeployment, publicClient, walletFor, escrowAbi, type Deployment } from "@/lib/escrow/chain";
 import { getDeal, appendAudit, readDealId, saveDeal, nextDealCounter } from "@/lib/escrow/store";
-import { readActor, requireHat, partyRef } from "@/lib/escrow/actor";
+import { readActor, requireHat, partyRef, requireAuth } from "@/lib/escrow/actor";
 
 // Step 2 — BUYER agrees to the proposal; the platform (releaser key) registers the
 // deal on-chain: createDeal → Draft→Agreed. (TRD: createDeal is RELEASER_ROLE-gated.)
@@ -26,7 +26,9 @@ import { readActor, requireHat, partyRef } from "@/lib/escrow/actor";
 // ─────────────────────────────────────────────────────────────────────────────
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
   const denied = requireHat(actor, "buyer");
   if (denied) return denied;
 

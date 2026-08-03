@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
 import { ensureDeal, appendAudit, saveDeal, nextDealCounter, type DealTerms } from "@/lib/escrow/store";
-import { readActor } from "@/lib/escrow/actor";
+import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { prisma } from "@/lib/db";
 import type { DealRole } from "@/lib/escrow/roles";
 
@@ -26,7 +26,9 @@ export async function POST(req: Request) {
     reference?: unknown;
     actor?: unknown;
   };
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
 
   const creatorRole = body.creatorRole;
   if (creatorRole !== "buyer" && creatorRole !== "seller") {

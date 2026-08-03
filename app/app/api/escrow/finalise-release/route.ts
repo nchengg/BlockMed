@@ -3,14 +3,16 @@ import { loadDeployment } from "@/lib/escrow/chain";
 import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { reviewStatus } from "@/lib/escrow/review";
 import { assertLocalReleaser, recordVerdictOnChain } from "@/lib/escrow/settlement";
-import { readActor } from "@/lib/escrow/actor";
+import { readActor, requireAuth } from "@/lib/escrow/actor";
 
 // SELLER or PLATFORM finalises the release once the objection window has expired
 // with no objection (FR-10): the quiet-expiry path to recordVerdict. Strictly
 // gated on status === "expired" — never early, never past an objection.
 export async function POST(req: Request) {
   const body = (await req.json()) as { dealId?: unknown; actor?: unknown };
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
   // Two hats may finalise: the seller (whose payment it is) or the platform.
   // Anonymous actors soft-allow, matching the other routes' demo posture.
   if (actor?.type === "client" && actor.hat && actor.hat !== "seller" && actor.hat !== "platform") {

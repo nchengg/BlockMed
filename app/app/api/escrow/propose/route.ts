@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
-import { getStore, saveStore, ensureDeal, appendAudit, readDealId, type DealTerms } from "@/lib/escrow/store";
+import { ensureDeal, appendAudit, readDealId, type DealTerms, saveDeal } from "@/lib/escrow/store";
 import { readActor, requireHat, partyRef } from "@/lib/escrow/actor";
 
 // Step 1 — SELLER proposes the escrow terms (off-chain; nothing on-chain yet).
@@ -33,9 +33,7 @@ export async function POST(req: Request) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(shipmentDeadline)) {
     return NextResponse.json({ error: "Deadline must be YYYY-MM-DD." }, { status: 400 });
   }
-
-  const store = getStore();
-  const deal = ensureDeal(store, dealId);
+  const deal = await ensureDeal(dealId);
   if (deal.terms) {
     return NextResponse.json({ error: "A proposal already exists for this deal — reset to start over." }, { status: 409 });
   }
@@ -54,6 +52,6 @@ export async function POST(req: Request) {
     detail: `${deal.terms.goods} — ${deal.terms.amountUsdc} USDC, ship by ${shipmentDeadline}`,
     accountId: actor?.accountId,
   });
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({ ok: true });
 }

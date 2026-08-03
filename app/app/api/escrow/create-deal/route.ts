@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
-import { getStore, saveStore, getDeal, ensureDeal, appendAudit, type DealTerms } from "@/lib/escrow/store";
+import { ensureDeal, appendAudit, saveDeal, nextDealCounter, type DealTerms } from "@/lib/escrow/store";
 import { readActor } from "@/lib/escrow/actor";
 import { prisma } from "@/lib/db";
 import type { DealRole } from "@/lib/escrow/roles";
@@ -72,18 +72,13 @@ export async function POST(req: Request) {
   const sellerName = role === "seller" ? creatorName : counterpartyName;
   const buyerName = role === "buyer" ? creatorName : counterpartyName;
 
-  const store = getStore();
-
-  // Mint an app deal id that cannot collide with an existing record.
+  // Mint an app deal id. The counter is reserved atomically and never reused,
+  // even across deletions, so the id cannot collide with an existing record.
   const stamp = Date.now().toString(36).toUpperCase().slice(-4);
-  let appDealId = `DEAL-${stamp}-${(store.dealCounter + 1).toString().padStart(4, "0")}`;
-  let n = store.dealCounter + 1;
-  while (getDeal(store, appDealId)) {
-    n += 1;
-    appDealId = `DEAL-${stamp}-${n.toString().padStart(4, "0")}`;
-  }
+  const n = await nextDealCounter();
+  const appDealId = `DEAL-${stamp}-${n.toString().padStart(4, "0")}`;
 
-  const deal = ensureDeal(store, appDealId);
+  const deal = await ensureDeal(appDealId);
   deal.terms = {
     goods: goods.trim(),
     amountUsdc: amountUsdc!.trim(),
@@ -109,8 +104,6 @@ export async function POST(req: Request) {
     detail: `${deal.terms.goods} — ${deal.terms.amountUsdc} USDC, ship by ${shipmentDeadline}. Counterparty: ${counterpartyName}.`,
     accountId: actor?.accountId,
   });
-
-  store.dealCounter = n;
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({ ok: true, dealId: appDealId, terms: deal.terms, role });
 }

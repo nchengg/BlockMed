@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getStore, saveStore, removeDeal, readDealId } from "@/lib/escrow/store";
+import { getAllDeals, removeDeal, removeAllDeals, readDealId } from "@/lib/escrow/store";
 import { readActor, requireStaff } from "@/lib/escrow/actor";
 import { roleInDeal } from "@/lib/escrow/roles";
 
@@ -21,12 +21,10 @@ import { roleInDeal } from "@/lib/escrow/roles";
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   const actor = readActor(body);
-  const store = getStore();
 
   const appDealId = readDealId(body);
   if (appDealId) {
-    removeDeal(store, appDealId);
-    saveStore(store);
+    await removeDeal(appDealId);
     return NextResponse.json({ ok: true, cleared: 1 });
   }
 
@@ -34,16 +32,14 @@ export async function POST(req: Request) {
     if (!actor?.accountId) {
       return NextResponse.json({ error: "Sign in to clear your deals." }, { status: 400 });
     }
-    const mine = Object.values(store.deals).filter((d) => roleInDeal(d, actor.accountId) !== null);
-    for (const d of mine) removeDeal(store, d.appDealId);
-    saveStore(store);
+    const mine = (await getAllDeals()).filter((d) => roleInDeal(d, actor.accountId) !== null);
+    for (const d of mine) await removeDeal(d.appDealId);
     return NextResponse.json({ ok: true, cleared: mine.length });
   }
 
   // Full wipe stays a staff capability.
   const denied = requireStaff(actor);
   if (denied) return denied;
-  const cleared = Object.keys(store.deals).length;
-  saveStore({ dealCounter: store.dealCounter, deals: {} });
+  const cleared = await removeAllDeals();
   return NextResponse.json({ ok: true, cleared });
 }

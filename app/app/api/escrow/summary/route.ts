@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { formatUnits, parseUnits } from "viem";
 import { loadDeployment, publicClient, usdcAbi, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
-import { getStore } from "@/lib/escrow/store";
+import { getAllDeals } from "@/lib/escrow/store";
 import { roleInDeal, pendingOnRole } from "@/lib/escrow/roles";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +17,6 @@ export const dynamic = "force-dynamic";
 // identity; demo-honest, not a security boundary.
 export async function GET(req: Request) {
   const accountId = new URL(req.url).searchParams.get("accountId") ?? undefined;
-  const store = getStore();
 
   let readState: ((id: string) => Promise<string | null>) | null = null;
   let demoWallets: { buyer: string; seller: string } | null = null;
@@ -46,7 +45,7 @@ export async function GET(req: Request) {
     chainOk = false;
   }
 
-  const mine = Object.values(store.deals).filter((d) => roleInDeal(d, accountId) !== null);
+  const mine = (await getAllDeals()).filter((d) => roleInDeal(d, accountId) !== null);
 
   let lockedMinor = 0n;   // this account's money currently held by the contract
   let releasedMinor = 0n; // value settled to/from this account

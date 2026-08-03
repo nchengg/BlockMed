@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { loadDeployment, publicClient, escrowAbi } from "@/lib/escrow/chain";
-import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
+import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { gradeBol, RECORDED_FIELDS, type BolFields } from "@/lib/escrow/rules";
 import { openReview, reviewStatus } from "@/lib/escrow/review";
 import { readActor, requireHat } from "@/lib/escrow/actor";
@@ -24,8 +24,7 @@ export async function POST(req: Request) {
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
 
   const fields = body as BolFields;
-  const store = getStore();
-  const deal = getDeal(store, appDealId);
+  const deal = await getDeal(appDealId);
   if (!deal?.onChainDealId || !deal.terms) {
     return NextResponse.json({ error: "No funded deal." }, { status: 409 });
   }
@@ -93,7 +92,7 @@ export async function POST(req: Request) {
   });
 
   if (verdict.verdict !== "Compliant") {
-    saveStore(store);
+    await saveDeal(deal);
     return NextResponse.json({ ok: true, ...verdict });
   }
 
@@ -104,7 +103,7 @@ export async function POST(req: Request) {
     action: "Notice of release issued to buyer",
     detail: `Documents graded Compliant. Buyer may approve now or object on valid grounds until ${deal.review.windowEndsAt}. recordVerdict is held until then.`,
   });
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({
     ok: true,
     ...verdict,

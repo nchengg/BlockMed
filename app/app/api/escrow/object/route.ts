@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
+import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { reviewStatus, isValidGround, groundLabel } from "@/lib/escrow/review";
 import { readActor, requireHat } from "@/lib/escrow/actor";
 import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
@@ -23,9 +23,7 @@ export async function POST(req: Request) {
     );
   }
   const detail = typeof body.detail === "string" ? body.detail.trim().slice(0, 500) : "";
-
-  const store = getStore();
-  const deal = getDeal(store, appDealId);
+  const deal = await getDeal(appDealId);
   if (!deal?.review) {
     return NextResponse.json({ error: "No notice of release to object to." }, { status: 409 });
   }
@@ -63,6 +61,6 @@ export async function POST(req: Request) {
     detail: detail || "(no further detail given)",
     accountId: actor?.accountId,
   });
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({ ok: true });
 }

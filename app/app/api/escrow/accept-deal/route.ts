@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { keccak256, parseUnits, toHex } from "viem";
 import { loadDeployment, publicClient, walletFor, escrowAbi } from "@/lib/escrow/chain";
-import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
+import { getDeal, appendAudit, readDealId, saveDeal, nextDealCounter } from "@/lib/escrow/store";
 import { assertLocalReleaser } from "@/lib/escrow/settlement";
 import { readActor } from "@/lib/escrow/actor";
 import { roleInDeal, pendingOnRole } from "@/lib/escrow/roles";
@@ -29,9 +29,7 @@ export async function POST(req: Request) {
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
-
-  const store = getStore();
-  const deal = getDeal(store, appDealId);
+  const deal = await getDeal(appDealId);
   if (!deal?.terms) return NextResponse.json({ error: "No proposal to accept." }, { status: 409 });
   if (deal.onChainDealId) return NextResponse.json({ error: "This deal has already been accepted." }, { status: 409 });
   if (deal.declinedAt) return NextResponse.json({ error: "This deal was declined." }, { status: 409 });
@@ -59,7 +57,7 @@ export async function POST(req: Request) {
       detail: "No on-chain deal was created.",
       accountId: actor?.accountId,
     });
-    saveStore(store);
+    await saveDeal(deal);
     return NextResponse.json({ ok: true, declined: true });
   }
 
@@ -67,7 +65,8 @@ export async function POST(req: Request) {
   const pc = publicClient(dep);
 
   // Derive the on-chain id from the app deal id + counter salt (unique per run).
-  const onChainDealId = keccak256(toHex(`${appDealId}#${store.dealCounter + 1}`));
+  const counter = await nextDealCounter();
+  const onChainDealId = keccak256(toHex(`${appDealId}#${counter}`));
   const amountMinor = parseUnits(deal.terms.amountUsdc, 6);
 
   appendAudit(deal, {
@@ -78,7 +77,7 @@ export async function POST(req: Request) {
 
   const localGuard = assertLocalReleaser(dep);
   if (localGuard) {
-    saveStore(store); // keep the acceptance in the audit trail; just don't sign
+    await saveDeal(deal); // keep the acceptance in the audit trail; just don't sign
     return localGuard;
   }
 
@@ -90,8 +89,6 @@ export async function POST(req: Request) {
     args: [onChainDealId, dep.accounts.buyer, dep.accounts.seller, amountMinor],
   });
   await pc.waitForTransactionReceipt({ hash });
-
-  store.dealCounter += 1;
   deal.onChainDealId = onChainDealId;
   appendAudit(deal, {
     actor: "platform",
@@ -99,6 +96,6 @@ export async function POST(req: Request) {
     detail: "State: Draft → Agreed — both parties are now bound to these terms",
     txHash: hash,
   });
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({ ok: true, dealId: appDealId, onChainDealId, txHash: hash });
 }

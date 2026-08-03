@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getStore, getDeal } from "@/lib/escrow/store";
+import { getDeal } from "@/lib/escrow/store";
 import { roleInDeal } from "@/lib/escrow/roles";
 import { chainReader, toDealView } from "@/lib/escrow/dealView";
 
@@ -14,9 +14,7 @@ export const dynamic = "force-dynamic";
 export async function GET(req: Request, ctx: { params: Promise<{ dealId: string }> }) {
   const { dealId } = await ctx.params;
   const accountId = new URL(req.url).searchParams.get("accountId") ?? undefined;
-
-  const store = getStore();
-  const deal = getDeal(store, dealId);
+  const deal = await getDeal(dealId);
   if (!deal) return NextResponse.json({ ok: false, error: "Deal not found." }, { status: 404 });
 
   // Only a party to the deal may view it — the same isolation the list applies.

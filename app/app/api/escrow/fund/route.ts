@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { parseUnits } from "viem";
 import { loadDeployment, publicClient, walletFor, escrowAbi, usdcAbi } from "@/lib/escrow/chain";
-import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
+import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { readActor, requireHat } from "@/lib/escrow/actor";
 import { roleInDeal } from "@/lib/escrow/roles";
 
@@ -22,9 +22,7 @@ export async function POST(req: Request) {
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
-
-  const store = getStore();
-  const deal = getDeal(store, appDealId);
+  const deal = await getDeal(appDealId);
   if (!deal?.onChainDealId || !deal.terms) {
     return NextResponse.json({ error: "No agreed deal to fund." }, { status: 409 });
   }
@@ -79,6 +77,6 @@ export async function POST(req: Request) {
     accountId: actor?.accountId,
   });
 
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({ ok: true, approveHash, depositHash });
 }

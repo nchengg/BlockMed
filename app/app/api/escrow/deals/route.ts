@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getStore } from "@/lib/escrow/store";
+import { getAllDeals } from "@/lib/escrow/store";
 import { roleInDeal } from "@/lib/escrow/roles";
 import { chainReader, toDealView } from "@/lib/escrow/dealView";
 
@@ -13,12 +13,11 @@ export const dynamic = "force-dynamic";
 // identity; the filtering is demo-honest, not a security boundary.
 export async function GET(req: Request) {
   const accountId = new URL(req.url).searchParams.get("accountId") ?? undefined;
-  const store = getStore();
 
   // Chain reads are best-effort: the list still renders with no local chain.
   const { readState, chainId } = chainReader();
 
-  const mine = Object.values(store.deals).filter((d) => roleInDeal(d, accountId) !== null);
+  const mine = (await getAllDeals()).filter((d) => roleInDeal(d, accountId) !== null);
   const deals = await Promise.all(mine.map((d) => toDealView(d, accountId, readState)));
 
   // Newest first.

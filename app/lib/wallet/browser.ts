@@ -62,6 +62,75 @@ export async function signMessage(address: string, message: string): Promise<str
   return signature;
 }
 
+/**
+ * Send a transaction from the user's wallet and return its hash.
+ *
+ * The server never sees a key: it supplies `to` and `data`, and the wallet
+ * turns that into a signed transaction only if the user approves. Gas is left
+ * to the wallet to estimate — MetaMask does this better than we can, and a bad
+ * hardcoded limit is a common cause of mysterious failures.
+ */
+export async function sendTransaction(from: string, to: string, data: string): Promise<string> {
+  const provider = getProvider();
+  if (!provider) throw new Error('No browser wallet found.');
+  return (await provider.request({
+    method: 'eth_sendTransaction',
+    params: [{ from, to, data }],
+  })) as string;
+}
+
+/**
+ * Wait for a transaction to be mined, via the wallet's own RPC connection.
+ *
+ * Needed between approve and deposit: eth_sendTransaction resolves as soon as
+ * the transaction is BROADCAST, not when it is mined. Sending the deposit on
+ * that signal races the approval, and the deposit reverts for want of an
+ * allowance that is still pending.
+ */
+export async function waitForReceipt(hash: string, timeoutMs = 60_000): Promise<{ status: string }> {
+  const provider = getProvider();
+  if (!provider) throw new Error('No browser wallet found.');
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const receipt = (await provider.request({
+      method: 'eth_getTransactionReceipt',
+      params: [hash],
+    })) as { status?: string } | null;
+    if (receipt) {
+      if (receipt.status === '0x0') throw new Error('The transaction failed on-chain.');
+      return { status: 'success' };
+    }
+    await new Promise(r => setTimeout(r, 500));
+  }
+  throw new Error('Timed out waiting for the transaction to confirm.');
+}
+
+/**
+ * Ask the wallet to switch networks, adding it first if unknown.
+ *
+ * 4902 is the EIP-1193 code for "this chain is not in the wallet" — the only
+ * case where adding is appropriate. Anything else is a real error.
+ */
+export async function ensureChain(chainId: number, rpcUrl: string, name: string): Promise<void> {
+  const provider = getProvider();
+  if (!provider) throw new Error('No browser wallet found.');
+  const hexId = `0x${chainId.toString(16)}`;
+  try {
+    await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: hexId }] });
+  } catch (err) {
+    if ((err as { code?: number })?.code !== 4902) throw err;
+    await provider.request({
+      method: 'wallet_addEthereumChain',
+      params: [{
+        chainId: hexId,
+        chainName: name,
+        rpcUrls: [rpcUrl],
+        nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+      }],
+    });
+  }
+}
+
 /** The chain the wallet is currently pointed at, as a decimal chain id. */
 export async function getChainId(): Promise<number> {
   const provider = getProvider();

@@ -657,7 +657,7 @@ Passport (DOC-18) and Source of Funds Declaration (DOC-19) still pending upload.
 **Reference (UK):** Companies Act 2006 Part 21A / Register of People with Significant Control Regulations 2016 (amended 2025) — DBT guidance Version 4, November 2025
 **Reference (UAE):** Federal Decree-Law No. 20 of 2018 on Anti-Money Laundering (UBO register)
 
-> **Document note:** The uploaded file (PSC_UK.pdf) is the 49-page DBT guidance document explaining the PSC regime — NOT the actual PSC notification form. The correct form to collect is the **Companies House PSC01** (individual PSC) or **PSC02** (corporate entity PSC), available from companieshouse.gov.uk. As of 18 November 2025, all PSCs must also verify their identity directly with Companies House.
+> **Document note:** PSC_UK.pdf is the 49-page DBT guidance document — kept as reference. PSC01.pdf (individual PSC) and PSC02.pdf (corporate RLE) are the actual Companies House notification forms, Version 4.0 (November 2025). As of 18 November 2025, all PSCs must verify their identity directly with Companies House before or alongside filing.
 
 #### Individual PSC — required fields (per CA 2006 Part 21A / DBT guidance Ch.4)
 | Field | Type | Notes |
@@ -671,6 +671,7 @@ Passport (DOC-18) and Source of Funds Declaration (DOC-19) still pending upload.
 | Date became a PSC | 📋 RECORD | |
 | PSC conditions met (i–v) with quantification | ✅ GRADE | Identifies control mechanism — e.g. "directly holds >25% but ≤50% of shares" |
 | Identity verification status | 🚩 FLAG | As of 18 Nov 2025, all PSCs must verify identity with Companies House — flag if not verified |
+| Companies House Personal Code | 📋 RECORD | 11-character code issued after identity verified with Companies House (PSC01 §A4) — optional to provide but should be captured if shared |
 
 **The 5 PSC conditions (one or more must be stated):**
 - (i) Directly or indirectly holds >25% of shares

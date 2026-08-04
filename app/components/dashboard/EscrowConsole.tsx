@@ -1,0 +1,574 @@
+'use client';
+// Live on-chain escrow console — the integration surface between #27's account model
+// and the escrow wiring ported from the closed PR #25. Mounted as the "Escrow" tab of
+// the client dashboard (DashboardShell). Everything here is ROLE-GATED by the account's
+// active hat: the buyer sees agree/fund, the seller sees propose/submit-B/L, the
+// platform hat sees the operator view, and release is shown to all (permissionless).
+//
+// This talks ONLY to app/api/escrow/* (via lib/escrow/client.ts), which drives the
+// real local Hardhat chain. It is the genuinely end-to-end piece of this port.
+//
+// PER-DEAL RECONCILIATION (feat/store-reconciliation) — the console now drives the
+// LOGGED-IN ACCOUNT'S ACTIVE DEAL. It reads useDeal() (lib/dealStore), which already
+// returns only a deal the current viewer is allowed to see (visibleDealsFor), and
+// passes that deal's id to every lifecycle call + the status read. So a buyer acts
+// on THEIR active deal, not on one shared global deal — and isolation holds because
+// the id we send is always a visible one.
+//
+// TODO(integration) — the existing buyer/seller wizards (components/buyer/*,
+// components/seller/*) still run the MOCK dealStore flow. Wiring those steps to these
+// same actions (now that the client takes the active dealId) is the remaining
+// integration; seams are marked in Step4ApproveDeposit and Step2UploadDocuments.
+// This console is the operator-facing driver in the meantime.
+import { useCallback, useEffect, useState } from 'react';
+import { useAuth, type ClientHat } from '@/lib/authStore';
+import { useDeal, EMPTY_DEAL } from '@/lib/dealStore';
+import {
+  actorFrom, fetchStatus, propose, agree, fund, submitBol, release, reset,
+  approveRelease, objectToRelease, finaliseRelease,
+  type StatusResponse,
+} from '@/lib/escrow/client';
+import { RECORDED_FIELDS, type BolFields } from '@/lib/escrow/rules';
+import {
+  reviewStatus, OBJECTION_GROUNDS, groundLabel,
+  type Review, type ObjectionGround, type ReviewStatus,
+} from '@/lib/escrow/review';
+import { Card, EyebrowLabel, StatusPill, AddressChip } from './ui';
+import type { StatusTone } from './ui';
+
+const STATE_TONE: Record<string, StatusTone> = {
+  Draft: 'pending', Agreed: 'accent', Funded: 'accent',
+  ReleasePending: 'accent', Released: 'success', Refunded: 'error', Cancelled: 'error',
+};
+
+export function EscrowConsole({ hat }: { hat: ClientHat }) {
+  const { account, activeHat } = useAuth();
+  const actor = actorFrom(account, activeHat);
+
+  // The deal the console acts on = the viewer's ACTIVE, VISIBLE deal (isolation
+  // already applied by dealStore). EMPTY_DEAL is the "no visible deal" placeholder.
+  const { deal } = useDeal();
+  const appDealId = deal.dealId;
+  const hasActiveDeal = appDealId !== EMPTY_DEAL.dealId;
+
+  const [status, setStatus] = useState<StatusResponse | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [msg, setMsg] = useState<{ tone: 'ok' | 'err'; text: string } | null>(null);
+
+  const refresh = useCallback(async () => {
+    if (!hasActiveDeal) { setStatus(null); return; }
+    try {
+      setStatus(await fetchStatus(appDealId));
+    } catch (e) {
+      setStatus({ ok: false, error: (e as Error).message });
+    }
+  }, [appDealId, hasActiveDeal]);
+
+  // Re-read whenever the active deal changes (e.g. the viewer switches deals).
+  useEffect(() => { setMsg(null); void refresh(); }, [refresh]);
+
+  // Run a lifecycle action, surface the result, and re-read chain status.
+  const run = useCallback(async (label: string, fn: () => Promise<{ ok: boolean; error?: string }>) => {
+    setBusy(label); setMsg(null);
+    try {
+      const r = await fn();
+      if (r.ok === false) setMsg({ tone: 'err', text: r.error || 'Action was rejected.' });
+      else setMsg({ tone: 'ok', text: `${label} — done.` });
+    } catch (e) {
+      setMsg({ tone: 'err', text: (e as Error).message });
+    } finally {
+      setBusy(null);
+      void refresh();
+    }
+  }, [refresh]);
+
+  const chainDown = status && status.ok === false;
+  const state = status?.state ?? null;
+  const terms = status?.terms ?? null;
+  const hasTerms = !!terms;
+  const hasDeal = !!status?.dealId;
+  // Notice-of-release review (FR-10/11): drives which card each hat sees at Funded.
+  const review = status?.review ?? null;
+  const rStatus: ReviewStatus | null = review ? reviewStatus(review) : null;
+
+  // No visible deal for this viewer — nothing to drive. (dealStore returns the
+  // EMPTY_DEAL placeholder for an account with no deals it's a party to.)
+  if (!hasActiveDeal) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <LocalOnlyBanner />
+        <Card>
+          <EyebrowLabel>NO ACTIVE DEAL</EyebrowLabel>
+          <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            You have no deal selected to act on. When a deal you’re a party to appears
+            in your dashboard, pick it in the deal switcher to drive its escrow here.
+          </p>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <LocalOnlyBanner />
+
+      {/* Which deal this console is acting on — the viewer's active, visible deal. */}
+      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+        Driving deal <span style={{ fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{appDealId}</span>
+        {deal.dealReference ? ` · ${deal.dealReference}` : ''}
+      </div>
+
+      {chainDown && (
+        <Card>
+          <EyebrowLabel>LIVE CHAIN</EyebrowLabel>
+          <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            No local chain detected. Start it, then reload:
+          </p>
+          <pre style={{ fontSize: 12, color: 'var(--text-muted)', background: 'var(--bg-deep)', padding: 12, borderRadius: 6, overflowX: 'auto' }}>
+{`# in contracts/
+npx hardhat node                                   # terminal 1
+npx hardhat run scripts/deploy-local.ts --network localhost   # terminal 2`}
+          </pre>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>{status?.error}</p>
+        </Card>
+      )}
+
+      {!chainDown && status && (
+        <Card>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+            <EyebrowLabel>ON-CHAIN STATE</EyebrowLabel>
+            <StatusPill label={state ?? 'No deal yet'} tone={state ? STATE_TONE[state] ?? 'pending' : 'pending'} />
+          </div>
+          {/* First cell is THIS deal's locked amount (deals(dealId).amount, only while
+              the contract actually holds it). The wallet/contract balances are per-address
+              and chain-global — labelled as such so two funded deals don't both appear
+              to hold the contract's total. */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 14 }}>
+            <Balance label="Locked in this deal"
+              value={hasDeal ? (state === 'Funded' || state === 'ReleasePending' ? status.dealAmount ?? '0' : '0') : undefined} />
+            <Balance label="Buyer wallet (all deals)" value={status.balances?.buyer} />
+            <Balance label="Seller wallet (all deals)" value={status.balances?.seller} />
+            <Balance label="Escrow total (all deals)" value={status.balances?.escrow} />
+          </div>
+          {status.addresses && (
+            <div style={{ marginTop: 14, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              <AddressChip value={status.addresses.escrow} />
+            </div>
+          )}
+        </Card>
+      )}
+
+      {/* The deal's terms — ALWAYS shown to both parties once proposed. The buyer
+          must see exactly what they are agreeing to (and later funding) before any
+          action card; the seller sees what they proposed. Fix for the agree-blind
+          consent gap: the API returned terms but nothing rendered them. */}
+      {!chainDown && terms && (
+        <TermsCard terms={terms} hasDeal={hasDeal} hat={hat}
+          acceptAction={hat === 'buyer' && !hasDeal ? {
+            busy: busy === 'Agree',
+            onClick: () => run('Agree', () => agree(appDealId, actor)),
+          } : undefined} />
+      )}
+
+      {msg && (
+        <div style={{
+          fontSize: 13, padding: '10px 14px', borderRadius: 6,
+          color: msg.tone === 'ok' ? 'var(--accent)' : '#f87171',
+          border: `1px solid ${msg.tone === 'ok' ? 'var(--accent)' : '#f87171'}`,
+          background: 'var(--bg-surface)',
+        }}>{msg.text}</div>
+      )}
+
+      {/* Role-gated actions, driven by the on-chain state machine. All scoped to
+          the active deal id (appDealId). */}
+      {hat === 'seller' && !hasTerms && (
+        <ProposeForm disabled={!!busy} onSubmit={t => run('Propose terms', () => propose(appDealId, t, actor))} />
+      )}
+      {hat === 'buyer' && state === 'Agreed' && (
+        <ActionCard title="BUYER ACTION"
+          label={terms ? `Fund escrow — lock ${terms.amountUsdc} USDC` : 'Fund escrow (approve + deposit)'}
+          helper="Locks the exact agreed amount shown above. Two transactions: approve, then deposit."
+          busy={busy === 'Fund'} onClick={() => run('Fund', () => fund(appDealId, actor))} />
+      )}
+      {/* SELLER at Funded: submit (no review yet, or after an objection), or track
+          the notice (pending), or finalise (window expired quietly). */}
+      {hat === 'seller' && state === 'Funded' && review && rStatus === 'objected' && (
+        <ObjectionCard review={review} viewer="seller" />
+      )}
+      {hat === 'seller' && state === 'Funded' && (!review || rStatus === 'objected') && (
+        <SubmitBolForm disabled={!!busy} terms={terms}
+          onSubmit={f => run('Submit B/L', async () => {
+            const r = await submitBol(appDealId, f, actor);
+            if (r.ok && r.verdict === 'Compliant') setMsg({ tone: 'ok', text: 'Compliant — notice of release issued to the buyer.' });
+            else if (r.ok && r.verdict) setMsg({ tone: 'err', text: `Verdict: ${r.verdict}` });
+            return r;
+          })} />
+      )}
+      {hat === 'seller' && state === 'Funded' && review && (rStatus === 'pending' || rStatus === 'expired') && (
+        <Card>
+          <EyebrowLabel>
+            {rStatus === 'pending' ? 'NOTICE OF RELEASE ISSUED — AWAITING BUYER' : 'OBJECTION WINDOW EXPIRED — NO OBJECTION'}
+          </EyebrowLabel>
+          <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            {rStatus === 'pending'
+              ? `Documents graded Compliant. The buyer may approve now or object on valid grounds until ${new Date(review.windowEndsAt).toLocaleString()}.`
+              : 'The window closed with no objection — you can finalise the release.'}
+          </p>
+          {rStatus === 'expired' && (
+            <button
+              onClick={() => run('Finalise', () => finaliseRelease(appDealId, actor))}
+              disabled={!!busy}
+              style={{ marginTop: 12, width: '100%', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600, background: 'var(--accent)', color: '#0A0A0B', border: 'none', cursor: busy ? 'not-allowed' : 'pointer' }}
+            >{busy === 'Finalise' ? 'Working…' : 'Finalise release (recordVerdict)'}</button>
+          )}
+        </Card>
+      )}
+
+      {/* BUYER at Funded with a notice: review the documents, then approve or object. */}
+      {hat === 'buyer' && state === 'Funded' && review && rStatus === 'objected' && (
+        <ObjectionCard review={review} viewer="buyer" />
+      )}
+      {hat === 'buyer' && state === 'Funded' && review && (rStatus === 'pending' || rStatus === 'expired') && (
+        <BuyerReviewCard
+          review={review} rStatus={rStatus} busy={busy}
+          onApprove={() => run('Approve release', () => approveRelease(appDealId, actor))}
+          onObject={(ground, detail) => run('Object', () => objectToRelease(appDealId, ground, detail, actor))}
+        />
+      )}
+      {state === 'ReleasePending' && (
+        <ActionCard title="SETTLEMENT (PERMISSIONLESS)" label="Release funds to seller"
+          helper="Once the verdict is recorded, anyone may trigger settlement."
+          busy={busy === 'Release'} onClick={() => run('Release', () => release(appDealId, actor))} />
+      )}
+
+      {(hat === 'platform') && (
+        <Card>
+          <EyebrowLabel>OPERATOR VIEW</EyebrowLabel>
+          <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            The platform fronts the releaser key. In this local demo the releaser call
+            (recordVerdict) fires automatically on a Compliant B/L — see the audit trail.
+          </p>
+        </Card>
+      )}
+
+      {account && (account.type === 'admin' || account.type === 'developer' || hat === 'platform') && (
+        <button
+          onClick={() => run('Reset', () => reset(appDealId, actor))}
+          disabled={busy === 'Reset'}
+          style={{
+            alignSelf: 'flex-start', fontSize: 12, color: 'var(--text-secondary)',
+            background: 'transparent', border: '1px solid var(--border)', borderRadius: 6,
+            padding: '8px 14px', cursor: busy ? 'not-allowed' : 'pointer',
+          }}
+        >Reset demo run</button>
+      )}
+    </div>
+  );
+}
+
+function LocalOnlyBanner() {
+  return (
+    <div style={{
+      fontSize: 12, color: 'var(--text-muted)', border: '1px dashed var(--border)',
+      borderRadius: 6, padding: '8px 12px', lineHeight: 1.5,
+    }}>
+      Local demo only — signs with public Hardhat dev keys against localhost:8545.
+      The releaser call is disabled off the local chain (TODO integration: auth Q18).
+    </div>
+  );
+}
+
+type Terms = NonNullable<StatusResponse['terms']>;
+
+function TermsCard({ terms, hasDeal, hat, acceptAction }: {
+  terms: Terms; hasDeal: boolean; hat: ClientHat;
+  acceptAction?: { busy: boolean; onClick: () => void };
+}) {
+  const eyebrow = hasDeal
+    ? 'AGREED TERMS'
+    : hat === 'buyer'
+      ? 'PROPOSED TERMS — REVIEW BEFORE AGREEING'
+      : 'PROPOSED TERMS — AWAITING BUYER';
+  return (
+    <Card>
+      <EyebrowLabel>{eyebrow}</EyebrowLabel>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 14 }}>
+        <span style={{ fontFamily: 'monospace', fontSize: 26, fontWeight: 700, color: 'var(--accent)' }}>
+          {terms.amountUsdc}
+        </span>
+        <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>USDC</span>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14 }}>
+        <TermsRow label="Goods" value={terms.goods} />
+        <TermsRow label="Seller (shipper)" value={terms.sellerName} />
+        <TermsRow label="Buyer (consignee)" value={terms.buyerName} />
+        <TermsRow label="Ship by" value={terms.shipmentDeadline} mono />
+      </div>
+      {acceptAction && (
+        <div style={{ marginTop: 18 }}>
+          <button
+            onClick={acceptAction.onClick} disabled={acceptAction.busy}
+            style={{
+              width: '100%', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+              background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+              cursor: acceptAction.busy ? 'not-allowed' : 'pointer', opacity: acceptAction.busy ? 0.7 : 1,
+            }}
+          >{acceptAction.busy ? 'Working…' : 'Accept terms & register deal on-chain'}</button>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
+            Accepting registers these exact terms (createDeal → Draft→Agreed). No funds move yet —
+            funding is a separate step.
+          </p>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+function TermsRow({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div>
+      <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</div>
+      <div style={{ fontSize: 14, color: 'var(--text-primary)', marginTop: 4, fontFamily: mono ? 'monospace' : undefined }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function Balance({ label, value }: { label: string; value?: string }) {
+  return (
+    <div>
+      <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</div>
+      <div style={{ fontFamily: 'monospace', fontSize: 18, color: 'var(--text-primary)', marginTop: 4 }}>
+        {value ?? '—'} <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>USDC</span>
+      </div>
+    </div>
+  );
+}
+
+function ActionCard({ title, label, helper, busy, onClick }: {
+  title: string; label: string; helper: string; busy: boolean; onClick: () => void;
+}) {
+  return (
+    <Card>
+      <EyebrowLabel>{title}</EyebrowLabel>
+      <button
+        onClick={onClick} disabled={busy}
+        style={{
+          width: '100%', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600,
+          background: 'var(--accent)', color: '#0A0A0B', border: 'none',
+          cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
+        }}
+      >{busy ? 'Working…' : label}</button>
+      <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>{helper}</p>
+    </Card>
+  );
+}
+
+const inputStyle: React.CSSProperties = {
+  width: '100%', padding: '9px 12px', borderRadius: 6, fontSize: 13, boxSizing: 'border-box',
+  background: 'var(--bg-deep)', color: 'var(--text-primary)', border: '1px solid var(--border)',
+};
+
+function Field({ label, ...rest }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <label style={{ display: 'block' }}>
+      <span style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 5 }}>{label}</span>
+      <input style={inputStyle} {...rest} />
+    </label>
+  );
+}
+
+function ProposeForm({ disabled, onSubmit }: { disabled: boolean; onSubmit: (t: {
+  goods: string; amountUsdc: string; sellerName: string; buyerName: string; shipmentDeadline: string;
+}) => void }) {
+  const [f, setF] = useState({
+    goods: 'Cotton textiles', amountUsdc: '2500.00',
+    sellerName: 'Solaris Textiles Co.', buyerName: 'Meridian Imports Ltd.', shipmentDeadline: '2026-08-31',
+  });
+  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
+  return (
+    <Card>
+      <EyebrowLabel>SELLER ACTION — PROPOSE TERMS</EyebrowLabel>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Field label="Goods" value={f.goods} onChange={set('goods')} />
+        <Field label="Amount (USDC)" value={f.amountUsdc} onChange={set('amountUsdc')} />
+        <Field label="Seller name" value={f.sellerName} onChange={set('sellerName')} />
+        <Field label="Buyer name" value={f.buyerName} onChange={set('buyerName')} />
+        <Field label="Ship by (YYYY-MM-DD)" value={f.shipmentDeadline} onChange={set('shipmentDeadline')} />
+        <button
+          onClick={() => onSubmit(f)} disabled={disabled}
+          style={{ padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600, background: 'var(--accent)', color: '#0A0A0B', border: 'none', cursor: disabled ? 'not-allowed' : 'pointer' }}
+        >Propose terms</button>
+      </div>
+    </Card>
+  );
+}
+
+// Field set mirrors a real ocean B/L (see lib/escrow/rules.ts). Graded fields are
+// prefilled from the agreed terms; recorded-only fields are captured for the audit
+// trail / examiner but not machine-graded. When AI extraction lands, it autofills
+// this exact schema from the uploaded document.
+function SubmitBolForm({ disabled, terms, onSubmit }: {
+  disabled: boolean;
+  terms: Terms | null;
+  onSubmit: (f: BolFields) => void;
+}) {
+  const [f, setF] = useState<BolFields>({
+    blNumber: 'MAEU-2260714',
+    shipperName: terms?.sellerName ?? '',
+    consigneeName: terms?.buyerName ?? '',
+    goodsDescription: terms?.goods ?? '',
+    shippedOnBoardDate: '',
+    vessel: 'MAERSK ATLANTIC',
+    voyageNumber: '421W',
+    portOfLoading: 'Jebel Ali',
+    portOfDischarge: 'Felixstowe',
+    containerNumber: 'MSKU-1234567',
+    packages: '480 cartons',
+    grossWeight: '8,640 kg',
+  });
+  const set = (k: keyof BolFields) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
+  return (
+    <Card>
+      <EyebrowLabel>SELLER ACTION — SUBMIT BILL OF LADING</EyebrowLabel>
+      <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12, lineHeight: 1.5 }}>
+        Enter the details exactly as they appear on the carrier&apos;s B/L. The first five are
+        graded against the agreed terms in code; the rest are recorded on the audit trail
+        for the documentary review. (Note: a real B/L carries no invoice amount — the escrow
+        amount is enforced by the deposit itself.)
+      </p>
+      <div style={{ fontSize: 11, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
+        Graded against terms
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Field label="B/L number" value={f.blNumber} onChange={set('blNumber')} />
+        <Field label="Shipper (seller)" value={f.shipperName} onChange={set('shipperName')} />
+        <Field label="Consignee (buyer)" value={f.consigneeName} onChange={set('consigneeName')} />
+        <Field label="Description of goods" value={f.goodsDescription} onChange={set('goodsDescription')} />
+        <Field label="Shipped on board date (YYYY-MM-DD)" value={f.shippedOnBoardDate} onChange={set('shippedOnBoardDate')} />
+      </div>
+      <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '16px 0 8px' }}>
+        Recorded on the B/L (not machine-graded)
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+        {RECORDED_FIELDS.map(({ key, label }) => (
+          <Field key={key} label={label} value={f[key]} onChange={set(key)} />
+        ))}
+      </div>
+      <button
+        onClick={() => onSubmit(f)} disabled={disabled}
+        style={{ marginTop: 16, width: '100%', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600, background: 'var(--accent)', color: '#0A0A0B', border: 'none', cursor: disabled ? 'not-allowed' : 'pointer' }}
+      >Submit B/L for grading</button>
+    </Card>
+  );
+}
+
+// Standing objection, shown to both parties (FR-11). The seller's resubmission
+// form renders alongside (the corrected B/L reopens a fresh notice + window).
+function ObjectionCard({ review, viewer }: { review: Review; viewer: 'buyer' | 'seller' }) {
+  const o = review.objection!;
+  return (
+    <Card>
+      <EyebrowLabel>OBJECTION STANDING — RELEASE BLOCKED</EyebrowLabel>
+      <p style={{ fontSize: 13, color: '#f87171', fontWeight: 600, marginBottom: 6 }}>
+        {groundLabel(o.ground)}
+      </p>
+      {o.detail && (
+        <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 6 }}>{o.detail}</p>
+      )}
+      <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+        {viewer === 'seller'
+          ? 'The verdict will not be recorded while this objection stands. Correct the documents and resubmit below — that issues a fresh notice and window.'
+          : 'You objected to the noticed release. The seller may submit corrected documents, which restarts the review.'}
+      </p>
+    </Card>
+  );
+}
+
+// FR-10: the buyer's review-before-release card — the noticed B/L, the machine
+// grading, and the two actions (approve = waive remaining window; object = block).
+function BuyerReviewCard({ review, rStatus, busy, onApprove, onObject }: {
+  review: Review;
+  rStatus: ReviewStatus;
+  busy: string | null;
+  onApprove: () => void;
+  onObject: (ground: ObjectionGround, detail: string) => void;
+}) {
+  const [objecting, setObjecting] = useState(false);
+  const [ground, setGround] = useState<ObjectionGround>('field_mismatch');
+  const [detail, setDetail] = useState('');
+  const f = review.fields;
+  const rows: [string, string][] = [
+    ['B/L number', f.blNumber],
+    ['Shipper', f.shipperName],
+    ['Consignee', f.consigneeName],
+    ['Goods', f.goodsDescription],
+    ['Shipped on board', f.shippedOnBoardDate],
+    ...RECORDED_FIELDS.map(({ key, label }) => [label, f[key] || '—'] as [string, string]),
+  ];
+  return (
+    <Card>
+      <EyebrowLabel>REVIEW DOCUMENTS BEFORE RELEASE</EyebrowLabel>
+      <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 12 }}>
+        The seller submitted this bill of lading and the checks passed. Review it —
+        approving releases the escrow to the seller.{' '}
+        {rStatus === 'pending'
+          ? `You may object on valid grounds until ${new Date(review.windowEndsAt).toLocaleString()}.`
+          : 'The objection window has expired; you can still approve.'}
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10, marginBottom: 12 }}>
+        {rows.map(([label, value]) => (
+          <div key={label}>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</div>
+            <div style={{ fontSize: 13, color: 'var(--text-primary)', marginTop: 2 }}>{value}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
+        {review.verdict.rules.map(r => `${r.pass ? '✓' : '✗'} ${r.rule}`).join(' · ')}
+      </div>
+      {!objecting ? (
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <button
+            onClick={onApprove} disabled={!!busy}
+            style={{ flex: '1 1 220px', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600, background: 'var(--accent)', color: '#0A0A0B', border: 'none', cursor: busy ? 'not-allowed' : 'pointer' }}
+          >{busy === 'Approve release' ? 'Working…' : 'Approve release'}</button>
+          {rStatus === 'pending' && (
+            <button
+              onClick={() => setObjecting(true)} disabled={!!busy}
+              style={{ flex: '1 1 160px', padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600, background: 'transparent', color: '#f87171', border: '1px solid #f87171', cursor: busy ? 'not-allowed' : 'pointer' }}
+            >Object…</button>
+          )}
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <label style={{ display: 'block' }}>
+            <span style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 5 }}>
+              Ground (only these are valid — BRD §9.1)
+            </span>
+            <select
+              value={ground} onChange={e => setGround(e.target.value as ObjectionGround)}
+              style={{ ...inputStyle, appearance: 'auto' as const }}
+            >
+              {OBJECTION_GROUNDS.map(g => (
+                <option key={g.value} value={g.value}>{g.label}</option>
+              ))}
+            </select>
+          </label>
+          <Field label="Detail (optional)" value={detail} onChange={e => setDetail(e.target.value)} />
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button
+              onClick={() => onObject(ground, detail)} disabled={!!busy}
+              style={{ flex: 1, padding: '11px 16px', borderRadius: 6, fontSize: 14, fontWeight: 600, background: '#f87171', color: '#0A0A0B', border: 'none', cursor: busy ? 'not-allowed' : 'pointer' }}
+            >{busy === 'Object' ? 'Working…' : 'Raise objection'}</button>
+            <button
+              onClick={() => setObjecting(false)} disabled={!!busy}
+              style={{ padding: '11px 16px', borderRadius: 6, fontSize: 14, background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', cursor: 'pointer' }}
+            >Cancel</button>
+          </div>
+        </div>
+      )}
+    </Card>
+  );
+}

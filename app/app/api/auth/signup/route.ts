@@ -40,7 +40,10 @@ export async function POST(req: Request) {
       postcode: body.postcode!.trim(),
       contactName: body.contactName!.trim(),
     },
-    select: { id: true, email: true, companyName: true, contactName: true, country: true, type: true },
+    select: {
+      id: true, email: true, companyName: true, contactName: true, country: true, type: true,
+      walletAddress: true, walletLinkedAt: true,
+    },
   });
 
   await createSession(account.id);

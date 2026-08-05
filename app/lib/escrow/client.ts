@@ -32,15 +32,18 @@ export type ActorCtx = {
 // a real one. Until then this carries the true account id rather than a mock,
 // so per-deal roles resolve against real accounts.
 export function actorFromSession(
-  account: { id: string; companyName: string; type: string } | null,
-): ActorCtx {
-  if (!account) return {};
+  account: { id: string; companyName: string; type: string; walletAddress?: string | null } | null,
+): ActorCtx & { walletLinked: boolean } {
+  if (!account) return { walletLinked: false };
   return {
     accountId: account.id,
     displayName: account.companyName,
     type: account.type === 'client' ? 'client' : (account.type as ActorCtx['type']),
     // No hat: role is derived per deal from the recorded parties (roles.ts).
     hat: null,
+    // Drives whether funding goes through the user's own wallet or the server's
+    // demo key. The server re-derives this; it is a UI routing hint only.
+    walletLinked: Boolean(account.walletAddress),
   };
 }
 

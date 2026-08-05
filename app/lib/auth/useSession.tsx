@@ -16,6 +16,9 @@ export type SessionAccount = {
   contactName: string;
   country: string;
   type: string;
+  /** Null until a wallet is proven via SIWE. Serialised, so the date is a string. */
+  walletAddress: string | null;
+  walletLinkedAt: string | null;
 };
 
 type SessionState = {

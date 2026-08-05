@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSession } from '@/lib/auth/useSession';
 import { fetchSummary, type DealSummary } from '@/lib/escrow/client';
+import { WalletCard } from './WalletCard';
 
 export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
   const { account } = useSession();
@@ -139,12 +140,19 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
             <p style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.6, marginTop: 18 }}>
               Demo chain: the escrow contract holds {money.escrowTotalAllAccounts} USDC across all
               companies. Every buyer signs from one shared test wallet ({money.demoWallets.buyer} USDC)
-              and every seller from another ({money.demoWallets.seller} USDC) — real per-company
-              wallets arrive with wallet sign-in.
+              and every seller from another ({money.demoWallets.seller} USDC). Linking your own
+              wallet above proves the address is yours; deposits move to it once the deal flow
+              signs from the linked wallet rather than the shared test one.
             </p>
           )}
         </>
       )}
+
+      {/* Outside the has-deals branch on purpose: a company with no deals yet is
+          precisely who needs to link a wallet before their first one. */}
+      <div style={{ marginTop: 18 }}>
+        <WalletCard />
+      </div>
     </>
   );
 }

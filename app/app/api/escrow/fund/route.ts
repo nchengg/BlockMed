@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { parseUnits } from "viem";
+import { formatUnits, parseUnits } from "viem";
 import { loadDeployment, publicClient, walletFor, escrowAbi, usdcAbi } from "@/lib/escrow/chain";
 import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { readActor, requireHat, requireAuth } from "@/lib/escrow/actor";
@@ -48,6 +48,32 @@ export async function POST(req: Request) {
   const pc = publicClient(dep);
   const buyer = walletFor("buyer", dep);
   const amountMinor = parseUnits(deal.terms.amountUsdc, 6);
+
+  // Pre-flight: check the balance BEFORE sending anything. Without this, a deal
+  // priced above the wallet's holdings still fires the approve, then reverts on
+  // deposit with a raw ERC20InsufficientBalance selector — which reaches the UI
+  // as an unexplained "request failed". A shortfall is predictable and worth
+  // saying out loud, and checking first also avoids leaving a stray allowance
+  // behind from an approve that was never going to be used.
+  const held = (await pc.readContract({
+    address: dep.usdc,
+    abi: usdcAbi,
+    functionName: "balanceOf",
+    args: [buyer.account.address],
+  })) as bigint;
+
+  if (held < amountMinor) {
+    return NextResponse.json(
+      {
+        error:
+          `Not enough USDC to fund this deal. It needs ${deal.terms.amountUsdc} USDC ` +
+          `but the buyer wallet holds ${formatUnits(held, 6)}.`,
+        needed: deal.terms.amountUsdc,
+        held: formatUnits(held, 6),
+      },
+      { status: 409 },
+    );
+  }
 
   const approveHash = await buyer.writeContract({
     address: dep.usdc,

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { formatUnits } from "viem";
 import { loadDeployment, publicClient, usdcAbi, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
-import { getStore, getDeal } from "@/lib/escrow/store";
+import { getDeal } from "@/lib/escrow/store";
 
 export const dynamic = "force-dynamic";
 
@@ -13,10 +13,9 @@ export async function GET(req: Request) {
   try {
     const dep = loadDeployment();
     const pc = publicClient(dep);
-    const store = getStore();
 
     const appDealId = new URL(req.url).searchParams.get("dealId");
-    const deal = appDealId ? getDeal(store, appDealId) : undefined;
+    const deal = appDealId ? await getDeal(appDealId) : undefined;
 
     const balanceOf = (addr: string) =>
       pc.readContract({

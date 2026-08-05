@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { loadDeployment } from "@/lib/escrow/chain";
-import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
+import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { reviewStatus } from "@/lib/escrow/review";
 import { assertLocalReleaser, recordVerdictOnChain } from "@/lib/escrow/settlement";
-import { readActor, requireHat } from "@/lib/escrow/actor";
+import { readActor, requireHat, requireAuth } from "@/lib/escrow/actor";
 import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 
 // BUYER approves the release after reviewing the noticed documents (FR-10): an
@@ -11,13 +11,13 @@ import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 // sign recordVerdict (Funded → ReleasePending). Blocked while an objection stands.
 export async function POST(req: Request) {
   const body = (await req.json()) as { dealId?: unknown; actor?: unknown };
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
-
-  const store = getStore();
-  const deal = getDeal(store, appDealId);
+  const deal = await getDeal(appDealId);
   if (!deal?.onChainDealId || !deal.review) {
     return NextResponse.json({ error: "No notice of release to approve." }, { status: 409 });
   }
@@ -64,6 +64,6 @@ export async function POST(req: Request) {
     detail: "Buyer-approved. State: Funded → ReleasePending — release is now permissionless",
     txHash: hash,
   });
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({ ok: true, txHash: hash });
 }

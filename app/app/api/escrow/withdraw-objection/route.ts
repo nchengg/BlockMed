@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
+import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
 import { reviewStatus, groundLabel } from "@/lib/escrow/review";
-import { readActor, requireHat } from "@/lib/escrow/actor";
+import { readActor, requireHat, requireAuth } from "@/lib/escrow/actor";
 import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 
 // WITHDRAW AN OBJECTION (FR-13, resolution branch) — the buyer's way back from a
@@ -19,14 +19,14 @@ import { denyIfWrongRole, roleInDeal } from "@/lib/escrow/roles";
 // window lapse. The objection stays on the audit trail; it is never erased.
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
   const reason = typeof body?.reason === "string" ? body.reason.trim().slice(0, 300) : "";
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
-
-  const store = getStore();
-  const deal = getDeal(store, appDealId);
+  const deal = await getDeal(appDealId);
   if (!deal?.review) {
     return NextResponse.json({ error: "No notice of release on this deal." }, { status: 409 });
   }
@@ -56,6 +56,6 @@ export async function POST(req: Request) {
       : `Original objection: ${withdrawn.detail || "no detail given"}. The notice of release stands again.`,
     accountId: actor?.accountId,
   });
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({ ok: true, status: reviewStatus(deal.review) });
 }

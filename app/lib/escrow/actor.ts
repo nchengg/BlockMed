@@ -1,22 +1,21 @@
 // Server-side ACTOR CONTEXT + role gating for the escrow lifecycle routes.
 //
-// This is the #27 (account-first auth) adaptation of #25's anonymous single-actor
-// flow. Each lifecycle route now expects the client to attach an `actor` describing
-// the signed-in account and its active client "hat" (see lib/escrow/client.ts,
-// which reads it from useAuth()). The route then checks the action is appropriate
-// for that party: propose = seller, agree/fund = buyer, verdict/release = the
-// operator/platform side, reset = staff.
+// THE ACTOR IS NOW RESOLVED FROM THE SESSION COOKIE, NEVER FROM THE REQUEST
+// BODY. This closes Q18: previously each route trusted an `actor` object the
+// client posted, so a bare curl with {"actor":{"accountId":"..."}} could act as
+// any company — create deals, accept them, move money on-chain. The identity
+// here is now whatever the httpOnly cookie resolves to server-side, and the
+// client cannot read or forge it (lib/auth/session.ts).
 //
-// ─────────────────────────────────────────────────────────────────────────────
-// TODO(integration: auth Q18) — THIS IS A SOFT, CLIENT-SUPPLIED GUARD, NOT A
-// SECURITY BOUNDARY. Exactly like #27's RequireParty (view separation for a demo),
-// the actor is whatever the client sends — it is NOT a verified identity. Real
-// enforcement must resolve the account server-side from a verified credential /
-// signature (SIWE vs JWT — TRD Q18, still open) before it can be trusted. Until
-// then these checks only keep the demo's parties honest and produce a truthful
-// audit trail; they must NOT be relied on for authorisation.
-// ─────────────────────────────────────────────────────────────────────────────
+// The per-deal role model is unchanged: which side you are on is still derived
+// from the deal's recorded parties (roles.ts). Only the SOURCE of the account id
+// changed — from "what the caller claimed" to "who the server says you are".
+//
+// Anonymous callers (no cookie) resolve to null. Routes treat that as
+// unauthenticated: the deal-role checks in roles.ts deny anyone who is not a
+// recorded party, so an unauthenticated caller can no longer act on a deal.
 import { NextResponse } from "next/server";
+import { getSessionAccount } from "@/lib/auth/session";
 import type { PartyRef } from "./store";
 
 export type ActorType = "admin" | "developer" | "client";
@@ -29,20 +28,41 @@ export interface Actor {
   hat?: ActorHat | null;
 }
 
-// Pulls the actor context out of a request body. Anonymous calls (no actor) are
-// tolerated so the routes still work without the client wiring — they just skip
-// the party check and record an anonymous audit entry.
-export function readActor(body: unknown): Actor | null {
-  if (!body || typeof body !== "object") return null;
-  const raw = (body as { actor?: unknown }).actor;
-  if (!raw || typeof raw !== "object") return null;
-  const a = raw as Actor;
+/**
+ * The acting account, resolved from the session cookie. Returns null when there
+ * is no valid session.
+ *
+ * The `_body` parameter is ignored — it exists so the 17 call sites did not all
+ * have to change shape in the same commit that closed the impersonation hole.
+ * Anything the client sends about its own identity is discarded.
+ */
+export async function readActor(_body?: unknown): Promise<Actor | null> {
+  const account = await getSessionAccount();
+  if (!account) return null;
   return {
-    accountId: typeof a.accountId === "string" ? a.accountId : undefined,
-    displayName: typeof a.displayName === "string" ? a.displayName : undefined,
-    type: a.type,
-    hat: a.hat ?? null,
+    accountId: account.id,
+    displayName: account.companyName,
+    type: account.type === "admin" || account.type === "developer" ? account.type : "client",
+    // No hat: which side you are on is derived per deal (roles.ts).
+    hat: null,
   };
+}
+
+/**
+ * Every mutating route must have a signed-in caller. Returns a 401 when there
+ * is no session, so an unauthenticated request cannot create records, move money
+ * or write to the audit trail — it is the single gate that makes the others
+ * meaningful, since a null actor would otherwise slip past checks that only
+ * reject the WRONG identity rather than a missing one.
+ */
+export function requireAuth(actor: Actor | null): NextResponse | null {
+  if (!actor?.accountId) {
+    return NextResponse.json(
+      { ok: false, error: "Sign in to do that." },
+      { status: 401 },
+    );
+  }
+  return null;
 }
 
 // Narrows an Actor to a PartyRef for the audit trail / store.
@@ -50,10 +70,11 @@ export function partyRef(actor: Actor | null, hat: PartyRef["hat"]): PartyRef {
   return { accountId: actor?.accountId, displayName: actor?.displayName, hat };
 }
 
-// A client account must be wearing the given hat. `null` actor (anonymous) is
-// allowed through — the check is best-effort until server auth lands (Q18).
+// A client account (not staff) may take party actions. The per-deal role check
+// in roles.ts is what decides WHICH side — this only rejects staff accounts.
+// A null actor is unauthenticated; roles.ts denies it from acting on any deal.
 export function requireHat(actor: Actor | null, hat: ActorHat): NextResponse | null {
-  if (!actor || actor.type === undefined) return null; // anonymous — soft-allow
+  if (!actor) return null; // unauthenticated — roles.ts denies deal actions
   if (actor.type !== "client") {
     return forbidden(`This action is a ${hat} action — sign in as a client with the ${hat} hat.`);
   }
@@ -65,7 +86,7 @@ export function requireHat(actor: Actor | null, hat: ActorHat): NextResponse | n
 
 // A staff account (admin or developer). Used for the demo reset control.
 export function requireStaff(actor: Actor | null): NextResponse | null {
-  if (!actor || actor.type === undefined) return null; // anonymous — soft-allow
+  if (!actor) return forbidden("Sign in to reset the demo.");
   if (actor.type !== "admin" && actor.type !== "developer") {
     return forbidden("Only an administrator or developer may reset the demo.");
   }
@@ -76,7 +97,7 @@ export function requireStaff(actor: Actor | null): NextResponse | null {
 // wearing the platform hat. (The actual releaser SIGNING stays server-side and
 // localhost-only — see submit-bol/route.ts — this only gates who may trigger it.)
 export function requireOperator(actor: Actor | null): NextResponse | null {
-  if (!actor || actor.type === undefined) return null; // anonymous — soft-allow
+  if (!actor) return forbidden("Sign in to perform this operator action.");
   const isStaff = actor.type === "admin" || actor.type === "developer";
   const isPlatform = actor.type === "client" && actor.hat === "platform";
   if (!isStaff && !isPlatform) {

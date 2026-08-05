@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadDeployment, publicClient, walletFor, escrowAbi } from "@/lib/escrow/chain";
-import { getStore, saveStore, getDeal, appendAudit, readDealId } from "@/lib/escrow/store";
-import { readActor } from "@/lib/escrow/actor";
+import { getDeal, appendAudit, readDealId, saveDeal } from "@/lib/escrow/store";
+import { readActor, requireAuth } from "@/lib/escrow/actor";
 
 // Step 5 — Release. Deliberately signed by the SELLER key here to demonstrate that
 // release is PERMISSIONLESS: once ReleasePending, anyone can trigger settlement, so
@@ -11,13 +11,13 @@ import { readActor } from "@/lib/escrow/actor";
 // permissionless means no PARTY gate, but the call still targets a specific deal.
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const actor = readActor(body);
+  const actor = await readActor(body);
+  const unauth = requireAuth(actor);
+  if (unauth) return unauth;
 
   const appDealId = readDealId(body);
   if (!appDealId) return NextResponse.json({ error: "Missing deal id." }, { status: 400 });
-
-  const store = getStore();
-  const deal = getDeal(store, appDealId);
+  const deal = await getDeal(appDealId);
   if (!deal?.onChainDealId) return NextResponse.json({ error: "No deal." }, { status: 409 });
 
   const dep = loadDeployment();
@@ -38,6 +38,6 @@ export async function POST(req: Request) {
     txHash: hash,
     accountId: actor?.accountId,
   });
-  saveStore(store);
+  await saveDeal(deal);
   return NextResponse.json({ ok: true, txHash: hash });
 }

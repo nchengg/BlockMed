@@ -67,6 +67,15 @@ model Session {
   @@index([accountId])
 }
 
+/// Single-row table holding counters that must survive a deal being deleted.
+/// dealCounter salts the derived on-chain deal id, so re-running an app deal
+/// after a reset never collides with a prior on-chain deal (the contract
+/// rejects a duplicate dealId).
+model Counter {
+  id          Int @id @default(1)
+  dealCounter Int @default(0)
+}
+
 /// The off-chain half of one escrow deal: the agreed terms (the rulebook the
 /// bill of lading is graded against), the parties, and the paper trail. The
 /// money and the state machine live on-chain.
@@ -84,11 +93,15 @@ model Deal {
   buyerName        String?
   shipmentDeadline String?
 
-  // Parties. Nullable because a counterparty may be invited before they join.
-  buyerId  String?
-  buyer    Account? @relation("BuyerDeals", fields: [buyerId], references: [id])
-  sellerId String?
-  seller   Account? @relation("SellerDeals", fields: [sellerId], references: [id])
+  // Parties. Nullable because a counterparty may be invited before they join —
+  // in which case the name is known but there is no account row to point at, so
+  // the display names are stored alongside rather than derived from the relation.
+  buyerId           String?
+  buyer             Account? @relation("BuyerDeals", fields: [buyerId], references: [id])
+  buyerDisplayName  String?
+  sellerId          String?
+  seller            Account? @relation("SellerDeals", fields: [sellerId], references: [id])
+  sellerDisplayName String?
 
   /// Which side proposed it — the OTHER side owes the acceptance.
   createdByRole String?

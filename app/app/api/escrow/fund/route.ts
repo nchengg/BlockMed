@@ -46,6 +46,23 @@ export async function POST(req: Request) {
 
   const dep = loadDeployment();
   const pc = publicClient(dep);
+
+  // The server holds no buyer key outside the local demo — the buyer's money is
+  // moved by the buyer's own wallet (fund/prepare + fund/confirm). Refusing here
+  // is deliberate: a "convenient" server-side fallback would mean the platform
+  // signing a spend of someone else's funds.
+  if (dep.chainId !== 31337) {
+    return NextResponse.json(
+      {
+        error:
+          "Funding must be signed in your own wallet on this network. " +
+          "Link a wallet and use the deal's Fund action.",
+        needsWallet: true,
+      },
+      { status: 409 },
+    );
+  }
+
   const buyer = walletFor("buyer", dep);
   const amountMinor = parseUnits(deal.terms.amountUsdc, 6);
 

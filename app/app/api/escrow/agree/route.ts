@@ -3,6 +3,7 @@ import { keccak256, parseUnits, toHex } from "viem";
 import { loadDeployment, publicClient, walletFor, escrowAbi, type Deployment } from "@/lib/escrow/chain";
 import { getDeal, appendAudit, readDealId, saveDeal, nextDealCounter } from "@/lib/escrow/store";
 import { readActor, requireHat, partyRef, requireAuth } from "@/lib/escrow/actor";
+import { assertLocalReleaser } from "@/lib/escrow/settlement";
 
 // Step 2 — BUYER agrees to the proposal; the platform (releaser key) registers the
 // deal on-chain: createDeal → Draft→Agreed. (TRD: createDeal is RELEASER_ROLE-gated.)
@@ -17,7 +18,7 @@ import { readActor, requireHat, partyRef, requireAuth } from "@/lib/escrow/actor
 // createDeal is RELEASER_ROLE-gated on-chain, so this route makes the platform's
 // releaser call using the server-held key. In this port that key is ONLY the
 // public Hardhat dev key (lib/escrow/chain.ts) and this route REFUSES TO SIGN
-// unless it is talking to the local dev chain (see assertLocalReleaser below).
+// unless a real releaser key is configured (see lib/escrow/settlement.ts).
 // It must never be exposed on a public deployment with a real releaser key.
 //
 // TODO(integration: auth Q18) — before this can run outside localhost the releaser
@@ -75,21 +76,3 @@ export async function POST(req: Request) {
   return NextResponse.json({ ok: true, dealId: onChainDealId, txHash: hash });
 }
 
-// Hard stop: the server-held releaser key may only sign against the local Hardhat
-// dev chain (chainId 31337). On any other network, or in a production build, this
-// route returns 501 instead of signing — the real releaser path is TODO(auth Q18).
-function assertLocalReleaser(dep: Deployment): NextResponse | null {
-  const isLocalChain = dep.chainId === 31337;
-  const isProd = process.env.NODE_ENV === "production";
-  if (isLocalChain && !isProd) return null;
-  return NextResponse.json(
-    {
-      ok: false,
-      error:
-        "Releaser signing is disabled outside the local dev chain. Wire the trusted " +
-        "operator + real releaser key first (TODO integration: auth Q18).",
-      createDealSkipped: true,
-    },
-    { status: 501 },
-  );
-}

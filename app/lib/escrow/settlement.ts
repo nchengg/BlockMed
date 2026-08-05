@@ -5,22 +5,48 @@
 import { NextResponse } from "next/server";
 import { publicClient, walletFor, escrowAbi, type Deployment } from "./chain";
 
-// Hard stop: the server-held releaser key may only sign against the local Hardhat
-// dev chain (chainId 31337). On any other network, or in a production build, the
-// caller returns 501 instead of signing — the real releaser path is TODO(auth Q18).
+// Gate on whether a releaser key is properly configured, not on which chain we
+// are on.
+//
+// This replaces an earlier chainId === 31337 check. That check existed because
+// the only releaser key was the PUBLIC Hardhat one compiled into the source, and
+// signing with it anywhere real would hand control of every deal to anyone who
+// read the repo. The guard was protecting against the key, not against the
+// network — so the correct rule is "refuse unless the key came from the
+// environment", which is what this does.
+//
+// The local chain keeps its dev-key convenience. Any other network requires
+// RELEASER_PRIVATE_KEY, and must not be the well-known Hardhat key.
+const HARDHAT_RELEASER_KEY =
+  "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+
 export function assertLocalReleaser(dep: Deployment): NextResponse | null {
-  const isLocalChain = dep.chainId === 31337;
-  const isProd = process.env.NODE_ENV === "production";
-  if (isLocalChain && !isProd) return null;
-  return NextResponse.json(
-    {
-      ok: false,
-      error:
-        "Releaser signing is disabled outside the local dev chain. Wire the trusted " +
-        "operator + real releaser key first (TODO integration: auth Q18).",
-    },
-    { status: 501 },
-  );
+  if (dep.chainId === 31337) {
+    // Local dev chain: the public key is fine, but never in a production build.
+    if (process.env.NODE_ENV === "production") {
+      return deny("Releaser signing with the public dev key is disabled in production builds.");
+    }
+    return null;
+  }
+
+  const key = process.env.RELEASER_PRIVATE_KEY?.trim();
+  if (!key) {
+    return deny(
+      "RELEASER_PRIVATE_KEY is not set. A server-held releaser key must be supplied " +
+        "via the environment before the platform can sign on this network.",
+    );
+  }
+  if (key.toLowerCase() === HARDHAT_RELEASER_KEY) {
+    return deny(
+      "RELEASER_PRIVATE_KEY is the public Hardhat test key. Anyone can use it — " +
+        "generate a fresh key before signing on a public network.",
+    );
+  }
+  return null;
+}
+
+function deny(error: string): NextResponse {
+  return NextResponse.json({ ok: false, error }, { status: 501 });
 }
 
 // Signs recordVerdict (Funded → ReleasePending) and waits for the receipt.

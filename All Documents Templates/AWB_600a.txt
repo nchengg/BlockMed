@@ -1,0 +1,389 @@
+c
+
+Resolution 600a
+
+RESOLUTION 600a*
+AIR WAYBILL
+CBPP(12)600a*
+
+Expiry: Indefinite
+
+8. Air waybill completion examples in the Air Waybill Handbook (Attachment ‘B’, Appendix ‘C’), published separately
+shall be developed by the Secretariat in accordance with
+the procedures in Attachment ‘B’ hereto and current tariff
+rules.
+
+Type: B
+CBPP(13)600a
+
+Expiry: Indefinite
+Type: B
+
+CSC(19)600a*
+
+Expiry: Indefinite
+Type: B
+
+CSC(26)600a*
+
+Expiry: Indefinite
+Type: B
+
+RESOLVED that:
+1. For international transportation of cargo, IATA Members
+shall use the air waybill as set forth in Attachments ‘A’ and ‘B’.
+1. For international transportation of cargo, IATA
+Members shall use an air waybill as set forth in
+Attachments ‘A’ and ‘B’ or a shipment record as defined
+in Resolution 600f.
+2. The air waybill is a document which shall be either an air
+waybill referred to as an “airline air waybill”, with preprinted
+issuing carrier identification, or an air waybill referred to as
+a “neutral air waybill” without preprinted identification of the
+issuing carrier in any form and used by other than an air
+carrier.
+3. The issuing carrier is either:
+3.1 in the case of an “airline air waybill”, the carrier whose
+form is used; or
+3.2 in the case of a “neutral air waybill”, either:
+3.2.1 the first carrier, or
+3.2.2 an intended participating carrier in the routing, or
+3.2.3 a carrier acting as the handling agent or sales agent
+for the first carrier at origin.
+4. In a non-CASS environment, neutral air waybills shall
+not be used except when completed by a computer system.
+5. Proposals to amend the air waybill may be submitted
+to the Secretary, Cargo Services Conference at any time.
+Such proposals shall be circulated to all members of the
+Cargo Business Processes Panel for consideration and
+agreement.
+6. If agreed, such proposals shall be circulated to all
+Members by Notice of Amendment in accordance with the
+procedures detailed in Resolution 601.
+7. Amendments agreed to Attachment ‘A’ need not be put
+into effect until the time of next printing of the air waybill
+but in no event later than 18 months after the declaration
+of effectiveness of these amendments.
+
+* This Resolution is in the hands of all IATA Cargo Agents.
+
+23
+
+c
+
+Cargo Services Conference Resolutions Manual
+3.6 additional copies, having the same layout, wording
+and shading as Appendix ‘E’, may be included in the airline
+air waybill set to a maximum of five copies. These must be
+printed on white paper marked “Copy XX (Extra copy for
+Carrier)”, where XX denotes the number of the copy of the
+airline air waybill, and may be placed anywhere in the airline
+air waybill set following Original 1 (for Issuing Carrier);
+
+RESOLUTION 600a
+Attachment ‘A’
+AIR WAYBILL — TECHNICAL
+SPECIFICATIONS
+1.
+
+INTRODUCTION
+
+1.1 The air waybill is a document which shall be either an
+air waybill referred to as an “airline air waybill”, with
+preprinted issuing carrier identification, or an air waybill
+referred to as a “neutral air waybill” without preprinted identification of the issuing carrier in any form and used by other
+than an air carrier.
+
+2. MEASUREMENTS OF THE AIR
+WAYBILL
+The outside measurements of the air waybill shall be
+between 208 mm (8.2 in) and 230 mm (9 in) in width and
+between 274 mm (10.8 in) and 305 mm (12 in) in length.
+The size of the boxes and their distances from the upper
+left hand paper edges shall be maintained exactly as shown
+in Appendix ‘A’.
+
+3. DESCRIPTION OF THE AIRLINE
+AIR WAYBILL SET
+The airline air waybill set shall be printed as specified below:
+3.1 the Original 3 (for Shipper) shall have the same layout,
+wording and shading as specified in Appendix ‘B’;
+3.2 the Copy 4 (Delivery Receipt) shall have the same
+layout, wording and shading as specified in Appendix ‘C’;
+3.3 the Original 1 (for Issuing Carrier) and Original 2 (for
+Consignee) shall have the same layout, wording and shading as specified in Appendix ‘D’;
+3.4 all other copies shall have the same layout, wording
+and shading as specified in Appendix ‘E’;
+
+J 3.5 the airline air waybill shall be in a set of a minimum
+of eight copies and shall be marked in the order shown.
+Colour is optional and airlines shall accept both coloured
+and non-coloured coded air waybills.
+Title
+
+Colour
+
+Original 3 (for Shipper)
+Copy 8 (for Agent)
+Original 1 (for Issuing Carrier)
+Original 2 (for Consignee)
+Copy 4 (Delivery Receipt)
+Copy 5 (Extra Copy)
+Copy 6 (Extra Copy)
+Copy 7 (Extra Copy)
+
+Blue
+White
+Green
+Pink
+Yellow
+White
+White
+White
+
+If using colour, copies shall be either coloured paper or
+white paper with appropriate colour ink imprinted thereon,
+as referred above;
+
+24
+
+3.7 notwithstanding the provisions of 3.5 and 3.6, when
+an air carrier uses an automated system to issue the airline
+air waybill:
+3.7.1 the airline air waybill shall be executed in a set which
+includes at least the three original copies,
+3.7.2 further copies of the airline air waybill may be
+produced by automated means at origin, en route or at
+destination as required,
+3.7.3 upon interline transfer, at least five copies, of which
+one copy is entitled “Original 2 (for Consignee)” and one
+copy is entitled “Copy 4 (Delivery Receipt)”, shall be
+provided to the onward carrier,
+3.7.3 upon interline transfer,
+3.7.3.1 when the exchange of a shipment record is not
+possible, at least five copies, of which one copy is entitled
+“Original 2 (for Consignee)” and one copy is entitled
+“Copy 4 (Delivery Receipt)”, shall be provided to the
+onward carrier,
+3.7.3.2 when the exchange of a shipment record is
+possible, it is not required that copies of an air waybill
+be provided to the onward carrier. However the carriers
+involved must agree to adhere to the provisions of
+Resolution 600f,
+
+4. DESCRIPTION OF THE NEUTRAL
+AIR WAYBILL SET
+The neutral air waybill set shall be printed as specified
+below:
+4.1 the Original 3 (for Shipper) shall have the same layout,
+wording and shading as specified in Appendix ‘B’;
+4.2 the Copy 4 (Delivery Receipt) shall have the same
+layout, wording and shading as specified in Appendix ‘C’;
+4.3 the Original 1 (for Issuing Carrier) and Original 2 (for
+Consignee) shall have the same layout, wording and shading as specified in Appendix ‘D’;
+4.4 all other copies shall have the same layout, wording
+and shading as specified in Appendix ‘E’;
+
+J 4.5 the neutral air waybill shall be either in a set of a
+minimum of eight copies in the order and marked as shown
+in 4.5.1; or in two sets of a minimum of four copies each in
+the order and marked as shown in 4.5.2. Colour is optional
+and airlines shall accept both coloured and non-coloured
+coded air waybills. If using colour, copies shall be either
+coloured paper or white paper with appropriate colour ink
+imprinted thereon, as referred to below;
+
+c
+
+Resolution 600a — Attachment ‘A’
+
+4.5.1 one set of eight copies:
+Title
+
+Colour
+
+Original 3 (for Shipper)
+Copy 8 (for Agent)
+Original 1 (for Issuing Carrier)
+Original 2 (for Consignee)
+Copy 4 (Delivery Receipt)
+Copy 5 (Extra Copy)
+Copy 6 (Extra Copy)
+Copy 7 (Extra Copy)
+
+Blue
+White
+Green
+Pink
+Yellow
+White
+White
+White
+
+4.5.2 two sets of four copies each:
+
+5.1.6 in the Shipper’s Certification box, the part of the
+statement referring to the Dangerous Goods Regulations
+from the word “insofar …” shall be printed in bold type.
+5.2 In addition to the information illustrated in Appendices ‘B’ – ‘E’, the following features may also be shown at
+carrier’s option:
+5.2.1 a space may be inserted in the serial number of the
+airline air waybill between the fourth and fifth digits;
+5.2.2 carrier’s insignia may be printed in the issuing
+carrier’s name and address box;
+5.2.3 the notice containing reference to the carrier’s Conditions of Contract may be printed on all copies which are not
+originals except Copy 4 (Delivery Receipt);
+
+First set
+Title
+
+Colour
+
+Original 3 (for Shipper)
+Copy 8 (for Agent)
+Original 1 (for Issuing Carrier)
+Copy 7 (Extra Copy)
+
+Blue
+White
+Green
+White
+
+Second set
+Title
+
+Colour
+
+Original 2 (for Consignee)
+Copy 4 (Delivery Receipt)
+Copy 5 (Extra Copy)
+Copy 6 (Extra Copy)
+
+Pink
+Yellow
+White
+White
+
+J 4.6 paper and carbon, where used, shall be of such quality
+that all copies are clearly legible;
+4.7 fastening or stub shall:
+4.7.1 hold the neutral air waybill set together so that it does
+not disintegrate into loose sheets of paper during normal
+handling, and
+4.7.2 be precut and of such nature that copies can be
+pulled easily and that when a part is pulled, the page does
+not tear apart.
+
+5. DESCRIPTION OF THE FACE OF
+THE AIRLINE AIR WAYBILL
+5.1 In addition to the information as illustrated in
+Appendices ‘B’ – ‘E’:
+5.1.1 the air waybill number shall be placed in the upper
+left corner, in the upper right corner and in the lower right
+corner of all copies of the airline air waybill as shown in
+Appendix ‘A’;
+5.1.2 the air waybill number shall consist of the issuing
+carrier’s three-digit IATA airline code number and a serial
+number of eight digits including a check digit placed in the
+extreme right hand position;
+5.1.3 the check digit shall be determined by using the
+unweighted Modulus 7 system;
+
+5.2.4 the space in the box below the reference to the
+carrier’s Conditions of Contract, may be used to print other
+related statements as may be necessary to conform to
+national requirements;
+5.2.5 “Requested Flight/Date” box may be without title;
+5.2.6 the words “Also Notify” may be printed after the title
+of the “Accounting Information” box (applicable for domestic
+transportation only);
+5.2.7 the “Amount of Insurance” box and adjacent “Insurance” clause box may be shaded and without title or printing
+of clause;
+5.2.8 a box titled “TC” (for Transaction Correction), the
+size of which is limited to two characters and located to the
+right of the “Insurance” clause box, may be provided;
+5.2.9 “Handling Information” box may include the printing
+of not more than five subtitles. A box titled “SCI” (for Special
+Customs Information), with dimensions of 8 mm × 30 mm
+(0.3149 in × 1.1811 in), is to be inserted in the bottom right
+corner of this box (insertion of this box is mandatory);
+5.2.10 when the air waybill is issued in the United States,
+the statement “These commodities, technology or software
+were exported from the United States in accordance with
+the Export Administration Regulations. Diversion contrary
+to USA law prohibited” may be printed in the “Handling
+Information” box;
+5.2.11 the description of the charges/fees frequently
+incurred may be printed in the first two lines of the “Other
+Charges” box;
+5.2.12 “Tax” boxes may be shaded and without title;
+5.2.13 any special services provided may be printed in the
+shaded boxes below the “Total Other Charges Due Carrier”
+boxes;
+5.2.14 language(s) or an annotation may be printed at the
+bottom of the air waybill indicating that the wording of the
+form is available in another language and where it may be
+obtained;
+
+5.1.4 the serial number shall be of the same size, similar J 5.2.15 bar coded air waybill numbers, if used, shall be
+style of type (font) and of the same boldness as the airline
+printed in accordance with Recommended Practice 1600t
+code number;
+and shall be shown in at least one of the locations illustrated
+in Appendix ‘F’. Note: For air waybills produced on U.S.
+5.1.5 a separating hyphen placed between the airline code
+Letter Size paper, the lower right corner cannot apply due
+number and the serial number shall be used for the number
+to space limitation;
+shown in the upper right corner and in the lower right corner;
+
+25
+
+c
+
+Cargo Services Conference Resolutions Manual
+
+5.2.16 the three “Optional Shipping Information” boxes
+may be shaded and without title. Insertion of these boxes
+is mandatory;
+5.2.17 nothing additional may be printed and/or overprinted on the airline air waybill.
+
+6. DESCRIPTION OF THE FACE OF
+THE NEUTRAL AIR WAYBILL
+6.1 In addition to the information as illustrated in
+Appendices ‘B’ – ‘E’:
+6.1.1 in the Shipper’s Certification box, the part of the
+statement referring to the Dangerous Goods Regulations
+from the word “insofar …” shall be printed in bold type;
+6.1.2 the printer’s reference shall be printed in the lower
+left corner of all copies of the neutral air waybill in the following sequence:
+6.1.2.1 printer’s name,
+6.1.2.2 production reference number,
+6.1.2.3 production date;
+6.1.3 the content of the following neutral air waybill boxes
+may be printed:
+6.1.3.1 issuing carrier’s agent, name and city box with the
+issuing carrier’s agent’s name and city,
+6.1.3.2 agent’s IATA code box with the agent’s IATA code
+number,
+6.1.3.3 signature of shipper or his agent box with the
+agent’s name.
+6.2 Nothing additional may be printed and/or overprinted
+on the neutral air waybill.
+
+7. DESCRIPTION OF THE REVERSE
+SIDE OF THE AIRLINE AND NEUTRAL
+AIR WAYBILL
+J 7.1 The currently effective IATA Conditions of Contract
+shall be printed on three original copies of airline and neutral
+air waybills as a minimum requirement. They may also be
+printed on other copies of the air waybill.
+7.1 The currently effective IATA Conditions of Contract
+shall be printed on a minimum of the three original copies
+of the airline and neutral air waybill.
+7.2 Domestic Conditions of Contract, separate from the
+currently effective IATA Conditions of Contract, may additionally be printed on the airline air waybill at carrier’s option.
+
+26
+
+

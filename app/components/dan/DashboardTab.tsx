@@ -135,10 +135,10 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
           <div>
             <h2 className="bm-section-title">Active deals</h2>
             <p className="bm-body" style={{ marginTop: 4 }}>
-              {demoMode ? 'Demo deals are shown until this company has live backend deals.' : 'Live backend deals for this company.'}
+              {demoMode ? 'Example deals are shown until this company has live backend deals.' : 'Live backend deals for this company.'}
             </p>
           </div>
-          {demoMode ? <span className="bm-status bm-status-info">Demo</span> : <button type="button" className="bm-button" onClick={onOpenDeals}>View all</button>}
+          {demoMode ? <span className="bm-status bm-status-info">Example</span> : <button type="button" className="bm-button" onClick={onOpenDeals}>View all</button>}
         </div>
 
         <div className="bm-clean-table">
@@ -210,7 +210,7 @@ function DealSummaryRow({ deal, demo }: { deal: DealListItem; demo: boolean }) {
     <div className="bm-attention-row">
       <div>
         <div className="bm-deal-row-title">
-          {deal.terms?.goods ?? 'Trade deal'} {demo && <span className="bm-status bm-status-info">Demo</span>}
+          {deal.terms?.goods ?? 'Trade deal'} {demo && <span className="bm-status bm-status-info">Example</span>}
         </div>
         <div className="bm-deal-row-meta">{deal.counterparty} - {nextActionLabel(deal)}</div>
       </div>
@@ -231,7 +231,7 @@ function DealTableRow({ deal, demo }: { deal: DealListItem; demo: boolean }) {
     <div className="bm-clean-table-row">
       <span>
         <strong>
-          {deal.terms?.goods ?? 'Trade deal'} {demo && <span className="bm-status bm-status-info">Demo</span>}
+          {deal.terms?.goods ?? 'Trade deal'} {demo && <span className="bm-status bm-status-info">Example</span>}
         </strong>
         <small>{deal.dealId}</small>
       </span>

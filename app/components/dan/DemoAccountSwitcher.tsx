@@ -49,7 +49,7 @@ export function DemoAccountSwitcher({ compact = false }: { compact?: boolean }) 
 
   return (
     <div className={compact ? 'bm-demo-accounts bm-demo-accounts-compact' : 'bm-demo-accounts'}>
-      {!compact && <div className="bm-kicker">Demo access</div>}
+      {!compact && <div className="bm-kicker">Company access</div>}
       <button
         type="button"
         className="bm-demo-switch-trigger"
@@ -58,7 +58,7 @@ export function DemoAccountSwitcher({ compact = false }: { compact?: boolean }) 
       >
         <span>
           <strong>{currentCompany?.displayName ?? account?.companyName ?? 'Choose demo company'}</strong>
-          <small>{currentCompany?.email ?? account?.email ?? 'Sign in without a password'}</small>
+          <small>{compact ? 'Switch company' : currentCompany?.email ?? account?.email ?? 'Sign in without a password'}</small>
         </span>
         <span className="bm-demo-switch-arrow">{open ? 'v' : '>'}</span>
       </button>
@@ -78,10 +78,10 @@ export function DemoAccountSwitcher({ compact = false }: { compact?: boolean }) 
               >
                 <span>
                   <strong>{company.displayName}</strong>
-                  <small>{company.email}</small>
+                  <small>{company.accountId === account?.id ? 'Current workspace' : 'Open this workspace'}</small>
                 </span>
                 <span className={active ? 'bm-status bm-status-success' : 'bm-status'}>
-                  {active ? 'Active' : busyId === company.accountId ? 'Signing in' : 'Use'}
+                  {active ? 'Current' : busyId === company.accountId ? 'Opening' : 'Open'}
                 </span>
               </button>
             );

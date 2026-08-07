@@ -267,7 +267,7 @@ function DemoDealsWorkspace({ deals }: { deals: DealListItem[] }) {
               <button type="button" className="bm-button" onClick={() => setSelectedId(null)}>
                 Back to deals
               </button>
-              <span className="bm-status bm-status-info">Demo mode</span>
+              <span className="bm-status bm-status-info">Example</span>
             </div>
           </div>
           <p className="bm-demo-hero-copy">{progress.label}</p>
@@ -405,7 +405,7 @@ function DemoDealsOverview({
             <div className="bm-kicker">Deals</div>
             <h2 className="bm-demo-index-title">Demo trade pipeline</h2>
             <p className="bm-body" style={{ marginTop: 8 }}>
-              Select a deal to open its document, release, timeline, and audit dashboard.
+              Select a deal to open documents, release status, timeline, and audit history.
             </p>
           </div>
           <span className="bm-status">{deals.length} active</span>
@@ -436,7 +436,7 @@ function DemoDealsOverview({
               <span>
                 <strong>
                   {deal.terms?.goods}
-                  <span className="bm-status bm-status-info" style={{ marginLeft: 8 }}>Demo</span>
+                  <span className="bm-status bm-status-info" style={{ marginLeft: 8 }}>Example</span>
                 </strong>
                 <small>{deal.dealId}</small>
               </span>
@@ -762,7 +762,7 @@ function DemoDealPreview({ deal }: { deal: DealListItem }) {
         <Detail label="Ship by" value={deal.terms?.shipmentDeadline ?? '-'} mono />
       </div>
       <p className="bm-body">
-        Demo mode shows trade status, document gates, and next actions. Use Create manually
+        Example deals show trade status, document gates, and next actions. Use Create manually
         for a real backend deal.
       </p>
     </div>

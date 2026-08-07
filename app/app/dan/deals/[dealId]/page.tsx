@@ -12,6 +12,11 @@ import { AuthForms } from '@/components/dan/AuthForms';
 import { runDealAction, type DealAction } from '@/components/dan/dealActionRunner';
 import { actorFromSession, fetchDeal, type DealListItem } from '@/lib/escrow/client';
 
+const usdcFormatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 export default function DealPage({ params }: { params: Promise<{ dealId: string }> }) {
   return <DealDetailPage params={params} />;
 }
@@ -114,24 +119,40 @@ export function DealDetailPage({
     <SurfaceShell activeTab="Deals">
       <BackLink href={backHref} />
 
-      <div className="bm-page-head">
-        <div>
+      <section className="bm-deal-detail-hero">
+        <div className="bm-deal-detail-main">
           <div className="bm-kicker">Deal record</div>
-          <h1 className="bm-title">{deal.terms?.goods ?? 'Trade deal'}</h1>
-          <p className="bm-subtitle">
-            with {deal.counterparty}. You are the {deal.role ?? 'pending party'} on this deal.
-          </p>
-        </div>
-        <div className="bm-card" style={{ minWidth: 220 }}>
-          <div className="bm-stat-label">Escrow amount</div>
-          <div className="bm-stat-value">
-            {deal.terms?.amountUsdc ?? '0'} <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>USDC</span>
-          </div>
-          <div style={{ marginTop: 10 }}>
+          <div className="bm-deal-title-row">
+            <h1 className="bm-title">{deal.terms?.goods ?? 'Trade deal'}</h1>
             <span className={stateClass(deal.state)}>{stateLabel(deal.state)}</span>
           </div>
+          <p className="bm-subtitle">
+            {deal.counterparty} is the counterparty. You are the {deal.role ?? 'pending party'} on this deal.
+          </p>
+          <div className="bm-deal-hero-meta">
+            <Detail label="Seller" value={deal.terms?.sellerName ?? '-'} />
+            <Detail label="Buyer" value={deal.terms?.buyerName ?? '-'} />
+            <Detail label="Ship by" value={deal.terms?.shipmentDeadline ?? '-'} mono />
+          </div>
         </div>
-      </div>
+        <aside className="bm-deal-value-panel">
+          <div className="bm-stat-label">Escrow amount</div>
+          <div className="bm-stat-value">
+            {formatUsdc(deal.terms?.amountUsdc)} <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>USDC</span>
+          </div>
+          <div className="bm-progress" style={{ marginTop: 16 }}>
+            <div style={{ width: `${dealProgress(deal)}%` }} />
+          </div>
+          <div className="bm-deal-stage-list">
+            {dealStages(deal).map(stage => (
+              <div key={stage.label} className="bm-deal-stage" data-active={stage.active}>
+                <span />
+                <p>{stage.label}</p>
+              </div>
+            ))}
+          </div>
+        </aside>
+      </section>
 
       {error && <div className="bm-alert" style={{ marginBottom: 16 }}>{error}</div>}
 
@@ -140,7 +161,7 @@ export function DealDetailPage({
           <Card title={deal.onChainDealId ? 'Agreed terms' : 'Proposed terms'}>
             <div className="bm-detail-grid">
               <Detail label="Goods" value={deal.terms?.goods ?? '-'} />
-              <Detail label="Amount" value={`${deal.terms?.amountUsdc ?? '-'} USDC`} mono />
+              <Detail label="Amount" value={`${formatUsdc(deal.terms?.amountUsdc)} USDC`} mono />
               <Detail label="Seller" value={deal.terms?.sellerName ?? '-'} />
               <Detail label="Buyer" value={deal.terms?.buyerName ?? '-'} />
               <Detail label="Ship by" value={deal.terms?.shipmentDeadline ?? '-'} mono />
@@ -204,11 +225,11 @@ function DealActionsForPage({
     return (
       <>
         <p className="bm-body" style={{ marginBottom: 14 }}>
-          Both sides accepted the terms. Lock {deal.terms?.amountUsdc} USDC so the seller can ship
+          Both sides accepted the terms. Lock {formatUsdc(deal.terms?.amountUsdc)} USDC so the seller can ship
           with funds held in escrow.
         </p>
         <button type="button" className="bm-button bm-button-primary" disabled={busy} onClick={() => onAction('fund')}>
-          {busy ? 'Working' : `Lock ${deal.terms?.amountUsdc ?? ''} USDC`}
+          {busy ? 'Working' : `Lock ${formatUsdc(deal.terms?.amountUsdc)} USDC`}
         </button>
       </>
     );
@@ -287,4 +308,29 @@ function stateClass(state: string | null): string {
   if (state === 'ReleasePending') return 'bm-status bm-status-info';
   if (state === 'Agreed' || state === 'Funded') return 'bm-status bm-status-warning';
   return 'bm-status';
+}
+
+function formatUsdc(value: string | number | null | undefined): string {
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return value ? String(value) : '0.00';
+  return usdcFormatter.format(amount);
+}
+
+function dealProgress(deal: DealListItem): number {
+  if (deal.state === 'Released') return 100;
+  if (deal.state === 'ReleasePending') return 86;
+  if (deal.state === 'Funded') return 62;
+  if (deal.state === 'Agreed') return 38;
+  if (deal.awaitingViewer) return 18;
+  return 12;
+}
+
+function dealStages(deal: DealListItem): Array<{ label: string; active: boolean }> {
+  const state = deal.state;
+  return [
+    { label: deal.awaitingViewer ? 'Awaiting acceptance' : 'Terms accepted', active: Boolean(deal.awaitingViewer || state) },
+    { label: 'Escrow funded', active: state === 'Funded' || state === 'ReleasePending' || state === 'Released' },
+    { label: 'Documents checked', active: state === 'ReleasePending' || state === 'Released' },
+    { label: 'Settlement complete', active: state === 'Released' },
+  ];
 }

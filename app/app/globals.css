@@ -226,6 +226,10 @@ html, body {
   gap: 10px;
 }
 
+.bm-top-actions .bm-button {
+  white-space: nowrap;
+}
+
 .bm-dashboard-rail {
   width: 260px;
   flex-shrink: 0;
@@ -752,7 +756,7 @@ html, body {
   right: 0;
   top: calc(100% + 8px);
   z-index: 30;
-  width: min(340px, calc(100vw - 32px));
+  width: min(320px, calc(100vw - 32px));
   grid-template-columns: 1fr;
   gap: 8px;
   max-height: 310px;
@@ -769,8 +773,12 @@ html, body {
 }
 
 .bm-demo-accounts-compact .bm-demo-switch-trigger {
-  min-width: 220px;
-  padding: 10px;
+  min-width: 190px;
+  padding: 9px 10px;
+}
+
+.bm-demo-accounts-compact .bm-demo-switch-trigger small {
+  font-size: 11px;
 }
 
 .bm-welcome-head {
@@ -815,6 +823,81 @@ html, body {
 
 .bm-dashboard-table-card {
   margin-top: 18px;
+}
+
+.bm-deal-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.34fr);
+  gap: 16px;
+  margin-bottom: 18px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
+}
+
+.bm-deal-detail-main {
+  min-width: 0;
+}
+
+.bm-deal-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.bm-deal-title-row .bm-title {
+  margin-top: 8px;
+}
+
+.bm-deal-hero-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.bm-deal-value-panel {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-soft);
+}
+
+.bm-deal-stage-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.bm-deal-stage {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.bm-deal-stage span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--pending);
+}
+
+.bm-deal-stage[data-active="true"] {
+  color: var(--text-secondary);
+}
+
+.bm-deal-stage[data-active="true"] span {
+  background: var(--primary);
 }
 
 .bm-clean-table {
@@ -1155,6 +1238,15 @@ html, body {
   }
 
   .bm-dashboard-focus-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bm-deal-detail-hero {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .bm-deal-hero-meta {
     grid-template-columns: 1fr;
   }
 

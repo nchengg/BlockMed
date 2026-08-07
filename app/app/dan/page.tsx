@@ -16,6 +16,7 @@ import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from '@/lib/auth/useSession';
 import { DanShell, type DanTab } from '@/components/dan/DanShell';
+import { KybForm } from '@/components/dan/KybForm';
 import { DealsTab } from '@/components/dan/DealsTab';
 import { DashboardTab } from '@/components/dan/DashboardTab';
 import { AuthForms } from '@/components/dan/AuthForms';
@@ -32,7 +33,7 @@ function DanDashboard() {
   // ?tab=deals lets the deal page's "All deals" link land on the right tab.
   const search = useSearchParams();
   const [activeTab, setActiveTab] = useState<DanTab>(
-    search.get('tab') === 'deals' ? 'Deals' : 'Dashboard',
+    search.get('tab') === 'deals' ? 'Deals' : search.get('tab') === 'company' ? 'Company' : 'Dashboard',
   );
   const { account, ready } = useSession();
 
@@ -44,6 +45,7 @@ function DanDashboard() {
         <>
           {activeTab === 'Dashboard' && <DashboardTab onOpenDeals={() => setActiveTab('Deals')} />}
           {activeTab === 'Deals' && <DealsTab />}
+          {activeTab === 'Company' && <KybForm />}
         </>
       )}
     </DanShell>

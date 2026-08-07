@@ -8,8 +8,8 @@
 import Link from 'next/link';
 import { useSession } from '@/lib/auth/useSession';
 
-export type DanTab = 'Dashboard' | 'Deals';
-export const DAN_TABS: DanTab[] = ['Dashboard', 'Deals'];
+export type DanTab = 'Dashboard' | 'Deals' | 'Company';
+export const DAN_TABS: DanTab[] = ['Dashboard', 'Deals', 'Company'];
 
 export function DanShell({ activeTab, onTabChange, children }: {
   activeTab: DanTab;
@@ -32,7 +32,7 @@ export function DanShell({ activeTab, onTabChange, children }: {
         {inner}
       </button>
     ) : (
-      <Link key={tab} href={tab === 'Deals' ? '/dan?tab=deals' : '/dan'} style={{ ...style, background: active ? 'var(--accent-dim)' : 'transparent', textDecoration: 'none', display: 'block' }}>
+      <Link key={tab} href={tab === 'Deals' ? '/dan?tab=deals' : tab === 'Company' ? '/dan?tab=company' : '/dan'} style={{ ...style, background: active ? 'var(--accent-dim)' : 'transparent', textDecoration: 'none', display: 'block' }}>
         {inner}
       </Link>
     );

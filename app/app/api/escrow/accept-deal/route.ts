@@ -6,6 +6,7 @@ import { assertLocalReleaser } from "@/lib/escrow/settlement";
 import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal, pendingOnRole } from "@/lib/escrow/roles";
 import { resolvePartyAddresses } from "@/lib/escrow/partyWallets";
+import { assertPartiesCanTrade } from "@/lib/kyb/gate";
 
 // ACCEPT (or DECLINE) a proposed deal — the counterparty's half of FR-1.
 //
@@ -82,6 +83,15 @@ export async function POST(req: Request) {
   if (localGuard) {
     await saveDeal(deal); // keep the acceptance in the audit trail; just don't sign
     return localGuard;
+  }
+
+  // Both companies must have completed onboarding before the deal binds them.
+  // Checked here rather than at proposal time: a proposal is an offer, and
+  // blocking it would stop a company drafting deals while it finishes onboarding.
+  const gate = await assertPartiesCanTrade(deal);
+  if (!gate.ok) {
+    await saveDeal(deal); // the acceptance is real; only the on-chain step is blocked
+    return NextResponse.json({ error: gate.error, blocked: gate.blocked }, { status: 409 });
   }
 
   // Record each party's OWN address, so they can later sign their own actions.

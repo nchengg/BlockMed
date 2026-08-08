@@ -7,17 +7,18 @@ import { AuthForms } from '@/components/dan/AuthForms';
 import { DashboardTab } from '@/components/dan/DashboardTab';
 import { DemoAccountSwitcher } from '@/components/dan/DemoAccountSwitcher';
 import { DealsTab } from '@/components/dan/DealsTab';
+import { KybForm } from '@/components/dan/KybForm';
 import { useSession } from '@/lib/auth/useSession';
 import { ThemeToggle } from './ThemeToggle';
 
-export type FunctionalDashboardTab = 'Dashboard' | 'Deals';
+export type FunctionalDashboardTab = 'Dashboard' | 'Deals' | 'Company';
 
-const tabs: FunctionalDashboardTab[] = ['Dashboard', 'Deals'];
+const tabs: FunctionalDashboardTab[] = ['Dashboard', 'Deals', 'Company'];
 
 export function FunctionalDashboardShell() {
   const search = useSearchParams();
   const [activeTab, setActiveTab] = useState<FunctionalDashboardTab>(
-    search.get('tab') === 'deals' ? 'Deals' : 'Dashboard',
+    search.get('tab') === 'deals' ? 'Deals' : search.get('tab') === 'company' ? 'Company' : 'Dashboard',
   );
   const { account, ready } = useSession();
 
@@ -29,6 +30,8 @@ export function FunctionalDashboardShell() {
         <AuthForms />
       ) : activeTab === 'Dashboard' ? (
         <DashboardTab onOpenDeals={() => setActiveTab('Deals')} />
+      ) : activeTab === 'Company' ? (
+        <KybForm />
       ) : (
         <DealsTab dealBasePath="/dashboard/deals" />
       )}
@@ -57,7 +60,11 @@ export function FunctionalDashboardFrame({ activeTab, onTabChange, children }: {
     }
 
     return (
-      <Link key={tab} href={tab === 'Deals' ? '/dashboard?tab=deals' : '/dashboard'} {...shared}>
+      <Link
+        key={tab}
+        href={tab === 'Deals' ? '/dashboard?tab=deals' : tab === 'Company' ? '/dashboard?tab=company' : '/dashboard'}
+        {...shared}
+      >
         {tab}
       </Link>
     );

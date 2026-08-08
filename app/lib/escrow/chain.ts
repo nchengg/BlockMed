@@ -83,6 +83,13 @@ export function loadDeployment(): Deployment {
   }
 }
 
+/** Human names for the chains this app can be pointed at. */
+export const CHAIN_LABELS: Record<number, string> = {
+  31337: "Local Hardhat",
+  84532: "Base Sepolia",
+  8453: "Base Mainnet",
+};
+
 /** viem chain descriptor for a deployment, keyed by its chain id. */
 function chainFor(dep: Deployment) {
   if (dep.chainId === baseSepolia.id) return baseSepolia;

@@ -65,9 +65,27 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
     <>
       <DashboardHeading companyName={account?.companyName} onOpenDeals={onOpenDeals} />
 
-      {!summary.chainOk && (
+      {/* Name the chain rather than assuming localhost: the app can be pointed at
+          Base Sepolia, where "local chain not connected" would be simply wrong. */}
+      {!summary.chainOk ? (
         <div className="bm-notice" style={{ marginBottom: 18 }}>
-          Local chain is not connected. Deal records still load, but on-chain totals may be unavailable.
+          {summary.network
+            ? `Cannot reach ${summary.network.label}. Deal records still load, but on-chain totals are unavailable.`
+            : 'No chain connected. Deal records still load, but on-chain totals are unavailable. Start the Hardhat node, or set ESCROW_NETWORK to a deployed network.'}
+        </div>
+      ) : summary.network && summary.network.chainId !== 31337 && (
+        <div className="bm-notice" style={{ marginBottom: 18 }}>
+          Live on <strong>{summary.network.label}</strong> with{' '}
+          {summary.network.realToken ? 'real USDC' : 'a test token'} —{' '}
+          {summary.network.explorer ? (
+            <a
+              href={`${summary.network.explorer}/address/${summary.network.escrow}`}
+              target="_blank" rel="noreferrer"
+              style={{ color: 'var(--accent)' }}
+            >view the escrow contract</a>
+          ) : (
+            <code>{summary.network.escrow}</code>
+          )}.
         </div>
       )}
 

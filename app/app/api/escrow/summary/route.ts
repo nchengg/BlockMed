@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { formatUnits, parseUnits } from "viem";
-import { loadDeployment, publicClient, usdcAbi, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
+import { CHAIN_LABELS, loadDeployment, networkName, publicClient, usdcAbi, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
 import { getAllDeals } from "@/lib/escrow/store";
 import { roleInDeal, pendingOnRole } from "@/lib/escrow/roles";
 
@@ -22,6 +22,12 @@ export async function GET(req: Request) {
   let demoWallets: { buyer: string; seller: string } | null = null;
   let escrowTotal: string | null = null;
   let chainOk = true;
+  // Which chain these figures came from, so the UI can name it rather than
+  // assuming localhost.
+  let network: {
+    name: string; chainId: number; label: string;
+    explorer: string | null; escrow: string; realToken: boolean;
+  } | null = null;
 
   try {
     const dep = loadDeployment();
@@ -32,15 +38,36 @@ export async function GET(req: Request) {
       })) as number;
       return STATE_NAMES[s] ?? null;
     };
-    // The shared demo wallets: every buyer signs from one, every seller from the
-    // other. Reported only as context, never as "this company's balance".
-    const [escrowBal, buyerBal, sellerBal] = await Promise.all([
-      pc.readContract({ address: dep.usdc, abi: usdcAbi, functionName: "balanceOf", args: [dep.escrow] }) as Promise<bigint>,
-      pc.readContract({ address: dep.usdc, abi: usdcAbi, functionName: "balanceOf", args: [dep.accounts.buyer] }) as Promise<bigint>,
-      pc.readContract({ address: dep.usdc, abi: usdcAbi, functionName: "balanceOf", args: [dep.accounts.seller] }) as Promise<bigint>,
-    ]);
+
+    // The chain is "ok" if the escrow itself is readable. Nothing below this
+    // point may flip that: a public deployment has no demo wallets, and their
+    // absence is not a connectivity failure. (It previously was — the reads for
+    // dep.accounts.buyer/seller threw on undefined and the shared catch reported
+    // the chain as down, on a chain that was working perfectly.)
+    const escrowBal = (await pc.readContract({
+      address: dep.usdc, abi: usdcAbi, functionName: "balanceOf", args: [dep.escrow],
+    })) as bigint;
     escrowTotal = formatUnits(escrowBal, 6);
-    demoWallets = { buyer: formatUnits(buyerBal, 6), seller: formatUnits(sellerBal, 6) };
+
+    network = {
+      name: networkName(),
+      chainId: dep.chainId,
+      label: CHAIN_LABELS[dep.chainId] ?? `Chain ${dep.chainId}`,
+      explorer: dep.chainId === 84532 ? "https://sepolia.basescan.org" : null,
+      escrow: dep.escrow,
+      realToken: dep.realToken === true,
+    };
+
+    // Shared demo wallets exist only on the local chain, where every buyer signs
+    // from one address and every seller from another. On a public deployment the
+    // parties use their own linked wallets, so there is nothing to report.
+    if (dep.accounts.buyer && dep.accounts.seller) {
+      const [buyerBal, sellerBal] = await Promise.all([
+        pc.readContract({ address: dep.usdc, abi: usdcAbi, functionName: "balanceOf", args: [dep.accounts.buyer] }) as Promise<bigint>,
+        pc.readContract({ address: dep.usdc, abi: usdcAbi, functionName: "balanceOf", args: [dep.accounts.seller] }) as Promise<bigint>,
+      ]);
+      demoWallets = { buyer: formatUnits(buyerBal, 6), seller: formatUnits(sellerBal, 6) };
+    }
   } catch {
     chainOk = false;
   }
@@ -94,6 +121,7 @@ export async function GET(req: Request) {
   return NextResponse.json({
     ok: true,
     chainOk,
+    network,
     money: {
       locked: formatUnits(lockedMinor, 6),
       awaitingFunding: formatUnits(awaitingMinor, 6),

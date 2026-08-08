@@ -131,6 +131,15 @@ export type DealListItem = {
 export type DealSummary = {
   ok: boolean;
   chainOk: boolean;
+  /** Which chain the figures came from — null only when the chain is unreachable. */
+  network: {
+    name: string;
+    chainId: number;
+    label: string;
+    explorer: string | null;
+    escrow: string;
+    realToken: boolean;
+  } | null;
   money: {
     locked: string;
     awaitingFunding: string;

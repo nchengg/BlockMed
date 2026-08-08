@@ -1,202 +1,403 @@
 'use client';
-// Dashboard tab — summary stats for the signed-in company.
-//
-// Money is derived from THIS account's deals (each deal's own amount, summed by
-// state), not from a wallet balance: in this demo every buyer signs from one
-// shared dev wallet and every seller from another, so a raw balance would be the
-// whole chain's rather than this company's. The shared wallets are still shown
-// at the bottom, clearly labelled, because they are what actually moves on-chain.
-import { useCallback, useEffect, useState } from 'react';
+
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSession } from '@/lib/auth/useSession';
-import { fetchSummary, type DealSummary } from '@/lib/escrow/client';
-import { WalletCard } from './WalletCard';
+import { fetchDeals, fetchSummary, type DealListItem, type DealSummary } from '@/lib/escrow/client';
+
+const usdcFormatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
 export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
   const { account } = useSession();
-  const [s, setS] = useState<DealSummary | null>(null);
+  const accountId = account?.id;
+  const [summary, setSummary] = useState<DealSummary | null>(null);
+  const [deals, setDeals] = useState<DealListItem[]>([]);
 
   const refresh = useCallback(async () => {
     try {
-      setS(await fetchSummary(account?.id));
+      const [nextSummary, nextDeals] = await Promise.all([
+        fetchSummary(accountId),
+        fetchDeals(accountId),
+      ]);
+      setSummary(nextSummary);
+      setDeals(nextDeals.deals ?? []);
     } catch {
-      setS(null);
+      setSummary(null);
+      setDeals([]);
     }
-  }, [account?.id]);
+  }, [accountId]);
 
-  // Poll so the counterparty's actions move these figures without a reload.
   useEffect(() => {
-    void refresh();
+    const initial = setTimeout(() => { void refresh(); }, 0);
     const id = setInterval(() => { void refresh(); }, 4000);
-    return () => clearInterval(id);
+    return () => {
+      clearTimeout(initial);
+      clearInterval(id);
+    };
   }, [refresh]);
 
-  if (!s) {
+  const demoMode = deals.length === 0;
+  const visibleDeals = useMemo(
+    () => (demoMode ? demoDashboardDeals(account?.companyName ?? 'Demo Trading Co') : deals),
+    [account?.companyName, deals, demoMode],
+  );
+  const attentionDeals = useMemo(
+    () => visibleDeals.filter(dealNeedsAttention).slice(0, 3),
+    [visibleDeals],
+  );
+  const liveDeal = attentionDeals[0] ?? visibleDeals[0] ?? null;
+
+  if (!summary) {
     return (
       <>
-        <Heading />
-        <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>Loading…</p>
+        <DashboardHeading companyName={account?.companyName} onOpenDeals={onOpenDeals} />
+        <p className="bm-body">Loading dashboard data.</p>
       </>
     );
   }
 
-  const { money, counts } = s;
-  const nothingYet = counts.total === 0;
+  const metrics = dashboardMetrics(summary, visibleDeals, demoMode);
 
   return (
     <>
-      <Heading />
+      <DashboardHeading companyName={account?.companyName} onOpenDeals={onOpenDeals} />
 
-      {!s.chainOk && (
-        <div style={{
-          marginBottom: 20, fontSize: 13, padding: '10px 14px', borderRadius: 6,
-          color: '#f87171', border: '1px solid #f87171', background: 'var(--bg-surface)',
-        }}>
-          No local chain detected — on-chain figures are unavailable. Start it with{' '}
-          <code>npx hardhat node</code> in <code>contracts/</code>.
+      {!summary.chainOk && (
+        <div className="bm-notice" style={{ marginBottom: 18 }}>
+          Local chain is not connected. Deal records still load, but on-chain totals may be unavailable.
         </div>
       )}
 
-      {nothingYet ? (
-        <div style={{
-          border: '1px dashed var(--border)', borderRadius: 10, padding: '48px 32px',
-          textAlign: 'center', background: 'var(--bg-surface)',
-        }}>
-          <p style={{ fontSize: 14, color: 'var(--text-muted)', margin: '0 0 16px' }}>
-            No deals yet. Create one to see your escrow position here.
-          </p>
-          <button
-            onClick={onOpenDeals}
-            style={{
-              padding: '10px 18px', borderRadius: 6, fontSize: 14, fontWeight: 600,
-              background: 'var(--accent)', color: '#0A0A0B', border: 'none', cursor: 'pointer',
-            }}
-          >Go to Deals</button>
-        </div>
-      ) : (
-        <>
-          {/* Money — the headline. Locked is the number that matters most: it is
-              what the contract is holding on this company's deals right now. */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 14 }}>
-            <Stat
-              label="Locked in escrow"
-              value={money.locked}
-              unit="USDC"
-              hint="Held by the contract on your funded deals"
-              accent
-            />
-            <Stat
-              label="Awaiting funding"
-              value={money.awaitingFunding}
-              unit="USDC"
-              hint="Agreed, not yet deposited"
-            />
-            <Stat
-              label="Settled"
-              value={money.released}
-              unit="USDC"
-              hint="Released on completed deals"
-            />
-          </div>
-
-          {/* Activity */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 14, marginTop: 14 }}>
-            <Mini label="Deals" value={counts.total} />
-            <Mini label="Active" value={counts.active} />
-            <Mini label="Completed" value={counts.settled} />
-            <Mini label="As buyer" value={counts.asBuyer} />
-            <Mini label="As seller" value={counts.asSeller} />
-          </div>
-
-          {/* The one actionable number. */}
-          <div
-            onClick={counts.needsYou ? onOpenDeals : undefined}
-            style={{
-              marginTop: 18, padding: '16px 18px', borderRadius: 10,
-              border: `1px solid ${counts.needsYou ? 'var(--accent)' : 'var(--border)'}`,
-              background: 'var(--bg-surface)',
-              cursor: counts.needsYou ? 'pointer' : 'default',
-              display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap',
-            }}
-          >
-            <span style={{
-              fontFamily: 'monospace', fontSize: 26, fontWeight: 700,
-              color: counts.needsYou ? 'var(--accent)' : 'var(--text-muted)',
-            }}>
-              {counts.needsYou}
-            </span>
-            <span style={{ fontSize: 14, color: 'var(--text-secondary)' }}>
-              {counts.needsYou === 0
-                ? 'Nothing needs your attention.'
-                : `deal${counts.needsYou === 1 ? '' : 's'} waiting on you — accept, fund, submit documents or release.`}
-            </span>
-            {counts.needsYou > 0 && (
-              <span style={{ marginLeft: 'auto', fontSize: 13, color: 'var(--accent)', fontWeight: 600 }}>
-                View →
-              </span>
-            )}
-          </div>
-
-          {money.demoWallets && (
-            <p style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.6, marginTop: 18 }}>
-              Demo chain: the escrow contract holds {money.escrowTotalAllAccounts} USDC across all
-              companies. Every buyer signs from one shared test wallet ({money.demoWallets.buyer} USDC)
-              and every seller from another ({money.demoWallets.seller} USDC). Linking your own
-              wallet above proves the address is yours; deposits move to it once the deal flow
-              signs from the linked wallet rather than the shared test one.
-            </p>
-          )}
-        </>
-      )}
-
-      {/* Outside the has-deals branch on purpose: a company with no deals yet is
-          precisely who needs to link a wallet before their first one. */}
-      <div style={{ marginTop: 18 }}>
-        <WalletCard />
+      <div className="bm-grid-stats">
+        {metrics.map(metric => (
+          <MetricCard key={metric.label} {...metric} />
+        ))}
       </div>
+
+      <div className="bm-dashboard-focus-grid">
+        <section className="bm-card">
+          <div className="bm-section-head">
+            <h2 className="bm-section-title">Attention needed</h2>
+            <span className={attentionDeals.length ? 'bm-status bm-status-warning' : 'bm-status bm-status-success'}>
+              {attentionDeals.length ? `${attentionDeals.length} open` : 'Clear'}
+            </span>
+          </div>
+
+          {attentionDeals.length === 0 ? (
+            <p className="bm-body">No deal is waiting on your company right now.</p>
+          ) : (
+            <div className="bm-attention-list">
+              {attentionDeals.map(deal => (
+                <DealSummaryRow key={deal.dealId} deal={deal} demo={demoMode} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="bm-card">
+          <div className="bm-section-head">
+            <h2 className="bm-section-title">Live deal state</h2>
+            {liveDeal && <span className={stateClass(liveDeal.state)}>{stateLabel(liveDeal.state)}</span>}
+          </div>
+
+          {!liveDeal ? (
+            <p className="bm-body">Create a deal to track document and release readiness.</p>
+          ) : (
+            <div>
+              <div className="bm-deal-row-title">{liveDeal.terms?.goods ?? 'Trade deal'}</div>
+              <p className="bm-body" style={{ marginTop: 6 }}>
+                {liveDeal.counterparty} - {formatUsdc(liveDeal.terms?.amountUsdc)} USDC
+              </p>
+              <div className="bm-progress" style={{ marginTop: 14 }}>
+                <div style={{ width: `${dealProgress(liveDeal)}%` }} />
+              </div>
+              <div className="bm-demo-step-list">
+                {dealSteps(liveDeal).map(step => (
+                  <div key={step.label} className="bm-demo-step">
+                    <span className={step.active ? 'bm-demo-dot bm-demo-dot-current' : 'bm-demo-dot'} />
+                    <div>
+                      <div className="bm-demo-step-title">{step.label}</div>
+                      <p className="bm-body">{step.note}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      </div>
+
+      <section className="bm-card bm-dashboard-table-card">
+        <div className="bm-section-head">
+          <div>
+            <h2 className="bm-section-title">Active deals</h2>
+            <p className="bm-body" style={{ marginTop: 4 }}>
+              {demoMode ? 'Example deals are shown until this company has live backend deals.' : 'Live backend deals for this company.'}
+            </p>
+          </div>
+          {demoMode ? <span className="bm-status bm-status-info">Example</span> : <button type="button" className="bm-button" onClick={onOpenDeals}>View all</button>}
+        </div>
+
+        <div className="bm-clean-table">
+          <div className="bm-clean-table-head">
+            <span>Deal</span>
+            <span>Counterparty</span>
+            <span>Escrow</span>
+            <span>Documents</span>
+            <span>Status</span>
+            <span>Action</span>
+          </div>
+          {visibleDeals.map(deal => (
+            <DealTableRow key={deal.dealId} deal={deal} demo={demoMode} />
+          ))}
+        </div>
+      </section>
     </>
   );
 }
 
-function Heading() {
-  return (
-    <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 20 }}>
-      Dashboard
-    </div>
-  );
-}
-
-function Stat({ label, value, unit, hint, accent }: {
-  label: string; value: string; unit: string; hint: string; accent?: boolean;
+function DashboardHeading({
+  companyName,
+  onOpenDeals,
+}: {
+  companyName?: string;
+  onOpenDeals: () => void;
 }) {
   return (
-    <div style={{
-      border: `1px solid ${accent ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 10,
-      padding: '18px 20px', background: 'var(--bg-surface)',
-    }}>
-      <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.09em' }}>
-        {label}
+    <div className="bm-page-head bm-welcome-head">
+      <div>
+        <div className="bm-kicker">Trade escrow control</div>
+        <h1 className="bm-title">Welcome back{companyName ? `, ${shortCompanyName(companyName)}` : ''}.</h1>
+        <p className="bm-subtitle">
+          Review active trade deals, document gates, and release readiness.
+        </p>
       </div>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginTop: 8 }}>
-        <span style={{
-          fontFamily: 'monospace', fontSize: 26, fontWeight: 700,
-          color: accent ? 'var(--accent)' : 'var(--text-primary)',
-        }}>{value}</span>
-        <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{unit}</span>
+      <div className="bm-actions">
+        <button type="button" className="bm-button bm-button-primary" onClick={onOpenDeals}>
+          New escrow
+        </button>
       </div>
-      <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 6, lineHeight: 1.5 }}>{hint}</div>
     </div>
   );
 }
 
-function Mini({ label, value }: { label: string; value: number }) {
+function MetricCard({
+  label,
+  value,
+  note,
+  accent,
+}: {
+  label: string;
+  value: string;
+  note: string;
+  accent?: boolean;
+}) {
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 10, padding: '14px 16px', background: 'var(--bg-surface)' }}>
-      <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.09em' }}>
-        {label}
+    <section className="bm-card bm-metric-card">
+      <div className="bm-stat-label">{label}</div>
+      <div className={accent ? 'bm-stat-value bm-stat-value-accent' : 'bm-stat-value'}>{value}</div>
+      <div className="bm-stat-note">{note}</div>
+    </section>
+  );
+}
+
+function DealSummaryRow({ deal, demo }: { deal: DealListItem; demo: boolean }) {
+  const href = demo ? undefined : `/dashboard/deals/${encodeURIComponent(deal.dealId)}`;
+  const content = (
+    <div className="bm-attention-row">
+      <div>
+        <div className="bm-deal-row-title">
+          {deal.terms?.goods ?? 'Trade deal'} {demo && <span className="bm-status bm-status-info">Example</span>}
+        </div>
+        <div className="bm-deal-row-meta">{deal.counterparty} - {nextActionLabel(deal)}</div>
       </div>
-      <div style={{ fontFamily: 'monospace', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', marginTop: 6 }}>
-        {value}
+      <div className="bm-attention-row-side">
+        <span className="bm-mono">{formatUsdc(deal.terms?.amountUsdc)} USDC</span>
+        <span className={stateClass(deal.state)}>{stateLabel(deal.state)}</span>
       </div>
     </div>
   );
+
+  if (!href) return content;
+  return <Link href={href} style={{ textDecoration: 'none' }}>{content}</Link>;
+}
+
+function DealTableRow({ deal, demo }: { deal: DealListItem; demo: boolean }) {
+  const href = demo ? undefined : `/dashboard/deals/${encodeURIComponent(deal.dealId)}`;
+  const content = (
+    <div className="bm-clean-table-row">
+      <span>
+        <strong>
+          {deal.terms?.goods ?? 'Trade deal'} {demo && <span className="bm-status bm-status-info">Example</span>}
+        </strong>
+        <small>{deal.dealId}</small>
+      </span>
+      <span>{deal.counterparty}</span>
+      <span className="bm-mono">{formatUsdc(deal.terms?.amountUsdc)} USDC</span>
+      <span>{documentCount(deal)}</span>
+      <span><span className={stateClass(deal.state)}>{stateLabel(deal.state)}</span></span>
+      <span className="bm-link">{demo ? nextActionLabel(deal) : 'Open'}</span>
+    </div>
+  );
+
+  if (!href) return content;
+  return <Link href={href} style={{ textDecoration: 'none' }}>{content}</Link>;
+}
+
+function dashboardMetrics(summary: DealSummary, deals: DealListItem[], demo: boolean) {
+  if (!demo) {
+    return [
+      { label: 'Escrow locked', value: `${formatUsdc(summary.money.locked)} USDC`, note: 'Held by funded deals', accent: true },
+      { label: 'Awaiting funding', value: `${formatUsdc(summary.money.awaitingFunding)} USDC`, note: 'Accepted deals not funded' },
+      { label: 'Document reviews', value: String(deals.filter(deal => deal.review).length), note: 'Open review windows' },
+      { label: 'Needs attention', value: String(summary.counts.needsYou), note: summary.counts.needsYou ? 'Actions ready' : 'No action needed' },
+    ];
+  }
+
+  const locked = deals
+    .filter(deal => deal.state === 'Funded' || deal.state === 'ReleasePending')
+    .reduce((sum, deal) => sum + Number(deal.terms?.amountUsdc ?? 0), 0);
+  const releaseReady = deals
+    .filter(deal => deal.state === 'ReleasePending')
+    .reduce((sum, deal) => sum + Number(deal.terms?.amountUsdc ?? 0), 0);
+
+  return [
+    { label: 'Escrow locked', value: `${formatUsdc(locked)} USDC`, note: 'Across demo deals', accent: true },
+    { label: 'Release ready', value: `${formatUsdc(releaseReady)} USDC`, note: 'One deal cleared' },
+    { label: 'Document reviews', value: '7', note: 'Three need buyer action' },
+    { label: 'Blocked releases', value: '2', note: 'Missing document checks' },
+  ];
+}
+
+function demoDashboardDeals(companyName: string): DealListItem[] {
+  return [
+    {
+      dealId: 'DEMO-IZMIR-TEXTILES',
+      onChainDealId: null,
+      role: 'buyer',
+      counterparty: 'Ege Weave Ltd',
+      terms: {
+        goods: 'Izmir textile shipment, 1x40ft',
+        amountUsdc: '42000.00',
+        sellerName: 'Ege Weave Ltd',
+        buyerName: companyName,
+        shipmentDeadline: '2026-08-27',
+      },
+      state: 'Funded',
+      awaitingViewer: false,
+      review: null,
+      audit: [],
+      createdAt: new Date().toISOString(),
+    },
+    {
+      dealId: 'DEMO-SHENZHEN-ELECTRONICS',
+      onChainDealId: null,
+      role: 'seller',
+      counterparty: 'Northline Retail Ltd',
+      terms: {
+        goods: 'Shenzhen electronics batch',
+        amountUsdc: '68500.00',
+        sellerName: companyName,
+        buyerName: 'Northline Retail Ltd',
+        shipmentDeadline: '2026-09-07',
+      },
+      state: 'ReleasePending',
+      awaitingViewer: false,
+      review: null,
+      audit: [],
+      createdAt: new Date().toISOString(),
+    },
+    {
+      dealId: 'DEMO-COLOMBIA-COFFEE',
+      onChainDealId: null,
+      role: 'seller',
+      counterparty: 'BridgeTrade Co',
+      terms: {
+        goods: 'Colombia coffee containers',
+        amountUsdc: '31800.00',
+        sellerName: companyName,
+        buyerName: 'BridgeTrade Co',
+        shipmentDeadline: '2026-09-03',
+      },
+      state: 'Agreed',
+      awaitingViewer: false,
+      review: null,
+      audit: [],
+      createdAt: new Date().toISOString(),
+    },
+  ];
+}
+
+function formatUsdc(value: string | number | null | undefined): string {
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return value ? String(value) : '0.00';
+  return usdcFormatter.format(amount);
+}
+
+function shortCompanyName(companyName: string): string {
+  return companyName.replace(/\s+(Ltd|Limited|Co|Company|Demo)$/i, '');
+}
+
+function dealNeedsAttention(deal: DealListItem): boolean {
+  return Boolean(
+    deal.awaitingViewer ||
+    (deal.state === 'Agreed' && deal.role === 'buyer') ||
+    deal.state === 'Funded' ||
+    deal.state === 'ReleasePending',
+  );
+}
+
+function nextActionLabel(deal: DealListItem): string {
+  if (deal.awaitingViewer) return 'Review terms';
+  if (deal.state === 'Agreed' && deal.role === 'buyer') return 'Fund escrow';
+  if (deal.state === 'Agreed' && deal.role === 'seller') return 'Await funding';
+  if (deal.state === 'Funded' && deal.role === 'seller') return 'Submit documents';
+  if (deal.state === 'Funded' && deal.role === 'buyer') return deal.review ? 'Review documents' : 'Await documents';
+  if (deal.state === 'ReleasePending') return 'Release funds';
+  if (deal.state === 'Released') return 'Settled';
+  if (deal.state === 'Refunded') return 'Refunded';
+  if (deal.state === 'Declined') return 'Declined';
+  return 'Open deal';
+}
+
+function documentCount(deal: DealListItem): string {
+  if (deal.state === 'ReleasePending') return '4 of 5';
+  if (deal.state === 'Funded') return '3 of 4';
+  if (deal.state === 'Agreed') return '0 of 4';
+  if (deal.review) return 'In review';
+  return 'Pending';
+}
+
+function dealProgress(deal: DealListItem): number {
+  if (deal.state === 'ReleasePending') return 86;
+  if (deal.state === 'Funded') return 62;
+  if (deal.state === 'Agreed') return 34;
+  if (deal.state === 'Released') return 100;
+  return 18;
+}
+
+function dealSteps(deal: DealListItem): Array<{ label: string; note: string; active?: boolean }> {
+  return [
+    { label: 'Terms agreed', note: 'Buyer and seller accepted the trade terms.' },
+    { label: 'Escrow funded', note: deal.state === 'Agreed' ? 'Buyer funding is still pending.' : 'Funds are locked for this deal.' },
+    { label: 'Documents checked', note: deal.state === 'ReleasePending' ? 'Documents passed release checks.' : 'Document review is still in progress.', active: deal.state === 'Funded' },
+    { label: 'Release decision', note: nextActionLabel(deal), active: deal.state === 'ReleasePending' },
+  ];
+}
+
+function stateLabel(state: string | null): string {
+  if (!state) return 'Draft';
+  if (state === 'ReleasePending') return 'Release pending';
+  return state;
+}
+
+function stateClass(state: string | null): string {
+  if (state === 'Released') return 'bm-status bm-status-success';
+  if (state === 'Refunded' || state === 'Declined') return 'bm-status bm-status-danger';
+  if (state === 'ReleasePending') return 'bm-status bm-status-info';
+  if (state === 'Agreed' || state === 'Funded') return 'bm-status bm-status-warning';
+  return 'bm-status';
 }

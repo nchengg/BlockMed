@@ -11,6 +11,7 @@
 import { useState } from 'react';
 import { useSession } from '@/lib/auth/useSession';
 import { validateSignup, hasErrors, type SignupInput, type FieldErrors } from '@/lib/auth/validate';
+import { DemoAccountSwitcher } from './DemoAccountSwitcher';
 
 export function AuthForms() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
@@ -26,7 +27,16 @@ export function AuthForms() {
           : 'Your company details are used to identify you to counterparties, and are what compliance screening needs before funds move.'}
       </p>
 
-      {mode === 'signin' ? <SignInForm /> : <SignUpForm />}
+      {mode === 'signin' ? (
+        <>
+          <SignInForm />
+          <div style={{ marginTop: 26 }}>
+            <DemoAccountSwitcher />
+          </div>
+        </>
+      ) : (
+        <SignUpForm />
+      )}
 
       <p style={{ marginTop: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
         {mode === 'signin' ? "Don't have an account? " : 'Already registered? '}

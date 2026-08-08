@@ -15,6 +15,11 @@ import { reviewStatus, OBJECTION_GROUNDS, groundLabel, type Review, type Objecti
 import type { DealListItem } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
 
+const usdcFormatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 export type PostFundAction =
   | { kind: 'submit-bol'; fields: BolFields }
   | { kind: 'approve-release' }
@@ -66,7 +71,7 @@ export function DealActions({ deal, busy, onAction }: {
         <Note>
           {rStatus === 'pending'
             ? `Documents passed the checks. ${deal.counterparty} has until ${new Date(review.windowEndsAt).toLocaleString()} to approve or object.`
-            : 'The objection window closed with no objection — you can finalise the release.'}
+            : 'The objection window closed with no objection. You can finalise the release.'}
         </Note>
         {rStatus === 'expired' && (
           <Primary busy={busy} onClick={() => onAction({ kind: 'finalise-release' })}>
@@ -82,12 +87,12 @@ export function DealActions({ deal, busy, onAction }: {
     return (
       <>
         <Note>
-          The verdict is recorded on-chain. Release is permissionless — either party can trigger
-          settlement, and nobody can block it. The contract pays {deal.terms?.amountUsdc} USDC to{' '}
+          The verdict is recorded on-chain. Either party can trigger
+          settlement, and nobody can block it. The contract pays {formatUsdc(deal.terms?.amountUsdc)} USDC to{' '}
           {role === 'seller' ? 'you' : deal.counterparty}.
         </Note>
         <Primary busy={busy} onClick={() => onAction({ kind: 'release' })}>
-          Release {deal.terms?.amountUsdc} USDC to the seller
+          Release {formatUsdc(deal.terms?.amountUsdc)} USDC to the seller
         </Primary>
       </>
     );
@@ -96,7 +101,7 @@ export function DealActions({ deal, busy, onAction }: {
   if (deal.state === 'Released') {
     return (
       <Note>
-        Settled. {deal.terms?.amountUsdc} USDC was released from escrow to{' '}
+        Settled. {formatUsdc(deal.terms?.amountUsdc)} USDC was released from escrow to{' '}
         {role === 'seller' ? 'you' : deal.counterparty}.
       </Note>
     );
@@ -105,7 +110,7 @@ export function DealActions({ deal, busy, onAction }: {
   if (deal.state === 'Refunded') {
     return (
       <Note>
-        Refunded. {deal.terms?.amountUsdc} USDC was returned from escrow to{' '}
+        Refunded. {formatUsdc(deal.terms?.amountUsdc)} USDC was returned from escrow to{' '}
         {role === 'buyer' ? 'you' : deal.counterparty}. This deal is closed.
       </Note>
     );
@@ -218,7 +223,7 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
     ['Consignee', f.consigneeName],
     ['Goods', f.goodsDescription],
     ['Shipped on board', f.shippedOnBoardDate],
-    ...RECORDED_FIELDS.map(({ key, label }) => [label, f[key] || '—'] as [string, string]),
+    ...RECORDED_FIELDS.map(({ key, label }) => [label, f[key] || '-'] as [string, string]),
   ];
 
   return (
@@ -228,7 +233,7 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
       </div>
       <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
         {deal.counterparty} submitted this bill of lading and the checks passed. Approving releases{' '}
-        {deal.terms?.amountUsdc} USDC from escrow.{' '}
+        {formatUsdc(deal.terms?.amountUsdc)} USDC from escrow.{' '}
         {rStatus === 'pending'
           ? `You may object on valid grounds until ${new Date(review.windowEndsAt).toLocaleString()}.`
           : 'The objection window has expired; you can still approve.'}
@@ -243,7 +248,7 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
         ))}
       </div>
       <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14, lineHeight: 1.6 }}>
-        {review.verdict.rules.map(r => `${r.pass ? '✓' : '✗'} ${r.rule}`).join(' · ')}
+        {review.verdict.rules.map(r => `${r.pass ? 'Pass' : 'Fail'}: ${r.rule}`).join(' | ')}
       </div>
 
       {!objecting ? (
@@ -260,7 +265,7 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
                 background: 'transparent', color: '#f87171', border: '1px solid #f87171',
                 cursor: busy ? 'not-allowed' : 'pointer',
               }}
-            >Object…</button>
+            >Object</button>
           )}
         </div>
       ) : (
@@ -288,7 +293,7 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
                 background: '#f87171', color: '#0A0A0B', border: 'none',
                 cursor: busy ? 'not-allowed' : 'pointer',
               }}
-            >{busy ? 'Working…' : 'Raise objection'}</button>
+            >{busy ? 'Working' : 'Raise objection'}</button>
             <button
               onClick={e => { e.stopPropagation(); setObjecting(false); }}
               disabled={busy}
@@ -329,7 +334,7 @@ function RefundPanel({ deal, role, busy, onAction }: {
             color: '#f87171', textDecoration: 'underline', cursor: 'pointer',
           }}
         >Request a refund</button>
-        {' '}to return the {deal.terms?.amountUsdc} USDC to the buyer.
+        {' '}to return the {formatUsdc(deal.terms?.amountUsdc)} USDC to the buyer.
       </p>
     );
   }
@@ -343,8 +348,8 @@ function RefundPanel({ deal, role, busy, onAction }: {
         Refund the escrow
       </div>
       <p style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 12px' }}>
-        The contract returns {deal.terms?.amountUsdc} USDC to the buyer and closes the deal. This is
-        final — a refunded deal cannot be reopened. In production this needs a reviewer&apos;s sign-off.
+        The contract returns {formatUsdc(deal.terms?.amountUsdc)} USDC to the buyer and closes the deal. This is
+        final. A refunded deal cannot be reopened. In production this needs a reviewer&apos;s sign-off.
       </p>
       <Field label="Reason (recorded on the audit trail)" value={reason} onChange={e => setReason(e.target.value)} />
       <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
@@ -356,7 +361,7 @@ function RefundPanel({ deal, role, busy, onAction }: {
             background: '#f87171', color: '#0A0A0B', border: 'none',
             cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
           }}
-        >{busy ? 'Working…' : 'Confirm refund'}</button>
+        >{busy ? 'Working' : 'Confirm refund'}</button>
         <button
           onClick={e => { e.stopPropagation(); setOpen(false); }}
           disabled={busy}
@@ -387,14 +392,14 @@ function ObjectionNotice({ review, viewer, busy, onAction }: {
       border: '1px solid #f87171', background: 'rgba(248,113,113,0.08)',
     }}>
       <div style={{ fontSize: 13, color: '#f87171', fontWeight: 600, marginBottom: 4 }}>
-        Objection standing — {groundLabel(o.ground)}
+        Objection standing: {groundLabel(o.ground)}
       </div>
       {o.detail && (
         <p style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5, margin: '0 0 4px' }}>{o.detail}</p>
       )}
       <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
         {viewer === 'seller'
-          ? 'Release is blocked. Correct the documents and resubmit below — that opens a fresh notice.'
+          ? 'Release is blocked. Correct the documents and resubmit below. That opens a fresh notice.'
           : 'Release is blocked. If you raised this in error, or it has been settled with the seller, withdraw it to restore the notice.'}
       </p>
 
@@ -410,7 +415,7 @@ function ObjectionNotice({ review, viewer, busy, onAction }: {
                 background: 'var(--accent)', color: '#0A0A0B', border: 'none',
                 cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
               }}
-            >{busy ? 'Working…' : 'Withdraw objection'}</button>
+            >{busy ? 'Working' : 'Withdraw objection'}</button>
             <button
               onClick={e => { e.stopPropagation(); setWithdrawing(false); }}
               disabled={busy}
@@ -471,6 +476,12 @@ function Primary({ busy, onClick, children, full }: {
         background: 'var(--accent)', color: '#0A0A0B', border: 'none',
         cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.7 : 1,
       }}
-    >{busy ? 'Working…' : children}</button>
+    >{busy ? 'Working' : children}</button>
   );
+}
+
+function formatUsdc(value: string | number | null | undefined): string {
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return value ? String(value) : '0.00';
+  return usdcFormatter.format(amount);
 }

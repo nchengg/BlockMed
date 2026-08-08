@@ -65,7 +65,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, declined: true });
   }
 
-  const dep = loadDeployment();
+  let dep: ReturnType<typeof loadDeployment>;
+  try {
+    dep = loadDeployment();
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Local chain is not deployed yet. Start the Hardhat node, run the local deploy script, then try again.",
+        setupRequired: "local-chain",
+      },
+      { status: 503 },
+    );
+  }
   const pc = publicClient(dep);
 
   // Derive the on-chain id from the app deal id + counter salt (unique per run).
@@ -104,13 +117,26 @@ export async function POST(req: Request) {
   }
 
   const releaser = walletFor("releaser", dep);
-  const hash = await releaser.writeContract({
-    address: dep.escrow,
-    abi: escrowAbi,
-    functionName: "createDeal",
-    args: [onChainDealId, parties.addresses.buyer, parties.addresses.seller, amountMinor],
-  });
-  await pc.waitForTransactionReceipt({ hash });
+  let hash: `0x${string}`;
+  try {
+    hash = await releaser.writeContract({
+      address: dep.escrow,
+      abi: escrowAbi,
+      functionName: "createDeal",
+      args: [onChainDealId, parties.addresses.buyer, parties.addresses.seller, amountMinor],
+    });
+    await pc.waitForTransactionReceipt({ hash });
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Could not reach the local Hardhat chain. Check that it is running on 127.0.0.1:8545 and redeploy if needed.",
+        setupRequired: "local-chain",
+      },
+      { status: 503 },
+    );
+  }
   deal.onChainDealId = onChainDealId;
   appendAudit(deal, {
     actor: "platform",

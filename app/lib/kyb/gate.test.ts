@@ -6,9 +6,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const findMany = vi.fn();
-vi.mock("@/lib/db", () => ({ prisma: { account: { findMany: (a: unknown) => findMany(a) } } }));
+const findUnique = vi.fn();
+vi.mock("@/lib/db", () => ({
+  prisma: { account: { findMany: (a: unknown) => findMany(a), findUnique: (a: unknown) => findUnique(a) } },
+}));
 
-const { assertPartiesCanTrade } = await import("./gate");
+const { assertPartiesCanTrade, assertCanPropose } = await import("./gate");
 
 const deal = (buyerId?: string, sellerId?: string) =>
   ({
@@ -39,7 +42,7 @@ const account = (id: string, companyName: string, over: Record<string, unknown> 
   ...over,
 });
 
-beforeEach(() => findMany.mockReset());
+beforeEach(() => { findMany.mockReset(); findUnique.mockReset(); });
 
 describe("assertPartiesCanTrade", () => {
   it("allows a deal when both parties are attested", async () => {
@@ -106,5 +109,37 @@ describe("assertPartiesCanTrade", () => {
     const r = await assertPartiesCanTrade(deal("b", "s"));
     if (r.ok) throw new Error("unreachable");
     expect(r.error).toMatch(/\d+ items? outstanding/);
+  });
+});
+
+// Creation is gated on the PROPOSER only. The counterparty may not have onboarded
+// yet — they may not have signed in since being invited — and blocking on them
+// would present one company's inaction as the proposer's error.
+describe("assertCanPropose", () => {
+  it("allows an attested company to propose", async () => {
+    findUnique.mockResolvedValue(account("b", "Buyer Co"));
+    expect(await assertCanPropose("b")).toEqual({ ok: true });
+  });
+
+  it("blocks an incomplete company and counts what is outstanding", async () => {
+    findUnique.mockResolvedValue(account("b", "Buyer Co", { kybStatus: "incomplete", peopleOfControl: [] }));
+    const r = await assertCanPropose("b");
+    expect(r.ok).toBe(false);
+    if (r.ok) throw new Error("unreachable");
+    expect(r.blocked).toEqual(["Buyer Co"]);
+    expect(r.error).toMatch(/\d+ items? outstanding/);
+  });
+
+  it("blocks an expired passport with its own message", async () => {
+    findUnique.mockResolvedValue(account("b", "Buyer Co", { signatoryPassportExpiry: new Date("2020-01-01") }));
+    const r = await assertCanPropose("b");
+    if (r.ok) throw new Error("unreachable");
+    expect(r.error).toContain("passport has expired");
+  });
+
+  it("does not block when there is no account to check", async () => {
+    expect(await assertCanPropose(undefined)).toEqual({ ok: true });
+    findUnique.mockResolvedValue(null);
+    expect(await assertCanPropose("ghost")).toEqual({ ok: true });
   });
 });

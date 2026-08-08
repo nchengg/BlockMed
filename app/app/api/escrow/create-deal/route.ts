@@ -4,6 +4,7 @@ import { ensureDeal, appendAudit, saveDeal, nextDealCounter, type DealTerms } fr
 import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { prisma } from "@/lib/db";
 import type { DealRole } from "@/lib/escrow/roles";
+import { assertCanPropose } from "@/lib/kyb/gate";
 
 // CREATE A DEAL FROM SCRATCH (BRD FR-1) — the step the main dashboard never had.
 //
@@ -29,6 +30,15 @@ export async function POST(req: Request) {
   const actor = await readActor(body);
   const unauth = requireAuth(actor);
   if (unauth) return unauth;
+
+  // A company must have completed onboarding before it can propose a deal. Checked
+  // here as well as at acceptance so the proposer finds out BEFORE writing terms
+  // and naming a counterparty, rather than when the counterparty's acceptance
+  // fails for a reason only the proposer can fix.
+  const gate = await assertCanPropose(actor?.accountId);
+  if (!gate.ok) {
+    return NextResponse.json({ error: gate.error, blocked: gate.blocked, needsKyb: true }, { status: 409 });
+  }
 
   const creatorRole = body.creatorRole;
   if (creatorRole !== "buyer" && creatorRole !== "seller") {

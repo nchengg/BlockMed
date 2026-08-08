@@ -15,6 +15,50 @@ import { canTrade, kybGaps, passportExpired } from "./psc";
 export type GateResult = { ok: true } | { ok: false; error: string; blocked: string[] };
 
 /**
+ * May this one company propose a deal?
+ *
+ * Checked at CREATION so a company learns it needs to onboard before it writes
+ * out terms and names a counterparty — not after, when the counterparty tries to
+ * accept and the deal fails for reasons the accepter cannot fix.
+ *
+ * Only the creator is checked here. The counterparty may legitimately not have
+ * onboarded yet (they may not even have signed in since being invited), and
+ * blocking on them would make one company's inaction look like the proposer's
+ * error. Both sides are checked at acceptance, which is where it binds.
+ */
+export async function assertCanPropose(accountId: string | undefined): Promise<GateResult> {
+  if (!accountId) return { ok: true };
+
+  const a = await prisma.account.findUnique({
+    where: { id: accountId },
+    include: { peopleOfControl: { select: { id: true } } },
+  });
+  if (!a) return { ok: true };
+
+  if (canTrade(a.kybStatus, a.signatoryPassportExpiry)) return { ok: true };
+
+  if (passportExpired(a.signatoryPassportExpiry)) {
+    return {
+      ok: false,
+      blocked: [a.companyName],
+      error:
+        "Your authorised signatory's passport has expired, so this company cannot " +
+        "enter deals. Update it under the Company tab.",
+    };
+  }
+
+  const n = kybGaps(a, a.peopleOfControl.length).length;
+  return {
+    ok: false,
+    blocked: [a.companyName],
+    error:
+      `Complete company onboarding before creating a deal — ${n} item${n === 1 ? "" : "s"} ` +
+      `outstanding. A trade escrow has to know who it is moving money for. ` +
+      `Fill it in under the Company tab.`,
+  };
+}
+
+/**
  * Both parties must have completed onboarding before a deal binds them.
  *
  * A party with no account (invited by name only) is skipped: there is nobody to

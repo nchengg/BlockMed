@@ -10,6 +10,7 @@
     "test": "vitest run",
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate dev",
+    "db:seed:demo": "prisma migrate deploy && node prisma/seed-demo.mjs",
     "db:studio": "prisma studio"
   },
   "dependencies": {

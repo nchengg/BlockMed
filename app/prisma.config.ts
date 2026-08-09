@@ -1,11 +1,13 @@
 // Prisma 7 moves the datasource URL out of schema.prisma into here.
 // Local dev uses a SQLite file; DATABASE_URL overrides it (see .env).
 import path from 'node:path';
+import { existsSync } from 'node:fs';
 import { defineConfig } from 'prisma/config';
 
 // The config file is evaluated before Prisma loads .env, so read it here.
 // Next.js loads .env itself at runtime; this is only for the Prisma CLI.
-process.loadEnvFile?.(path.join(process.cwd(), '.env'));
+const envPath = path.join(process.cwd(), '.env');
+if (existsSync(envPath)) process.loadEnvFile?.(envPath);
 
 export default defineConfig({
   schema: path.join('prisma', 'schema.prisma'),

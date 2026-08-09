@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSession } from '@/lib/auth/useSession';
 import {
   actorFromSession,
@@ -34,43 +34,63 @@ export function DealsTab({ dealBasePath = '/dan/deals' }: { dealBasePath?: strin
   const actor = actorFromSession(account);
   const [deals, setDeals] = useState<DealListItem[] | null>(null);
   const [companies, setCompanies] = useState<TradingCompany[]>([]);
+  const [companiesLoading, setCompaniesLoading] = useState(true);
+  const [companiesError, setCompaniesError] = useState<string | null>(null);
+  const [loadedForAccountId, setLoadedForAccountId] = useState<string | undefined>(undefined);
+  const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [busy, setBusy] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const demoDeals = demoDealRows(account?.companyName ?? 'Demo Trading Co');
 
-  const refreshBackendDeals = async () => {
+  const refreshBackendDeals = useCallback(async () => {
     try {
       const r = await fetchDeals(accountId);
+      if (r.ok === false) throw new Error('The deals service returned an error.');
       setDeals(r.deals ?? []);
-    } catch {
-      setDeals([]);
+      setLoadedForAccountId(accountId);
+      setLoadError(null);
+      setLoadState('ready');
+    } catch (cause) {
+      setLoadError(cause instanceof Error ? cause.message : 'Could not load live deals.');
+      setLoadState('error');
     }
-  };
+  }, [accountId]);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const r = await fetchDeals(accountId);
-        setDeals(r.deals ?? []);
-      } catch {
-        setDeals([]);
-      }
-    };
-    const initial = setTimeout(() => { void load(); }, 0);
+    const initial = setTimeout(() => { void refreshBackendDeals(); }, 0);
     if (busy || creating) return () => clearTimeout(initial);
-    const id = setInterval(() => { void load(); }, 4000);
+    const id = setInterval(() => { void refreshBackendDeals(); }, 4000);
     return () => {
       clearTimeout(initial);
       clearInterval(id);
     };
-  }, [accountId, busy, creating]);
+  }, [busy, creating, refreshBackendDeals]);
 
   useEffect(() => {
-    void fetchCompanies(account?.id)
-      .then(r => setCompanies(r.companies ?? []))
-      .catch(() => setCompanies([]));
+    let cancelled = false;
+    const initial = setTimeout(() => {
+      setCompaniesLoading(true);
+      setCompaniesError(null);
+      void fetchCompanies(account?.id)
+        .then(r => {
+          if (r.ok === false) throw new Error('Could not load counterparties.');
+          if (!cancelled) setCompanies(r.companies ?? []);
+        })
+        .catch(cause => {
+          if (!cancelled) {
+            setCompanies([]);
+            setCompaniesError(cause instanceof Error ? cause.message : 'Could not load counterparties.');
+          }
+        })
+        .finally(() => { if (!cancelled) setCompaniesLoading(false); });
+    }, 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(initial);
+    };
   }, [account?.id]);
 
   const submit = async (input: Parameters<typeof createDeal>[0]) => {
@@ -110,6 +130,10 @@ export function DealsTab({ dealBasePath = '/dan/deals' }: { dealBasePath?: strin
     }
   };
 
+  const initialLoad = deals === null || loadedForAccountId !== accountId;
+  const liveDeals = !initialLoad && deals ? deals : [];
+  const showPreview = (loadState === 'ready' && liveDeals.length === 0) || (loadState === 'error' && initialLoad);
+
   return (
     <>
       <div className="bm-page-head">
@@ -133,20 +157,52 @@ export function DealsTab({ dealBasePath = '/dan/deals' }: { dealBasePath?: strin
 
       {error && <div className="bm-alert" style={{ marginBottom: 16 }}>{error}</div>}
 
+      {loadState === 'error' && (
+        <div className="bm-notice bm-notice-warning" role="status" style={{ marginBottom: 16 }}>
+          <div>
+            <strong>Live deal data is unavailable.</strong>{' '}
+            {initialLoad ? 'The example portfolio below is preview data only.' : 'The last successful deal list is still shown.'}
+            {loadError ? ` ${loadError}` : ''}
+          </div>
+          <button type="button" className="bm-link-button" onClick={() => { setLoadState('loading'); void refreshBackendDeals(); }}>
+            Retry connection
+          </button>
+        </div>
+      )}
+
       {creating && (
         <CreateDealForm
           busy={busy}
           creatorName={account?.companyName ?? 'You'}
           companies={companies}
+          companiesLoading={companiesLoading}
+          companiesError={companiesError}
           onCancel={() => setCreating(false)}
           onSubmit={submit}
         />
       )}
 
-      {deals === null ? (
-        <p className="bm-body">Loading deals.</p>
-      ) : deals.length === 0 ? (
-        !creating && <DemoDealsWorkspace deals={demoDeals} />
+      {loadState === 'loading' && initialLoad ? (
+        <DealsLoadingState />
+      ) : showPreview ? (
+        !creating && (
+          <>
+            <div className="bm-preview-banner" role="note">
+              <div>
+                <strong>Example trade portfolio</strong>
+                <p>
+                  {loadState === 'error'
+                    ? 'Use this read-only sample to present the interface while the live service is offline.'
+                    : 'This company has no live deals yet. Use the sample below to explore the intended workflow.'}
+                </p>
+              </div>
+              <button type="button" className="bm-button" onClick={() => { setCreating(true); setError(null); }}>
+                Create a live deal
+              </button>
+            </div>
+            <DemoDealsWorkspace deals={demoDeals} />
+          </>
+        )
       ) : (
         <div className="bm-demo-shell">
           <section>
@@ -155,10 +211,10 @@ export function DealsTab({ dealBasePath = '/dan/deals' }: { dealBasePath?: strin
                 <div className="bm-kicker">Live deals</div>
                 <h2 className="bm-section-title" style={{ marginTop: 8 }}>Your company deals</h2>
               </div>
-              <span className="bm-status">{deals.length} live</span>
+              <span className="bm-status">{liveDeals.length} live</span>
             </div>
             <div className="bm-row-list">
-              {deals.map(deal => (
+              {liveDeals.map(deal => (
                 <DealRow
                   key={deal.dealId}
                   deal={deal}
@@ -170,16 +226,15 @@ export function DealsTab({ dealBasePath = '/dan/deals' }: { dealBasePath?: strin
               ))}
             </div>
           </section>
-          <DemoDealsWorkspace deals={demoDeals} />
         </div>
       )}
 
-      {deals && deals.length > 0 && (
+      {liveDeals.length > 0 && (
         <div style={{ marginTop: 24 }}>
           {confirmReset ? (
             <div className="bm-alert">
               <div style={{ marginBottom: 12 }}>
-                Clear all {deals.length} deals for this company? This removes off-chain demo records.
+                Clear all {liveDeals.length} deals for this company? This removes off-chain demo records.
               </div>
               <div className="bm-actions">
                 <button
@@ -627,12 +682,16 @@ function CreateDealForm({
   busy,
   creatorName,
   companies,
+  companiesLoading,
+  companiesError,
   onCancel,
   onSubmit,
 }: {
   busy: boolean;
   creatorName: string;
   companies: TradingCompany[];
+  companiesLoading: boolean;
+  companiesError: string | null;
   onCancel: () => void;
   onSubmit: (input: {
     creatorRole: DealRole;
@@ -660,6 +719,9 @@ function CreateDealForm({
 
   const counterpartyName =
     companies.find(c => c.accountId === counterpartyAccountId)?.displayName ?? '';
+  const canSubmit = Boolean(
+    counterpartyAccountId && goods.trim() && Number(amountUsdc) > 0 && shipmentDeadline,
+  );
 
   const submit = () => onSubmit({
     creatorRole: role,
@@ -675,7 +737,11 @@ function CreateDealForm({
   });
 
   return (
-    <section className="bm-card" style={{ marginBottom: 20 }}>
+    <form
+      className="bm-card"
+      style={{ marginBottom: 20 }}
+      onSubmit={event => { event.preventDefault(); if (canSubmit) submit(); }}
+    >
       <div className="bm-section-head">
         <div>
           <div className="bm-kicker">Create new deal</div>
@@ -712,20 +778,28 @@ function CreateDealForm({
             className="bm-input"
             value={counterpartyAccountId}
             onChange={e => setCounterpartyAccountId(e.target.value)}
+            required
+            disabled={companiesLoading || companies.length === 0}
           >
-            <option value="">Select a company</option>
+            <option value="">{companiesLoading ? 'Loading companies...' : 'Select a company'}</option>
             {companies.map(c => (
               <option key={c.accountId} value={c.accountId}>{c.displayName}</option>
             ))}
           </select>
         </label>
-        <Field label="Goods" value={goods} placeholder="Cotton textiles, 1x40ft" onChange={e => setGoods(e.target.value)} />
-        <Field label="Amount (USDC)" value={amountUsdc} placeholder="2500.00" onChange={e => setAmountUsdc(e.target.value)} />
-        <Field label="Shipment deadline" type="date" value={shipmentDeadline} onChange={e => setShipmentDeadline(e.target.value)} />
+        <Field label="Goods" value={goods} placeholder="Cotton textiles, 1x40ft" required onChange={e => setGoods(e.target.value)} />
+        <Field label="Amount (USDC)" type="number" min="0.01" step="0.01" inputMode="decimal" value={amountUsdc} placeholder="2500.00" required onChange={e => setAmountUsdc(e.target.value)} />
+        <Field label="Shipment deadline" type="date" min={plusDays(0)} value={shipmentDeadline} required onChange={e => setShipmentDeadline(e.target.value)} />
         <Field label="Port of loading (optional)" value={portOfLoading} placeholder="Jebel Ali, AE" onChange={e => setPortOfLoading(e.target.value)} />
         <Field label="Port of discharge (optional)" value={portOfDischarge} placeholder="Felixstowe, GB" onChange={e => setPortOfDischarge(e.target.value)} />
         <Field label="Incoterm (optional)" value={incoterm} placeholder="CIF" onChange={e => setIncoterm(e.target.value)} />
       </div>
+
+      {!companiesLoading && companies.length === 0 && (
+        <div className="bm-notice bm-notice-warning" role="status" style={{ marginTop: 14 }}>
+          {companiesError ?? 'Add or seed another company account before creating a two-party deal.'}
+        </div>
+      )}
 
       <p className="bm-body" style={{ marginTop: 14 }}>
         You are {creatorName}, the {role} on this deal. The counterparty sees the proposal in
@@ -733,14 +807,25 @@ function CreateDealForm({
       </p>
 
       <div className="bm-actions" style={{ marginTop: 18 }}>
-        <button type="button" className="bm-button bm-button-primary" disabled={busy} onClick={submit}>
+        <button type="submit" className="bm-button bm-button-primary" disabled={busy || !canSubmit}>
           {busy ? 'Creating' : 'Create deal'}
         </button>
         <button type="button" className="bm-button" disabled={busy} onClick={onCancel}>
           Cancel
         </button>
       </div>
-    </section>
+    </form>
+  );
+}
+
+function DealsLoadingState() {
+  return (
+    <div className="bm-loading-state" role="status" aria-live="polite">
+      <div className="bm-row-list">
+        {[0, 1, 2].map(item => <div key={item} className="bm-deal-row bm-loading-row bm-skeleton" />)}
+      </div>
+      <span className="bm-visually-hidden">Loading deals</span>
+    </div>
   );
 }
 

@@ -14,42 +14,49 @@ import { validateSignup, hasErrors, type SignupInput, type FieldErrors } from '@
 import { DemoAccountSwitcher } from './DemoAccountSwitcher';
 
 export function AuthForms() {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [mode, setMode] = useState<'demo' | 'signin' | 'signup'>('demo');
+
+  const heading = mode === 'demo'
+    ? 'Open a demo workspace'
+    : mode === 'signin'
+      ? 'Sign in'
+      : 'Create your company account';
 
   return (
-    <div style={{ maxWidth: 680 }}>
+    <div className="bm-auth-shell">
+      {mode === 'demo' && <div className="bm-kicker">Hackathon demo</div>}
       <h1 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', margin: 0 }}>
-        {mode === 'signin' ? 'Sign in' : 'Create your company account'}
+        {heading}
       </h1>
       <p style={{ margin: '10px 0 24px', fontSize: 14, lineHeight: 1.7, color: 'var(--text-secondary)' }}>
-        {mode === 'signin'
+        {mode === 'demo'
+          ? 'Choose a preloaded buyer or seller company to continue without creating or remembering an account.'
+          : mode === 'signin'
           ? 'Deals are addressed between companies — sign in to see the ones you are party to.'
           : 'Your company details are used to identify you to counterparties, and are what compliance screening needs before funds move.'}
       </p>
 
-      {mode === 'signin' ? (
-        <>
-          <SignInForm />
-          <div style={{ marginTop: 26 }}>
-            <DemoAccountSwitcher />
-          </div>
-        </>
-      ) : (
-        <SignUpForm />
-      )}
+      {mode === 'demo' && <DemoAccountSwitcher />}
+      {mode === 'signin' && <SignInForm />}
+      {mode === 'signup' && <SignUpForm />}
 
-      <p style={{ marginTop: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
-        {mode === 'signin' ? "Don't have an account? " : 'Already registered? '}
-        <button
-          onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-          style={{
-            background: 'none', border: 'none', padding: 0, font: 'inherit',
-            color: 'var(--accent)', fontWeight: 600, cursor: 'pointer',
-          }}
-        >
-          {mode === 'signin' ? 'Create one' : 'Sign in'}
-        </button>
-      </p>
+      <div className="bm-actions bm-auth-options">
+        {mode !== 'demo' && (
+          <button type="button" className="bm-button bm-button-primary" onClick={() => setMode('demo')}>
+            Use a demo workspace
+          </button>
+        )}
+        {mode !== 'signin' && (
+          <button type="button" className="bm-button" onClick={() => setMode('signin')}>
+            Email sign in
+          </button>
+        )}
+        {mode !== 'signup' && (
+          <button type="button" className="bm-link-button" onClick={() => setMode('signup')}>
+            Create a company account
+          </button>
+        )}
+      </div>
     </div>
   );
 }

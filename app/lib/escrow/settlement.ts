@@ -29,6 +29,20 @@ export function assertLocalReleaser(dep: Deployment): NextResponse | null {
     return null;
   }
 
+  // Mainnet is deliberately refused, and this is the one place a chain id is
+  // still checked on purpose. The blocker is not connectivity — chainFor() can
+  // reach Base Mainnet — it is that the releaser key lives in an environment
+  // variable, which is a hot wallet, not custody. docs/legal-risk.md §5.4.1
+  // names this the platform's top security risk and requires an HSM or a
+  // threshold/multisig scheme before real funds are at stake.
+  if (dep.chainId === 8453) {
+    return deny(
+      "Releaser signing is disabled on Base Mainnet. The key is held in an " +
+        "environment variable, which is not adequate custody for real funds — " +
+        "move RELEASER_ROLE to a multisig or HSM first (legal-risk.md §5.4.1).",
+    );
+  }
+
   const key = process.env.RELEASER_PRIVATE_KEY?.trim();
   if (!key) {
     return deny(

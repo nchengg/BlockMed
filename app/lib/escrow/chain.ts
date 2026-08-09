@@ -20,7 +20,7 @@ import {
   type Hex,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { baseSepolia, hardhat } from "viem/chains";
+import { base, baseSepolia, hardhat } from "viem/chains";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import EscrowArtifact from "./abi/Escrow.json";
@@ -90,11 +90,25 @@ export const CHAIN_LABELS: Record<number, string> = {
   8453: "Base Mainnet",
 };
 
-/** viem chain descriptor for a deployment, keyed by its chain id. */
+/**
+ * viem chain descriptor for a deployment, keyed by its chain id.
+ *
+ * Kept in step with CHAIN_LABELS above: a chain we can name is a chain we can
+ * connect to. They previously disagreed — Base Mainnet had a label but threw
+ * here — which meant the app could describe a network it had no transport for.
+ *
+ * Mainnet is reachable here but NOT permitted to sign: see assertLocalReleaser
+ * in ./settlement.ts, which refuses it until the releaser key is properly
+ * custodied (docs/legal-risk.md §5.4.1 — a hot wallet in an env file is not
+ * custody). Connectivity and authority are separate questions.
+ */
 function chainFor(dep: Deployment) {
   if (dep.chainId === baseSepolia.id) return baseSepolia;
   if (dep.chainId === hardhat.id) return hardhat;
-  throw new Error(`Unsupported chainId ${dep.chainId}.`);
+  if (dep.chainId === base.id) return base;
+  throw new Error(
+    `Unsupported chainId ${dep.chainId}. Add it to chainFor() and CHAIN_LABELS together.`,
+  );
 }
 
 export function publicClient(dep: Deployment) {

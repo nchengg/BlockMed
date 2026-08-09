@@ -15,6 +15,9 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
   const accountId = account?.id;
   const [summary, setSummary] = useState<DealSummary | null>(null);
   const [deals, setDeals] = useState<DealListItem[]>([]);
+  const [loadedForAccountId, setLoadedForAccountId] = useState<string | undefined>(undefined);
+  const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -22,11 +25,17 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
         fetchSummary(accountId),
         fetchDeals(accountId),
       ]);
+      if (nextSummary.ok === false || nextDeals.ok === false) {
+        throw new Error('The dashboard service returned an error.');
+      }
       setSummary(nextSummary);
       setDeals(nextDeals.deals ?? []);
-    } catch {
-      setSummary(null);
-      setDeals([]);
+      setLoadedForAccountId(accountId);
+      setLoadError(null);
+      setLoadState('ready');
+    } catch (cause) {
+      setLoadError(cause instanceof Error ? cause.message : 'Could not load dashboard data.');
+      setLoadState('error');
     }
   }, [accountId]);
 
@@ -39,7 +48,8 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
     };
   }, [refresh]);
 
-  const demoMode = deals.length === 0;
+  const initialLoad = summary === null || loadedForAccountId !== accountId;
+  const demoMode = !initialLoad && deals.length === 0;
   const visibleDeals = useMemo(
     () => (demoMode ? demoDashboardDeals(account?.companyName ?? 'Demo Trading Co') : deals),
     [account?.companyName, deals, demoMode],
@@ -50,11 +60,20 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
   );
   const liveDeal = attentionDeals[0] ?? visibleDeals[0] ?? null;
 
-  if (!summary) {
+  if (initialLoad && loadState === 'error') {
     return (
       <>
         <DashboardHeading companyName={account?.companyName} onOpenDeals={onOpenDeals} />
-        <p className="bm-body">Loading dashboard data.</p>
+        <DashboardLoadError message={loadError} onRetry={() => { setLoadState('loading'); void refresh(); }} />
+      </>
+    );
+  }
+
+  if (initialLoad || !summary) {
+    return (
+      <>
+        <DashboardHeading companyName={account?.companyName} onOpenDeals={onOpenDeals} />
+        <DashboardDataLoading />
       </>
     );
   }
@@ -63,7 +82,24 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
 
   return (
     <>
-      <DashboardHeading companyName={account?.companyName} onOpenDeals={onOpenDeals} />
+      <DashboardHeading companyName={account?.companyName} onOpenDeals={onOpenDeals} preview={demoMode} />
+
+      {loadState === 'error' && (
+        <div className="bm-notice bm-notice-warning" role="status" style={{ marginBottom: 18 }}>
+          Live data could not be refreshed. The last successful snapshot is still shown.
+          <button type="button" className="bm-link-button" onClick={() => { void refresh(); }}>Retry</button>
+        </div>
+      )}
+
+      {demoMode && (
+        <div className="bm-preview-banner" role="note">
+          <div>
+            <strong>Example portfolio</strong>
+            <p>No live deals exist for this company yet, so the dashboard is showing clearly labelled sample data.</p>
+          </div>
+          <button type="button" className="bm-button" onClick={onOpenDeals}>Create a live deal</button>
+        </div>
+      )}
 
       {/* Name the chain rather than assuming localhost: the app can be pointed at
           Base Sepolia, where "local chain not connected" would be simply wrong. */}
@@ -180,14 +216,18 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
 function DashboardHeading({
   companyName,
   onOpenDeals,
+  preview = false,
 }: {
   companyName?: string;
   onOpenDeals: () => void;
+  preview?: boolean;
 }) {
   return (
     <div className="bm-page-head bm-welcome-head">
       <div>
-        <div className="bm-kicker">Trade escrow control</div>
+        <div className="bm-kicker">
+          Trade escrow control {preview && <span className="bm-status bm-status-info">Preview</span>}
+        </div>
         <h1 className="bm-title">Welcome back{companyName ? `, ${shortCompanyName(companyName)}` : ''}.</h1>
         <p className="bm-subtitle">
           Review active trade deals, document gates, and release readiness.
@@ -199,6 +239,28 @@ function DashboardHeading({
         </button>
       </div>
     </div>
+  );
+}
+
+function DashboardDataLoading() {
+  return (
+    <div className="bm-loading-state" role="status" aria-live="polite">
+      <div className="bm-grid-stats bm-loading-grid">
+        {[0, 1, 2, 3].map(item => <div key={item} className="bm-card bm-loading-card bm-skeleton" />)}
+      </div>
+      <span className="bm-visually-hidden">Loading dashboard data</span>
+    </div>
+  );
+}
+
+function DashboardLoadError({ message, onRetry }: { message: string | null; onRetry: () => void }) {
+  return (
+    <section className="bm-card bm-empty-state" role="alert">
+      <div className="bm-empty-state-icon" aria-hidden="true">!</div>
+      <h2 className="bm-section-title">Dashboard data is unavailable</h2>
+      <p className="bm-body">{message ?? 'Check the local app services, then try again.'}</p>
+      <button type="button" className="bm-button bm-button-primary" onClick={onRetry}>Try again</button>
+    </section>
   );
 }
 

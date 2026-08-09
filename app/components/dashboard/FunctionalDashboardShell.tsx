@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthForms } from '@/components/dan/AuthForms';
 import { DashboardTab } from '@/components/dan/DashboardTab';
 import { DemoAccountSwitcher } from '@/components/dan/DemoAccountSwitcher';
@@ -15,21 +14,31 @@ export type FunctionalDashboardTab = 'Dashboard' | 'Deals' | 'Company';
 
 const tabs: FunctionalDashboardTab[] = ['Dashboard', 'Deals', 'Company'];
 
+function tabFromSearch(value: string | null): FunctionalDashboardTab {
+  if (value === 'deals') return 'Deals';
+  if (value === 'company') return 'Company';
+  return 'Dashboard';
+}
+
 export function FunctionalDashboardShell() {
   const search = useSearchParams();
-  const [activeTab, setActiveTab] = useState<FunctionalDashboardTab>(
-    search.get('tab') === 'deals' ? 'Deals' : search.get('tab') === 'company' ? 'Company' : 'Dashboard',
-  );
+  const router = useRouter();
+  const activeTab = tabFromSearch(search.get('tab'));
   const { account, ready } = useSession();
 
+  const changeTab = (tab: FunctionalDashboardTab) => {
+    const href = tab === 'Deals' ? '/dashboard?tab=deals' : tab === 'Company' ? '/dashboard?tab=company' : '/dashboard';
+    router.push(href, { scroll: false });
+  };
+
   return (
-    <FunctionalDashboardFrame activeTab={activeTab} onTabChange={setActiveTab}>
+    <FunctionalDashboardFrame activeTab={activeTab} onTabChange={changeTab}>
       {!ready ? (
-        <p className="bm-body">Loading dashboard.</p>
+        <DashboardLoadingState />
       ) : !account ? (
         <AuthForms />
       ) : activeTab === 'Dashboard' ? (
-        <DashboardTab onOpenDeals={() => setActiveTab('Deals')} />
+        <DashboardTab onOpenDeals={() => changeTab('Deals')} />
       ) : activeTab === 'Company' ? (
         <KybForm />
       ) : (
@@ -49,7 +58,7 @@ export function FunctionalDashboardFrame({ activeTab, onTabChange, children }: {
   const tabControl = (tab: FunctionalDashboardTab) => {
     const active = tab === activeTab;
     const className = 'bm-top-nav-item';
-    const shared = { className, 'data-active': active };
+    const shared = { className, 'data-active': active, 'aria-current': active ? 'page' as const : undefined };
 
     if (onTabChange) {
       return (
@@ -74,14 +83,16 @@ export function FunctionalDashboardFrame({ activeTab, onTabChange, children }: {
     <div className="bm-dashboard-root bm-dashboard-root-top">
       <header className="bm-topbar">
         <div className="bm-topbar-inner">
-          <div className="bm-brand">
+          <Link href="/" className="bm-brand" aria-label="Blockmediary home">
             <span className="bm-brand-mark">B</span>
             <span className="bm-brand-name">Blockmediary</span>
-          </div>
+          </Link>
 
-          <nav className="bm-top-nav" aria-label="Dashboard navigation">
-            {tabs.map(tab => tabControl(tab))}
-          </nav>
+          {account ? (
+            <nav className="bm-top-nav" aria-label="Dashboard navigation">
+              {tabs.map(tab => tabControl(tab))}
+            </nav>
+          ) : <div className="bm-top-nav" />}
 
           <div className="bm-top-actions">
             <ThemeToggle />
@@ -100,6 +111,19 @@ export function FunctionalDashboardFrame({ activeTab, onTabChange, children }: {
           {children}
         </main>
       </div>
+    </div>
+  );
+}
+
+export function DashboardLoadingState() {
+  return (
+    <div className="bm-loading-state" role="status" aria-live="polite" aria-label="Loading dashboard">
+      <div className="bm-loading-heading bm-skeleton" />
+      <div className="bm-loading-copy bm-skeleton" />
+      <div className="bm-grid-stats bm-loading-grid">
+        {[0, 1, 2, 3].map(item => <div key={item} className="bm-card bm-loading-card bm-skeleton" />)}
+      </div>
+      <span className="bm-visually-hidden">Loading dashboard</span>
     </div>
   );
 }

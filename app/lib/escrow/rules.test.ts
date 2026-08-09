@@ -10,7 +10,7 @@
 //   5. Money is compared exactly, in minor units, never as floats.
 import { describe, it, expect } from "vitest";
 import {
-  gradeDocuments, amountsEqual,
+  gradeDocuments, amountsEqual, requiredCustoms,
   type DocumentPack, type InvoiceFields, type PackingListFields, type BolFields,
 } from "./rules";
 import type { DealTerms } from "./store";
@@ -209,5 +209,122 @@ describe("amountsEqual (AP-5: exact minor-unit money compare)", () => {
     expect(amountsEqual("", "2500")).toBe(false);
     expect(amountsEqual("about 2500", "2500")).toBe(false);
     expect(amountsEqual("2,500", "2500")).toBe(false); // thousands separators are not parsed
+  });
+});
+
+// ── DOC-05 / DOC-06: corridor customs references ────────────────────────────
+//
+// These are required by ROUTE, not by choice — the register keys them off the
+// corridor ("all UK export deals", "all UAE import deals"). Derived from the
+// agreed ports so a seller cannot skip one by leaving a box unticked.
+const UK_TO_UAE: DealTerms = { ...TERMS, portOfLoading: "Felixstowe, GB", portOfDischarge: "Jebel Ali, AE" };
+
+describe("requiredCustoms", () => {
+  // The register keys CDS off the EXPORT leg and Mirsal2 off the IMPORT leg, so
+  // direction matters: the base fixture runs Jebel Ali -> Felixstowe, which is a
+  // UAE export to the UK and therefore triggers neither of these two.
+  it("requires both on a UK -> UAE deal", () => {
+    expect(requiredCustoms(UK_TO_UAE)).toEqual({ uk: true, uae: true });
+  });
+
+  it("requires neither on the reverse leg (UAE -> UK)", () => {
+    expect(requiredCustoms(TERMS)).toEqual({ uk: false, uae: false });
+  });
+
+  it("requires neither when the terms name no route", () => {
+    expect(requiredCustoms({ ...TERMS, portOfLoading: null, portOfDischarge: null }))
+      .toEqual({ uk: false, uae: false });
+  });
+
+  it("requires neither on an unrelated corridor", () => {
+    const other = { ...TERMS, portOfLoading: "Shanghai, CN", portOfDischarge: "Rotterdam, NL" };
+    expect(requiredCustoms(other)).toEqual({ uk: false, uae: false });
+  });
+});
+
+// compliantPack() carries TERMS' ports (Jebel Ali -> Felixstowe). Flip them so
+// the documents agree with the UK -> UAE corridor under test; otherwise the port
+// grades fail and mask what these tests are actually about.
+function ukToUaePack(): DocumentPack {
+  const p = compliantPack();
+  for (const d of [p.packingList, p.bol]) {
+    d.portOfLoading = "Felixstowe, GB";
+    d.portOfDischarge = "Jebel Ali, AE";
+  }
+  return p;
+}
+
+describe("UAE import clearance (DOC-06)", () => {
+  const AE = UK_TO_UAE; // discharge into Jebel Ali — Mirsal2 applies
+  const withUae = (over: Record<string, string> = {}): DocumentPack => ({
+    ...ukToUaePack(),
+    ukCustoms: { mrn: "26GB1234567890ABC1", exportLicenceNumber: "" },
+    uaeCustoms: {
+      importerName: TERMS.buyerName, importerTrn: "100123456700003",
+      declarationNumber: "MRS2-9911", declarationType: "Type 1",
+      declaredValue: "2500.00", currency: "USDC", hsCode: "5208.52",
+      countryOfOrigin: "IN", attachmentsConfirmed: "confirmed", ...over,
+    },
+  });
+
+  it("is Compliant when the declaration matches the invoice", () => {
+    expect(gradeDocuments(withUae(), AE).verdict).toBe("Compliant");
+  });
+
+  it("fails when the declaration is missing entirely on a UAE import", () => {
+    const v = gradeDocuments(ukToUaePack(), AE);
+    expect(v.verdict).toBe("Discrepant");
+    expect(v.rules.find((r) => r.rule.startsWith("uae_import_cleared"))?.pass).toBe(false);
+  });
+
+  // Over/under-invoicing is the classic trade-based money-laundering signature.
+  it("catches a customs value that differs from the invoice", () => {
+    const v = gradeDocuments(withUae({ declaredValue: "1200.00" }), AE);
+    expect(v.verdict).toBe("Discrepant");
+    expect(v.rules.find((r) => r.rule.startsWith("declared_value"))?.pass).toBe(false);
+  });
+
+  it("catches an importer who is not the buyer", () => {
+    expect(gradeDocuments(withUae({ importerName: "Someone Else" }), AE).verdict).toBe("Discrepant");
+  });
+
+  it("holds when Dubai Customs attachments are not confirmed", () => {
+    expect(gradeDocuments(withUae(), AE).verdict).toBe("Compliant");
+    const missing = gradeDocuments(withUae({ attachmentsConfirmed: "" }), AE);
+    expect(missing.rules.find((r) => r.rule.startsWith("customs_attachments"))?.pass).toBe(false);
+    expect(missing.verdict).toBe("Held");
+  });
+
+  it("skips the UAE rules entirely on a non-UAE corridor", () => {
+    const other = { ...TERMS, portOfDischarge: "Rotterdam, NL" };
+    const p = compliantPack();
+    for (const d of [p.packingList, p.bol]) d.portOfDischarge = "Rotterdam, NL";
+    const v = gradeDocuments(p, other);
+    expect(v.rules.some((r) => r.rule.startsWith("uae_import"))).toBe(false);
+    expect(v.verdict).toBe("Compliant");
+  });
+});
+
+describe("UK export clearance (DOC-05)", () => {
+  const UK_TERMS = UK_TO_UAE;
+  const withUk = (over: Record<string, string> = {}): DocumentPack => ({
+    ...ukToUaePack(),
+    ukCustoms: { mrn: "26GB1234567890ABC1", exportLicenceNumber: "", ...over },
+    uaeCustoms: {
+      importerName: TERMS.buyerName, importerTrn: "1", declarationNumber: "MRS2-1",
+      declarationType: "Type 1", declaredValue: "2500.00", currency: "USDC",
+      hsCode: "5208.52", countryOfOrigin: "IN", attachmentsConfirmed: "confirmed",
+    },
+  });
+
+  it("requires an HMRC MRN on a UK export", () => {
+    expect(gradeDocuments(withUk(), UK_TERMS).verdict).toBe("Compliant");
+    expect(gradeDocuments(withUk({ mrn: "" }), UK_TERMS).verdict).toBe("Discrepant");
+  });
+
+  // A licence NUMBER being present means the goods are controlled — that is
+  // what needs a human, so presence fires the flag rather than absence.
+  it("holds when an export licence is declared (controlled goods)", () => {
+    expect(gradeDocuments(withUk({ exportLicenceNumber: "GBSIEA2026/1234" }), UK_TERMS).verdict).toBe("Held");
   });
 });

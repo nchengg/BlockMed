@@ -10,7 +10,7 @@
 // The heavy lifting (grading, the objection window, recordVerdict) already lives in
 // app/api/escrow/* — this is the surface for it.
 import { useState } from 'react';
-import type { BolFields, DocumentPack, InvoiceFields, PackingListFields } from '@/lib/escrow/rules';
+import { requiredCustoms, type BolFields, type DocumentPack, type InvoiceFields, type PackingListFields, type UaeCustomsFields, type UkCustomsFields } from '@/lib/escrow/rules';
 import { reviewStatus, OBJECTION_GROUNDS, groundLabel, type Review, type ObjectionGround } from '@/lib/escrow/review';
 import type { DealListItem } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
@@ -220,6 +220,26 @@ function DocumentPackForm({ deal, busy, onSubmit }: {
     freightPayment: 'prepaid',
   });
 
+  // Corridor documents (DOC-05/06) are required by ROUTE, so which sections
+  // appear is derived from the agreed terms rather than left to the seller.
+  const need = requiredCustoms({
+    goods: '', amountUsdc: '', sellerName: '', buyerName: '', shipmentDeadline: '',
+    portOfLoading: t?.portOfLoading ?? null, portOfDischarge: t?.portOfDischarge ?? null,
+  });
+  const [uk, setUk] = useState<UkCustomsFields>({
+    mrn: '26GB1234567890ABC1', exportLicenceNumber: '',
+  });
+  const [uae, setUae] = useState<UaeCustomsFields>({
+    importerName: t?.buyerName ?? '', importerTrn: '100123456700003',
+    declarationNumber: 'MRS2-2026-0099', declarationType: 'Type 1',
+    declaredValue: t?.amountUsdc ?? '', currency: 'USDC', hsCode: '5208.52',
+    countryOfOrigin: 'AE', attachmentsConfirmed: 'confirmed',
+  });
+  const setU = (k: keyof UkCustomsFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setUk(prev => ({ ...prev, [k]: e.target.value }));
+  const setA = (k: keyof UaeCustomsFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setUae(prev => ({ ...prev, [k]: e.target.value }));
+
   const setI = (k: keyof InvoiceFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setInvoice(prev => ({ ...prev, [k]: e.target.value }));
   const setP = (k: keyof PackingListFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -246,8 +266,9 @@ function DocumentPackForm({ deal, busy, onSubmit }: {
         SUBMIT THE DOCUMENT PACK
       </div>
       <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 6 }}>
-        Three documents, per the document register: commercial invoice, packing list, bill of
-        lading. Fields are graded against the agreed terms AND cross-checked between documents —
+        Per the document register: commercial invoice, packing list and bill of lading on every
+        deal, plus the customs references the route requires. Fields are graded against the agreed
+        terms AND cross-checked between documents —
         the same fact stated twice must agree, which is what makes a forged document hard to
         slip through. Prefilled consistently; submit as-is for a compliant verdict, edit one
         side of a cross-checked pair (say, the B/L weight) to see it caught, or set
@@ -310,7 +331,42 @@ function DocumentPackForm({ deal, busy, onSubmit }: {
         <Field label="Freight payment" value={bol.freightPayment} onChange={setB('freightPayment')} placeholder="prepaid / collect" />
       </div>
 
-      <Primary busy={busy} onClick={() => onSubmit({ invoice, packingList: pl, bol })} full>
+      {need.uk && (
+        <>
+          {heading('UK export clearance (DOC-05)', 'Reference numbers only — the declaration itself is filed with HMRC by the freight forwarder. An export licence number means the goods are controlled, which holds the release for review.')}
+          <div style={grid}>
+            <Field label="Movement Reference Number (MRN)" value={uk.mrn} onChange={setU('mrn')} />
+            <Field label="Export licence number (flag)" value={uk.exportLicenceNumber} onChange={setU('exportLicenceNumber')} placeholder="leave empty unless controlled goods" />
+          </div>
+        </>
+      )}
+
+      {need.uae && (
+        <>
+          {heading('UAE import clearance (DOC-06)', 'Dubai Customs Mirsal2. The value declared to customs is cross-checked against the invoice — a gap between them is the classic over/under-invoicing signature.')}
+          <div style={grid}>
+            <Field label="Declaration number" value={uae.declarationNumber} onChange={setA('declarationNumber')} />
+            <Field label="Importer (buyer)" value={uae.importerName} onChange={setA('importerName')} />
+            <Field label="Importer TRN" value={uae.importerTrn} onChange={setA('importerTrn')} />
+            <Field label="Declaration type" value={uae.declarationType} onChange={setA('declarationType')} />
+            <Field label="Value declared to customs" value={uae.declaredValue} onChange={setA('declaredValue')} />
+            <Field label="Currency" value={uae.currency} onChange={setA('currency')} />
+            <Field label="HS code" value={uae.hsCode} onChange={setA('hsCode')} />
+            <Field label="Country of origin" value={uae.countryOfOrigin} onChange={setA('countryOfOrigin')} />
+            <Field label="Attachments confirmed (flag)" value={uae.attachmentsConfirmed} onChange={setA('attachmentsConfirmed')} placeholder='"confirmed" once all four are filed' />
+          </div>
+        </>
+      )}
+
+      <Primary
+        busy={busy}
+        onClick={() => onSubmit({
+          invoice, packingList: pl, bol,
+          ...(need.uk ? { ukCustoms: uk } : {}),
+          ...(need.uae ? { uaeCustoms: uae } : {}),
+        })}
+        full
+      >
         Submit documents for verification
       </Primary>
     </div>
@@ -349,6 +405,16 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
       ['Packages', pack.packingList.packages],
       ['Gross weight', pack.packingList.grossWeight],
       ['Departure', pack.packingList.departureDate],
+    ])] : []),
+    ...(pack.ukCustoms ? [group('UK export clearance', [
+      ['CDS MRN', pack.ukCustoms.mrn],
+      ['Export licence', pack.ukCustoms.exportLicenceNumber],
+    ])] : []),
+    ...(pack.uaeCustoms ? [group('UAE import clearance', [
+      ['Declaration no.', pack.uaeCustoms.declarationNumber],
+      ['Importer', pack.uaeCustoms.importerName],
+      ['Declared value', pack.uaeCustoms.declaredValue],
+      ['HS code', pack.uaeCustoms.hsCode],
     ])] : []),
     group('Bill of lading', [
       ['B/L number', bol.blNumber],

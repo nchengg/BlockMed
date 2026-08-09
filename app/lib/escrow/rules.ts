@@ -83,10 +83,44 @@ export interface BolFields {
   freightPayment: string; // GRADE: CIF/CFR/CIP/CPT terms must show "prepaid"
 }
 
+/**
+ * DOC-05 — UK CDS export declaration. Reference numbers only.
+ *
+ * Blockmediary does not process the declaration: the seller's freight forwarder
+ * files it with HMRC. We collect the outputs that prove HMRC accepted it. This
+ * is also the one document category where genuine third-party verification is
+ * reachable — HMRC exposes an API to check an MRN — so the field is shaped to
+ * be checkable later, not just recorded.
+ */
+export interface UkCustomsFields {
+  mrn: string; // GRADE: present — proves the export declaration was accepted
+  exportLicenceNumber: string; // FLAG: dual-use / strategic goods need one
+}
+
+/** DOC-06 — Dubai Customs (Mirsal2) import declaration. Filed by the BUYER. */
+export interface UaeCustomsFields {
+  importerName: string; // GRADE: = terms.buyerName
+  importerTrn: string; // RECORD: UAE VAT registration
+  declarationNumber: string; // GRADE: present — proof UAE customs accepted it
+  declarationType: string; // RECORD: Type 1 standard import
+  declaredValue: string; // CROSS: = commercial invoice total
+  currency: string; // GRADE: = escrow currency
+  hsCode: string; // CROSS: = invoice
+  countryOfOrigin: string; // CROSS: = invoice/packing list origin
+  attachmentsConfirmed: string; // FLAG: Dubai Customs needs all four attachments
+}
+
 export interface DocumentPack {
   invoice: InvoiceFields;
   packingList: PackingListFields;
   bol: BolFields;
+  /**
+   * Corridor-conditional. Present only when the deal's route requires them —
+   * a UK export needs CDS, a UAE import needs Mirsal2, and a deal that is
+   * neither needs neither. Absent = the checks are skipped, never failed.
+   */
+  ukCustoms?: UkCustomsFields;
+  uaeCustoms?: UaeCustomsFields;
 }
 
 /** Recorded-only particulars, in display order — single source for form + audit. */
@@ -159,6 +193,23 @@ export function amountsEqual(a: string, b: string): boolean {
   const am = minor(a);
   const bm = minor(b);
   return am !== null && bm !== null && am === bm;
+}
+
+/**
+ * Which corridor documents this deal requires, derived from the agreed route.
+ *
+ * Deliberately derived rather than asked: the register keys these off the
+ * corridor ("all UK export deals", "all UAE import deals"), and a seller should
+ * not be able to skip a customs reference by leaving a checkbox unticked. When
+ * the terms name no ports we require neither — a deal with no agreed route has
+ * no corridor to infer.
+ */
+export function requiredCustoms(terms: DealTerms): { uk: boolean; uae: boolean } {
+  const from = norm(terms.portOfLoading ?? "");
+  const to = norm(terms.portOfDischarge ?? "");
+  const isUk = (p: string) => /\b(gb|uk|united kingdom|england|scotland|wales)\b/.test(p);
+  const isUae = (p: string) => /\b(ae|uae|united arab emirates|dubai|jebel ali|abu dhabi|sharjah)\b/.test(p);
+  return { uk: isUk(from), uae: isUae(to) };
 }
 
 // ── the engine ───────────────────────────────────────────────────────────────
@@ -260,6 +311,32 @@ export function gradeDocuments(pack: DocumentPack, terms: DealTerms): Verdict {
   cross("packages (B/L = packing list)", numbersMatch(bol.packages, pl.packages), pl.packages || "(empty)", bol.packages);
   cross("gross_weight (invoice = packing list)", numbersMatch(invoice.grossWeight, pl.grossWeight), pl.grossWeight || "(empty)", invoice.grossWeight);
   cross("gross_weight (B/L = packing list)", numbersMatch(bol.grossWeight, pl.grossWeight), pl.grossWeight || "(empty)", bol.grossWeight);
+
+  // ── Corridor customs references (DOC-05 / DOC-06) ──
+  // Required by route, not by choice. Each proves a customs authority accepted a
+  // declaration we never see — Blockmediary collects the outputs, not the filing.
+  const need = requiredCustoms(terms);
+
+  if (need.uk) {
+    const uk = pack.ukCustoms;
+    grade("uk_export_cleared (CDS MRN present)", present(uk?.mrn ?? ""), "an HMRC Movement Reference Number", uk?.mrn ?? "");
+    // An export licence is not required for most goods; its PRESENCE means the
+    // goods are controlled, which is what needs a human to look.
+    flag("export_licence (UK dual-use / strategic goods)", present(uk?.exportLicenceNumber ?? ""), "no licence required", uk?.exportLicenceNumber ?? "");
+  }
+
+  if (need.uae) {
+    const ae = pack.uaeCustoms;
+    grade("uae_import_cleared (Mirsal2 declaration number)", present(ae?.declarationNumber ?? ""), "a Dubai Customs declaration number", ae?.declarationNumber ?? "");
+    grade("importer_match (Mirsal2 importer = buyer)", norm(ae?.importerName ?? "") === norm(terms.buyerName), terms.buyerName, ae?.importerName ?? "");
+    grade("currency_match (Mirsal2 currency = escrow)", norm(ae?.currency ?? "") === "usdc", "USDC", ae?.currency ?? "");
+    // The value declared to customs must be the value on the invoice: a gap
+    // between them is the classic trade-based money-laundering signature
+    // (over/under-invoicing), which legal-risk.md names as a live typology.
+    cross("declared_value (Mirsal2 = commercial invoice)", amountsEqual(ae?.declaredValue ?? "", invoice.totalValue), invoice.totalValue || "(empty)", ae?.declaredValue ?? "");
+    cross("hs_code (Mirsal2 = invoice)", norm(ae?.hsCode ?? "") === norm(invoice.hsCode), invoice.hsCode || "(empty)", ae?.hsCode ?? "");
+    flag("customs_attachments (Dubai Customs requires all four)", !present(ae?.attachmentsConfirmed ?? ""), "confirmed", ae?.attachmentsConfirmed ?? "");
+  }
 
   // ── FLAG: automatic holds for human review — these never auto-release ──
   flag(

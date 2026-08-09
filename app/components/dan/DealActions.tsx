@@ -10,7 +10,7 @@
 // The heavy lifting (grading, the objection window, recordVerdict) already lives in
 // app/api/escrow/* — this is the surface for it.
 import { useState } from 'react';
-import { RECORDED_FIELDS, type BolFields } from '@/lib/escrow/rules';
+import type { BolFields, DocumentPack, InvoiceFields, PackingListFields } from '@/lib/escrow/rules';
 import { reviewStatus, OBJECTION_GROUNDS, groundLabel, type Review, type ObjectionGround } from '@/lib/escrow/review';
 import type { DealListItem } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
@@ -21,7 +21,7 @@ const usdcFormatter = new Intl.NumberFormat('en-US', {
 });
 
 export type PostFundAction =
-  | { kind: 'submit-bol'; fields: BolFields }
+  | { kind: 'submit-documents'; pack: DocumentPack }
   | { kind: 'approve-release' }
   | { kind: 'object'; ground: ObjectionGround; detail: string }
   | { kind: 'finalise-release' }
@@ -45,7 +45,7 @@ export function DealActions({ deal, busy, onAction }: {
         ? (
           <>
             {review?.objection && <ObjectionNotice review={review} viewer="seller" />}
-            <BolForm deal={deal} busy={busy} onSubmit={fields => onAction({ kind: 'submit-bol', fields })} />
+            <DocumentPackForm deal={deal} busy={busy} onSubmit={pack => onAction({ kind: 'submit-documents', pack })} />
             <RefundPanel deal={deal} role="seller" busy={busy} onAction={onAction} />
           </>
         )
@@ -55,7 +55,7 @@ export function DealActions({ deal, busy, onAction }: {
               <ObjectionNotice review={review} viewer="buyer" busy={busy} onAction={onAction} />
             )}
             <Note>
-              Funds are locked. Waiting for {deal.counterparty} to ship and submit the bill of lading.
+              Funds are locked. Waiting for {deal.counterparty} to ship and submit the document pack (invoice, packing list, bill of lading).
             </Note>
             <RefundPanel deal={deal} role="buyer" busy={busy} onAction={onAction} />
           </>
@@ -69,11 +69,16 @@ export function DealActions({ deal, busy, onAction }: {
     return (
       <>
         <Note>
-          {rStatus === 'pending'
-            ? `Documents passed the checks. ${deal.counterparty} has until ${new Date(review.windowEndsAt).toLocaleString()} to approve or object.`
-            : 'The objection window closed with no objection. You can finalise the release.'}
+          {review.verdict.verdict === 'Held'
+            ? `Documents are HELD for review — a flag (${review.verdict.rules.filter(r => r.kind === 'flag' && !r.pass).map(r => r.rule.split(' ')[0]).join(', ')}) requires ${deal.counterparty}'s explicit approval. The window will not auto-release. You may also submit corrected documents below.`
+            : rStatus === 'pending'
+              ? `Documents passed the checks. ${deal.counterparty} has until ${new Date(review.windowEndsAt).toLocaleString()} to approve or object.`
+              : 'The objection window closed with no objection. You can finalise the release.'}
         </Note>
-        {rStatus === 'expired' && (
+        {review.verdict.verdict === 'Held' && (
+          <DocumentPackForm deal={deal} busy={busy} onSubmit={pack => onAction({ kind: 'submit-documents', pack })} />
+        )}
+        {rStatus === 'expired' && review.verdict.verdict !== 'Held' && (
           <Primary busy={busy} onClick={() => onAction({ kind: 'finalise-release' })}>
             Finalise release
           </Primary>
@@ -136,68 +141,177 @@ function compliantShipDate(deadline: string | undefined): string {
   return today <= deadline ? today : deadline;
 }
 
-function BolForm({ deal, busy, onSubmit }: {
+function DocumentPackForm({ deal, busy, onSubmit }: {
   deal: DealListItem;
   busy: boolean;
-  onSubmit: (f: BolFields) => void;
+  onSubmit: (pack: DocumentPack) => void;
 }) {
-  // DEMO PREFILL — the form arrives ready to submit and pass, so the happy path is
-  // one click. Graded fields come from the agreed terms (so they match by
-  // construction); the shipped-on-board date is today, or the deadline if that has
-  // already passed, so shipment_by always passes. Carrier particulars are plausible
-  // placeholders — they are recorded, not machine-graded. Every field stays
-  // editable: change the goods or a party name to demo a Discrepant verdict.
-  const [f, setF] = useState<BolFields>({
-    blNumber: demoBlNumber(deal.dealId),
-    shipperName: deal.terms?.sellerName ?? '',
-    consigneeName: deal.terms?.buyerName ?? '',
-    goodsDescription: deal.terms?.goods ?? '',
-    shippedOnBoardDate: compliantShipDate(deal.terms?.shipmentDeadline),
+  // DEMO PREFILL — all three documents arrive filled in, mutually consistent, and
+  // matching the agreed terms, so the happy path is one click (the user asked for
+  // exactly this on the single-B/L version). The cross-checked values (invoice
+  // number, B/L number, vessel, weights, counts) are shared state entered once
+  // and written into every document that carries them — which is also how the
+  // demo teaches the point: edit the B/L's weight afterwards and the cross-check
+  // catches the disagreement. Flags default clean; set "clean on board" to
+  // anything else, or add hazardous goods, to demo a Held verdict.
+  const t = deal.terms;
+  const suffix = deal.dealId.replace(/[^A-Z0-9]/gi, '').slice(-7).toUpperCase() || '2260714';
+  const ship = compliantShipDate(t?.shipmentDeadline);
+  const shared = {
+    invoiceNumber: `INV-${suffix}`,
+    blNumber: `MAEU-${suffix}`,
     vessel: 'MAERSK ATLANTIC',
     voyageNumber: '421W',
-    portOfLoading: 'Jebel Ali, AE',
-    portOfDischarge: 'Felixstowe, GB',
-    containerNumber: 'MSKU-1234567',
+    portOfLoading: t?.portOfLoading || 'Jebel Ali, AE',
+    portOfDischarge: t?.portOfDischarge || 'Felixstowe, GB',
+    quantity: '480',
     packages: '480 cartons',
     grossWeight: '8,640 kg',
+  };
+
+  const [invoice, setInvoice] = useState<InvoiceFields>({
+    invoiceNumber: shared.invoiceNumber,
+    sellerName: t?.sellerName ?? '',
+    buyerName: t?.buyerName ?? '',
+    goodsDescription: t?.goods ?? '',
+    currency: 'USDC',
+    totalValue: t?.amountUsdc ?? '',
+    invoiceDate: ship,
+    incoterm: t?.incoterm || 'CIF',
+    quantity: shared.quantity,
+    packages: shared.packages,
+    grossWeight: shared.grossWeight,
+    hsCode: '5208.52',
+    hazardousGoods: '',
+    signatoryName: t?.sellerName ? `Authorised signatory, ${t.sellerName}` : '',
   });
-  const set = (k: keyof BolFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setF(prev => ({ ...prev, [k]: e.target.value }));
+  const [pl, setPl] = useState<PackingListFields>({
+    exporterName: t?.sellerName ?? '',
+    consigneeName: t?.buyerName ?? '',
+    invoiceNumber: shared.invoiceNumber,
+    blNumber: shared.blNumber,
+    vessel: shared.vessel,
+    voyageNumber: shared.voyageNumber,
+    portOfLoading: shared.portOfLoading,
+    portOfDischarge: shared.portOfDischarge,
+    departureDate: ship,
+    goodsDescription: t?.goods ?? '',
+    quantity: shared.quantity,
+    packages: shared.packages,
+    grossWeight: shared.grossWeight,
+    signatoryName: t?.sellerName ? `Authorised signatory, ${t.sellerName}` : '',
+  });
+  const [bol, setBol] = useState<BolFields>({
+    blNumber: shared.blNumber,
+    shipperName: t?.sellerName ?? '',
+    consigneeName: t?.buyerName ?? '',
+    goodsDescription: t?.goods ?? '',
+    shippedOnBoardDate: ship,
+    portOfLoading: shared.portOfLoading,
+    portOfDischarge: shared.portOfDischarge,
+    vessel: shared.vessel,
+    voyageNumber: shared.voyageNumber,
+    packages: shared.packages,
+    grossWeight: shared.grossWeight,
+    containerNumber: 'MSKU-1234567',
+    signedBy: 'As agent for the Carrier',
+    cleanOnBoard: 'clean',
+    onDeckNotation: '',
+    freightPayment: 'prepaid',
+  });
+
+  const setI = (k: keyof InvoiceFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setInvoice(prev => ({ ...prev, [k]: e.target.value }));
+  const setP = (k: keyof PackingListFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPl(prev => ({ ...prev, [k]: e.target.value }));
+  const setB = (k: keyof BolFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setBol(prev => ({ ...prev, [k]: e.target.value }));
+
+  const section = (title: string): React.CSSProperties => ({ marginTop: 16 });
+  const heading = (text: string, hint: string) => (
+    <>
+      <div style={{ fontSize: 11, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '16px 0 2px' }}>
+        {text}
+      </div>
+      <p style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.5, margin: '0 0 8px' }}>{hint}</p>
+    </>
+  );
+  const grid: React.CSSProperties = {
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12,
+  };
 
   return (
     <div style={{ marginTop: 18 }}>
       <div className="section-label" style={{ fontSize: 10, marginBottom: 6 }}>
-        SUBMIT THE BILL OF LADING
+        SUBMIT THE DOCUMENT PACK
       </div>
-      <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
-        Prefilled with demo values that match the agreed terms — submit as-is to see a compliant
-        verdict, or edit any field (try the goods or a party name) to see a discrepancy caught. The
-        first five are graded against the terms in code; the rest are recorded for the documentary
-        review. A real B/L carries no invoice amount — the escrow amount is fixed by the deposit.
+      <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 6 }}>
+        Three documents, per the document register: commercial invoice, packing list, bill of
+        lading. Fields are graded against the agreed terms AND cross-checked between documents —
+        the same fact stated twice must agree, which is what makes a forged document hard to
+        slip through. Prefilled consistently; submit as-is for a compliant verdict, edit one
+        side of a cross-checked pair (say, the B/L weight) to see it caught, or set
+        &ldquo;clean on board&rdquo; to &ldquo;claused&rdquo; to see an automatic hold.
       </p>
 
-      <div style={{ fontSize: 11, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
-        Graded against terms
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
-        <Field label="B/L number" value={f.blNumber} onChange={set('blNumber')} />
-        <Field label="Shipper (seller)" value={f.shipperName} onChange={set('shipperName')} />
-        <Field label="Consignee (buyer)" value={f.consigneeName} onChange={set('consigneeName')} />
-        <Field label="Description of goods" value={f.goodsDescription} onChange={set('goodsDescription')} />
-        <Field label="Shipped on board date" type="date" value={f.shippedOnBoardDate} onChange={set('shippedOnBoardDate')} />
-      </div>
-
-      <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '16px 0 8px' }}>
-        Recorded on the B/L (not machine-graded)
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12 }}>
-        {RECORDED_FIELDS.map(({ key, label }) => (
-          <Field key={key} label={label} value={f[key]} onChange={set(key)} />
-        ))}
+      {heading('Commercial invoice (DOC-01)', 'The only document carrying the value — its total must equal the escrow amount exactly.')}
+      <div style={grid}>
+        <Field label="Invoice number" value={invoice.invoiceNumber} onChange={setI('invoiceNumber')} />
+        <Field label="Seller" value={invoice.sellerName} onChange={setI('sellerName')} />
+        <Field label="Buyer" value={invoice.buyerName} onChange={setI('buyerName')} />
+        <Field label="Goods description" value={invoice.goodsDescription} onChange={setI('goodsDescription')} />
+        <Field label="Total value" value={invoice.totalValue} onChange={setI('totalValue')} />
+        <Field label="Currency" value={invoice.currency} onChange={setI('currency')} />
+        <Field label="Invoice date" type="date" value={invoice.invoiceDate} onChange={setI('invoiceDate')} />
+        <Field label="Incoterm" value={invoice.incoterm} onChange={setI('incoterm')} />
+        <Field label="Quantity" value={invoice.quantity} onChange={setI('quantity')} />
+        <Field label="Packages" value={invoice.packages} onChange={setI('packages')} />
+        <Field label="Gross weight" value={invoice.grossWeight} onChange={setI('grossWeight')} />
+        <Field label="HS code" value={invoice.hsCode} onChange={setI('hsCode')} />
+        <Field label="Hazardous goods (flag)" value={invoice.hazardousGoods} onChange={setI('hazardousGoods')} placeholder="leave empty unless hazardous" />
+        <Field label="Signatory" value={invoice.signatoryName} onChange={setI('signatoryName')} />
       </div>
 
-      <Primary busy={busy} onClick={() => onSubmit(f)} full>
-        Submit for verification
+      {heading('Packing list (DOC-02)', 'The third leg that makes cross-checking work: counts, weights and route must agree with both other documents.')}
+      <div style={grid}>
+        <Field label="Exporter (seller)" value={pl.exporterName} onChange={setP('exporterName')} />
+        <Field label="Consignee (buyer)" value={pl.consigneeName} onChange={setP('consigneeName')} />
+        <Field label="Invoice number" value={pl.invoiceNumber} onChange={setP('invoiceNumber')} />
+        <Field label="B/L number" value={pl.blNumber} onChange={setP('blNumber')} />
+        <Field label="Vessel" value={pl.vessel} onChange={setP('vessel')} />
+        <Field label="Voyage No." value={pl.voyageNumber} onChange={setP('voyageNumber')} />
+        <Field label="Port of loading" value={pl.portOfLoading} onChange={setP('portOfLoading')} />
+        <Field label="Port of discharge" value={pl.portOfDischarge} onChange={setP('portOfDischarge')} />
+        <Field label="Departure date" type="date" value={pl.departureDate} onChange={setP('departureDate')} />
+        <Field label="Goods description" value={pl.goodsDescription} onChange={setP('goodsDescription')} />
+        <Field label="Quantity" value={pl.quantity} onChange={setP('quantity')} />
+        <Field label="Packages" value={pl.packages} onChange={setP('packages')} />
+        <Field label="Gross weight" value={pl.grossWeight} onChange={setP('grossWeight')} />
+        <Field label="Signatory" value={pl.signatoryName} onChange={setP('signatoryName')} />
+      </div>
+
+      {heading('Bill of lading (DOC-03)', 'The carrier\u2019s document. "Clean on board" is UCP 600 Art. 27: any damage clause holds the release for human review.')}
+      <div style={grid}>
+        <Field label="B/L number" value={bol.blNumber} onChange={setB('blNumber')} />
+        <Field label="Shipper (seller)" value={bol.shipperName} onChange={setB('shipperName')} />
+        <Field label="Consignee (buyer)" value={bol.consigneeName} onChange={setB('consigneeName')} />
+        <Field label="Goods description" value={bol.goodsDescription} onChange={setB('goodsDescription')} />
+        <Field label="Shipped on board" type="date" value={bol.shippedOnBoardDate} onChange={setB('shippedOnBoardDate')} />
+        <Field label="Port of loading" value={bol.portOfLoading} onChange={setB('portOfLoading')} />
+        <Field label="Port of discharge" value={bol.portOfDischarge} onChange={setB('portOfDischarge')} />
+        <Field label="Vessel" value={bol.vessel} onChange={setB('vessel')} />
+        <Field label="Voyage No." value={bol.voyageNumber} onChange={setB('voyageNumber')} />
+        <Field label="Packages" value={bol.packages} onChange={setB('packages')} />
+        <Field label="Gross weight" value={bol.grossWeight} onChange={setB('grossWeight')} />
+        <Field label="Container No." value={bol.containerNumber} onChange={setB('containerNumber')} />
+        <Field label="Signed by (carrier/master/agent)" value={bol.signedBy} onChange={setB('signedBy')} />
+        <Field label="Clean on board (flag)" value={bol.cleanOnBoard} onChange={setB('cleanOnBoard')} placeholder='"clean", or the clause text' />
+        <Field label="On-deck notation (flag)" value={bol.onDeckNotation} onChange={setB('onDeckNotation')} placeholder="leave empty unless on deck" />
+        <Field label="Freight payment" value={bol.freightPayment} onChange={setB('freightPayment')} placeholder="prepaid / collect" />
+      </div>
+
+      <Primary busy={busy} onClick={() => onSubmit({ invoice, packingList: pl, bol })} full>
+        Submit documents for verification
       </Primary>
     </div>
   );
@@ -215,15 +329,39 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
   const [objecting, setObjecting] = useState(false);
   const [ground, setGround] = useState<ObjectionGround>('field_mismatch');
   const [detail, setDetail] = useState('');
-  const f = review.fields;
+  // Reviews created before the three-document pack stored a flat B/L; tolerate
+  // both shapes so old deals still render their history.
+  const pack = review.fields as Partial<DocumentPack> & Record<string, string>;
+  const bol = (pack.bol ?? pack) as Record<string, string>;
+  const held = review.verdict.verdict === 'Held';
 
-  const rows: [string, string][] = [
-    ['B/L number', f.blNumber],
-    ['Shipper', f.shipperName],
-    ['Consignee', f.consigneeName],
-    ['Goods', f.goodsDescription],
-    ['Shipped on board', f.shippedOnBoardDate],
-    ...RECORDED_FIELDS.map(({ key, label }) => [label, f[key] || '-'] as [string, string]),
+  const group = (title: string, rows: [string, string | undefined][]) => ({ title, rows });
+  const groups = [
+    ...(pack.invoice ? [group('Commercial invoice', [
+      ['Invoice no.', pack.invoice.invoiceNumber],
+      ['Total value', pack.invoice.totalValue],
+      ['Currency', pack.invoice.currency],
+      ['Incoterm', pack.invoice.incoterm],
+      ['HS code', pack.invoice.hsCode],
+    ])] : []),
+    ...(pack.packingList ? [group('Packing list', [
+      ['Quantity', pack.packingList.quantity],
+      ['Packages', pack.packingList.packages],
+      ['Gross weight', pack.packingList.grossWeight],
+      ['Departure', pack.packingList.departureDate],
+    ])] : []),
+    group('Bill of lading', [
+      ['B/L number', bol.blNumber],
+      ['Shipper', bol.shipperName],
+      ['Consignee', bol.consigneeName],
+      ['Goods', bol.goodsDescription],
+      ['Shipped on board', bol.shippedOnBoardDate],
+      ['Vessel', bol.vessel],
+      ['Port of loading', bol.portOfLoading],
+      ['Port of discharge', bol.portOfDischarge],
+      ['Clean on board', bol.cleanOnBoard],
+      ['Signed by', bol.signedBy],
+    ]),
   ];
 
   return (
@@ -232,23 +370,43 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
         REVIEW DOCUMENTS BEFORE RELEASE
       </div>
       <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
-        {deal.counterparty} submitted this bill of lading and the checks passed. Approving releases{' '}
+        {deal.counterparty} submitted the document pack
+        {held ? ' and a flag requires your review' : ' and every check passed'}. Approving releases{' '}
         {formatUsdc(deal.terms?.amountUsdc)} USDC from escrow.{' '}
-        {rStatus === 'pending'
-          ? `You may object on valid grounds until ${new Date(review.windowEndsAt).toLocaleString()}.`
-          : 'The objection window has expired; you can still approve.'}
+        {held
+          ? 'Because a hold stands, the window will NOT release on expiry — only your explicit approval will.'
+          : rStatus === 'pending'
+            ? `You may object on valid grounds until ${new Date(review.windowEndsAt).toLocaleString()}.`
+            : 'The objection window has expired; you can still approve.'}
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12, marginBottom: 12 }}>
-        {rows.map(([label, value]) => (
-          <div key={label}>
-            <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</div>
-            <div style={{ fontSize: 13, color: 'var(--text-primary)', marginTop: 2 }}>{value}</div>
+      {held && (
+        <div style={{
+          marginBottom: 14, padding: '10px 14px', borderRadius: 6,
+          border: '1px solid var(--accent)', background: 'rgba(245,158,11,0.08)',
+          fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6,
+        }}>
+          <strong style={{ color: 'var(--accent)' }}>Held for review:</strong>{' '}
+          {review.verdict.rules.filter(r => r.kind === 'flag' && !r.pass)
+            .map(r => `${r.rule} — got ${r.actual}`).join('; ')}
+        </div>
+      )}
+
+      {groups.map(({ title, rows }) => (
+        <div key={title} style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 10, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{title}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
+            {rows.map(([label, value]) => (
+              <div key={label}>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</div>
+                <div style={{ fontSize: 13, color: 'var(--text-primary)', marginTop: 2 }}>{value || '-'}</div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
       <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14, lineHeight: 1.6 }}>
-        {review.verdict.rules.map(r => `${r.pass ? 'Pass' : 'Fail'}: ${r.rule}`).join(' | ')}
+        {review.verdict.rules.map(r => `${r.pass ? '✓' : r.kind === 'flag' ? '🚩' : '✗'} ${r.rule}`).join(' · ')}
       </div>
 
       {!objecting ? (

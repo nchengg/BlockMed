@@ -12,7 +12,7 @@
 // deal instead of one shared global deal. Callers pass the id of a deal the viewer
 // can see (dealStore's visibleDealsFor already enforces that), preserving isolation.
 import type { Account, ClientHat } from "@/lib/authStore";
-import type { BolFields, Verdict } from "@/lib/escrow/rules";
+import type { BolFields, DocumentPack, Verdict } from "@/lib/escrow/rules";
 import type { Review, ObjectionGround } from "@/lib/escrow/review";
 import type { DealRole } from "@/lib/escrow/roles";
 import type { DealTerms, AuditEntry } from "@/lib/escrow/store";
@@ -196,11 +196,24 @@ export function fund(dealId: string, actor: ActorCtx) {
   return post<{ ok: boolean; error?: string; approveHash?: string; depositHash?: string }>("/api/escrow/fund", { dealId, actor });
 }
 
-export function submitBol(dealId: string, fields: BolFields, actor: ActorCtx) {
+export function submitDocuments(dealId: string, pack: DocumentPack, actor: ActorCtx) {
   return post<Verdict & {
     ok: boolean; error?: string; recordVerdictSkipped?: boolean;
     notice?: { noticeAt: string; windowEndsAt: string };
-  }>("/api/escrow/submit-bol", { dealId, ...fields, actor });
+  }>("/api/escrow/submit-documents", { dealId, ...pack, actor });
+}
+
+/**
+ * Legacy single-B/L submission (old /seller step flow). The engine now requires
+ * the full pack, so this posts only the B/L and the server truthfully rejects
+ * it with "all three documents are required" — surfaced in that UI as the
+ * submission error rather than silently faking an invoice and packing list.
+ */
+export function submitBol(dealId: string, fields: BolFields, actor: ActorCtx) {
+  return post<Verdict & {
+    ok: boolean; error?: string;
+    notice?: { noticeAt: string; windowEndsAt: string };
+  }>("/api/escrow/submit-documents", { dealId, bol: fields, actor });
 }
 
 // FR-10: buyer approves the noticed release (waives the remaining window).

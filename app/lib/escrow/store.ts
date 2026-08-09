@@ -31,6 +31,12 @@ export interface DealTerms {
   sellerName: string;
   buyerName: string;
   shipmentDeadline: string; // YYYY-MM-DD
+  // Optional route/commercial terms (docs/document-templates.md grades documents
+  // against these when agreed). Absent = the corresponding grade falls back to a
+  // cross-document check only.
+  portOfLoading?: string | null;
+  portOfDischarge?: string | null;
+  incoterm?: string | null; // e.g. "CIF" — drives the freight-payment check
 }
 
 // Which account performed a step. Optional throughout so anonymous calls still
@@ -87,6 +93,9 @@ function toRecord(row: DealRow): DealRecord {
           sellerName: row.sellerDisplayName ?? "",
           buyerName: row.buyerDisplayName ?? "",
           shipmentDeadline: row.shipmentDeadline ?? "",
+          portOfLoading: row.portOfLoading,
+          portOfDischarge: row.portOfDischarge,
+          incoterm: row.incoterm,
         }
       : null;
 
@@ -186,6 +195,9 @@ export async function saveDeal(record: DealRecord): Promise<void> {
     goods: record.terms?.goods ?? null,
     amountUsdc: record.terms?.amountUsdc ?? null,
     shipmentDeadline: record.terms?.shipmentDeadline ?? null,
+    portOfLoading: record.terms?.portOfLoading ?? null,
+    portOfDischarge: record.terms?.portOfDischarge ?? null,
+    incoterm: record.terms?.incoterm ?? null,
     sellerDisplayName: record.parties.seller?.displayName ?? record.terms?.sellerName ?? null,
     buyerDisplayName: record.parties.buyer?.displayName ?? record.terms?.buyerName ?? null,
     sellerId: record.parties.seller?.accountId ?? null,

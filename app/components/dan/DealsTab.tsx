@@ -642,6 +642,9 @@ function CreateDealForm({
     shipmentDeadline: string;
     sellerName: string;
     buyerName: string;
+    portOfLoading?: string;
+    portOfDischarge?: string;
+    incoterm?: string;
   }) => void;
 }) {
   const [role, setRole] = useState<DealRole>('seller');
@@ -649,6 +652,11 @@ function CreateDealForm({
   const [goods, setGoods] = useState('');
   const [amountUsdc, setAmountUsdc] = useState('');
   const [shipmentDeadline, setShipmentDeadline] = useState(plusDays(30));
+  // Optional: agreeing the route and Incoterm here lets the document checks
+  // grade ports and freight payment against the terms, not just cross-document.
+  const [portOfLoading, setPortOfLoading] = useState('');
+  const [portOfDischarge, setPortOfDischarge] = useState('');
+  const [incoterm, setIncoterm] = useState('');
 
   const counterpartyName =
     companies.find(c => c.accountId === counterpartyAccountId)?.displayName ?? '';
@@ -661,6 +669,9 @@ function CreateDealForm({
     shipmentDeadline,
     sellerName: role === 'seller' ? creatorName : counterpartyName,
     buyerName: role === 'buyer' ? creatorName : counterpartyName,
+    portOfLoading,
+    portOfDischarge,
+    incoterm,
   });
 
   return (
@@ -711,6 +722,9 @@ function CreateDealForm({
         <Field label="Goods" value={goods} placeholder="Cotton textiles, 1x40ft" onChange={e => setGoods(e.target.value)} />
         <Field label="Amount (USDC)" value={amountUsdc} placeholder="2500.00" onChange={e => setAmountUsdc(e.target.value)} />
         <Field label="Shipment deadline" type="date" value={shipmentDeadline} onChange={e => setShipmentDeadline(e.target.value)} />
+        <Field label="Port of loading (optional)" value={portOfLoading} placeholder="Jebel Ali, AE" onChange={e => setPortOfLoading(e.target.value)} />
+        <Field label="Port of discharge (optional)" value={portOfDischarge} placeholder="Felixstowe, GB" onChange={e => setPortOfDischarge(e.target.value)} />
+        <Field label="Incoterm (optional)" value={incoterm} placeholder="CIF" onChange={e => setIncoterm(e.target.value)} />
       </div>
 
       <p className="bm-body" style={{ marginTop: 14 }}>

@@ -49,7 +49,7 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: St
 
   // Real-path grading state.
   const [grading, setGrading] = useState(false);
-  const [verdict, setVerdict] = useState<{ verdict: 'Compliant' | 'Discrepant'; rules: RuleResult[] } | null>(null);
+  const [verdict, setVerdict] = useState<{ verdict: 'Compliant' | 'Discrepant' | 'Held'; rules: RuleResult[] } | null>(null);
   const [gradeError, setGradeError] = useState<string | null>(null);
 
   // Read the live chain once on mount to decide real-vs-simulated.
@@ -77,6 +77,7 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: St
     blNumber: '', shipperName: '', consigneeName: '', goodsDescription: '',
     shippedOnBoardDate: '', vessel: '', voyageNumber: '', portOfLoading: '',
     portOfDischarge: '', containerNumber: '', packages: '', grossWeight: '',
+    signedBy: '', cleanOnBoard: 'clean', onDeckNotation: '', freightPayment: '',
   };
   const [fields, setFields] = useState<BolFields>(EMPTY_BOL);
   // Seed the form once the on-chain terms arrive (or from the mock deal as a fallback).

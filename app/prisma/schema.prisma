@@ -197,6 +197,11 @@ model Deal {
   sellerName       String?
   buyerName        String?
   shipmentDeadline String?
+  /// Optional agreed route/commercial terms — documents are graded against
+  /// these when present (docs/document-templates.md DOC-01/02/03).
+  portOfLoading    String?
+  portOfDischarge  String?
+  incoterm         String?
 
   // Parties. Nullable because a counterparty may be invited before they join —
   // in which case the name is known but there is no account row to point at, so

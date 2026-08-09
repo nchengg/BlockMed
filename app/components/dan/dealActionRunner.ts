@@ -1,7 +1,7 @@
 // One dispatcher for every lifecycle action a deal can trigger, shared by the
 // deals list and the deal page so both drive the API identically.
 import {
-  acceptDeal, fund, submitBol, approveRelease, objectToRelease,
+  acceptDeal, fund, submitDocuments, approveRelease, objectToRelease,
   finaliseRelease, release, refund, withdrawObjection, type ActorCtx,
 } from '@/lib/escrow/client';
 import type { PostFundAction } from './DealActions';
@@ -42,7 +42,7 @@ export async function runDealAction(
     return fund(dealId, actor);
   }
   switch (action.kind) {
-    case 'submit-bol': return submitBol(dealId, action.fields, actor);
+    case 'submit-documents': return submitDocuments(dealId, action.pack, actor);
     case 'approve-release': return approveRelease(dealId, actor);
     case 'object': return objectToRelease(dealId, action.ground, action.detail, actor);
     case 'finalise-release': return finaliseRelease(dealId, actor);

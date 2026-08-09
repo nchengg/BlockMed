@@ -91,12 +91,19 @@ export async function POST(req: Request) {
   const appDealId = `DEAL-${stamp}-${n.toString().padStart(4, "0")}`;
 
   const deal = await ensureDeal(appDealId);
+  // Optional route/commercial terms: agreed here, graded against the documents
+  // later (lib/escrow/rules.ts). Absent = the corresponding document checks fall
+  // back to cross-document comparison only.
+  const opt = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
   deal.terms = {
     goods: goods.trim(),
     amountUsdc: amountUsdc!.trim(),
     sellerName,
     buyerName,
     shipmentDeadline,
+    portOfLoading: opt(body.portOfLoading),
+    portOfDischarge: opt(body.portOfDischarge),
+    incoterm: opt(body.incoterm),
   };
   // Both parties recorded up front, each with a REAL account id — this is what
   // roleInDeal() reads later, and it is why the deal shows up in the

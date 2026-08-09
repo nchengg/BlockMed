@@ -11,6 +11,7 @@
 // compliance but isn't is worse than one that admits what it is.
 import { useCallback, useEffect, useState } from 'react';
 import { CONTROL_CONDITIONS, COMPANY_TYPES } from '@/lib/kyb/psc';
+import { WalletCard } from './WalletCard';
 
 type Person = {
   fullName: string;
@@ -160,6 +161,14 @@ export function KybForm() {
           </span>
         </div>
       )}
+
+      {/* Wallet linking lives here rather than on the dashboard: it is company
+          setup, it is a precondition for funding a deal, and this tab is the one
+          surface reachable from both dashboards. (It previously sat in
+          DashboardTab and was lost when that file was reworked.) */}
+      <div style={{ marginBottom: 16 }}>
+        <WalletCard />
+      </div>
 
       {/* DOC-15 */}
       <div style={card}>

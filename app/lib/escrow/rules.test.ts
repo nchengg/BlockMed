@@ -52,7 +52,15 @@ function compliantPack(): DocumentPack {
     signedBy: "As agent for the Carrier", cleanOnBoard: "clean", onDeckNotation: "",
     freightPayment: "prepaid",
   };
-  return { invoice, packingList, bol };
+  const certificateOfOrigin = {
+    exporterName: TERMS.sellerName, consigneeName: TERMS.buyerName,
+    issuedInCountry: "United Arab Emirates", referenceNumber: "INV-100",
+    goodsDescription: "Organic cotton, 480 cartons", originCriterion: "P",
+    grossWeight: "8,640 kg", invoiceNumber: "INV-100", marksAndNumbers: "480 cartons",
+    certifyingStamp: "Dubai Chamber of Commerce", signatoryName: "A. Signatory",
+    uaeEmbassyStamp: "attested", uaeMofaStamp: "attested",
+  };
+  return { invoice, packingList, bol, certificateOfOrigin };
 }
 
 const failures = (pack: DocumentPack, terms: DealTerms = TERMS) =>
@@ -326,5 +334,80 @@ describe("UK export clearance (DOC-05)", () => {
   // what needs a human, so presence fires the flag rather than absence.
   it("holds when an export licence is declared (controlled goods)", () => {
     expect(gradeDocuments(withUk({ exportLicenceNumber: "GBSIEA2026/1234" }), UK_TERMS).verdict).toBe("Held");
+  });
+});
+
+// ── DOC-04: Certificate of Origin ───────────────────────────────────────────
+//
+// Chamber-of-commerce issued, so the certifying stamp is what makes it evidence.
+// The stamp being missing HOLDS (not yet certified — a human resolves it);
+// a wrong exporter name FAILS (the paperwork is simply wrong). That distinction
+// is the point of having two outcomes.
+describe("certificate of origin (DOC-04)", () => {
+  it("is required on every corridor", () => {
+    const { certificateOfOrigin: _drop, ...without } = compliantPack();
+    const v = gradeDocuments(without as DocumentPack, TERMS);
+    expect(v.verdict).toBe("Discrepant");
+    expect(v.rules.find((r) => r.rule.startsWith("document_present (certificate"))?.pass).toBe(false);
+  });
+
+  it("catches an exporter who is not the seller", () => {
+    const p = compliantPack();
+    p.certificateOfOrigin!.exporterName = "Someone Else Ltd";
+    expect(gradeDocuments(p, TERMS).verdict).toBe("Discrepant");
+  });
+
+  it("requires a valid GSP Form A origin criterion", () => {
+    const p = compliantPack();
+    p.certificateOfOrigin!.originCriterion = "Z";
+    const v = gradeDocuments(p, TERMS);
+    expect(v.verdict).toBe("Discrepant");
+    expect(v.rules.find((r) => r.rule.startsWith("origin_criterion"))?.pass).toBe(false);
+    for (const ok of ["P", "W", "Y", "G", "F", "p"]) {
+      const q = compliantPack();
+      q.certificateOfOrigin!.originCriterion = ok;
+      expect(gradeDocuments(q, TERMS).verdict).toBe("Compliant");
+    }
+  });
+
+  it("cross-checks the invoice number and weight against the other documents", () => {
+    const p = compliantPack();
+    p.certificateOfOrigin!.invoiceNumber = "INV-OTHER";
+    expect(gradeDocuments(p, TERMS).rules.find((r) => r.rule.startsWith("invoice_number (CoO"))?.pass).toBe(false);
+    const q = compliantPack();
+    q.certificateOfOrigin!.grossWeight = "9,999 kg";
+    expect(gradeDocuments(q, TERMS).verdict).toBe("Discrepant");
+  });
+
+  // The distinction that matters: missing certification is a hold, not a failure.
+  it("holds — does not fail — when the chamber stamp is missing", () => {
+    const p = compliantPack();
+    p.certificateOfOrigin!.certifyingStamp = "";
+    const v = gradeDocuments(p, TERMS);
+    expect(v.verdict).toBe("Held");
+    expect(v.rules.find((r) => r.rule.startsWith("certifying_stamp"))?.pass).toBe(false);
+  });
+
+  it("holds a UAE import missing embassy or MoFA attestation", () => {
+    const uaeTerms = { ...TERMS, portOfLoading: "Felixstowe, GB", portOfDischarge: "Jebel Ali, AE" };
+    for (const key of ["uaeEmbassyStamp", "uaeMofaStamp"] as const) {
+      const p = ukToUaePack();
+      p.certificateOfOrigin![key] = "";
+      p.ukCustoms = { mrn: "26GB1", exportLicenceNumber: "" };
+      p.uaeCustoms = {
+        importerName: TERMS.buyerName, importerTrn: "1", declarationNumber: "MRS2-1",
+        declarationType: "Type 1", declaredValue: "2500.00", currency: "USDC",
+        hsCode: "5208.52", countryOfOrigin: "GB", attachmentsConfirmed: "confirmed",
+      };
+      expect(gradeDocuments(p, uaeTerms).verdict).toBe("Held");
+    }
+  });
+
+  it("does not check UAE attestation on a non-UAE corridor", () => {
+    const p = compliantPack();
+    p.certificateOfOrigin!.uaeEmbassyStamp = "";
+    p.certificateOfOrigin!.uaeMofaStamp = "";
+    // TERMS discharges into the UK, so the UAE stamps are not required.
+    expect(gradeDocuments(p, TERMS).verdict).toBe("Compliant");
   });
 });

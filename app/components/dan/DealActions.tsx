@@ -10,7 +10,7 @@
 // The heavy lifting (grading, the objection window, recordVerdict) already lives in
 // app/api/escrow/* — this is the surface for it.
 import { useState } from 'react';
-import { requiredCustoms, type BolFields, type DocumentPack, type InvoiceFields, type PackingListFields, type UaeCustomsFields, type UkCustomsFields } from '@/lib/escrow/rules';
+import { ORIGIN_CRITERIA, requiredCustoms, type BolFields, type CertificateOfOriginFields, type DocumentPack, type InvoiceFields, type PackingListFields, type UaeCustomsFields, type UkCustomsFields } from '@/lib/escrow/rules';
 import { reviewStatus, OBJECTION_GROUNDS, groundLabel, type Review, type ObjectionGround } from '@/lib/escrow/review';
 import type { DealListItem } from '@/lib/escrow/client';
 import type { DealRole } from '@/lib/escrow/roles';
@@ -220,6 +220,24 @@ function DocumentPackForm({ deal, busy, onSubmit }: {
     freightPayment: 'prepaid',
   });
 
+  const [coo, setCoo] = useState<CertificateOfOriginFields>({
+    exporterName: t?.sellerName ?? '',
+    consigneeName: t?.buyerName ?? '',
+    issuedInCountry: 'United Arab Emirates',
+    referenceNumber: shared.invoiceNumber,
+    goodsDescription: t?.goods ?? '',
+    originCriterion: 'P',
+    grossWeight: shared.grossWeight,
+    invoiceNumber: shared.invoiceNumber,
+    marksAndNumbers: shared.packages,
+    certifyingStamp: 'Dubai Chamber of Commerce',
+    signatoryName: t?.sellerName ? `Authorised signatory, ${t.sellerName}` : '',
+    uaeEmbassyStamp: 'attested',
+    uaeMofaStamp: 'attested',
+  });
+  const setC = (k: keyof CertificateOfOriginFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setCoo(prev => ({ ...prev, [k]: e.target.value }));
+
   // Corridor documents (DOC-05/06) are required by ROUTE, so which sections
   // appear is derived from the agreed terms rather than left to the seller.
   const need = requiredCustoms({
@@ -331,6 +349,23 @@ function DocumentPackForm({ deal, busy, onSubmit }: {
         <Field label="Freight payment" value={bol.freightPayment} onChange={setB('freightPayment')} placeholder="prepaid / collect" />
       </div>
 
+      {heading('Certificate of origin (DOC-04)', 'Issued by a chamber of commerce, not by you. The certifying stamp is what makes it evidence — clear it to see the release held for review rather than rejected.')}
+      <div style={grid}>
+        <Field label="Exporter (seller)" value={coo.exporterName} onChange={setC('exporterName')} />
+        <Field label="Consignee (buyer)" value={coo.consigneeName} onChange={setC('consigneeName')} />
+        <Field label="Issued in (country)" value={coo.issuedInCountry} onChange={setC('issuedInCountry')} />
+        <Field label="Reference no." value={coo.referenceNumber} onChange={setC('referenceNumber')} />
+        <Field label="Goods description" value={coo.goodsDescription} onChange={setC('goodsDescription')} />
+        <Field label={`Origin criterion (${ORIGIN_CRITERIA.join(' / ')})`} value={coo.originCriterion} onChange={setC('originCriterion')} />
+        <Field label="Gross weight" value={coo.grossWeight} onChange={setC('grossWeight')} />
+        <Field label="Invoice no. (Box 10)" value={coo.invoiceNumber} onChange={setC('invoiceNumber')} />
+        <Field label="Marks and numbers" value={coo.marksAndNumbers} onChange={setC('marksAndNumbers')} />
+        <Field label="Certifying stamp (flag)" value={coo.certifyingStamp} onChange={setC('certifyingStamp')} />
+        <Field label="Signatory (Box 12)" value={coo.signatoryName} onChange={setC('signatoryName')} />
+        {need.uae && <Field label="UAE embassy attestation (flag)" value={coo.uaeEmbassyStamp} onChange={setC('uaeEmbassyStamp')} />}
+        {need.uae && <Field label="UAE MoFA attestation (flag)" value={coo.uaeMofaStamp} onChange={setC('uaeMofaStamp')} />}
+      </div>
+
       {need.uk && (
         <>
           {heading('UK export clearance (DOC-05)', 'Reference numbers only — the declaration itself is filed with HMRC by the freight forwarder. An export licence number means the goods are controlled, which holds the release for review.')}
@@ -361,7 +396,7 @@ function DocumentPackForm({ deal, busy, onSubmit }: {
       <Primary
         busy={busy}
         onClick={() => onSubmit({
-          invoice, packingList: pl, bol,
+          invoice, packingList: pl, bol, certificateOfOrigin: coo,
           ...(need.uk ? { ukCustoms: uk } : {}),
           ...(need.uae ? { uaeCustoms: uae } : {}),
         })}
@@ -405,6 +440,12 @@ function BuyerReview({ deal, review, rStatus, busy, onAction }: {
       ['Packages', pack.packingList.packages],
       ['Gross weight', pack.packingList.grossWeight],
       ['Departure', pack.packingList.departureDate],
+    ])] : []),
+    ...(pack.certificateOfOrigin ? [group('Certificate of origin', [
+      ['Exporter', pack.certificateOfOrigin.exporterName],
+      ['Issued in', pack.certificateOfOrigin.issuedInCountry],
+      ['Origin criterion', pack.certificateOfOrigin.originCriterion],
+      ['Certifying stamp', pack.certificateOfOrigin.certifyingStamp],
     ])] : []),
     ...(pack.ukCustoms ? [group('UK export clearance', [
       ['CDS MRN', pack.ukCustoms.mrn],

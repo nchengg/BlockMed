@@ -84,6 +84,38 @@ export interface BolFields {
 }
 
 /**
+ * DOC-04 — Certificate of Origin (UNCTAD GSP Form A).
+ *
+ * Issued by a chamber of commerce, not the seller — so like the B/L, the seller
+ * transcribes someone else's document, and the certifying stamp is what makes it
+ * evidence rather than a claim. Its absence is a hold, not a failure: a missing
+ * stamp means "not yet certified", which a human resolves, whereas a wrong
+ * exporter name means the paperwork is wrong.
+ *
+ * UAE deals additionally need embassy and MoFA attestation, which the register
+ * flags separately because they are stamps ON this certificate rather than
+ * documents of their own.
+ */
+export interface CertificateOfOriginFields {
+  exporterName: string; // GRADE: = terms.sellerName
+  consigneeName: string; // GRADE: = terms.buyerName
+  issuedInCountry: string; // GRADE: present — the exporting country
+  referenceNumber: string; // CROSS: = invoice number
+  goodsDescription: string; // GRADE: token-match against terms.goods
+  originCriterion: string; // GRADE: one of the GSP Form A codes
+  grossWeight: string; // CROSS: = invoice + packing list
+  invoiceNumber: string; // CROSS: = invoice (Box 10)
+  marksAndNumbers: string; // CROSS: = packing list packages (Box 6)
+  certifyingStamp: string; // FLAG: chamber of commerce stamp — hold if missing
+  signatoryName: string; // GRADE: present (Box 12)
+  uaeEmbassyStamp: string; // FLAG: UAE corridor only — hold if missing
+  uaeMofaStamp: string; // FLAG: UAE corridor only — hold if missing
+}
+
+/** Valid GSP Form A origin criteria (UNCTAD). */
+export const ORIGIN_CRITERIA = ["P", "W", "Y", "G", "F"] as const;
+
+/**
  * DOC-05 — UK CDS export declaration. Reference numbers only.
  *
  * Blockmediary does not process the declaration: the seller's freight forwarder
@@ -114,6 +146,9 @@ export interface DocumentPack {
   invoice: InvoiceFields;
   packingList: PackingListFields;
   bol: BolFields;
+  /** Required on all corridors (DOC-04). Optional in the type only so reviews
+   *  stored before it existed still parse. */
+  certificateOfOrigin?: CertificateOfOriginFields;
   /**
    * Corridor-conditional. Present only when the deal's route requires them —
    * a UK export needs CDS, a UAE import needs Mirsal2, and a deal that is
@@ -312,6 +347,34 @@ export function gradeDocuments(pack: DocumentPack, terms: DealTerms): Verdict {
   cross("gross_weight (invoice = packing list)", numbersMatch(invoice.grossWeight, pl.grossWeight), pl.grossWeight || "(empty)", invoice.grossWeight);
   cross("gross_weight (B/L = packing list)", numbersMatch(bol.grossWeight, pl.grossWeight), pl.grossWeight || "(empty)", bol.grossWeight);
 
+  // ── Certificate of Origin (DOC-04) — required on all corridors ──
+  // Chamber-of-commerce issued, so the certifying stamp is what turns it into
+  // evidence. Missing stamp = hold (not yet certified, a human resolves it);
+  // wrong exporter = fail (the paperwork is simply wrong).
+  const coo = pack.certificateOfOrigin;
+  grade("document_present (certificate of origin)", !!coo, "a certificate of origin", coo ? "supplied" : "");
+  if (coo) {
+    grade("party_match (CoO exporter = seller)", norm(coo.exporterName) === norm(terms.sellerName), terms.sellerName, coo.exporterName);
+    grade("party_match (CoO consignee = buyer)", norm(coo.consigneeName) === norm(terms.buyerName), terms.buyerName, coo.consigneeName);
+    const g = goodsCover(coo.goodsDescription, terms.goods);
+    grade("goods_match (CoO covers agreed goods)", g.pass, terms.goods, present(coo.goodsDescription) ? `${coo.goodsDescription.trim()} (${g.detail})` : "");
+    grade("issued_in (country of issue stated)", present(coo.issuedInCountry), "the exporting country", coo.issuedInCountry);
+    grade(
+      "origin_criterion (valid GSP Form A code)",
+      ORIGIN_CRITERIA.includes(coo.originCriterion.trim().toUpperCase() as (typeof ORIGIN_CRITERIA)[number]),
+      ORIGIN_CRITERIA.join(" / "),
+      coo.originCriterion,
+    );
+    grade("signed (CoO Box 12)", present(coo.signatoryName), "a named signatory", coo.signatoryName);
+
+    cross("invoice_number (CoO = invoice)", norm(coo.invoiceNumber) === norm(invoice.invoiceNumber) && present(invoice.invoiceNumber), invoice.invoiceNumber || "(empty)", coo.invoiceNumber);
+    cross("reference (CoO = invoice number)", norm(coo.referenceNumber) === norm(invoice.invoiceNumber) && present(invoice.invoiceNumber), invoice.invoiceNumber || "(empty)", coo.referenceNumber);
+    cross("gross_weight (CoO = packing list)", numbersMatch(coo.grossWeight, pl.grossWeight), pl.grossWeight || "(empty)", coo.grossWeight);
+    cross("marks_and_numbers (CoO = packing list)", numbersMatch(coo.marksAndNumbers, pl.packages), pl.packages || "(empty)", coo.marksAndNumbers);
+
+    flag("certifying_stamp (chamber of commerce)", !present(coo.certifyingStamp), "stamped and signed", coo.certifyingStamp);
+  }
+
   // ── Corridor customs references (DOC-05 / DOC-06) ──
   // Required by route, not by choice. Each proves a customs authority accepted a
   // declaration we never see — Blockmediary collects the outputs, not the filing.
@@ -336,6 +399,13 @@ export function gradeDocuments(pack: DocumentPack, terms: DealTerms): Verdict {
     cross("declared_value (Mirsal2 = commercial invoice)", amountsEqual(ae?.declaredValue ?? "", invoice.totalValue), invoice.totalValue || "(empty)", ae?.declaredValue ?? "");
     cross("hs_code (Mirsal2 = invoice)", norm(ae?.hsCode ?? "") === norm(invoice.hsCode), invoice.hsCode || "(empty)", ae?.hsCode ?? "");
     flag("customs_attachments (Dubai Customs requires all four)", !present(ae?.attachmentsConfirmed ?? ""), "confirmed", ae?.attachmentsConfirmed ?? "");
+    // UAE deals need the certificate of origin attested twice over — these are
+    // stamps ON the CoO rather than documents of their own, so they live here
+    // with the corridor that demands them.
+    if (coo) {
+      flag("uae_embassy_attestation (CoO)", !present(coo.uaeEmbassyStamp), "attested", coo.uaeEmbassyStamp);
+      flag("uae_mofa_attestation (CoO)", !present(coo.uaeMofaStamp), "attested", coo.uaeMofaStamp);
+    }
   }
 
   // ── FLAG: automatic holds for human review — these never auto-release ──

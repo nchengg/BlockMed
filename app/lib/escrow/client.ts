@@ -96,7 +96,9 @@ export type CreateDealInput = DealTerms & {
   counterpartyAccountId: string;
 };
 
-export type TradingCompany = { accountId: string; displayName: string; email: string };
+// No email: the picker needs a name to show and an id to address a deal to.
+// Publishing emails turned this endpoint into a harvestable contact list.
+export type TradingCompany = { accountId: string; displayName: string };
 
 // The companies a deal can be addressed to — each is a real, loggable account,
 // so both sides of a deal can be tested by signing in as each in turn.

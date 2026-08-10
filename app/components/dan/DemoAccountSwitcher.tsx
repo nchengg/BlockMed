@@ -16,7 +16,7 @@ export function DemoAccountSwitcher({ compact = false }: { compact?: boolean }) 
     let cancelled = false;
     const load = async () => {
       try {
-        const response = await fetch('/api/escrow/companies?includeSelf=1', { cache: 'no-store' });
+        const response = await fetch('/api/escrow/companies?demo=1', { cache: 'no-store' });
         const json = (await response.json().catch(() => ({}))) as {
           companies?: TradingCompany[];
         };
@@ -58,7 +58,7 @@ export function DemoAccountSwitcher({ compact = false }: { compact?: boolean }) 
       >
         <span>
           <strong>{currentCompany?.displayName ?? account?.companyName ?? 'Choose demo company'}</strong>
-          <small>{compact ? 'Switch company' : currentCompany?.email ?? account?.email ?? 'Sign in without a password'}</small>
+          <small>{compact ? 'Switch company' : currentCompany?.displayName ?? account?.companyName ?? 'Demo sign-in'}</small>
         </span>
         <span className="bm-demo-switch-arrow">{open ? 'v' : '>'}</span>
       </button>

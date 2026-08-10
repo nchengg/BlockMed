@@ -13,9 +13,9 @@ import {
   DEFAULT_WINDOW_HOURS,
   type Review,
 } from "./review";
-import type { BolFields, Verdict } from "./rules";
+import type { DocumentPack, Verdict } from "./rules";
 
-const FIELDS = {} as BolFields; // contents irrelevant to review logic
+const FIELDS = {} as DocumentPack; // contents irrelevant to review logic
 const VERDICT: Verdict = { verdict: "Compliant", rules: [] };
 
 const T0 = new Date("2026-07-23T12:00:00.000Z");

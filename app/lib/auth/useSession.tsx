@@ -33,6 +33,16 @@ type SessionState = {
 
 const Ctx = createContext<SessionState | null>(null);
 
+async function readJson<T>(response: Response): Promise<T | null> {
+  const text = await response.text().catch(() => '');
+  if (!text) return null;
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    return null;
+  }
+}
+
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [account, setAccount] = useState<SessionAccount | null>(null);
   const [ready, setReady] = useState(false);
@@ -40,8 +50,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   const refresh = useCallback(async () => {
     try {
       const r = await fetch('/api/auth/session', { cache: 'no-store' });
-      const j = await r.json();
-      setAccount(j.account ?? null);
+      const j = await readJson<{ account?: SessionAccount | null }>(r);
+      setAccount(r.ok ? j?.account ?? null : null);
     } catch {
       setAccount(null);
     } finally {
@@ -49,7 +59,10 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  useEffect(() => { void refresh(); }, [refresh]);
+  useEffect(() => {
+    const id = setTimeout(() => { void refresh(); }, 0);
+    return () => clearTimeout(id);
+  }, [refresh]);
 
   const login = useCallback(async (email: string, password: string) => {
     const r = await fetch('/api/auth/login', {
@@ -57,8 +70,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-    const j = await r.json();
-    if (!r.ok) return { ok: false, error: j.error ?? 'Could not sign in.' };
+    const j = await readJson<{ account?: SessionAccount; error?: string }>(r);
+    if (!r.ok) return { ok: false, error: j?.error ?? 'Could not sign in.' };
+    if (!j?.account) return { ok: false, error: 'Could not sign in.' };
     setAccount(j.account);
     return { ok: true };
   }, []);
@@ -69,8 +83,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(input),
     });
-    const j = await r.json();
-    if (!r.ok) return { ok: false, errors: j.errors ?? {} };
+    const j = await readJson<{ account?: SessionAccount; errors?: FieldErrors }>(r);
+    if (!r.ok) return { ok: false, errors: j?.errors ?? {} };
+    if (!j?.account) return { ok: false, errors: {} };
     setAccount(j.account);
     return { ok: true };
   }, []);

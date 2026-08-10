@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { formatUnits } from "viem";
 import { loadDeployment, publicClient, usdcAbi, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
 import { getDeal } from "@/lib/escrow/store";
+import { expectedSignerFor } from "@/lib/escrow/partyWallets";
 
 export const dynamic = "force-dynamic";
 
@@ -25,9 +26,18 @@ export async function GET(req: Request) {
         args: [addr],
       }) as Promise<bigint>;
 
+    // Whose balances to show: this deal's actual parties where we know them,
+    // falling back to the demo wallets on the local chain. A public deployment
+    // has no party keys at all, so there is nothing to fall back to there — the
+    // balance is simply omitted rather than reported as someone else's.
+    const buyerAddr =
+      (deal ? await expectedSignerFor(deal, "buyer") : null) ?? dep.accounts.buyer ?? null;
+    const sellerAddr =
+      (deal ? await expectedSignerFor(deal, "seller") : null) ?? dep.accounts.seller ?? null;
+
     const [buyerBal, sellerBal, escrowBal] = await Promise.all([
-      balanceOf(dep.accounts.buyer),
-      balanceOf(dep.accounts.seller),
+      buyerAddr ? balanceOf(buyerAddr) : Promise.resolve(null),
+      sellerAddr ? balanceOf(sellerAddr) : Promise.resolve(null),
       balanceOf(dep.escrow),
     ]);
 
@@ -58,8 +68,8 @@ export async function GET(req: Request) {
       ok: true,
       addresses: { escrow: dep.escrow, usdc: dep.usdc, ...dep.accounts },
       balances: {
-        buyer: formatUnits(buyerBal, 6),
-        seller: formatUnits(sellerBal, 6),
+        buyer: buyerBal === null ? null : formatUnits(buyerBal, 6),
+        seller: sellerBal === null ? null : formatUnits(sellerBal, 6),
         escrow: formatUnits(escrowBal, 6),
       },
       dealId: deal?.onChainDealId ?? null,

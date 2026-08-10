@@ -1,7 +1,7 @@
 // One dispatcher for every lifecycle action a deal can trigger, shared by the
 // deals list and the deal page so both drive the API identically.
 import {
-  acceptDeal, fund, submitBol, approveRelease, objectToRelease,
+  acceptDeal, fund, submitDocuments, approveRelease, objectToRelease,
   finaliseRelease, release, refund, withdrawObjection, type ActorCtx,
 } from '@/lib/escrow/client';
 import type { PostFundAction } from './DealActions';
@@ -39,10 +39,30 @@ export async function runDealAction(
       const r = await fundWithWallet(dealId, actor.onFundProgress);
       return r.ok ? { ok: true } : { ok: false, error: r.error };
     }
+    // Say which precondition is missing rather than falling through to the
+    // server route, whose refusal ("link a wallet") is actively misleading to
+    // someone who HAS linked one and is simply in a browser without MetaMask.
+    // The server path only works on the local dev chain, where the platform
+    // holds a buyer key; on any public network there is no such key by design.
+    if (actor.walletLinked && !hasWallet()) {
+      return {
+        ok: false,
+        error:
+          'No browser wallet detected. Your company has a linked wallet, but this ' +
+          'browser has no wallet extension — open the dashboard in a browser with ' +
+          'MetaMask installed to sign the deposit.',
+      };
+    }
+    if (!actor.walletLinked) {
+      return {
+        ok: false,
+        error: 'Link a wallet under the Company tab before funding — the deposit is signed by you, not by the platform.',
+      };
+    }
     return fund(dealId, actor);
   }
   switch (action.kind) {
-    case 'submit-bol': return submitBol(dealId, action.fields, actor);
+    case 'submit-documents': return submitDocuments(dealId, action.pack, actor);
     case 'approve-release': return approveRelease(dealId, actor);
     case 'object': return objectToRelease(dealId, action.ground, action.detail, actor);
     case 'finalise-release': return finaliseRelease(dealId, actor);

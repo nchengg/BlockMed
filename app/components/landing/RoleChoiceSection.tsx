@@ -1,7 +1,7 @@
 'use client';
+
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { CompanySignIn } from '@/components/dan/CompanySignIn';
 
 export default function RoleChoiceSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -15,12 +15,16 @@ export default function RoleChoiceSection() {
     import('gsap').then(({ gsap }) => {
       import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
         gsap.registerPlugin(ScrollTrigger);
-        gsap.fromTo(innerRef.current,
+        gsap.fromTo(
+          innerRef.current,
           { opacity: 0, y: 32 },
           {
-            opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: 'power2.out',
             scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
-          }
+          },
         );
       });
     });
@@ -38,107 +42,49 @@ export default function RoleChoiceSection() {
       }}
     >
       <div ref={innerRef} style={{ opacity: 0, maxWidth: 720, width: '100%', textAlign: 'center' }}>
-        <h2 style={{
-          fontSize: 'clamp(34px, 5.5vw, 56px)',
-          fontWeight: 700,
-          letterSpacing: '-0.02em',
-          color: 'var(--text-primary)',
-          marginBottom: 48,
-        }}>
-          Start as a buyer or seller.
-        </h2>
-
-        <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link
-            href="/login?email=buyer@meridian.demo"
-            style={{
-              flex: '1 1 260px',
-              maxWidth: 320,
-              padding: '28px 32px',
-              borderRadius: 8,
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border, #27272A)',
-              color: 'var(--text-primary)',
-              textDecoration: 'none',
-              textAlign: 'left',
-              transition: 'border-color 0.2s',
-              display: 'block',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border, #27272A)'; }}
-          >
-            <span style={{ fontSize: 17, fontWeight: 600 }}>Continue as Buyer</span>
-            <span style={{ display: 'block', marginTop: 6, fontSize: 14, color: 'var(--text-secondary)' }}>
-              Lock funds and start a deal.
-            </span>
-          </Link>
-
-          <Link
-            href="/login?email=seller@solaris.demo"
-            style={{
-              flex: '1 1 260px',
-              maxWidth: 320,
-              padding: '28px 32px',
-              borderRadius: 8,
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border, #27272A)',
-              color: 'var(--text-primary)',
-              textDecoration: 'none',
-              textAlign: 'left',
-              transition: 'border-color 0.2s',
-              display: 'block',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border, #27272A)'; }}
-          >
-            <span style={{ fontSize: 17, fontWeight: 600 }}>Continue as Seller</span>
-            <span style={{ display: 'block', marginTop: 6, fontSize: 14, color: 'var(--text-secondary)' }}>
-              Upload documents and get paid.
-            </span>
-          </Link>
-        </div>
-
-        <p style={{ marginTop: 20, fontSize: 14, color: 'var(--text-secondary)' }}>
-          Admin, developer or platform?{' '}
-          <Link href="/login" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
-            Sign in
-          </Link>
-          {' '}·{' '}
-          <Link href="/register" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
-            Create an account
-          </Link>
-        </p>
-
-        {/* Second entry point — Dan's Dashboard: a parallel surface that rebuilds the
-            deal journey in product order (create a deal first). Separate from the
-            main dashboard above; same escrow backend underneath. */}
-        <div
+        <h2
           style={{
-            marginTop: 56,
-            paddingTop: 40,
-            borderTop: '1px solid var(--border, #27272A)',
+            fontSize: 'clamp(34px, 5.5vw, 56px)',
+            fontWeight: 700,
+            letterSpacing: 0,
+            color: 'var(--text-primary)',
+            marginBottom: 16,
           }}
         >
-          <h3
-            style={{
-              fontSize: 'clamp(20px, 2.6vw, 26px)',
-              fontWeight: 700,
-              letterSpacing: '-0.01em',
-              color: 'var(--text-primary)',
-              marginBottom: 8,
-            }}
-          >
-            Dan&apos;s Dashboard
-          </h3>
-          <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 24 }}>
-            A separate workspace. Sign in as a company — you pick which side you are on
-            per deal, so the same company can buy on one deal and sell on another.
-          </p>
+          Open your trade workspace.
+        </h2>
 
-          {/* Signs in AND lands on /dan, so both sides of a deal are testable by
-              signing in as each company in turn. */}
-          <CompanySignIn />
-        </div>
+        <p
+          style={{
+            maxWidth: 560,
+            margin: '0 auto 28px',
+            fontSize: 16,
+            lineHeight: 1.7,
+            color: 'var(--text-secondary)',
+          }}
+        >
+          One dashboard for every company. Create deals, review documents, track funding,
+          and manage release from the same place.
+        </p>
+
+        <Link
+          href="/dashboard"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 52,
+            padding: '0 28px',
+            borderRadius: 8,
+            background: 'var(--accent)',
+            color: '#0A0A0B',
+            textDecoration: 'none',
+            fontSize: 15,
+            fontWeight: 750,
+          }}
+        >
+          Open dashboard
+        </Link>
       </div>
     </section>
   );

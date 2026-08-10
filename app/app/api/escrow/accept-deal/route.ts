@@ -6,6 +6,7 @@ import { assertLocalReleaser } from "@/lib/escrow/settlement";
 import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal, pendingOnRole } from "@/lib/escrow/roles";
 import { resolvePartyAddresses } from "@/lib/escrow/partyWallets";
+import { assertPartiesCanTrade } from "@/lib/kyb/gate";
 
 // ACCEPT (or DECLINE) a proposed deal — the counterparty's half of FR-1.
 //
@@ -64,7 +65,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, declined: true });
   }
 
-  const dep = loadDeployment();
+  let dep: ReturnType<typeof loadDeployment>;
+  try {
+    dep = loadDeployment();
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Local chain is not deployed yet. Start the Hardhat node, run the local deploy script, then try again.",
+        setupRequired: "local-chain",
+      },
+      { status: 503 },
+    );
+  }
   const pc = publicClient(dep);
 
   // Derive the on-chain id from the app deal id + counter salt (unique per run).
@@ -84,6 +98,15 @@ export async function POST(req: Request) {
     return localGuard;
   }
 
+  // Both companies must have completed onboarding before the deal binds them.
+  // Checked here rather than at proposal time: a proposal is an offer, and
+  // blocking it would stop a company drafting deals while it finishes onboarding.
+  const gate = await assertPartiesCanTrade(deal);
+  if (!gate.ok) {
+    await saveDeal(deal); // the acceptance is real; only the on-chain step is blocked
+    return NextResponse.json({ error: gate.error, blocked: gate.blocked }, { status: 409 });
+  }
+
   // Record each party's OWN address, so they can later sign their own actions.
   // The contract checks msg.sender against these, so whatever is registered here
   // is the only address that can fund the deal.
@@ -94,13 +117,26 @@ export async function POST(req: Request) {
   }
 
   const releaser = walletFor("releaser", dep);
-  const hash = await releaser.writeContract({
-    address: dep.escrow,
-    abi: escrowAbi,
-    functionName: "createDeal",
-    args: [onChainDealId, parties.addresses.buyer, parties.addresses.seller, amountMinor],
-  });
-  await pc.waitForTransactionReceipt({ hash });
+  let hash: `0x${string}`;
+  try {
+    hash = await releaser.writeContract({
+      address: dep.escrow,
+      abi: escrowAbi,
+      functionName: "createDeal",
+      args: [onChainDealId, parties.addresses.buyer, parties.addresses.seller, amountMinor],
+    });
+    await pc.waitForTransactionReceipt({ hash });
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Could not reach the local Hardhat chain. Check that it is running on 127.0.0.1:8545 and redeploy if needed.",
+        setupRequired: "local-chain",
+      },
+      { status: 503 },
+    );
+  }
   deal.onChainDealId = onChainDealId;
   appendAudit(deal, {
     actor: "platform",

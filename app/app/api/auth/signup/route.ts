@@ -32,7 +32,10 @@ export async function POST(req: Request) {
       email,
       passwordHash: await hashPassword(body.password!),
       companyName: body.companyName!.trim(),
-      registrationNumber: body.registrationNumber?.trim() || null,
+      // Required in the schema, but signup stays short: "" means "not yet
+      // supplied", which leaves kybStatus at "incomplete" until the company
+      // completes onboarding on the KYB form.
+      registrationNumber: body.registrationNumber?.trim() || "",
       country: body.country!.trim(),
       addressLine1: body.addressLine1!.trim(),
       addressLine2: body.addressLine2?.trim() || null,

@@ -5,7 +5,7 @@
 // below. Only buyer approval or quiet window expiry leads to recordVerdict;
 // a standing objection blocks it. All of this happens BEFORE recordVerdict
 // because after it release is permissionless and unstoppable (contract AP-7).
-import type { BolFields, Verdict } from "./rules";
+import type { DocumentPack, Verdict } from "./rules";
 
 // The closed set of valid objection grounds (BRD §9.1). Anything else is not a
 // valid objection — protecting the seller from post-shipment renegotiation.
@@ -35,7 +35,7 @@ export interface Objection {
 }
 
 export interface Review {
-  fields: BolFields; // the submitted B/L exactly as graded
+  fields: DocumentPack; // the submitted document pack exactly as graded
   verdict: Verdict;
   noticeAt: string; // ISO — when the notice of release was issued
   windowEndsAt: string; // ISO — objection window close
@@ -62,7 +62,7 @@ export function reviewStatus(r: Review, now: Date = new Date()): ReviewStatus {
   return now.toISOString() > r.windowEndsAt ? "expired" : "pending";
 }
 
-export function openReview(fields: BolFields, verdict: Verdict, now: Date = new Date()): Review {
+export function openReview(fields: DocumentPack, verdict: Verdict, now: Date = new Date()): Review {
   return {
     fields,
     verdict,

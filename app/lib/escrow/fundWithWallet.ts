@@ -59,7 +59,11 @@ export async function fundWithWallet(
     // sure the wallet is pointed at the chain the escrow lives on.
     const chainId = await getChainId();
     if (chainId !== prep.chainId) {
-      await ensureChain(prep.chainId, 'http://127.0.0.1:8545', 'Hardhat Local');
+      // Use the deployment's own RPC and label. Hardcoding localhost here meant
+      // that adding an unknown network offered the wallet a Hardhat endpoint for
+      // whatever chain the deal was actually on — the add would be rejected for
+      // a chain-id mismatch, and the user would see a confusing failure.
+      await ensureChain(prep.chainId, prep.rpcUrl, prep.chainLabel);
     }
 
     // 2. Sign each step in order. approve must confirm before deposit is sent,

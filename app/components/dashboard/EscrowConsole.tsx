@@ -28,7 +28,19 @@ import {
   approveRelease, objectToRelease, finaliseRelease,
   type StatusResponse,
 } from '@/lib/escrow/client';
-import { RECORDED_FIELDS, type BolFields } from '@/lib/escrow/rules';
+import type { BolFields, DocumentPack } from '@/lib/escrow/rules';
+
+// Legacy surface: the old single-B/L recorded list, kept local. The live
+// surfaces render the full three-document pack via components/dan/DealActions.
+const LEGACY_RECORDED: { key: keyof BolFields; label: string }[] = [
+  { key: 'vessel', label: 'Vessel' },
+  { key: 'voyageNumber', label: 'Voyage No.' },
+  { key: 'portOfLoading', label: 'Port of Loading' },
+  { key: 'portOfDischarge', label: 'Port of Discharge' },
+  { key: 'containerNumber', label: 'Container No.' },
+  { key: 'packages', label: 'Packages' },
+  { key: 'grossWeight', label: 'Gross Weight' },
+];
 import {
   reviewStatus, OBJECTION_GROUNDS, groundLabel,
   type Review, type ObjectionGround, type ReviewStatus,
@@ -427,6 +439,10 @@ function SubmitBolForm({ disabled, terms, onSubmit }: {
     containerNumber: 'MSKU-1234567',
     packages: '480 cartons',
     grossWeight: '8,640 kg',
+    signedBy: 'As agent for the Carrier',
+    cleanOnBoard: 'clean',
+    onDeckNotation: '',
+    freightPayment: 'prepaid',
   });
   const set = (k: keyof BolFields) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
   return (
@@ -452,7 +468,7 @@ function SubmitBolForm({ disabled, terms, onSubmit }: {
         Recorded on the B/L (not machine-graded)
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
-        {RECORDED_FIELDS.map(({ key, label }) => (
+        {LEGACY_RECORDED.map(({ key, label }) => (
           <Field key={key} label={label} value={f[key]} onChange={set(key)} />
         ))}
       </div>
@@ -498,14 +514,14 @@ function BuyerReviewCard({ review, rStatus, busy, onApprove, onObject }: {
   const [objecting, setObjecting] = useState(false);
   const [ground, setGround] = useState<ObjectionGround>('field_mismatch');
   const [detail, setDetail] = useState('');
-  const f = review.fields;
+  const f = (review.fields as DocumentPack).bol;
   const rows: [string, string][] = [
     ['B/L number', f.blNumber],
     ['Shipper', f.shipperName],
     ['Consignee', f.consigneeName],
     ['Goods', f.goodsDescription],
     ['Shipped on board', f.shippedOnBoardDate],
-    ...RECORDED_FIELDS.map(({ key, label }) => [label, f[key] || '—'] as [string, string]),
+    ...LEGACY_RECORDED.map(({ key, label }) => [label, f[key] || '—'] as [string, string]),
   ];
   return (
     <Card>

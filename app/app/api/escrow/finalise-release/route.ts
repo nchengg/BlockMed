@@ -29,6 +29,21 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "No notice of release to finalise." }, { status: 409 });
   }
 
+  // A HELD pack never releases on silence. The flag exists because something —
+  // a claused B/L, on-deck cargo, hazardous goods — needs a human to look at
+  // it, and a window quietly running out is not a human looking at it. Only the
+  // buyer's explicit approval (approve-release) can move a held pack forward.
+  if (deal.review.verdict.verdict === "Held") {
+    return NextResponse.json(
+      {
+        error:
+          "This release is held for review — a document flag requires explicit buyer " +
+          "approval, so it cannot be finalised on window expiry.",
+      },
+      { status: 409 },
+    );
+  }
+
   const rs = reviewStatus(deal.review);
   if (rs !== "expired") {
     const why =

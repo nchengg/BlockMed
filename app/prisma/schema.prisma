@@ -30,16 +30,50 @@ model Account {
 
   // Company identity. These fields are what KYB/KYB screening (FR-7) will need,
   // so they are captured at signup rather than bolted on later.
+  //
+  // Field set follows docs/document-templates.md DOC-15 (Certificate of
+  // Incorporation). registrationNumber is now REQUIRED: it is the key every
+  // other KYB record joins on, and an optional company number makes the rest
+  // unverifiable. Existing rows are backfilled with "" by the migration.
   companyName        String
-  registrationNumber String?
+  registrationNumber String
   country            String
   addressLine1       String
   addressLine2       String?
   city               String
   postcode           String
 
-  // Who to contact at the company.
-  contactName String
+  /// Private limited / public limited / FZ-LLC etc. Drives KYB risk assessment.
+  companyType String?
+  /// "England and Wales", "DIFC", "ADGM"… — determines the applicable law.
+  jurisdiction String?
+  /// Companies House, a named UAE free zone registrar, or an EU equivalent.
+  issuingAuthority String?
+  /// A very recently incorporated company is an AML risk signal (DOC-15).
+  incorporationDate DateTime?
+
+  // The individual authorised to bind the company (DOC-18). A contact is not a
+  // signatory: only a signatory can commit the company to a deal, and sanctions
+  // screening runs against this person, not the company name.
+  contactName          String
+  signatoryName        String?
+  signatoryNationality String?
+  signatoryDob         DateTime?
+  /// 🚩 FLAG in DOC-18: an expired passport is an automatic hold, not a warning.
+  signatoryPassportExpiry DateTime?
+
+  // Self-attested declarations (DOC-19 source of funds). PROOF OF CONCEPT: these
+  // are the user's own assertions — nothing here is verified against a registry,
+  // a sanctions list, or an uploaded document. They record what the company
+  // claims, and when, so the audit trail shows the claim was made and relied on.
+  // Production requires screening against OFSI/UN/EU lists at funding AND at
+  // release (docs/legal-risk.md), plus Companies House PSC identity verification.
+  fundsSourceNature String?
+  fundsSourceCountry String?
+  /// POCA 2002 / MLR 2017 Sch.2 declarations — both must be affirmed to trade.
+  declaredNotCriminalFunds Boolean   @default(false)
+  declaredNoSanctions      Boolean   @default(false)
+  declarationsAt           DateTime?
 
   // The wallet this company signs on-chain actions with. Null until linked:
   // identity is account-first, and a platform/intermediary may never link one
@@ -53,6 +87,16 @@ model Account {
   /// "client" for trading companies; "admin"/"developer" for staff.
   type String @default("client")
 
+  /// Where the company is in onboarding: "incomplete" until the KYB fields and
+  /// declarations are supplied, then "attested".
+  ///
+  /// PROOF OF CONCEPT — "attested" means THE USER SAID SO. There is no reviewer,
+  /// no registry lookup, no sanctions screen. The state exists so the structure
+  /// is right (a company cannot transact before completing onboarding) and so
+  /// the production gate has somewhere to live: a "verified" state set by a
+  /// compliance reviewer would slot in alongside these two.
+  kybStatus String @default("incomplete")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -62,6 +106,43 @@ model Account {
   dealsAsSeller Deal[]         @relation("SellerDeals")
   sessions      Session[]
   auditEntries  AuditEntry[]
+  peopleOfControl PersonOfControl[]
+}
+
+/// A person with significant control of a company — the beneficial owner
+/// (DOC-17). Sanctions screening runs against these individuals, not against the
+/// company name, which is why they are recorded separately rather than as fields
+/// on Account: a company may have several.
+///
+/// UK: Companies Act 2006 Part 21A. UAE: Federal Decree-Law No. 20 of 2018.
+/// Both set the reporting threshold at 25%.
+///
+/// PROOF OF CONCEPT — self-declared, unverified. Note what is deliberately NOT
+/// stored: no residential address (Companies House holds it but never publishes
+/// it), and no full date of birth — month and year only, which is what the
+/// public register shows. Collecting less than the regime allows is the right
+/// default when none of it is being screened anyway.
+model PersonOfControl {
+  id        String  @id @default(cuid())
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  fullName    String
+  nationality String
+  /// Month and year only, as on the public PSC register (e.g. "1985-03").
+  birthMonthYear String
+  countryOfResidence String
+
+  /// Which of the five statutory control conditions applies. Stored as the
+  /// condition key ("shares_over_25", "voting_over_25", "appoint_directors",
+  /// "significant_influence", "trust_control") — see lib/kyb/psc.ts.
+  controlCondition String
+  /// Free text for the quantified holding, e.g. "holds 40% of shares".
+  controlDetail String?
+
+  createdAt DateTime @default(now())
+
+  @@index([accountId])
 }
 
 /// A server-side session. The cookie carries only this row's token; everything
@@ -116,6 +197,11 @@ model Deal {
   sellerName       String?
   buyerName        String?
   shipmentDeadline String?
+  /// Optional agreed route/commercial terms — documents are graded against
+  /// these when present (docs/document-templates.md DOC-01/02/03).
+  portOfLoading    String?
+  portOfDischarge  String?
+  incoterm         String?
 
   // Parties. Nullable because a counterparty may be invited before they join —
   // in which case the name is known but there is no account row to point at, so

@@ -4,6 +4,7 @@ import { ensureDeal, appendAudit, saveDeal, nextDealCounter, type DealTerms } fr
 import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { prisma } from "@/lib/db";
 import type { DealRole } from "@/lib/escrow/roles";
+import { assertCanPropose } from "@/lib/kyb/gate";
 
 // CREATE A DEAL FROM SCRATCH (BRD FR-1) — the step the main dashboard never had.
 //
@@ -29,6 +30,15 @@ export async function POST(req: Request) {
   const actor = await readActor(body);
   const unauth = requireAuth(actor);
   if (unauth) return unauth;
+
+  // A company must have completed onboarding before it can propose a deal. Checked
+  // here as well as at acceptance so the proposer finds out BEFORE writing terms
+  // and naming a counterparty, rather than when the counterparty's acceptance
+  // fails for a reason only the proposer can fix.
+  const gate = await assertCanPropose(actor?.accountId);
+  if (!gate.ok) {
+    return NextResponse.json({ error: gate.error, blocked: gate.blocked, needsKyb: true }, { status: 409 });
+  }
 
   const creatorRole = body.creatorRole;
   if (creatorRole !== "buyer" && creatorRole !== "seller") {
@@ -81,12 +91,19 @@ export async function POST(req: Request) {
   const appDealId = `DEAL-${stamp}-${n.toString().padStart(4, "0")}`;
 
   const deal = await ensureDeal(appDealId);
+  // Optional route/commercial terms: agreed here, graded against the documents
+  // later (lib/escrow/rules.ts). Absent = the corresponding document checks fall
+  // back to cross-document comparison only.
+  const opt = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
   deal.terms = {
     goods: goods.trim(),
     amountUsdc: amountUsdc!.trim(),
     sellerName,
     buyerName,
     shipmentDeadline,
+    portOfLoading: opt(body.portOfLoading),
+    portOfDischarge: opt(body.portOfDischarge),
+    incoterm: opt(body.incoterm),
   };
   // Both parties recorded up front, each with a REAL account id — this is what
   // roleInDeal() reads later, and it is why the deal shows up in the

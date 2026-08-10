@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { encodeFunctionData, formatUnits, parseUnits } from "viem";
-import { loadDeployment, publicClient, escrowAbi, usdcAbi } from "@/lib/escrow/chain";
+import { CHAIN_LABELS, loadDeployment, publicClient, escrowAbi, usdcAbi } from "@/lib/escrow/chain";
 import { getDeal, readDealId } from "@/lib/escrow/store";
 import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal } from "@/lib/escrow/roles";
@@ -119,6 +119,10 @@ export async function POST(req: Request) {
     ok: true,
     from: expected,
     chainId: dep.chainId,
+    // The wallet may need to switch (or add) this network. Send the real RPC
+    // and name rather than letting the client assume localhost.
+    rpcUrl: dep.rpcUrl,
+    chainLabel: CHAIN_LABELS[dep.chainId] ?? `Chain ${dep.chainId}`,
     amountUsdc: deal.terms.amountUsdc,
     steps,
   });

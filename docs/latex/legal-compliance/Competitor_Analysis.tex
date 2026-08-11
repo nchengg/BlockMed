@@ -1,0 +1,518 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{apacite}
+\usepackage{natbib}
+\usepackage{times}
+\usepackage{microtype}
+\usepackage[none]{hyphenat}
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\onehalfspacing
+
+\title{\textbf{Blockmediary: Competitor Analysis}}
+\author{Badhri Narayanan Giri \\ Transakt}
+\date{August 2026 \\ BEEM063 FinTech Hackathon \\ University of Exeter}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+%---------------------------------------------------------------
+\section*{Introduction}
+%---------------------------------------------------------------
+
+This assessment compares Blockmediary against the closest platforms operating in
+programmable escrow and cross border trade finance, and sets that comparison against the
+macro environment Blockmediary operates within. It was compiled to support the Main Group
+Video pitch and the Individual Report, and feeds the competitive analysis and market
+strategy narrative used across both. Figures throughout are drawn from public research
+current as of August 2026 and should be treated as time sensitive, since funding and
+licensing status in this sector changes quickly.
+
+%---------------------------------------------------------------
+\section*{1. Market Context}
+%---------------------------------------------------------------
+
+Cross border trade finance for small and medium sized enterprises is a large and
+underserved market. The addressable market is projected to grow from approximately fifty
+point nine billion United States dollars in 2026 to approximately eighty nine point five
+billion dollars by 2034, a compound annual growth rate of seven point three per cent
+\citep{marketsme2026}, and the underlying reason the market remains underserved is
+structural: traditional Letters of Credit were built for large corporates, not small and
+medium sized enterprises \citep{weforum2025}. Two structurally different approaches
+currently compete for this market. The first is the bank consortium blockchain network,
+exemplified by Komgo, Contour, we.trade, and the Marco Polo Network, each of which
+digitises the existing letter of credit or bank workflow while keeping banks in the loop.
+The second is the fintech escrow platform, exemplified by Tazapay and Truzo, which removes
+the letter of credit entirely but keeps a centralised, custodial intermediary, namely the
+fintech itself, together with manual document review. Blockmediary's wager is that neither
+camp has combined full bank removal, non custodial on chain settlement, and automated
+artificial intelligence document verification in a single product, and that this
+combination is the open lane in the market.
+
+%---------------------------------------------------------------
+\section*{2. Head to Head Comparison}
+%---------------------------------------------------------------
+
+Across the six platforms considered in this assessment, meaning Blockmediary and its five
+closest comparators, several dimensions separate Blockmediary from the field. On the
+question of whether a bank remains anywhere in the payment flow, Blockmediary removes
+banks entirely, whereas Tazapay and Truzo continue to settle over bank or electronic money
+institution rails, XREX is a licensed intermediary that only partially removes bank
+dependency, and Komgo and Contour both retain a bank issued letter of credit at the centre
+of the transaction, with the underlying technology only making that existing process
+faster. On custody, Blockmediary is non custodial by design, since funds sit in a smart
+contract rather than in an account Blockmediary controls, while Tazapay, Truzo, and XREX
+are all custodial in the ordinary sense, Komgo is software only and never touches funds,
+and Contour's funds moved through the participating banks. On settlement rail,
+Blockmediary settles on chain using USDC on the Base network, whereas Tazapay uses SWIFT
+and local payment rails with a recent stablecoin add on, Truzo settles in fiat through
+Currencycloud, XREX settles across a multi asset custodial stack including Bitcoin,
+Ethereum, Solana, and stablecoins, Komgo settles through traditional banking rails, and
+Contour used R3 Corda purely for document exchange while settlement itself remained a bank
+function. On document and trust verification, Blockmediary uses automated artificial
+intelligence verification, whereas Tazapay relies on manual back office review, Truzo and
+XREX rely on manual know your customer and compliance checks, with XREX supplementing this
+with automated wallet risk scoring, and Komgo and Contour both rely on conventional bank
+underwriting. Blockmediary is also the only one of the six with open source smart
+contracts. On target customer, Blockmediary serves small and medium sized enterprise
+buyers and sellers directly, Tazapay is embedded into business to business marketplaces,
+Truzo is corridor focused on the United Kingdom and South Africa, XREX targets emerging
+market small and medium sized enterprises with an Asia Pacific focus, and Komgo and
+Contour both serve banks and large commodity or corporate clients rather than small and
+medium sized enterprises directly. On fees, Blockmediary targets close to zero per cent in
+bank fees, against Tazapay's zero point eight to three point eight per cent plus fixed
+charges, Truzo's zero point eight to three point one per cent tiered structure plus foreign
+exchange charges, XREX's sub one per cent transfer fee alongside a flat ten United States
+dollar Tether equivalent escrow charge, Komgo's undisclosed enterprise licensing fees, and
+the roughly one to three per cent fee typical of a bank issued letter of credit that
+Contour's model still carried. On funding and status, Tazapay has raised approximately
+fifty seven point nine million dollars \citep{tazapayseriesa2023, tazapayseriesb2026} and
+remains active and expanding, Truzo has raised a comparatively thin approximately six
+hundred and forty thousand dollars with its last disclosed round in 2020 and remains
+active but narrow in its corridor \citep{truzouklaunch2023}, XREX has raised approximately
+forty two point seven million dollars including an eighteen point seven five million
+dollar strategic investment from Tether and continues to grow \citep{xrextether2024}, Komgo
+has raised over twenty six million Swiss francs from its bank and corporate shareholders
+and remains active with over four hundred corporate and institutional clients
+\citep{komgonewsroom2025}, and Contour raised approximately eighteen point three million
+dollars before shutting down in November 2023 \citep{contourshutdown2023}. Blockmediary
+itself remains in development, without the funding or licensing history the incumbents
+have accumulated, which is a genuine gap this assessment does not minimise.
+
+%---------------------------------------------------------------
+\section*{3. PESTLE Analysis: Blockmediary's Operating Environment}
+%---------------------------------------------------------------
+
+A PESTLE analysis examines the macro environment a business operates within, namely
+political, economic, social, technological, legal, and environmental factors, and is
+conducted once for Blockmediary rather than once per competitor, since these factors are
+largely external and shared across the market rather than being company specific in the
+way a strengths and weaknesses analysis would be. The one axis that genuinely varies by
+company, being regulatory regime, is folded into the political and legal discussion below
+as a direct comparison rather than repeated five times over.
+
+\subsection*{Political}
+
+Favourable trade agreements underpin Blockmediary's chosen beachhead corridor: the United
+Arab Emirates to India Comprehensive Economic Partnership Agreement has been active since
+2022 and the United Arab Emirates to Turkiye equivalent has been in force since September
+2023 \citep{uaeindiacepa2022, uaeturkiyecepa2023}, giving the chosen ten to fifty thousand
+dollar textiles and garments corridor political tailwind through high trade volume and low
+tariff friction. Corridor exclusions in this market are politically driven rather than
+purely commercial. China was struck from the corridor mix because of the People's Bank of
+China's 2021 ban on crypto asset speculation, which prevents Chinese small and medium
+sized enterprise sellers from legally holding or receiving USDC \citep{pbocban2021}, and
+Turkiye's stablecoin payments ban under Central Bank Regulation No. 2021/14 is a similar
+political constraint, which is why Turkiye is excluded as a target market even though the
+United Arab Emirates to Turkiye trade corridor itself remains in scope
+\citep{cbrt202114}. Regulators in the target markets are, on the whole, actively building
+on ramps for firms like Blockmediary rather than simply gatekeeping: the Financial
+Services Regulatory Authority's Innovation Programme, known as RegLab, and the Dubai
+International Financial Centre's FinTech Hive are both politically motivated to attract
+crypto and fintech innovation to the United Arab Emirates free zones, which is why those
+free zones, rather than the United Arab Emirates mainland or Dubai's Virtual Assets
+Regulatory Authority regime, are the planned regulatory home. Postures diverge across
+target jurisdictions in a way that matters for market entry sequencing: United Kingdom and
+European Union regulators are still mid transition toward comprehensive crypto regimes,
+with timelines that continue to slip, whereas United Arab Emirates free zone regulators
+are more overtly courting fintech entrants, which favours the United Arab Emirates first
+market entry sequencing already chosen. Sanctions regimes are a live political variable on
+every individual deal rather than a one off consideration, since lists maintained by the
+Office of Foreign Assets Control, the United Nations Security Council, His Majesty's
+Treasury, and the United Arab Emirates can change between deal creation and fund release.
+On regulatory regime specifically, the closest comparators sit under materially different
+postures from Blockmediary's own: Truzo operates under United Kingdom Financial Conduct
+Authority and South African Financial Sector Conduct Authority oversight, XREX operates
+under Singapore and Taiwan licensing, and Komgo operates under European Union and Swiss
+banking consortium oversight, and none of the five researched competitors is pursuing the
+free zone first strategy Blockmediary is, which is a distinct, and arguably underexploited,
+political positioning choice.
+
+\subsection*{Economic}
+
+The core economic opportunity here is a market gap rather than simply a large market size.
+The ten to fifty thousand dollar deal size Blockmediary targets is what the team refers to
+internally as the letter of credit dead zone: too small for banks to serve economically
+under a traditional letter of credit, and too large to be handled on trust alone. Every
+researched competitor, being Tazapay, Truzo, XREX, and Komgo, is priced or structured for
+a larger or otherwise different segment, and none targets this exact dead zone directly.
+Currency instability is a direct economic driver of adoption in the beachhead corridor:
+Turkish lira inflation has already pushed Turkish small and medium sized enterprises
+toward stablecoin native behaviour, which means less user education is required to make
+counterparties comfortable with USDC settlement, an economic tailwind specific to the
+United Arab Emirates to Turkiye leg of the corridor. Fee economics are the headline
+competitive lever. Traditional letter of credit fees run one to three per cent, and the
+researched competitors cluster in a similar range, Tazapay at zero point eight to three
+point eight per cent, Truzo at zero point two two to three point one per cent, and XREX
+below one per cent on transfers though its escrow product separately charges a flat ten
+United States dollar Tether equivalent fee. Blockmediary's target of close to zero per cent
+in bank fees only works economically because removing the bank removes the largest cost
+line in the transaction, which makes it a structural cost advantage rather than a
+temporary subsidy. The underlying pain point is a small and medium sized enterprise cash
+flow problem: the roughly ninety day payment delay pattern typical of cross border trade,
+in which a seller ships and then waits for letter of credit processing and payment,
+directly damages small and medium sized enterprise working capital, so Blockmediary's near
+instant, artificial intelligence verified release changes the economics of running a
+trading business, not merely the cost of a single transaction. A genuine headwind should
+also be acknowledged rather than glossed over: a higher global interest rate environment
+increases the opportunity cost to a buyer of locking capital in escrow before goods arrive,
+which is a real economic cost of any prefunded escrow model, Blockmediary included.
+
+\subsection*{Social}
+
+Trust is a social problem here as much as a technical one. Small and medium sized
+enterprise owners in the target corridors have historically low trust both in crypto,
+often perceived as scam adjacent, and in an unfamiliar counterparty in a new country.
+Blockmediary is competing on the same social trust gap that Truzo's anti fraud branding
+and Tazapay's transparent fee messaging are also trying to close, but Blockmediary's
+approach is automated, on chain proof rather than brand reassurance. Diaspora networks
+function as a genuine social distribution channel rather than simply a demographic fact:
+the large Indian diaspora resident in the United Arab Emirates underpins the warm
+introduction go to market motion in the beachhead corridor, since social trust travels
+faster through existing community networks than through cold outreach or advertising.
+Generational and digital literacy shifts favour adoption, since younger small and medium
+sized enterprise owners and operations staff are more comfortable transacting in
+stablecoins and using app based workflows than the generation that built trust
+relationships with relationship bankers, which is what makes a non bank, app first
+alternative to a letter of credit socially plausible now in a way it was not a decade ago.
+Founder led business development depends on social capital with freight forwarders, who
+see the small and medium sized enterprise trust gap problem earlier than banks do and have
+no commercial reason not to refer a deal, a relationship dynamic the go to market plan
+deliberately leans on in preference to paid acquisition channels.
+
+\subsection*{Technological}
+
+Two specific technology maturations make Blockmediary possible now in a way it would not
+have been a few years ago. First, low cost, fast finality layer two blockchains such as
+Base make micro value on chain escrow economically viable, where the equivalent
+transaction would have been cost prohibitive on the Ethereum base layer. Second, large
+language model based document understanding makes automated verification of commercial
+invoices, bills of lading, and packing lists against a rules engine accurate enough to
+meaningfully reduce, though not eliminate, human review, in a way earlier optical
+character recognition only approaches could not, since they could not handle the
+judgement calls that Uniform Customs and Practice for Documentary Credits style document
+checking requires. Legal recognition of electronic trade documents is catching up to the
+underlying technology: the United Kingdom's Electronic Trade Documents Act 2023 and the
+United Nations Commission on International Trade Law's Model Law on Electronic
+Transferable Records, already adopted in the Dubai International Financial Centre,
+Singapore, and Bahrain, are what will eventually let Blockmediary move beyond scanned
+portable document format bills of lading to fully electronic, title conferring electronic
+bills of lading \citep{etda2023, uncitralmletr}, though this remains a near term roadmap
+item gated by the convergence of law and technology rather than by engineering alone. It
+is worth noting explicitly that the prior generation of blockchain trade finance
+technology failed for organisational reasons rather than technical ones: Komgo, Contour,
+we.trade, and the Marco Polo Network all had working distributed ledger technology,
+whether Corda, Quorum, or Hyperledger Fabric, and instead failed on adoption economics and
+consortium governance, discussed further in section four. The lesson for Blockmediary's
+own technology strategy is that technical sophistication is necessary but not sufficient,
+and that the architecture must also avoid requiring closed network infrastructure in which
+both sides of a transaction need to be onboarded to the same platform. A further point
+worth stating as a risk rather than only an enabler is that the releaser private key
+represents a single point of failure, identified in Blockmediary's own risk register as
+the platform's top security risk \citep{internallegalrisk2026}; production deployment
+requires a hardware security module or threshold signature scheme rather than a hot
+wallet, which remains a live technological constraint on scaling past the minimum viable
+product. Finally, cloud and vendor infrastructure, including know your business providers,
+large language model application programming interfaces, and blockchain remote procedure
+call nodes, is now mature and accessible enough for a small team to assemble a compliant
+technology stack quickly, which lowers the barrier to entry for Blockmediary itself but
+equally lowers it for any future copycat competitor.
+
+\subsection*{Legal}
+
+The regulatory picture facing Blockmediary is a genuine patchwork rather than a single
+hurdle. The United Kingdom imposes stablecoin custody rules and cryptoasset service
+provider licensing requirements, the European Union imposes Markets in Crypto Assets
+Regulation authorisation, mandatory from July 2026, alongside Digital Operational
+Resilience Act obligations, and the United Arab Emirates imposes the Central Bank's
+Payment Token Services Regulation on the mainland and the Virtual Assets Regulatory
+Authority's Rulebook in Dubai, against the comparatively lighter touch free zone
+frameworks in the Dubai International Financial Centre and the Abu Dhabi Global Market;
+each jurisdiction imposes a different licensing threshold, and the full picture is set out
+in Blockmediary's own thirty one item risk register \citep{internallegalrisk2026}. Anti
+money laundering, know your customer, and sanctions compliance form a mandatory gate on
+every individual deal rather than a one time cost, since customer due diligence and
+screening obligations must be satisfied before funding and sanctions lists must be
+re-checked at both funding and release, which is an ongoing operational and legal cost
+baked directly into Blockmediary's unit economics. Smart contract enforceability remains
+legally unsettled in the United Kingdom, and Blockmediary mitigates this with a separate,
+signed Trade Escrow Agreement that governs legal rights, with the smart contract itself
+serving only as the execution layer; none of the researched blockchain trade finance
+competitors that failed, being Contour, we.trade, and the Marco Polo Network, solved this
+question any differently, which suggests it is an industry wide open question rather than
+a Blockmediary specific gap. Data protection law directly shapes the product's
+architecture: the General Data Protection Regulation's right to erasure is fundamentally
+incompatible with writing personal data to an immutable public chain, which is why the
+confirmed architecture keeps all personal data off chain and commits only hashes and
+wallet addresses on chain, a legal constraint that became a core design decision rather
+than an afterthought. Legal recognition gaps directly limit product scope today: without
+fully integrated Electronic Trade Documents Act or Model Law on Electronic Transferable
+Records qualifying electronic bill of lading systems, Blockmediary's minimum viable product
+accepts scanned portable document format documents only, which sets a legal maturity
+ceiling on how far the paperless pitch can go until electronic bill of lading
+infrastructure and law mature together. Finally, legal exclusions define the addressable
+market as much as economics do: Turkiye and mainland China are excluded primarily because
+their respective stablecoin payment bans make Blockmediary's core product illegal there,
+not because the underlying market opportunity is unattractive.
+
+\subsection*{Environmental}
+
+Chain choice carries a genuine environmental, social, and governance angle worth using in
+the pitch. Base runs on Ethereum's proof of stake consensus mechanism, so Blockmediary's on
+chain settlement layer carries a materially smaller energy footprint than proof of work
+alternatives such as Bitcoin, which is a minor but genuine differentiator for judges or
+investors screening for environmentally conscious infrastructure choices. Digitising trade
+documentation also reduces physical logistics overhead: replacing courier driven paper
+document exchange, a real cost and emissions source in traditional letter of credit and
+documentary trade, with digital upload and verification is a modest environmental
+positive, secondary to the cost and speed argument but usable as supporting colour.
+Climate linked supply chain disruption is an indirect but real risk factor: extreme
+weather affecting shipping routes and ports, for example Red Sea or Suez disruptions or
+storm driven port congestion, affects the underlying trade volumes and shipment timelines
+that Blockmediary's document release logic depends upon, a factor outside Blockmediary's
+control but worth a brief acknowledgement in any risk discussion. Environmental regulation
+is, at present, the lightest of the six factors for Blockmediary at minimum viable product
+stage: unlike the political, legal, and economic factors above, carbon reporting mandates
+and green trade finance requirements are not yet a binding constraint on the beachhead
+corridor, so this axis is best treated as a forward looking consideration rather than a
+current risk.
+
+%---------------------------------------------------------------
+\section*{4. Company Profiles}
+%---------------------------------------------------------------
+
+\subsection*{4.1 Tazapay}
+
+Tazapay is headquartered in Singapore, was founded in 2020, and has raised approximately
+fifty seven point nine million dollars, including a Series A led by Sequoia Southeast Asia
+and an extended Series B of approximately thirty six million dollars
+\citep{tazapayseriesa2023, tazapayseriesb2026}. It began as a payment gateway and now runs
+a flagship escrow as a service product embedded by application programming interface into
+business to business marketplaces spanning freight, gaming, travel, and small and medium
+sized enterprise import and export \citep{tazapayeaas2021}. It accepts payments in over
+one hundred and seventy three countries and pays out to over seventy markets. It has
+recently added stablecoin on and off ramps, but its core rails remain traditional banking
+over SWIFT and local networks, it is licensed by the Monetary Authority of Singapore, and
+it is fully custodial. Document and trust verification is manual: Tazapay staff check
+shipping documents before releasing funds, with a turnaround of roughly forty eight hours,
+and fees run zero point eight to three point eight per cent plus fixed charges. Its
+Trustpilot rating sits at approximately two out of five across four hundred and ninety
+five reviews, with recurring complaints about refund friction, arbitrary account
+suspensions, multi day payment freezes during fraud review, and, most damaging for an
+escrow brand specifically, allegations that funds were sometimes released to suppliers
+before goods had actually arrived \citep{tazapaytrustpilot}. Tazapay is, in substance, the
+clearest same problem, old architecture foil to Blockmediary: centralised, custodial, and
+human reviewed. Blockmediary targets precisely its weakest points, turning opacity and
+slow, arbitrary release into instant, artificial intelligence verified, on chain release.
+
+\subsection*{4.2 Truzo}
+
+Truzo is headquartered across Johannesburg and London, was founded in 2017, and has raised
+a comparatively thin approximately six hundred and forty thousand dollars, with its last
+disclosed round reported in 2020. It is a pure escrow as a service wallet, originally
+built for South African peer to peer and business anti fraud use cases, and expanded to
+the United Kingdom in 2023, becoming Financial Conduct Authority approved specifically to
+serve the United Kingdom to South Africa trade corridor, worth roughly ten billion pounds
+sterling a year \citep{truzouklaunch2023}. Fees are tiered by currency and transaction
+size, running zero point two two to three point one per cent, with an additional twenty
+five pound intermediary bank surcharge for non United Kingdom buyers \citep{truzofees}. It
+runs on traditional fiat rails through Currencycloud, with no blockchain and no
+stablecoins, and its verification is manual know your customer and anti money laundering
+compliance rather than document driven trust. Truzo shows a thin funding and traction
+history for a nine year old company, with its last raise reported in 2020 and only around
+six Trustpilot reviews \citep{truzotrustpilot}; its geographic corridor is narrow, and its
+fees at low transaction tiers, up to three point one per cent, are comparable to or worse
+than the letter of credit fees Blockmediary is trying to undercut. Truzo is, in substance,
+a regulated fintech escrow wallet rather than a trade finance product, with no document
+verification layer at all, and Blockmediary's pitch of removing banks entirely and cutting
+fees toward zero per cent is a direct rebuttal to Truzo's still bank routed, percentage
+fee model.
+
+\subsection*{4.3 XREX}
+
+XREX is headquartered in Taipei, was founded in 2018, and has raised approximately forty
+two point seven million dollars, including an eighteen point seven five million dollar
+strategic investment from Tether in 2024 \citep{xrextether2024}. It is a full blockchain
+enabled financial institution, offering crypto fiat exchange, custody, cross border
+payments, and a business to business escrow product called BitCheck, which holds crypto or
+fiat until both parties confirm fulfilment, for a fee of roughly ten United States dollar
+Tether equivalent \citep{xrexbitcheck}. Its XREX Pay product offers sub one per cent cross
+border transfers using USDT and USDC settlement, explicitly targeting emerging market
+small and medium sized enterprises facing United States dollar liquidity shortages. It has
+a strong Asia Pacific and emerging market focus, and leans on heavy regulatory licensing,
+including a Singapore Major Payment Institution licence and Taiwan Virtual Asset Service
+Provider registration, as its trust signal. XREX is fundamentally custodial, holding funds
+and keys, the opposite of Blockmediary's non custodial model, and its verification
+combines manual know your customer checks with automated wallet risk scoring rather than
+document based trust, with no evidence of invoice or bill of lading verification of any
+kind, and no open source contracts. XREX is the closest of the five comparators in ethos,
+being stablecoin first with an emerging market small and medium sized enterprise focus,
+but it is architecturally opposite to Blockmediary on custody and trust model: Blockmediary
+runs non custodial smart contracts with artificial intelligence document verification,
+where XREX runs a custodial, licensed intermediary with know your customer and wallet risk
+scoring.
+
+\subsection*{4.4 Komgo}
+
+Komgo is headquartered in Geneva, was founded in 2018, and has raised over twenty six
+million Swiss francs from a group of twenty to twenty five bank and corporate
+shareholders, including ABN AMRO, BNP Paribas, Citi, HSBC, Shell, and TotalEnergies
+\citep{komgoabout}. It is not a payments or escrow company at all: Komgo sells enterprise
+software as a service to banks and commodity traders to digitise letters of credit,
+guarantees, know your customer processes, and document exchange, and never touches funds
+directly \citep{komgoconsensys}. Notably, Komgo abandoned its own blockchain, originally
+built on Quorum, in favour of a centralised database for its core letter of credit
+product, with its chief executive describing dropping blockchain as one of the best
+decisions the company made; it remains fundamentally bank intermediated, since banks
+continue to underwrite and hold funds while Komgo simply moves the paperwork faster. As of
+2026 Komgo remains active and growing, with over four hundred corporate and institutional
+clients, over sixty connected banks, and recent partnership wins including Standard
+Chartered, Credit Agricole's Optimtrade, and the National Bank of Greece
+\citep{komgonewsroom2025}. Komgo is the clearest old guard foil among the five comparators.
+Its trajectory, retreating from blockchain back toward centralised infrastructure, is the
+opposite of Blockmediary's own direction, and it never removes banks from the transaction
+or serves small and medium sized enterprises directly, since such enterprises only reach
+Komgo indirectly through their bank.
+
+\subsection*{4.5 Contour: Shut Down 2023, a Case Study}
+
+Contour was headquartered in Singapore, founded in 2020 as a spin out of the earlier
+Voltron pilot on the R3 Corda platform, and raised approximately eighteen point three
+million dollars from nine bank shareholders, including HSBC, Citi, Standard Chartered, and
+BNP Paribas, together with R3, Bain, and CryptoBLK. It digitised letters of credit on R3
+Corda, a permissioned bank distributed ledger, cutting letter of credit processing from
+five to ten days down to under twenty four hours in pilot deployments. By 2023 it had
+grown to nine investor banks plus twenty two member banks across seventeen or more
+countries and had onboarded corporates including Posco International, yet actual usage was
+only around sixty to seventy transactions per month network wide, far too low to cover the
+cost of its enterprise infrastructure \citep{contourshutdown2023}. Contour shut down
+between October and November 2023, and the reasons matter directly for Blockmediary's own
+design choices. First, there was no lead investor: a coalition of competing banks with no
+single accountable funder struggled to align on a fresh capital raise. Second, Contour
+faced a closed network chicken and egg problem, since value only materialised once both
+counterparty banks were onboarded to Corda, adoption stayed patchy, and most real trades
+fell back to paper or SWIFT. Third, its revenue depended on bank goodwill rather than a
+self serve customer base, which proved unsustainable at roughly sixty to seventy
+transactions a month. Fourth, its permissioned infrastructure, priced per Corda node, was
+expensive relative to cheap public chain rails. Contour's brand and intellectual property
+were subsequently acquired by the fintech Xalts in February 2024, and then by XDC Ventures
+in 2025 in an attempt to revive the brand \citep{contourxalts2024}, though the original
+bank consortium model itself had already failed. The lessons apply directly to
+Blockmediary's design: avoid consortium governance in favour of a single accountable
+product rather than a coalition of competing banks; avoid any closed network onboarding
+requirement, since Blockmediary's buyer and seller need only hold USDC on Base rather than
+integrate with a counterparty bank; remove banks from the trust layer entirely, using
+artificial intelligence and a smart contract, rather than merely routing trust through
+issuing and advising banks faster; run a self serve fee model that does not depend on bank
+subsidy or goodwill; and build on a public layer two network with standard USDC rails
+rather than expensive permissioned enterprise distributed ledger technology. Contour's
+failure is also not an isolated case. The equivalent European Union bank consortium
+network we.trade, built on Hyperledger Fabric, entered liquidation in June 2022
+\citep{wetradefuturum}; the Marco Polo Network, a roughly forty five bank consortium also
+built on R3 Corda, filed for insolvency in February 2023 after a reported Bank of America
+funding deal fell through \citep{marcopoloinsolvency2023}; and TradeLens, the IBM and
+Maersk shipping logistics blockchain, was discontinued in November 2022, citing an
+inability to achieve full global industry collaboration \citep{tradelens2022}. Taken
+together, these four failures form a pattern rather than a series of one off events, and
+that pattern, bank consortium ownership, a closed permissioned network, dependence on
+every counterparty separately onboarding, and no single accountable driver of growth or
+funding, is precisely the pattern Blockmediary's design deliberately avoids.
+
+%---------------------------------------------------------------
+\section*{5. Other Adjacent Players}
+%---------------------------------------------------------------
+
+A number of further platforms surfaced during this research without being core to the
+five primary comparators, and are recorded briefly here rather than analysed in depth.
+dltledgers is a blockchain platform for small and medium sized enterprise trade and supply
+chain finance with direct overlap to Blockmediary's space, though it has not been
+researched deeply for this assessment. Damisa is a blockchain and stablecoin based
+business to business escrow product claiming an approximately eighty per cent cost
+reduction relative to traditional trade finance, and is a close conceptual peer to
+Blockmediary. Castler is an India based smart contract escrow infrastructure provider with
+an enterprise compliance angle, functioning as a regional peer in the Indian market.
+Vaultion is a claimed non custodial, multi chain escrow protocol reportedly supporting
+Base among other networks, but it should be treated as unverified: the only source located
+for it is a single startup directory listing, with no working website, source code
+repository, named team, or funding data found anywhere else, and it should not be
+presented as a substantiated competitor without that caveat attached
+\citep{vaultionlisting}. WorldFirst, operating as WorldTrade, offers smart contract
+business to business sourcing payment protection for small and medium sized enterprise
+buyers and is an adjacent buyer protection product rather than a direct comparator.
+EscrowLayer, Uniscrow, Escrowly, and Tscrow are generic crypto or stablecoin escrow
+application programming interfaces that are not trade finance specific, functioning as
+peer to peer or over the counter tooling rather than letter of credit replacements, and
+are accordingly a lower priority for comparison purposes. Bridge, operated by Stripe,
+BVNK, which is in the process of being acquired by Mastercard, Zero Hash, and Conduit are
+stablecoin cross border payment infrastructure providers whose rails overlap with
+Blockmediary's without offering an equivalent escrow or trust product. Ripple is a cross
+border settlement network connected to over three hundred financial institutions, but it
+is payments focused rather than escrow focused. Vakt, a sister project to Komgo, is a
+blockchain post trade platform for physical commodities and is accordingly adjacent to
+Komgo rather than to Blockmediary directly.
+
+%---------------------------------------------------------------
+\section*{6. Positioning Takeaways}
+%---------------------------------------------------------------
+
+Several conclusions follow from this comparison and should inform both the pitch deck and
+the individual report. The market has already tried two failed or limited approaches:
+bank consortiums, illustrated by Komgo's retreat from blockchain and by the Contour, we.
+trade, Marco Polo, and TradeLens shutdowns, and centralised fintech escrow, illustrated by
+Tazapay and Truzo's manual review, custodial risk, and fee levels that sit close to letter
+of credit fees. Blockmediary is positioned as the synthesis neither camp has reached. The
+absence of a lead investor and the wider problem of consortium governance is a proven
+failure mode rather than a hypothetical risk, evidenced directly by Contour's own account
+of its shutdown, and this is usable evidence that bank led blockchain trade finance
+struggles structurally to move quickly, in a way a focused, non bank owned product does
+not. Custody and verification are the two axes that most cleanly separate every researched
+competitor from Blockmediary, since no researched competitor is both non custodial and
+automated document verified at the same time, which is why the head to head comparison in
+section two is built around exactly those two dimensions. On fees specifically, Tazapay's
+zero point eight to three point eight per cent and Truzo's zero point two two to three
+point one per cent both land in or above the one to three per cent range typical of letter
+of credit fees, which Blockmediary is trying to beat with a target close to zero per cent
+in bank fees, a useful side by side statistic for a pitch slide. Finally, a caveat should
+be stated explicitly rather than omitted from the individual report: several of the
+platforms compared here, particularly Komgo and XREX, are larger, regulated, and well
+funded incumbents, and Blockmediary's honest counter to that scale is speed of trust,
+meaning artificial intelligence verification measured in minutes rather than bank
+underwriting measured in days, and cost, meaning the absence of a bank margin, rather than
+a claim to greater scale or regulatory maturity, which remain real gaps worth
+acknowledging directly in the reflection section of the individual report.
+
+\newpage
+\bibliographystyle{apacite}
+\bibliography{Competitor}
+
+\end{document}

@@ -29,17 +29,24 @@ export function assertLocalReleaser(dep: Deployment): NextResponse | null {
     return null;
   }
 
-  // Mainnet is deliberately refused, and this is the one place a chain id is
-  // still checked on purpose. The blocker is not connectivity — chainFor() can
-  // reach Base Mainnet — it is that the releaser key lives in an environment
-  // variable, which is a hot wallet, not custody. docs/legal-risk.md §5.4.1
-  // names this the platform's top security risk and requires an HSM or a
-  // threshold/multisig scheme before real funds are at stake.
-  if (dep.chainId === 8453) {
+  // Mainnet is refused BY DEFAULT, and this is the one place a chain id is still
+  // checked on purpose. The blocker is not connectivity — chainFor() can reach
+  // Base Mainnet — it is that the releaser key lives in an environment variable,
+  // which is a hot wallet, not custody. docs/legal-risk.md §5.4.1 names this the
+  // platform's top security risk and requires an HSM or a threshold/multisig
+  // scheme before real funds are at stake in production.
+  //
+  // ALLOW_MAINNET_RELEASE=1 is a deliberate, documented override for a CONTROLLED
+  // team demo only — trivial amounts, team-held wallets, a throwaway releaser key.
+  // It does NOT make env-var custody adequate for production; it accepts the risk
+  // for a bounded presentation. When set, we fall through to the key checks below,
+  // which still refuse a missing or public-Hardhat releaser key.
+  if (dep.chainId === 8453 && process.env.ALLOW_MAINNET_RELEASE !== "1") {
     return deny(
       "Releaser signing is disabled on Base Mainnet. The key is held in an " +
         "environment variable, which is not adequate custody for real funds — " +
-        "move RELEASER_ROLE to a multisig or HSM first (legal-risk.md §5.4.1).",
+        "move RELEASER_ROLE to a multisig or HSM first (legal-risk.md §5.4.1). " +
+        "For a controlled team demo only, set ALLOW_MAINNET_RELEASE=1 to override.",
     );
   }
 

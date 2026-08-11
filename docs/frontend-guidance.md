@@ -1,7 +1,7 @@
 # Blockmediary — Frontend Build Guidance
 
 **Status:** v0.1 draft · **Date:** 2026-07-05
-**Derived from:** [Flow Guidance](Flow%20Guidance/) (`deal-flow-stages.md`, `operational-flow-v1.md`, `verification-model-v2.md`), [technical-requirements.md](technical-requirements.md) (TRD v0.4 §7), [domain-rules.md](domain-rules.md), [plans/implementation-phases.md](../plans/implementation-phases.md) (Phase 2)
+**Derived from:** [Flow Guidance](Flow%20Guidance/) (`deal-flow-stages.md`, `operational-flow-v1.md`, `verification-model-v2.md`), [technical-requirements.md](technical-requirements.md) (TRD v0.4 §7), [domain-rules.md](domain-rules.md)
 **Audience:** whoever builds `app/` — screens, states, and the engineering bindings in one place.
 
 > **Authority note.** Where the Flow Guidance docs and the TRD conflict (examiner-on-every-deal,
@@ -192,7 +192,7 @@ showing `Discrepant` with state unmoved.
 
 ## 6. Engineering bindings
 
-### 6.1 Stack (locked — TRD §7.3, implementation-phases Phase 2)
+### 6.1 Stack (locked — TRD §7.3)
 
 Next.js 14/15 App Router · wagmi **v2** + viem 2.x · RainbowKit · @tanstack/react-query ·
 Tailwind. **CSR-only for MVP** (TR-6.3.3; SSR cookie hydration is a full-product addition). All
@@ -287,7 +287,7 @@ Money in all API payloads is **string minor units** (TR-6.6); display via a sing
 | Full doc set / BoL-first sequencing | Upload pane is one row of a spec-driven `requiredDocuments` checklist |
 | Staged release (if adopted) | Timeline + release panel driven by data (release events array), not a single boolean |
 | Notifications (FR-17) | Event watcher already centralises `StateChanged` handling — notification hook attaches there |
-| Chain failover | All chain constants flow from `lib/chains.ts` only (implementation-phases chain map) |
+| Chain failover | All chain constants flow from `lib/chains.ts` only |
 
 ## 9. Open decisions this document does not resolve
 
@@ -301,8 +301,7 @@ Logged from the Flow Guidance sanity check (2026-07-05) + TRD §12; each names t
 | 4 | MVP doc set — invoice-only vs. BoL-first six (flow-v1 vs. TRD Q6) | Reconciled for demo (invoice), open for product | Checklist ordering + BoL "original" copy |
 | 5 | Objection window 48h, £50k cap (TRD Q2/Q3) | Open defaults | Render from config/spec values, never hardcode |
 | 6 | Auth mechanism — SIWE vs. JWT vs. both (TRD Q18) | Open; platform role may have no wallet | Blocks 🔵 role-based onboarding; `useRole()` seam holds |
-| 7 | `plans/mvp-slice.md` referenced throughout TRD/implementation-phases but **absent from the repo** | Broken reference | Restore the file or repoint references to `implementation-phases.md` |
 
 ---
 
-*Update this document alongside changes to the Flow Guidance docs, TRD §7, or `plans/implementation-phases.md`. The §9 table shrinks as the team locks decisions.*
+*Update this document alongside changes to the Flow Guidance docs or TRD §7. The §9 table shrinks as the team locks decisions.*

@@ -281,7 +281,7 @@ contract.
 
 ### 4.5 Events (TR-3.5)
 
-- **TR-3.5** (FR-5, FR-17, AP-4) — Every state transition emits an event so the off-chain layer (audit trail, UI) can react without polling. Events: `DealCreated(dealId, buyer, seller, amount)`, `Funded(dealId, amount)`, `VerdictRecorded(dealId)`, `Released(dealId, amount)`, `Refunded(dealId, amount)`, `Cancelled(dealId)`, `StateChanged(dealId, from, to)` — the canonical event the UI subscribes to. Roadmap adds `DisputeRaised` / `DisputeResolved`.
+- **TR-3.5** (FR-5, FR-17, AP-4) — Every state transition emits an event so the off-chain layer (audit trail, UI) can react without polling. Events: `DealCreated(dealId, buyer, seller, amount)`, `Funded(dealId, amount)`, `VerdictRecorded(dealId)`, `Released(dealId, amount)`, `Refunded(dealId, amount)`, `Cancelled(dealId)`, `StateChanged(dealId, from, to)` — the canonical event the off-chain layer reacts to. Roadmap adds `DisputeRaised` / `DisputeResolved`.
 - `dealId` is indexed on all events. Events are observability only — the audit trail (TR-4.6), not events, is the authoritative record (AP-4).
 
 ### 4.6 Errors & safety patterns (TR-3.7)
@@ -433,13 +433,13 @@ appropriate key and reconciles against the receipt.
   - `GET /api/escrow/status`, `GET /api/escrow/summary`, `GET /api/escrow/deals`, `GET /api/escrow/deals/[dealId]`, `GET /api/escrow/companies` — deal state and balances, per-account aggregates, the caller's deals with their per-deal role, a single deal (403 if the caller is not a party), and the counterparty picker.
 - **TR-6.2.3 (releaser-key handling)** — Routes that move state or hold secrets run server-side only; the releaser key is read from the environment and never reaches the client bundle. In the delivered baseline the server-side signer is guarded: it refuses to sign (HTTP 501) on any network other than the local development chain, so the publicly-known development keys can never authorise a transaction on a public network. Deploying against a public network requires a real releaser key supplied from the environment (see §9.1).
 - **TR-6.2.4 (authentication) — Delivered.** Every escrow route authenticates the caller before other processing, via the account session (short-lived server-issued cookie) established at login. Wallet control is proven separately through SIWE (EIP-4361) wallet linking. Failed authentication returns a generic `401`; an authenticated caller lacking rights returns `403`.
-- **TR-6.2.5 (authorization) — Delivered.** Each route enforces role- and deal-scoped authorization: a party may act only on deals where they are the recorded buyer or seller; read routes return `403` when the caller is not a party. Roles are **per-deal**, derived from the deal's recorded parties, not from a global account flag; the account type distinguishes client from operator surfaces. The authorising identity is written to the audit entry's actor field. The role set accommodates a platform / intermediary initiator that may create a deal and invite both counterparties but is not itself buyer or seller.
+- **TR-6.2.5 (authorization) — Delivered.** Each route enforces role- and deal-scoped authorization: a party may act only on deals where they are the recorded buyer or seller; read routes return `403` when the caller is not a party. Roles are **per-deal**, derived from the deal's recorded parties, not from a global account flag; the account type distinguishes client from operator surfaces. The authorising identity is written to the audit entry's actor field. The per-deal role model is designed to accommodate a future platform / intermediary initiator that creates a deal and invites both counterparties without being buyer or seller; that platform-initiated flow is **roadmap** — in the delivered baseline a deal is created by a party to the trade.
 - **TR-6.2.6 (transport & abuse hardening) — Roadmap.** TLS on every surface, per-client rate limiting (`429` + `Retry-After`), a strict CORS allowlist, and request-size limits. Required before any third-party (partner) exposure.
 - **TR-6.2.7 (partner API keys) — Roadmap.** Per-client API keys (header-borne, individually revocable, stored as salted hashes, rotated on schedule and on suspected compromise) for the FR-19 partner surface.
 
 ### 7.3 Client / UI interface (TR-6.3)
 
-- **TR-6.3.1** (FR-5, FR-6, FR-16) — Next.js (App Router) + wagmi v2 + viem. Wallet connect and on-chain interaction via wagmi hooks (`useAccount`, `useReadContract`, `useWriteContract`, `useWaitForTransactionReceipt`, `useWatchContractEvent` on `StateChanged`). **Delivered.**
+- **TR-6.3.1** (FR-5, FR-6, FR-16) — Next.js (App Router) + viem, with a thin, dependency-free EIP-1193 wrapper over the injected browser wallet (no wagmi / RainbowKit / WalletConnect). Reads go through a viem public client; writes are prepared server-side and signed by the injected wallet; deal state is surfaced to the dashboards by polling a periodic refresh, not an on-chain event subscription. **Delivered.**
 - **TR-6.3.2** — Buyer surface: USDC balance, **Approve** then **Deposit**, where `approve` is a write against the USDC token contract (exact amount) and **Deposit is gated on the approve receipt**. Seller surface: document submission → verdict → **Release** (enabled when `state == ReleasePending`). **Delivered.**
 - **TR-6.3.3** (role-based onboarding) — The client provides role-specific surfaces (buyer, seller, operator) and role-agnostic initiation with counterparty invitation (FR-1, TR-4.1.4). The acting role is established at authentication (TR-6.2.4–6.2.5). **Delivered.**
 
@@ -557,11 +557,11 @@ appropriate key and reconciles against the receipt.
 ### 10.2 CI gates (TR-9.2)
 
 - **TR-9.2.1** — CI runs on every PR to `main`: agent-sync (write-mode, as the agent directory is gitignored), the agent-privilege gate, data-fixture validation (every JSON / JSONL parses), and a Python compile check.
-- **TR-9.2.2** — Contract and app gates run alongside the packages: `hardhat test` (TR-3.8), the Solidity anti-pattern grep (§4.6), and the app typecheck / lint plus the wagmi-v1-name grep. Branch protection requiring these checks is set by the repository owner.
+- **TR-9.2.2** — The contract gates run in CI alongside the package checks: `hardhat test` (TR-3.8) and the Solidity anti-pattern grep (§4.6). The web app's own typecheck / lint exist as package scripts but are **not yet wired into CI** (roadmap). Branch protection requiring these checks is set by the repository owner.
 
 ### 10.3 Demonstrator deployment (TR-9.3)
 
-- **TR-9.3** — A seed script creates the demonstrator deal(s); a runbook covers preflight checks, a fresh redeploy for clean state, and a scripted walkthrough with fallbacks. A pre-recorded fallback recording exists before the live demonstration. All demonstrator data is synthetic (TR-8.5).
+- **TR-9.3** — A seed script (`app/prisma/seed-demo.mjs`) provisions the demonstrator company workspaces; deals are created live through the two-party flow during the walkthrough. A runbook (preflight checks, a fresh redeploy for clean state, a scripted walkthrough with fallbacks) and a pre-recorded fallback recording are **roadmap** demo-preparation items, to exist before the live demonstration. All demonstrator data is synthetic (TR-8.5).
 
 ### 10.4 Rollback (TR-9.4)
 
@@ -571,7 +571,7 @@ appropriate key and reconciles against the receipt.
 
 ## 11. Acceptance criteria
 
-### 11.1 Delivered acceptance (all pass)
+### 11.1 Delivered acceptance (pending acceptance verification)
 
 | # | Criterion | Verifies |
 |---|-----------|----------|

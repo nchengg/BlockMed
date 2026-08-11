@@ -14,7 +14,7 @@ The frontend is a Next.js web app that connects to the on-chain escrow (Base Sep
 - **Buyer flow:** Connect wallet → Approve USDC → Deposit into escrow → See "funds locked"
 - **Seller flow:** See locked funds → Upload invoice → Get verdict → Trigger release
 
-Full spec: [`docs/technical-requirements.md`](docs/technical-requirements.md) · [`plans/implementation-phases.md`](plans/implementation-phases.md)
+Full spec: [`docs/technical-requirements.md`](docs/technical-requirements.md)
 
 ---
 
@@ -170,6 +170,5 @@ These don't block the MVP demo but need resolution before Phase 5:
 | Product spec | [`docs/product-blockmediary.md`](docs/product-blockmediary.md) |
 | Domain rules | [`docs/domain-rules.md`](docs/domain-rules.md) |
 | Technical requirements | [`docs/technical-requirements.md`](docs/technical-requirements.md) |
-| Implementation phases | [`plans/implementation-phases.md`](plans/implementation-phases.md) |
 | Architecture | [`docs/architecture.md`](docs/architecture.md) |
 | Business requirements | [`docs/business-requirements.md`](docs/business-requirements.md) |

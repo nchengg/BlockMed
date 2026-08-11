@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { formatUnits } from "viem";
 import { loadDeployment, publicClient, usdcAbi, escrowAbi, STATE_NAMES } from "@/lib/escrow/chain";
-import { getStore, getDeal } from "@/lib/escrow/store";
+import { getDeal } from "@/lib/escrow/store";
+import { expectedSignerFor } from "@/lib/escrow/partyWallets";
 
 export const dynamic = "force-dynamic";
 
@@ -13,10 +14,9 @@ export async function GET(req: Request) {
   try {
     const dep = loadDeployment();
     const pc = publicClient(dep);
-    const store = getStore();
 
     const appDealId = new URL(req.url).searchParams.get("dealId");
-    const deal = appDealId ? getDeal(store, appDealId) : undefined;
+    const deal = appDealId ? await getDeal(appDealId) : undefined;
 
     const balanceOf = (addr: string) =>
       pc.readContract({
@@ -26,33 +26,56 @@ export async function GET(req: Request) {
         args: [addr],
       }) as Promise<bigint>;
 
+    // Whose balances to show: this deal's actual parties where we know them,
+    // falling back to the demo wallets on the local chain. A public deployment
+    // has no party keys at all, so there is nothing to fall back to there — the
+    // balance is simply omitted rather than reported as someone else's.
+    const buyerAddr =
+      (deal ? await expectedSignerFor(deal, "buyer") : null) ?? dep.accounts.buyer ?? null;
+    const sellerAddr =
+      (deal ? await expectedSignerFor(deal, "seller") : null) ?? dep.accounts.seller ?? null;
+
     const [buyerBal, sellerBal, escrowBal] = await Promise.all([
-      balanceOf(dep.accounts.buyer),
-      balanceOf(dep.accounts.seller),
+      buyerAddr ? balanceOf(buyerAddr) : Promise.resolve(null),
+      sellerAddr ? balanceOf(sellerAddr) : Promise.resolve(null),
       balanceOf(dep.escrow),
     ]);
 
     let stateName: string | null = null;
+    let dealAmount: string | null = null;
     if (deal?.onChainDealId) {
-      const s = (await pc.readContract({
-        address: dep.escrow,
-        abi: escrowAbi,
-        functionName: "state",
-        args: [deal.onChainDealId],
-      })) as number;
+      const [s, d] = await Promise.all([
+        pc.readContract({
+          address: dep.escrow,
+          abi: escrowAbi,
+          functionName: "state",
+          args: [deal.onChainDealId],
+        }) as Promise<number>,
+        // deals(dealId) → { buyer, seller, amount } — THIS deal's registered amount,
+        // as opposed to the chain-global wallet/contract balances below.
+        pc.readContract({
+          address: dep.escrow,
+          abi: escrowAbi,
+          functionName: "deals",
+          args: [deal.onChainDealId],
+        }) as Promise<[string, string, bigint]>,
+      ]);
       stateName = STATE_NAMES[s];
+      dealAmount = d[2] > 0n ? formatUnits(d[2], 6) : null;
     }
 
     return NextResponse.json({
       ok: true,
       addresses: { escrow: dep.escrow, usdc: dep.usdc, ...dep.accounts },
       balances: {
-        buyer: formatUnits(buyerBal, 6),
-        seller: formatUnits(sellerBal, 6),
+        buyer: buyerBal === null ? null : formatUnits(buyerBal, 6),
+        seller: sellerBal === null ? null : formatUnits(sellerBal, 6),
         escrow: formatUnits(escrowBal, 6),
       },
       dealId: deal?.onChainDealId ?? null,
+      dealAmount,
       terms: deal?.terms ?? null,
+      review: deal?.review ?? null,
       parties: deal?.parties ?? {},
       state: stateName,
       audit: deal?.audit ?? [],

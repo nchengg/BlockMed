@@ -1,0 +1,13 @@
+{
+  "chainId": 84532,
+  "rpcUrl": "https://sepolia.base.org",
+  "usdc": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+  "escrow": "0x17e8fd47f082157cd8808424de7a3fe670d0f0ac",
+  "accounts": {
+    "releaser": "0x15B8649b81cd5C877ba5b78D6C88cD3fC44Ccde1"
+  },
+  "admin": "0xb71818fa1f8a40f1a4C894e21E69d28Bda75852b",
+  "realToken": true,
+  "explorer": "https://sepolia.basescan.org",
+  "deployedAt": "2026-08-04T17:11:10.720Z"
+}

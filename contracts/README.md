@@ -1,7 +1,7 @@
 # Blockmediary — Smart Contracts
 
-Phase 1 of [plans/implementation-phases.md](../plans/implementation-phases.md): the narrow
-`Escrow` contract from [TRD §4](../docs/technical-requirements.md), plus its test suite.
+The narrow `Escrow` contract from [TRD §4](../docs/technical-requirements.md), plus its test
+suite.
 
 ## What the contract is (and deliberately isn't)
 

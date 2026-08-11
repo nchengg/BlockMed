@@ -49,7 +49,7 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: St
 
   // Real-path grading state.
   const [grading, setGrading] = useState(false);
-  const [verdict, setVerdict] = useState<{ verdict: 'Compliant' | 'Discrepant'; rules: RuleResult[]; txHash?: string } | null>(null);
+  const [verdict, setVerdict] = useState<{ verdict: 'Compliant' | 'Discrepant' | 'Held'; rules: RuleResult[] } | null>(null);
   const [gradeError, setGradeError] = useState<string | null>(null);
 
   // Read the live chain once on mount to decide real-vs-simulated.
@@ -73,27 +73,28 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: St
   // Prefill the B/L fields from the REAL on-chain terms so a Compliant verdict is
   // reachable; fall back to the mock deal for display when terms aren't loaded yet.
   const terms = status?.terms ?? null;
-  const [fields, setFields] = useState<BolFields>({
-    blNumber: '',
-    shipperName: '',
-    consigneeName: '',
-    amountUsdc: '',
-    shipmentDate: '',
-  });
+  const EMPTY_BOL: BolFields = {
+    blNumber: '', shipperName: '', consigneeName: '', goodsDescription: '',
+    shippedOnBoardDate: '', vessel: '', voyageNumber: '', portOfLoading: '',
+    portOfDischarge: '', containerNumber: '', packages: '', grossWeight: '',
+    signedBy: '', cleanOnBoard: 'clean', onDeckNotation: '', freightPayment: '',
+  };
+  const [fields, setFields] = useState<BolFields>(EMPTY_BOL);
   // Seed the form once the on-chain terms arrive (or from the mock deal as a fallback).
   useEffect(() => {
     if (!loaded) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFields({
+    setFields(f => ({
+      ...f,
       blNumber: `BL-${deal.dealReference}`,
       shipperName: terms?.sellerName ?? deal.seller.businessName,
       consigneeName: terms?.buyerName ?? deal.buyer.businessName,
-      amountUsdc: terms?.amountUsdc ?? deal.amount.toFixed(2),
-      shipmentDate: terms?.shipmentDeadline ?? '',
-    });
+      goodsDescription: terms?.goods ?? '',
+      shippedOnBoardDate: terms?.shipmentDeadline ?? '',
+    }));
     // Seed only when the loaded terms change; user edits afterwards are preserved.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loaded, terms?.sellerName, terms?.buyerName, terms?.amountUsdc, terms?.shipmentDeadline]);
+  }, [loaded, terms?.sellerName, terms?.buyerName, terms?.goods, terms?.shipmentDeadline]);
 
   const setField = (k: keyof BolFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setFields(f => ({ ...f, [k]: e.target.value }));
@@ -143,7 +144,7 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: St
         markUploadFailed();
         return;
       }
-      setVerdict({ verdict: r.verdict, rules: r.rules, txHash: r.txHash });
+      setVerdict({ verdict: r.verdict, rules: r.rules });
       if (r.verdict === 'Compliant') {
         // Mirror the real submission into the isolated mock store so /dashboard
         // reflects it, then advance to the release/check step.
@@ -311,8 +312,16 @@ export function Step2UploadDocuments({ onSubmitted }: { onSubmitted: (result: St
               <Field label="B/L number" value={fields.blNumber} onChange={setField('blNumber')} />
               <Field label="Shipper (seller)" value={fields.shipperName} onChange={setField('shipperName')} />
               <Field label="Consignee (buyer)" value={fields.consigneeName} onChange={setField('consigneeName')} />
-              <Field label="Amount on B/L (USDC)" value={fields.amountUsdc} onChange={setField('amountUsdc')} />
-              <Field label="Shipment date (YYYY-MM-DD)" value={fields.shipmentDate} onChange={setField('shipmentDate')} />
+              <Field label="Description of goods" value={fields.goodsDescription} onChange={setField('goodsDescription')} />
+              <Field label="Shipped on board date (YYYY-MM-DD)" value={fields.shippedOnBoardDate} onChange={setField('shippedOnBoardDate')} />
+              <div className="section-label" style={{ fontSize: 10, marginTop: 6 }}>RECORDED ON THE B/L (NOT MACHINE-GRADED)</div>
+              <Field label="Vessel" value={fields.vessel} onChange={setField('vessel')} />
+              <Field label="Voyage No." value={fields.voyageNumber} onChange={setField('voyageNumber')} />
+              <Field label="Port of Loading" value={fields.portOfLoading} onChange={setField('portOfLoading')} />
+              <Field label="Port of Discharge" value={fields.portOfDischarge} onChange={setField('portOfDischarge')} />
+              <Field label="Container No." value={fields.containerNumber} onChange={setField('containerNumber')} />
+              <Field label="Packages" value={fields.packages} onChange={setField('packages')} />
+              <Field label="Gross Weight" value={fields.grossWeight} onChange={setField('grossWeight')} />
             </div>
           )}
 

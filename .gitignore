@@ -27,7 +27,11 @@ node_modules/
 contracts/artifacts/
 contracts/cache/
 contracts/ignition/deployments/
-contracts/deployments/
+contracts/deployments/*
+# ...but the public deployment IS shared: it holds only addresses (no keys), and
+# teammates need it to point the app at the same contract. local.json stays out —
+# it is regenerated on every `npx hardhat node` and differs per machine.
+!contracts/deployments/baseSepolia.json
 contracts/typechain-types/
 
 # App runtime data (Phase 3+)

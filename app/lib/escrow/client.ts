@@ -128,6 +128,9 @@ export type DealListItem = {
   /** Every recorded action on this deal, oldest first (FR-14). */
   audit?: AuditEntry[];
   createdAt: string | null;
+  /** The fee quote agreed at acceptance — null on deals struck before pricing existed. */
+  quote?: import('@/lib/pricing/quote').FeeQuote | null;
+  feePaymentStatus?: string;
 };
 
 export type DealSummary = {
@@ -262,4 +265,12 @@ export function resetMyDeals(actor: ActorCtx) {
   return post<{ ok: boolean; error?: string; cleared?: number }>(
     "/api/escrow/reset", { mine: true, actor },
   );
+}
+
+/** A live quote for terms not yet accepted — shown BEFORE the parties commit. */
+export function previewQuote(amountUsdc: string): Promise<{
+  ok: boolean; error?: string;
+  quote?: import("@/lib/pricing/quote").FeeQuote;
+}> {
+  return post("/api/pricing/quote", { amountUsdc });
 }

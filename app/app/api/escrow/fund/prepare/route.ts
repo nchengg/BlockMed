@@ -5,6 +5,8 @@ import { getDeal, readDealId } from "@/lib/escrow/store";
 import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal } from "@/lib/escrow/roles";
 import { expectedSignerFor } from "@/lib/escrow/partyWallets";
+import { platformFeesTotal, toMinor } from "@/lib/pricing/quote";
+import { feeCollectionEnabled, treasury } from "@/lib/pricing/treasury";
 
 // Prepare the two transactions the BUYER signs in their own wallet.
 //
@@ -53,6 +55,14 @@ export async function POST(req: Request) {
   const pc = publicClient(dep);
   const amountMinor = parseUnits(deal.terms.amountUsdc, 6);
 
+  // Platform fees are a SEPARATE transfer to the treasury — never a slice of the
+  // escrow. The contract pays the recorded seller the recorded amount, and
+  // nothing here may quietly reduce that (lib/pricing/quote.ts).
+  const t = treasury();
+  const collectFees = feeCollectionEnabled() && !!deal.quote;
+  const feeMinor = collectFees ? (toMinor(platformFeesTotal(deal.quote!)) ?? 0n) : 0n;
+  const requiredMinor = amountMinor + feeMinor;
+
   // Same pre-flight as the server-signed path: a shortfall is predictable, and
   // saying so beats letting MetaMask show a failing transaction.
   const held = (await pc.readContract({
@@ -62,13 +72,14 @@ export async function POST(req: Request) {
     args: [expected as `0x${string}`],
   })) as bigint;
 
-  if (held < amountMinor) {
+  if (held < requiredMinor) {
     return NextResponse.json(
       {
         error:
-          `Not enough USDC in your wallet. This deal needs ${deal.terms.amountUsdc} USDC ` +
+          `Not enough USDC in your wallet. This deal needs ${formatUnits(requiredMinor, 6)} USDC ` +
+          (feeMinor > 0n ? `(${deal.terms.amountUsdc} escrow + ${formatUnits(feeMinor, 6)} platform fees) ` : "") +
           `but ${expected} holds ${formatUnits(held, 6)}.`,
-        needed: deal.terms.amountUsdc,
+        needed: formatUnits(requiredMinor, 6),
         held: formatUnits(held, 6),
       },
       { status: 409 },
@@ -85,7 +96,7 @@ export async function POST(req: Request) {
   })) as bigint;
 
   const steps: {
-    kind: "approve" | "deposit";
+    kind: "approve" | "deposit" | "fee";
     to: string;
     data: string;
     label: string;
@@ -115,9 +126,30 @@ export async function POST(req: Request) {
     label: `Lock ${deal.terms.amountUsdc} USDC in escrow`,
   });
 
+  // Fee transfer LAST: the escrow deposit is the transaction that matters, and
+  // ordering it first means a failed fee payment leaves a funded deal rather
+  // than a paid fee with no escrow behind it.
+  if (collectFees && feeMinor > 0n && t.ok) {
+    steps.push({
+      kind: "fee",
+      to: dep.usdc,
+      data: encodeFunctionData({
+        abi: usdcAbi,
+        functionName: "transfer",
+        args: [t.address, feeMinor],
+      }),
+      label: `Pay ${formatUnits(feeMinor, 6)} USDC platform fees`,
+    });
+  }
+
   return NextResponse.json({
     ok: true,
     from: expected,
+    quote: deal.quote ?? null,
+    feesUsdc: formatUnits(feeMinor, 6),
+    totalUsdc: formatUnits(requiredMinor, 6),
+    feeRecipient: collectFees && t.ok ? t.address : null,
+    feeRecipientIsPlaceholder: t.ok ? t.isPlaceholder : null,
     chainId: dep.chainId,
     // The wallet may need to switch (or add) this network. Send the real RPC
     // and name rather than letting the client assume localhost.

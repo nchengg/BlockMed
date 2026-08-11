@@ -23,6 +23,7 @@ export async function POST(req: Request) {
   const appDealId = readDealId(body);
   const depositHash = typeof body?.depositHash === "string" ? body.depositHash : null;
   const approveHash = typeof body?.approveHash === "string" ? body.approveHash : null;
+  const feeHash = typeof body?.feeHash === "string" ? body.feeHash : null;
   if (!appDealId || !depositHash) {
     return NextResponse.json({ error: "Missing deal id or transaction hash." }, { status: 400 });
   }
@@ -80,6 +81,28 @@ export async function POST(req: Request) {
       accountId: actor?.accountId,
     });
   }
+  // Fee payment is recorded SEPARATELY from the escrow lifecycle, and its
+  // failure never blocks or alters a release: the trade amount is already
+  // safely in the contract by this point. An unpaid fee is a receivable, not a
+  // reason to hold someone's shipment payment.
+  if (feeHash) {
+    const feeReceipt = await pc
+      .waitForTransactionReceipt({ hash: feeHash as `0x${string}`, timeout: 60_000 })
+      .catch(() => null);
+    deal.feePaymentStatus = feeReceipt?.status === "success" ? "paid" : "failed";
+    deal.feeTxHash = feeHash;
+    appendAudit(deal, {
+      actor: "buyer",
+      action: feeReceipt?.status === "success" ? "Platform fees paid" : "Platform fee payment failed",
+      detail: deal.quote
+        ? `${deal.quote.totalCustomerPaysUsdc} USDC total — escrow ${deal.quote.escrowAmountUsdc} to the seller, ` +
+          `fees to ${deal.feeRecipient ?? "the treasury"}. The seller's proceeds are unaffected either way.`
+        : "Fee transfer recorded.",
+      txHash: feeHash,
+      accountId: actor?.accountId,
+    });
+  }
+
   appendAudit(deal, {
     actor: "buyer",
     action: "Deposited into escrow",

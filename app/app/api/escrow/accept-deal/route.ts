@@ -7,6 +7,8 @@ import { readActor, requireAuth } from "@/lib/escrow/actor";
 import { roleInDeal, pendingOnRole } from "@/lib/escrow/roles";
 import { resolvePartyAddresses } from "@/lib/escrow/partyWallets";
 import { assertPartiesCanTrade } from "@/lib/kyb/gate";
+import { quoteDeal, platformFeesTotal } from "@/lib/pricing/quote";
+import { treasury } from "@/lib/pricing/treasury";
 
 // ACCEPT (or DECLINE) a proposed deal — the counterparty's half of FR-1.
 //
@@ -116,6 +118,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: parties.error, unlinked: parties.unlinked }, { status: 409 });
   }
 
+  // Snapshot the fee quote at ACCEPTANCE — the moment both parties are bound.
+  // Stored rather than recomputed, so a later change to the price book can never
+  // re-price a deal that has already been struck. Repricing requires a new
+  // acceptance, which is what pricingVersion on the stored quote evidences.
+  const t = treasury();
+  const quote = quoteDeal(deal.terms.amountUsdc);
+  deal.quote = quote;
+  deal.feeRecipient = t.ok ? t.address : null;
+  appendAudit(deal, {
+    actor: "platform",
+    action: "Fee quote agreed",
+    detail:
+      `Escrow ${quote.escrowAmountUsdc} + fees ${platformFeesTotal(quote)} = ` +
+      `${quote.totalCustomerPaysUsdc} USDC payable by the buyer. ` +
+      `Seller receives ${quote.sellerReceivesUsdc} USDC in full. ` +
+      `Price book ${quote.pricingVersion}.`,
+  });
+
   const releaser = walletFor("releaser", dep);
   let hash: `0x${string}`;
   try {
@@ -147,5 +167,5 @@ export async function POST(req: Request) {
     txHash: hash,
   });
   await saveDeal(deal);
-  return NextResponse.json({ ok: true, dealId: appDealId, onChainDealId, txHash: hash });
+  return NextResponse.json({ ok: true, dealId: appDealId, onChainDealId, txHash: hash, quote });
 }

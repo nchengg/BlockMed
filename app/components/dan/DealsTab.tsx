@@ -15,6 +15,7 @@ import {
 import type { DealRole } from '@/lib/escrow/roles';
 import { DealActions } from './DealActions';
 import { runDealAction, type DealAction } from './dealActionRunner';
+import { FeeBreakdown } from './FeeBreakdown';
 
 const plusDays = (n: number) => new Date(Date.now() + n * 86_400_000).toISOString().slice(0, 10);
 const usdcFormatter = new Intl.NumberFormat('en-US', {
@@ -596,6 +597,13 @@ function RowActions({
           Both sides accepted the terms. Lock {formatUsdc(deal.terms?.amountUsdc)} USDC so the
           seller can ship with funds held in escrow.
         </p>
+        {/* Shown again here, immediately before signing: the buyer should never
+            first learn the total when MetaMask opens. */}
+        {deal.quote && (
+          <div style={{ marginBottom: 14 }}>
+            <FeeBreakdown quote={deal.quote} treasuryIsPlaceholder />
+          </div>
+        )}
         <button
           type="button"
           className="bm-button bm-button-primary"

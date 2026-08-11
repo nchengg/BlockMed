@@ -13,7 +13,7 @@ import {
   getChainId, ensureChain, requestAddress, sendTransaction, waitForReceipt, walletErrorMessage,
 } from '@/lib/wallet/browser';
 
-export type FundStep = { kind: 'approve' | 'deposit'; to: string; data: string; label: string };
+export type FundStep = { kind: 'approve' | 'deposit' | 'fee'; to: string; data: string; label: string };
 
 export type FundProgress = {
   /** Which step is in flight, so the UI can say what the wallet is asking for. */
@@ -23,7 +23,7 @@ export type FundProgress = {
 };
 
 export type FundOutcome =
-  | { ok: true; approveHash?: string; depositHash: string }
+  | { ok: true; approveHash?: string; depositHash: string; feeHash?: string }
   | { ok: false; error: string };
 
 export async function fundWithWallet(
@@ -83,12 +83,17 @@ export async function fundWithWallet(
     const confirmRes = await fetch('/api/escrow/fund/confirm', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ dealId, approveHash: hashes.approve, depositHash: hashes.deposit }),
+      body: JSON.stringify({
+        dealId,
+        approveHash: hashes.approve,
+        depositHash: hashes.deposit,
+        feeHash: hashes.fee,
+      }),
     });
     const confirm = await confirmRes.json();
     if (!confirmRes.ok) return { ok: false, error: confirm.error ?? 'Deposit could not be confirmed.' };
 
-    return { ok: true, approveHash: hashes.approve, depositHash: hashes.deposit! };
+    return { ok: true, approveHash: hashes.approve, depositHash: hashes.deposit!, feeHash: hashes.fee };
   } catch (err) {
     return { ok: false, error: walletErrorMessage(err) };
   }

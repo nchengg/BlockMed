@@ -24,6 +24,7 @@
 import "server-only";
 import { prisma } from "@/lib/db";
 import type { Review } from "./review";
+import { platformFeesTotal, type FeeQuote } from "@/lib/pricing/quote";
 
 export interface DealTerms {
   goods: string;
@@ -64,6 +65,12 @@ export interface DealRecord {
   // Notice-of-release review (FR-10/11): set when a Compliant B/L opens the
   // buyer's objection window; replaced on a corrected resubmission.
   review?: Review | null;
+  // The fee quote agreed at acceptance (lib/pricing/quote.ts). Snapshotted, not
+  // recalculated: a later price change must never alter a deal already struck.
+  quote?: FeeQuote | null;
+  feePaymentStatus?: string;
+  feeTxHash?: string | null;
+  feeRecipient?: string | null;
   // Which side proposed the deal — the OTHER side owes the acceptance.
   createdByRole?: "buyer" | "seller";
   // Set when the counterparty declines. Terminal, off-chain only.
@@ -134,9 +141,18 @@ function toRecord(row: DealRow): DealRecord {
     };
   }
 
+  let quote: FeeQuote | null = null;
+  if (row.quoteJson) {
+    try { quote = JSON.parse(row.quoteJson) as FeeQuote; } catch { quote = null; }
+  }
+
   return {
     appDealId: row.appDealId,
     onChainDealId: row.onChainDealId,
+    quote,
+    feePaymentStatus: row.feePaymentStatus,
+    feeTxHash: row.feeTxHash,
+    feeRecipient: row.feeRecipient,
     terms,
     review,
     createdByRole: (row.createdByRole as "buyer" | "seller" | null) ?? undefined,
@@ -198,6 +214,12 @@ export async function saveDeal(record: DealRecord): Promise<void> {
     portOfLoading: record.terms?.portOfLoading ?? null,
     portOfDischarge: record.terms?.portOfDischarge ?? null,
     incoterm: record.terms?.incoterm ?? null,
+    quoteJson: record.quote ? JSON.stringify(record.quote) : null,
+    quotedTotalUsdc: record.quote?.totalCustomerPaysUsdc ?? null,
+    quotedFeesUsdc: record.quote ? platformFeesTotal(record.quote) : null,
+    feePaymentStatus: record.feePaymentStatus ?? "unpaid",
+    feeTxHash: record.feeTxHash ?? null,
+    feeRecipient: record.feeRecipient ?? null,
     sellerDisplayName: record.parties.seller?.displayName ?? record.terms?.sellerName ?? null,
     buyerDisplayName: record.parties.buyer?.displayName ?? record.terms?.buyerName ?? null,
     sellerId: record.parties.seller?.accountId ?? null,

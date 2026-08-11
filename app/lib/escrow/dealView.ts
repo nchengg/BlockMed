@@ -58,5 +58,8 @@ export async function toDealView(d: DealRecord, accountId: string | undefined, r
     // True when THIS viewer is the one who must accept — drives the call to action.
     awaitingViewer: !state && !declined && !!d.terms && pendingOnRole(d) === role,
     createdAt: d.audit[0]?.ts ?? null,
+    // The agreed quote, so the buyer sees the total before signing.
+    quote: d.quote ?? null,
+    feePaymentStatus: d.feePaymentStatus ?? 'unpaid',
   };
 }

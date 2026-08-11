@@ -213,6 +213,20 @@ model Deal {
   seller            Account? @relation("SellerDeals", fields: [sellerId], references: [id])
   sellerDisplayName String?
 
+  // Fee quote, SNAPSHOTTED at acceptance (lib/pricing/quote.ts). Stored rather
+  // than recalculated so a deal is never re-priced from a later price book —
+  // pricingVersion records which book was in force when the parties agreed.
+  // The whole quote is kept as JSON (a document, not something we query on);
+  // the two numbers a human reads are also columns for convenience.
+  quoteJson              String?
+  quotedTotalUsdc        String?
+  quotedFeesUsdc         String?
+  /// "unpaid" | "paid" | "waived" | "failed" — deliberately SEPARATE from the
+  /// escrow lifecycle: an unpaid fee must never block or alter a release.
+  feePaymentStatus String  @default("unpaid")
+  feeTxHash        String?
+  feeRecipient     String?
+
   /// Which side proposed it — the OTHER side owes the acceptance.
   createdByRole String?
   /// Set when the counterparty declines. Terminal, off-chain only.

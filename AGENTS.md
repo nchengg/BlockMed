@@ -87,6 +87,7 @@ python tools/sync_agents.py --check || {
 
 ## Working conventions
 
+- **Artifact placement:** Never create a generic `outputs/` directory. If an existing project folder is an appropriate home for an artifact, save it there. Keep revised/versioned files beside the canonical artifact (using a clear dated or purpose-based filename) so the project retains one discoverable source of truth. Before writing a new artifact, inspect the existing project structure and choose the most semantically appropriate existing destination.
 - This repo is the **agent scaffold only**. Non-code artifacts (proposal, thesis,
   reports, datasets, slides) live in Google Drive. The Google Drive MCP is wired
   through the user-scope claude.ai integration (no `.mcp.json` entry needed);

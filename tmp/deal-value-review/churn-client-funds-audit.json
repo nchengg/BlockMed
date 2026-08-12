@@ -1,0 +1,757 @@
+{
+  "workbook": "C:/Users/cwbec/BlockMed/financial-projections/financial-model-2026-08-09/Blockmediary_Financial_Model_Detailed_2026-08-11_Churn_Client_Funds.xlsx",
+  "sheetCount": 15,
+  "sheets": [
+    "README",
+    "Dashboard",
+    "Launch_Readiness",
+    "Tier_Economics",
+    "Revenue_Risk_AddOns",
+    "P&L_5yr",
+    "Cash_Flow_Statement",
+    "Scenario_Engine",
+    "Assumptions",
+    "Startup_6mo",
+    "Driver_Tables",
+    "Sensitivity",
+    "Risk_Register",
+    "Model_Checks",
+    "Client_Funds_Memo"
+  ],
+  "formulaErrorCount": 0,
+  "formulaErrors": [],
+  "assumptions": {
+    "address": "Assumptions!B177:H181",
+    "values": [
+      [
+        "CUSTOMER RETENTION & CLIENT FUNDS",
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Planning assumptions and hard controls added 11 Aug 2026."
+      ],
+      [
+        "Annual customer churn rate",
+        null,
+        null,
+        null,
+        0.1,
+        "% per year",
+        "Planning assumption from Year 2. Annual deal volumes remain net targets; replace with observed cohort retention."
+      ],
+      [
+        "Average funded-to-release holding period",
+        null,
+        null,
+        null,
+        14,
+        "days",
+        "Used only to estimate safeguarded client assets; replace with pilot telemetry."
+      ],
+      [
+        "Client escrow funds available to operations",
+        null,
+        null,
+        null,
+        0,
+        "%",
+        "Hard control: customer funds are not corporate cash and cannot fund operations."
+      ],
+      [
+        "Client-asset yield recognised in model",
+        null,
+        null,
+        null,
+        0,
+        "%",
+        "No yield or spread is recognised without legal, regulatory and accounting approval."
+      ]
+    ],
+    "formulas": [
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    ]
+  },
+  "customerBridge": {
+    "address": "P&L_5yr!B76:H85",
+    "values": [
+      [
+        "CUSTOMER RETENTION & ACQUISITION BRIDGE",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Line item",
+        "Year 1",
+        "Year 2",
+        "Year 3",
+        "Year 4",
+        "Year 5",
+        "Unit / note"
+      ],
+      [
+        "Target ending active customers",
+        7.4,
+        83.33333333333333,
+        120,
+        2666.6666666666665,
+        4666.666666666667,
+        "Net commercial target implied by annual deal volume."
+      ],
+      [
+        "Beginning active customers",
+        0,
+        7.4,
+        83.33333333333333,
+        120,
+        2666.6666666666665,
+        "Prior-year ending cohort; Year 1 begins at zero."
+      ],
+      [
+        "Annual customer churn rate",
+        0,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        "Applied from Year 2; planning assumption until cohort data exist."
+      ],
+      [
+        "Churned customers",
+        0,
+        0.7400000000000001,
+        8.333333333333334,
+        12,
+        266.6666666666667,
+        "Opening customers expected to leave during the year."
+      ],
+      [
+        "Retained opening customers",
+        0,
+        6.66,
+        75,
+        108,
+        2400,
+        "Opening customers remaining after churn."
+      ],
+      [
+        "Gross new customers required",
+        7.4,
+        76.67333333333333,
+        45,
+        2558.6666666666665,
+        2266.666666666667,
+        "New logos required to achieve the net ending-customer target."
+      ],
+      [
+        "Ending active customers",
+        7.4,
+        83.33333333333333,
+        120,
+        2666.6666666666665,
+        4666.666666666667,
+        "Retained opening customers plus gross new customers."
+      ],
+      [
+        "Bridge check",
+        0,
+        0,
+        0,
+        0,
+        0,
+        "Must equal zero in every year."
+      ]
+    ],
+    "formulas": [
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "=C70",
+        "=D70",
+        "=E70",
+        "=F70",
+        "=G70",
+        ""
+      ],
+      [
+        "",
+        "=0",
+        "=C84",
+        "=D84",
+        "=E84",
+        "=F84",
+        ""
+      ],
+      [
+        "",
+        "=0",
+        "='Assumptions'!$F$178",
+        "='Assumptions'!$F$178",
+        "='Assumptions'!$F$178",
+        "='Assumptions'!$F$178",
+        ""
+      ],
+      [
+        "",
+        "=C79*C80",
+        "=D79*D80",
+        "=E79*E80",
+        "=F79*F80",
+        "=G79*G80",
+        ""
+      ],
+      [
+        "",
+        "=C79-C81",
+        "=D79-D81",
+        "=E79-E81",
+        "=F79-F81",
+        "=G79-G81",
+        ""
+      ],
+      [
+        "",
+        "=MAX(0,C78-C82)",
+        "=MAX(0,D78-D82)",
+        "=MAX(0,E78-E82)",
+        "=MAX(0,F78-F82)",
+        "=MAX(0,G78-G82)",
+        ""
+      ],
+      [
+        "",
+        "=C82+C83",
+        "=D82+D83",
+        "=E82+E83",
+        "=F82+F83",
+        "=G82+G83",
+        ""
+      ],
+      [
+        "",
+        "=C84-C78",
+        "=D84-D78",
+        "=E84-E78",
+        "=F84-F78",
+        "=G84-G78",
+        ""
+      ]
+    ]
+  },
+  "clientFundsMemo": {
+    "address": "Client_Funds_Memo!A4:H22",
+    "values": [
+      [
+        "SAFEGUARDED CLIENT ESCROW — FIVE-YEAR MEMORANDUM",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Metric",
+        "Year 1",
+        "Year 2",
+        "Year 3",
+        "Year 4",
+        "Year 5",
+        "Unit",
+        "Treatment / note"
+      ],
+      [
+        "Annual GMV",
+        1165500,
+        17527500,
+        47614620.00000001,
+        1418410809.6000004,
+        3452597089.970001,
+        "GBP/year",
+        "Commercial throughput sourced from the five-year P&L."
+      ],
+      [
+        "Average funded-to-release holding period",
+        14,
+        14,
+        14,
+        14,
+        14,
+        "days",
+        "Planning assumption; replace with measured pilot cycle time."
+      ],
+      [
+        "Average safeguarded client assets",
+        44704.109589041094,
+        672287.6712328767,
+        1826314.1917808221,
+        54404798.17643838,
+        132428381.53309594,
+        "GBP",
+        "Annual GMV × holding days ÷ 365; memorandum balance only."
+      ],
+      [
+        "Matching client escrow liability",
+        -44704.109589041094,
+        -672287.6712328767,
+        -1826314.1917808221,
+        -54404798.17643838,
+        -132428381.53309594,
+        "GBP",
+        "Equal and opposite obligation to customers / escrow beneficiaries."
+      ],
+      [
+        "Net client-funds balance",
+        0,
+        0,
+        0,
+        0,
+        0,
+        "GBP",
+        "Client asset plus matching liability; must equal zero."
+      ],
+      [
+        "Availability to Blockmediary operating cash",
+        0,
+        0,
+        0,
+        0,
+        0,
+        "GBP",
+        "Hard-control result: zero availability to operations."
+      ],
+      [
+        "Memorandum yield at assumed rate (not in P&L)",
+        0,
+        0,
+        0,
+        0,
+        0,
+        "GBP/year",
+        "No yield or spread recognised in the model."
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "POLICY AND CONTROL INTERPRETATION",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "1. Buyer funds go to the smart contract or a regulated custody partner; they never route through a Blockmediary-controlled wallet.",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "2. Client assets and matching liabilities are shown gross solely to size operational safeguarding, reconciliation and custody requirements.",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "3. Client funds remain excluded from revenue, unrestricted cash, runway and the funding ask.",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "4. No client-asset yield or spread is modelled without legal, regulatory and accounting approval; replace the 14-day hold with pilot telemetry.",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "MEMORANDUM CHECKS",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Client assets plus liability",
+        0,
+        0,
+        0,
+        0,
+        0,
+        "Expected: 0",
+        "Checks the gross memorandum balances net to zero."
+      ],
+      [
+        "Operating cash availability",
+        0,
+        0,
+        0,
+        0,
+        0,
+        "Expected: 0",
+        "Checks that none of the client assets are available to operations."
+      ]
+    ],
+    "formulas": [
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "='P&L_5yr'!C9",
+        "='P&L_5yr'!D9",
+        "='P&L_5yr'!E9",
+        "='P&L_5yr'!F9",
+        "='P&L_5yr'!G9",
+        "",
+        ""
+      ],
+      [
+        "",
+        "='Assumptions'!$F$179",
+        "='Assumptions'!$F$179",
+        "='Assumptions'!$F$179",
+        "='Assumptions'!$F$179",
+        "='Assumptions'!$F$179",
+        "",
+        ""
+      ],
+      [
+        "",
+        "=B6/365*B7",
+        "=C6/365*C7",
+        "=D6/365*D7",
+        "=E6/365*E7",
+        "=F6/365*F7",
+        "",
+        ""
+      ],
+      [
+        "",
+        "=-B8",
+        "=-C8",
+        "=-D8",
+        "=-E8",
+        "=-F8",
+        "",
+        ""
+      ],
+      [
+        "",
+        "=B8+B9",
+        "=C8+C9",
+        "=D8+D9",
+        "=E8+E9",
+        "=F8+F9",
+        "",
+        ""
+      ],
+      [
+        "",
+        "=B8*'Assumptions'!$F$180",
+        "=C8*'Assumptions'!$F$180",
+        "=D8*'Assumptions'!$F$180",
+        "=E8*'Assumptions'!$F$180",
+        "=F8*'Assumptions'!$F$180",
+        "",
+        ""
+      ],
+      [
+        "",
+        "=B8*'Assumptions'!$F$181",
+        "=C8*'Assumptions'!$F$181",
+        "=D8*'Assumptions'!$F$181",
+        "=E8*'Assumptions'!$F$181",
+        "=F8*'Assumptions'!$F$181",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "=B10",
+        "=C10",
+        "=D10",
+        "=E10",
+        "=F10",
+        "",
+        ""
+      ],
+      [
+        "",
+        "=B11",
+        "=C11",
+        "=D11",
+        "=E11",
+        "=F11",
+        "",
+        ""
+      ]
+    ]
+  },
+  "readmeResolutions": {
+    "address": "README!B88:B91",
+    "values": [
+      [
+        "RESOLVED 11 AUGUST 2026 — MODEL MECHANICS"
+      ],
+      [
+        "[CLOSED 11 AUG 2026] Employer NI eligibility review removed from the open-issues list at management direction. No payroll formula change was made."
+      ],
+      [
+        "[RESOLVED 11 AUG 2026] Annual customer churn is 10% from Year 2. Because annual deal-volume inputs are net targets, churn raises gross new-customer acquisition required in the P&L customer bridge instead of applying a second revenue haircut. Replace with observed cohort retention when available."
+      ],
+      [
+        "[RESOLVED 11 AUG 2026] Client funds are shown gross on Client_Funds_Memo using a 14-day average holding period, with an equal client liability and zero operating-cash availability. They remain excluded from revenue, unrestricted cash, runway and funding ask."
+      ]
+    ],
+    "formulas": [
+      [
+        ""
+      ],
+      [
+        ""
+      ],
+      [
+        ""
+      ],
+      [
+        ""
+      ]
+    ]
+  },
+  "cashFlowLabel": {
+    "address": "Cash_Flow_Statement!A18",
+    "value": "Operating working capital (client escrow excluded)",
+    "formula": ""
+  },
+  "modelChecks": [
+    {
+      "address": "Model_Checks!B4",
+      "value": "PASS",
+      "formula": "=IF(COUNTIF(F7:F29,\"FAIL\")>0,\"FAIL\",\"PASS\")"
+    },
+    {
+      "address": "Model_Checks!F26",
+      "value": "PASS",
+      "formula": "=IF(ABS(D26)<=E26,\"PASS\",\"FAIL\")"
+    },
+    {
+      "address": "Model_Checks!F27",
+      "value": "PASS",
+      "formula": "=IF(ABS(D27)<=E27,\"PASS\",\"FAIL\")"
+    },
+    {
+      "address": "Model_Checks!F28",
+      "value": "PASS",
+      "formula": "=IF(ABS(D28)<=E28,\"PASS\",\"FAIL\")"
+    },
+    {
+      "address": "Model_Checks!F29",
+      "value": "PASS",
+      "formula": "=IF(ABS(D29)<=E29,\"PASS\",\"FAIL\")"
+    }
+  ]
+}

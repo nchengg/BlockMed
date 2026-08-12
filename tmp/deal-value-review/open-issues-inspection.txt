@@ -1,0 +1,452 @@
+===== README!B85:W102 VALUES =====
+85	CHANGED — RESTATED WITH CURRENT FIGURES																					
+86	[CHANGED]   Funding arrives as a single lump in month 1. The original note flagged a trough of about GBP 82k at month 24. The trough is now GBP 192,283 at month 12 — but that is not slack: it equals the operating reserve target exactly, by construction, because the ask is peak deficit plus reserve. There is no buffer beyond the reserve itself. A staged raise (pre-seed to licence, seed on grant) remains the open recommendation.																					
+87																						
+88	STILL OPEN — MODEL MECHANICS																					
+89	[OPEN]  Employer NI uses the Employment Allowance (Assumptions!F60 = GBP 10,500) and P&L row 39 subtracts it. Confirm eligibility: a company whose only employee is a single director cannot claim it. With 6+ FTE including founders this is probably fine, but it is a known trap.																					
+90	[OPEN]  No revenue churn or failed-pilot attrition anywhere. The funnel only adds customers. A modest churn assumption would make Years 3-5 more credible.																					
+91	[OPEN]  Settlement/escrow float is zero in the cash flow (row 18). Correct for the P&L — client money is not income — but operationally you will hold large buyer prefunds, with real safeguarding, banking and regulatory-perimeter consequences the model treats as financially invisible. Right for the accounts; do not let it make the regulatory question fade.																					
+92																						
+93	STILL OPEN — FLAGGED IN REVIEW 1 JULY 2026, RE-VERIFIED 9 AUGUST 2026																					
+94	[RESOLVED 11 AUG 2026] Deal values are tier-specific: Tier A GBP 35k at 10% annual growth; Tier B GBP 30k at 8%; Tier C GBP 30k at 5%. The blended average is derived from tier mix and tier GMV. Source: Blockmediary Deal-Value Research Report and Model, 11 August 2026.																					
+95	[SCOPE NOTE] The GBP 50k automatic-verdict control remains an operational rule outside this commercial update. No incremental above-cap review-cost module is included; existing review and QA cost logic is unchanged.																					
+96	[OPEN]  3. Fixed-cost scaling. Headcount grows 7.7 -> 21 FTE while deal volume grows 500x. Per-deal ops sits in COGS, but a compliance/ops team of that size overseeing GBP 2.49bn of regulated escrow, roughly 1,890 disputes and 3,600 QA reviews in Year 5 looks thin — and it is what produces the Year 5 EBITDA margin. Pressure-test it.																					
+97	[OPEN]  4. New-counterparty share is fixed at 50% every year (Assumptions!F62), implying 30,000 new counterparties onboarded in Year 5 against far fewer active customers. Inconsistent with the rising repeat usage assumed elsewhere; as written it inflates both KYC/KYB cost and onboarding-fee revenue.																					
+98																						
+99	Two further items from the 9 August review remain open, documented in review-of-launch-readiness-model-2026-08-09.md: the custody-versus-arranging classification, and the entity-level ADGM cost schedule needed to firm up prudential capital.																					
+100																						
+101	MAINTENANCE NOTE																					
+102	Retired assumptions must be emptied, not set to an equals sign on its own. A lone equals sign is a malformed formula: it survives while cached values persist, then resolves to an error on the next recalculation and cascades through every dependent cell. 49 such cells were found and cleared on 9 Aug 2026 in Assumptions and Revenue_Risk_AddOns.																					
+===== README!B85:W102 FORMULAS =====
+85																						
+86																						
+87																						
+88																						
+89																						
+90																						
+91																						
+92																						
+93																						
+94																						
+95																						
+96																						
+97																						
+98																						
+99																						
+100																						
+101																						
+102																						
+===== Assumptions!A150:H190 VALUES =====
+150								
+151		Delivery/performance liability reserve				0	GBP	Set to zero by design: release is against documents, not goods delivery
+152		Liability wording legal review				7500	GBP Yr1	Drafting/confirming documents-not-goods liability boundary
+153		Document-source indemnity legal review				7500	GBP Yr1	Carrier/eBL/API/forensics contract risk allocation
+154		-- YEAR 4/5 GROWTH DRIVERS --						
+155		Year 4 deals (total)	1800	15000	32000	32000	deals/yr	Five-year continuation; linked into P&L_5yr
+156		Year 5 deals (total)	6000	30000	70000	70000	deals/yr	Five-year continuation; used to test cash-flow breakeven
+157		Tier A eBL mix Yr4	0.3	0.6	0.75	0.75	% deals	Assumes continued migration toward eBL/source-of-truth rails
+158		Tier B carrier/API mix Yr4	0.45	0.32	0.23	0.23	% deals	Carrier/API verified middle tier
+159		Tier C paper collection mix Yr4	0.25	0.08	0.02	0.02	% deals	High-risk paper fallback shrinks with scale
+160		Tier A eBL mix Yr5	0.4	0.7	0.82	0.82	% deals	Best-margin scaled tier
+161		Tier B carrier/API mix Yr5	0.45	0.25	0.17	0.17	% deals	Carrier/API verified middle tier
+162		Tier C paper collection mix Yr5	0.15	0.05	0.01	0.01	% deals	Paper fallback retained but not strategic core
+163		Partner count Yr4	1	10	35	35	partners	Total API/platform partners by Year 4
+164		Partner count Yr5	3	18	60	60	partners	Total API/platform partners by Year 5
+165		Deals per active customer Yr4	3	8	12	12	deals/customer/yr	Improves with repeat platform usage
+166		Deals per active customer Yr5	4	10	15	15	deals/customer/yr	Commercial sanity check for mature usage
+167		Partner-sourced revenue share				0.3	% revenue	Est. share of revenue via partner/channel deals; partner commission (F144) applies only to this share, not total revenue. Planning estimate - refine, ideally by year.
+168								
+169		TIER-SPECIFIC DEAL VALUES						Source: Blockmediary Deal-Value Research Report and Model, 11 Aug 2026.
+170		Tier A — Year 1 base deal value				35000	GBP/deal	Base case from deal-value research; fixed across volume scenarios.
+171		Tier A — annual deal-value growth				0.1	% per year	Exact annual compounding; independent of customer-volume scenario.
+172		Tier B — Year 1 base deal value				30000	GBP/deal	Base case from deal-value research; fixed across volume scenarios.
+173		Tier B — annual deal-value growth				0.08	% per year	Exact annual compounding; independent of customer-volume scenario.
+174		Tier C — Year 1 base deal value				30000	GBP/deal	Base case from deal-value research; fixed across volume scenarios.
+175		Tier C — annual deal-value growth				0.05	% per year	Exact annual compounding; independent of customer-volume scenario.
+176								
+177								
+178								
+179								
+180								
+181								
+182								
+183								
+184								
+185								
+186								
+187								
+188								
+189								
+190								
+===== Assumptions!A150:H190 FORMULAS =====
+150								
+151								
+152								
+153								
+154								
+155						=CHOOSE($C$4,C155,D155,E155)		
+156								
+157								
+158								
+159								
+160								
+161								
+162								
+163								
+164								
+165								
+166								
+167								
+168								
+169								
+170								
+171								
+172								
+173								
+174								
+175								
+176								
+177								
+178								
+179								
+180								
+181								
+182								
+183								
+184								
+185								
+186								
+187								
+188								
+189								
+190								
+===== P&L_5yr!A67:H90 VALUES =====
+67		CUSTOMER ACQUISITION CROSS-CHECK						
+68		Line item	Year 1	Year 2	Year 3	Year 4	Year 5	Unit / note
+69		Deals / active customer / year	5	6	10	12	15	Commercial sanity check from Assumptions
+70		Implied active customers	7.4	83.33333333333333	120	2666.6666666666665	4666.666666666667	Deals / deals per active customer
+71		Revenue / deal	648.4297297297297	896.274	739.8281666666667	510.16744200000016	526.9098359757145	Total revenue / deals
+72		Revenue / active customer	3242.1486486486488	5377.644	7398.281666666667	6122.009304000002	7903.647539635716	Total revenue / implied customers
+73		VAT registration flag	Below threshold	Register / confirm VAT treatment	Register / confirm VAT treatment	Register / confirm VAT treatment	Register / confirm VAT treatment	Revenue > threshold
+74		Gross margin sanity check	OK	OK	OK	OK	OK	Warn if >90% and tiered document-verification COGS is nonzero
+75								
+76								
+77								
+78								
+79								
+80								
+81								
+82								
+83								
+84								
+85								
+86								
+87								
+88								
+89								
+90								
+===== P&L_5yr!A67:H90 FORMULAS =====
+67								
+68								
+69			=Assumptions!$F$110	=Assumptions!$F$111	=Assumptions!$F$112	=Assumptions!$F$165	=Assumptions!$F$166	
+70			=IF(C69=0,0,C7/C69)	=IF(D69=0,0,D7/D69)	=IF(E69=0,0,E7/E69)	=IF(F69=0,0,F7/F69)	=IF(G69=0,0,G7/G69)	
+71			=IF(C7=0,0,C18/C7)	=IF(D7=0,0,D18/D7)	=IF(E7=0,0,E18/E7)	=IF(F7=0,0,F18/F7)	=IF(G7=0,0,G18/G7)	
+72			=IF(C70=0,0,C18/C70)	=IF(D70=0,0,D18/D70)	=IF(E70=0,0,E18/E70)	=IF(F70=0,0,F18/F70)	=IF(G70=0,0,G18/G70)	
+73			=IF(C18>Assumptions!$F$61,"Register / confirm VAT treatment","Below threshold")	=IF(D18>Assumptions!$F$61,"Register / confirm VAT treatment","Below threshold")	=IF(E18>Assumptions!$F$61,"Register / confirm VAT treatment","Below threshold")	=IF(F18>Assumptions!$F$61,"Register / confirm VAT treatment","Below threshold")	=IF(G18>Assumptions!$F$61,"Register / confirm VAT treatment","Below threshold")	
+74			=IF(AND(C31>0.9,C23>0),"Review COGS: margin may be optimistic","OK")	=IF(AND(D31>0.9,D23>0),"Review COGS: margin may be optimistic","OK")	=IF(AND(E31>0.9,E23>0),"Review COGS: margin may be optimistic","OK")	=IF(AND(F31>0.9,F23>0),"Review COGS: margin may be optimistic","OK")	=IF(AND(G31>0.9,G23>0),"Review COGS: margin may be optimistic","OK")	
+75								
+76								
+77								
+78								
+79								
+80								
+81								
+82								
+83								
+84								
+85								
+86								
+87								
+88								
+89								
+90								
+===== Cash_Flow_Statement!A1:H90 VALUES =====
+1	CASH FLOW STATEMENT — MONTHLY 60-MONTH PROJECTION							
+2	Revenue begins at the selected launch month; receipts follow the selected lag. Operating funding and restricted regulatory capital are separate.							
+3							Peak monthly-model operating deficit	
+4	Active scenario	HIGH		Cash-flow break-even month	Y4 M3			3009626
+5								
+6	Month #	1	2	3	4	5	6	7
+7	Model year	1	1	1	1	1	1	1
+8	Month in year	1	2	3	4	5	6	7
+9	Period	Y1 M1	Y1 M2	Y1 M3	Y1 M4	Y1 M5	Y1 M6	Y1 M7
+10								
+11	CASH FLOWS FROM OPERATING ACTIVITIES							
+12	Customer receipts	0	0	0	0	0	0	0
+13	Variable COGS cash payments	0	0	0	0	0	0	0
+14	Gross operating cash margin	0	0	0	0	0	0	0
+15	Payroll cash payments	-40329	-40329	-40329	-40329	-40329	-40329	-40329
+16	Fixed opex cash payments	-21253	-21253	-21253	-21253	-23207	-23207	-23207
+17	Startup / one-off cash payments	-102551	-102551	-102551	-102551	-102551	-102551	-7500
+18	Working capital / settlement float	0	0	0	0	0	0	0
+19	Net cash from operating activities	-164133	-164133	-164133	-164133	-166087	-166087	-71036
+20								
+21	CASH FLOWS FROM INVESTING ACTIVITIES							
+22	Capitalised development / capex	0	0	0	0	0	0	0
+23	Net cash from investing activities	0	0	0	0	0	0	0
+24								
+25	CASH FLOWS FROM FINANCING ACTIVITIES							
+26	External funding raised	1581341	0	0	0	0	0	0
+27	Restricted regulatory capital set aside	0	0	0	0	0	0	0
+28	Net cash from financing activities	1581341	0	0	0	0	0	0
+29								
+30	CASH RECONCILIATION							
+31	Opening unrestricted cash	0	1417208	1253075	1088942	924809	758722	592635
+32	Net change in unrestricted cash	1417208	-164133	-164133	-164133	-166087	-166087	-71036
+33	Closing unrestricted cash	1417208	1253075	1088942	924809	758722	592635	521599
+34	Restricted regulatory capital held	0	0	0	0	0	0	0
+35	Total cash incl. restricted capital	1417208	1253075	1088942	924809	758722	592635	521599
+36								
+37	BREAKEVEN / RUNWAY							
+38	Operating cumulative cash flow before financing	-164133	-328266	-492399	-656532	-822619	-988706	-1059742
+39	Cash-flow break-even status	Not yet	Not yet	Not yet	Not yet	Not yet	Not yet	Not yet
+40	Runway warning	Funded	Funded	Funded	Funded	Funded	Funded	Funded
+41								
+42								
+43	Scenario comparison - monthly cash-flow break-even							
+44	Scenario	Cash-flow break-even month	Peak cumulative operating deficit	Month 60 cumulative operating cash	EBITDA break-even	Funding ask incl. reserve		
+45	Low	Beyond Month 60	4366681	-2897345	Year 5	4558964		
+46	Base	Y4 M6	3517512	14474363	Year 4	3709795		
+47	High	Y4 M3	3089671	37750517	Year 4	3281954		
+48								
+49	Scenario cumulative operating cash flow before financing - monthly							
+50								
+51	Scenario	Y1 M1	Y1 M2	Y1 M3	Y1 M4	Y1 M5	Y1 M6	Y1 M7
+52	Low	-164784	-329568	-494352	-659136	-823920	-988704	-1058437
+53	Base	-164784	-329568	-494352	-659136	-823920	-988704	-1058437
+54	High	-164784	-329568	-494352	-659136	-823920	-988704	-1058437
+55	Low break-even helper							
+56	Base break-even helper							
+57	High break-even helper							
+58	Active break-even helper							
+59								
+60								
+61								
+62								
+63								
+64								
+65								
+66								
+67								
+68								
+69								
+70								
+71								
+72								
+73								
+74								
+75								
+76								
+77								
+78								
+79								
+80								
+81								
+82								
+83								
+84								
+85								
+86								
+87								
+88								
+89								
+90								
+===== Cash_Flow_Statement!A1:H90 FORMULAS =====
+1								
+2								
+3								
+4		=Assumptions!$D$4			=IF(MAX(B38:BI38)<0,"Beyond Month 60",INDEX($B$9:$BI$9,1,MATCH("Reached",B58:BI58,0)))			=ROUND(-MIN(0,B38:BI38),0)
+5								
+6								
+7		=ROUNDUP(B$6/12,0)						
+8		=MOD(B$6-1,12)+1						
+9		="Y"&B$7&" M"&B$8						
+10								
+11								
+12		=ROUND((IF(B$6<=Launch_Readiness!$B$7,0,IF((B$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$18:$G$18,1,ROUNDUP((B$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((B$6-Launch_Readiness!$B$7)/12,0)))))),0)	=ROUND((IF(C$6<=Launch_Readiness!$B$7,0,IF((C$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$18:$G$18,1,ROUNDUP((C$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((C$6-Launch_Readiness!$B$7)/12,0)))))),0)	=ROUND((IF(D$6<=Launch_Readiness!$B$7,0,IF((D$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$18:$G$18,1,ROUNDUP((D$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((D$6-Launch_Readiness!$B$7)/12,0)))))),0)	=ROUND((IF(E$6<=Launch_Readiness!$B$7,0,IF((E$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$18:$G$18,1,ROUNDUP((E$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((E$6-Launch_Readiness!$B$7)/12,0)))))),0)	=ROUND((IF(F$6<=Launch_Readiness!$B$7,0,IF((F$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$18:$G$18,1,ROUNDUP((F$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((F$6-Launch_Readiness!$B$7)/12,0)))))),0)	=ROUND((IF(G$6<=Launch_Readiness!$B$7,0,IF((G$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$18:$G$18,1,ROUNDUP((G$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((G$6-Launch_Readiness!$B$7)/12,0)))))),0)	=ROUND((IF(H$6<=Launch_Readiness!$B$7,0,IF((H$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$18:$G$18,1,ROUNDUP((H$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((H$6-Launch_Readiness!$B$7)/12,0)))))),0)
+13		=ROUND((-IF(B$6<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$29:$G$29,1,B$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,B$7)))),0)	=ROUND((-IF(C$6<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$29:$G$29,1,C$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,C$7)))),0)	=ROUND((-IF(D$6<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$29:$G$29,1,D$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,D$7)))),0)	=ROUND((-IF(E$6<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$29:$G$29,1,E$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,E$7)))),0)	=ROUND((-IF(F$6<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$29:$G$29,1,F$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,F$7)))),0)	=ROUND((-IF(G$6<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$29:$G$29,1,G$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,G$7)))),0)	=ROUND((-IF(H$6<Launch_Readiness!$F$6,0,INDEX('P&L_5yr'!$C$29:$G$29,1,H$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,H$7)))),0)
+14		=ROUND((SUM(B12:B13)),0)						
+15		=ROUND((-INDEX('P&L_5yr'!$C$42:$G$42,1,B$7)/12),0)	=ROUND((-INDEX('P&L_5yr'!$C$42:$G$42,1,C$7)/12),0)	=ROUND((-INDEX('P&L_5yr'!$C$42:$G$42,1,D$7)/12),0)	=ROUND((-INDEX('P&L_5yr'!$C$42:$G$42,1,E$7)/12),0)	=ROUND((-INDEX('P&L_5yr'!$C$42:$G$42,1,F$7)/12),0)	=ROUND((-INDEX('P&L_5yr'!$C$42:$G$42,1,G$7)/12),0)	=ROUND((-INDEX('P&L_5yr'!$C$42:$G$42,1,H$7)/12),0)
+16		=ROUND((-((INDEX('P&L_5yr'!$C$56:$G$56,1,B$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,B$7)-Launch_Readiness!$F$9*Launch_Readiness!$B$10*INDEX(Launch_Readiness!$B$26:$F$26,1,B$7))/12+IF(B$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)+IF(AND(B$6>=Launch_Readiness!$B$11,B$6<Launch_Readiness!$F$6),Launch_Readiness!$F$9*Launch_Readiness!$B$10/12,0))),0)	=ROUND((-((INDEX('P&L_5yr'!$C$56:$G$56,1,C$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,C$7)-Launch_Readiness!$F$9*Launch_Readiness!$B$10*INDEX(Launch_Readiness!$B$26:$F$26,1,C$7))/12+IF(C$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)+IF(AND(C$6>=Launch_Readiness!$B$11,C$6<Launch_Readiness!$F$6),Launch_Readiness!$F$9*Launch_Readiness!$B$10/12,0))),0)	=ROUND((-((INDEX('P&L_5yr'!$C$56:$G$56,1,D$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,D$7)-Launch_Readiness!$F$9*Launch_Readiness!$B$10*INDEX(Launch_Readiness!$B$26:$F$26,1,D$7))/12+IF(D$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)+IF(AND(D$6>=Launch_Readiness!$B$11,D$6<Launch_Readiness!$F$6),Launch_Readiness!$F$9*Launch_Readiness!$B$10/12,0))),0)	=ROUND((-((INDEX('P&L_5yr'!$C$56:$G$56,1,E$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,E$7)-Launch_Readiness!$F$9*Launch_Readiness!$B$10*INDEX(Launch_Readiness!$B$26:$F$26,1,E$7))/12+IF(E$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)+IF(AND(E$6>=Launch_Readiness!$B$11,E$6<Launch_Readiness!$F$6),Launch_Readiness!$F$9*Launch_Readiness!$B$10/12,0))),0)	=ROUND((-((INDEX('P&L_5yr'!$C$56:$G$56,1,F$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,F$7)-Launch_Readiness!$F$9*Launch_Readiness!$B$10*INDEX(Launch_Readiness!$B$26:$F$26,1,F$7))/12+IF(F$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)+IF(AND(F$6>=Launch_Readiness!$B$11,F$6<Launch_Readiness!$F$6),Launch_Readiness!$F$9*Launch_Readiness!$B$10/12,0))),0)	=ROUND((-((INDEX('P&L_5yr'!$C$56:$G$56,1,G$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,G$7)-Launch_Readiness!$F$9*Launch_Readiness!$B$10*INDEX(Launch_Readiness!$B$26:$F$26,1,G$7))/12+IF(G$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)+IF(AND(G$6>=Launch_Readiness!$B$11,G$6<Launch_Readiness!$F$6),Launch_Readiness!$F$9*Launch_Readiness!$B$10/12,0))),0)	=ROUND((-((INDEX('P&L_5yr'!$C$56:$G$56,1,H$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,H$7)-Launch_Readiness!$F$9*Launch_Readiness!$B$10*INDEX(Launch_Readiness!$B$26:$F$26,1,H$7))/12+IF(H$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)+IF(AND(H$6>=Launch_Readiness!$B$11,H$6<Launch_Readiness!$F$6),Launch_Readiness!$F$9*Launch_Readiness!$B$10/12,0))),0)
+17		=ROUND((-IF(B$6<=6,Startup_6mo!$F$44/6,0)-IF(B$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0)),0)	=ROUND((-IF(C$6<=6,Startup_6mo!$F$44/6,0)-IF(C$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0)),0)	=ROUND((-IF(D$6<=6,Startup_6mo!$F$44/6,0)-IF(D$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0)),0)	=ROUND((-IF(E$6<=6,Startup_6mo!$F$44/6,0)-IF(E$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0)),0)	=ROUND((-IF(F$6<=6,Startup_6mo!$F$44/6,0)-IF(F$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0)),0)	=ROUND((-IF(G$6<=6,Startup_6mo!$F$44/6,0)-IF(G$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0)),0)	=ROUND((-IF(H$6<=6,Startup_6mo!$F$44/6,0)-IF(H$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0)),0)
+18		=ROUND((0),0)						
+19		=ROUND((B14+SUM(B15:B18)),0)						
+20								
+21								
+22		=0	=0	=0	=0	=0	=0	=0
+23		=ROUND((B22),0)						
+24								
+25								
+26		=ROUND((IF(B$8=1,IF(B$7=1,'P&L_5yr'!$C$66,MAX(0,INDEX('P&L_5yr'!$C$66:$G$66,1,B$7)-INDEX('P&L_5yr'!$C$66:$G$66,1,B$7-1))),0)+IF(B$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((IF(C$8=1,IF(C$7=1,'P&L_5yr'!$C$66,MAX(0,INDEX('P&L_5yr'!$C$66:$G$66,1,C$7)-INDEX('P&L_5yr'!$C$66:$G$66,1,C$7-1))),0)+IF(C$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((IF(D$8=1,IF(D$7=1,'P&L_5yr'!$C$66,MAX(0,INDEX('P&L_5yr'!$C$66:$G$66,1,D$7)-INDEX('P&L_5yr'!$C$66:$G$66,1,D$7-1))),0)+IF(D$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((IF(E$8=1,IF(E$7=1,'P&L_5yr'!$C$66,MAX(0,INDEX('P&L_5yr'!$C$66:$G$66,1,E$7)-INDEX('P&L_5yr'!$C$66:$G$66,1,E$7-1))),0)+IF(E$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((IF(F$8=1,IF(F$7=1,'P&L_5yr'!$C$66,MAX(0,INDEX('P&L_5yr'!$C$66:$G$66,1,F$7)-INDEX('P&L_5yr'!$C$66:$G$66,1,F$7-1))),0)+IF(F$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((IF(G$8=1,IF(G$7=1,'P&L_5yr'!$C$66,MAX(0,INDEX('P&L_5yr'!$C$66:$G$66,1,G$7)-INDEX('P&L_5yr'!$C$66:$G$66,1,G$7-1))),0)+IF(G$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((IF(H$8=1,IF(H$7=1,'P&L_5yr'!$C$66,MAX(0,INDEX('P&L_5yr'!$C$66:$G$66,1,H$7)-INDEX('P&L_5yr'!$C$66:$G$66,1,H$7-1))),0)+IF(H$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)
+27		=ROUND((-IF(B$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((-IF(C$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((-IF(D$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((-IF(E$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((-IF(F$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((-IF(G$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)	=ROUND((-IF(H$6=MAX(1,Launch_Readiness!$F$6-1),Launch_Readiness!$F$10,0)),0)
+28		=ROUND((SUM(B26:B27)),0)						
+29								
+30								
+31		=ROUND((0),0)	=ROUND((B33),0)					
+32		=ROUND((B19+B23+B28),0)						
+33		=ROUND((B31+B32),0)						
+34		=ROUND((-B27),0)	=ROUND((B34-C27),0)					
+35		=ROUND((B33+B34),0)						
+36								
+37								
+38		=ROUND((B19),0)	=ROUND((B38+C19),0)					
+39		=IF(B38>=0,"Reached","Not yet")						
+40		=IF(B33<0,"Cash shortfall","Funded")						
+41								
+42								
+43								
+44								
+45		=IF(MAX(B52:BI52)<0,"Beyond Month 60",INDEX($B$9:$BI$9,1,MATCH("Reached",B55:BI55,0)))	=-MIN(0,B52:BI52)	=BI52	=IF(Scenario_Engine!$B$57>=0,"Year 1",IF(Scenario_Engine!$C$57>=0,"Year 2",IF(Scenario_Engine!$D$57>=0,"Year 3",IF(Scenario_Engine!$E$57>=0,"Year 4",IF(Scenario_Engine!$F$57>=0,"Year 5","Beyond Year 5")))))	=MAX(Scenario_Engine!$B$60:$F$60)		
+46		=IF(MAX(B53:BI53)<0,"Beyond Month 60",INDEX($B$9:$BI$9,1,MATCH("Reached",B56:BI56,0)))	=-MIN(0,B53:BI53)	=BI53	=IF(Scenario_Engine!$H$57>=0,"Year 1",IF(Scenario_Engine!$I$57>=0,"Year 2",IF(Scenario_Engine!$J$57>=0,"Year 3",IF(Scenario_Engine!$K$57>=0,"Year 4",IF(Scenario_Engine!$L$57>=0,"Year 5","Beyond Year 5")))))	=MAX(Scenario_Engine!$H$60:$L$60)		
+47		=IF(MAX(B54:BI54)<0,"Beyond Month 60",INDEX($B$9:$BI$9,1,MATCH("Reached",B57:BI57,0)))	=-MIN(0,B54:BI54)	=BI54	=IF(Scenario_Engine!$N$57>=0,"Year 1",IF(Scenario_Engine!$O$57>=0,"Year 2",IF(Scenario_Engine!$P$57>=0,"Year 3",IF(Scenario_Engine!$Q$57>=0,"Year 4",IF(Scenario_Engine!$R$57>=0,"Year 5","Beyond Year 5")))))	=MAX(Scenario_Engine!$N$60:$R$60)		
+48								
+49								
+50								
+51		=Cash_Flow_Statement!B9	=Cash_Flow_Statement!C9	=Cash_Flow_Statement!D9	=Cash_Flow_Statement!E9	=Cash_Flow_Statement!F9	=Cash_Flow_Statement!G9	=Cash_Flow_Statement!H9
+52		=ROUND(((IF(B$6<=Launch_Readiness!$B$7,0,IF((B$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$30:$F$30,1,ROUNDUP((B$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((B$6-Launch_Readiness!$B$7)/12,0))))))-(IF(B$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$47:$F$47,1,B$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,B$7))))-(INDEX(Scenario_Engine!$B$52:$F$52,1,B$7)/12)-(((INDEX(Scenario_Engine!$B$53:$F$53,1,B$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,B$7))/12+IF(B$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(B$6<=6,Startup_6mo!$F$44/6,0)+IF(B$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((B52+(IF(C$6<=Launch_Readiness!$B$7,0,IF((C$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$30:$F$30,1,ROUNDUP((C$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((C$6-Launch_Readiness!$B$7)/12,0))))))-(IF(C$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$47:$F$47,1,C$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,C$7))))-(INDEX(Scenario_Engine!$B$52:$F$52,1,C$7)/12)-(((INDEX(Scenario_Engine!$B$53:$F$53,1,C$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,C$7))/12+IF(C$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(C$6<=6,Startup_6mo!$F$44/6,0)+IF(C$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((C52+(IF(D$6<=Launch_Readiness!$B$7,0,IF((D$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$30:$F$30,1,ROUNDUP((D$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((D$6-Launch_Readiness!$B$7)/12,0))))))-(IF(D$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$47:$F$47,1,D$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,D$7))))-(INDEX(Scenario_Engine!$B$52:$F$52,1,D$7)/12)-(((INDEX(Scenario_Engine!$B$53:$F$53,1,D$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,D$7))/12+IF(D$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(D$6<=6,Startup_6mo!$F$44/6,0)+IF(D$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((D52+(IF(E$6<=Launch_Readiness!$B$7,0,IF((E$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$30:$F$30,1,ROUNDUP((E$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((E$6-Launch_Readiness!$B$7)/12,0))))))-(IF(E$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$47:$F$47,1,E$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,E$7))))-(INDEX(Scenario_Engine!$B$52:$F$52,1,E$7)/12)-(((INDEX(Scenario_Engine!$B$53:$F$53,1,E$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,E$7))/12+IF(E$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(E$6<=6,Startup_6mo!$F$44/6,0)+IF(E$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((E52+(IF(F$6<=Launch_Readiness!$B$7,0,IF((F$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$30:$F$30,1,ROUNDUP((F$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((F$6-Launch_Readiness!$B$7)/12,0))))))-(IF(F$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$47:$F$47,1,F$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,F$7))))-(INDEX(Scenario_Engine!$B$52:$F$52,1,F$7)/12)-(((INDEX(Scenario_Engine!$B$53:$F$53,1,F$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,F$7))/12+IF(F$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(F$6<=6,Startup_6mo!$F$44/6,0)+IF(F$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((F52+(IF(G$6<=Launch_Readiness!$B$7,0,IF((G$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$30:$F$30,1,ROUNDUP((G$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((G$6-Launch_Readiness!$B$7)/12,0))))))-(IF(G$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$47:$F$47,1,G$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,G$7))))-(INDEX(Scenario_Engine!$B$52:$F$52,1,G$7)/12)-(((INDEX(Scenario_Engine!$B$53:$F$53,1,G$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,G$7))/12+IF(G$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(G$6<=6,Startup_6mo!$F$44/6,0)+IF(G$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((G52+(IF(H$6<=Launch_Readiness!$B$7,0,IF((H$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$30:$F$30,1,ROUNDUP((H$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((H$6-Launch_Readiness!$B$7)/12,0))))))-(IF(H$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$B$47:$F$47,1,H$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,H$7))))-(INDEX(Scenario_Engine!$B$52:$F$52,1,H$7)/12)-(((INDEX(Scenario_Engine!$B$53:$F$53,1,H$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,H$7))/12+IF(H$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(H$6<=6,Startup_6mo!$F$44/6,0)+IF(H$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)
+53		=ROUND(((IF(B$6<=Launch_Readiness!$B$7,0,IF((B$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$30:$L$30,1,ROUNDUP((B$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((B$6-Launch_Readiness!$B$7)/12,0))))))-(IF(B$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$47:$L$47,1,B$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,B$7))))-(INDEX(Scenario_Engine!$H$52:$L$52,1,B$7)/12)-(((INDEX(Scenario_Engine!$H$53:$L$53,1,B$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,B$7))/12+IF(B$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(B$6<=6,Startup_6mo!$F$44/6,0)+IF(B$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((B53+(IF(C$6<=Launch_Readiness!$B$7,0,IF((C$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$30:$L$30,1,ROUNDUP((C$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((C$6-Launch_Readiness!$B$7)/12,0))))))-(IF(C$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$47:$L$47,1,C$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,C$7))))-(INDEX(Scenario_Engine!$H$52:$L$52,1,C$7)/12)-(((INDEX(Scenario_Engine!$H$53:$L$53,1,C$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,C$7))/12+IF(C$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(C$6<=6,Startup_6mo!$F$44/6,0)+IF(C$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((C53+(IF(D$6<=Launch_Readiness!$B$7,0,IF((D$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$30:$L$30,1,ROUNDUP((D$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((D$6-Launch_Readiness!$B$7)/12,0))))))-(IF(D$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$47:$L$47,1,D$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,D$7))))-(INDEX(Scenario_Engine!$H$52:$L$52,1,D$7)/12)-(((INDEX(Scenario_Engine!$H$53:$L$53,1,D$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,D$7))/12+IF(D$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(D$6<=6,Startup_6mo!$F$44/6,0)+IF(D$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((D53+(IF(E$6<=Launch_Readiness!$B$7,0,IF((E$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$30:$L$30,1,ROUNDUP((E$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((E$6-Launch_Readiness!$B$7)/12,0))))))-(IF(E$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$47:$L$47,1,E$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,E$7))))-(INDEX(Scenario_Engine!$H$52:$L$52,1,E$7)/12)-(((INDEX(Scenario_Engine!$H$53:$L$53,1,E$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,E$7))/12+IF(E$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(E$6<=6,Startup_6mo!$F$44/6,0)+IF(E$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((E53+(IF(F$6<=Launch_Readiness!$B$7,0,IF((F$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$30:$L$30,1,ROUNDUP((F$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((F$6-Launch_Readiness!$B$7)/12,0))))))-(IF(F$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$47:$L$47,1,F$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,F$7))))-(INDEX(Scenario_Engine!$H$52:$L$52,1,F$7)/12)-(((INDEX(Scenario_Engine!$H$53:$L$53,1,F$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,F$7))/12+IF(F$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(F$6<=6,Startup_6mo!$F$44/6,0)+IF(F$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((F53+(IF(G$6<=Launch_Readiness!$B$7,0,IF((G$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$30:$L$30,1,ROUNDUP((G$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((G$6-Launch_Readiness!$B$7)/12,0))))))-(IF(G$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$47:$L$47,1,G$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,G$7))))-(INDEX(Scenario_Engine!$H$52:$L$52,1,G$7)/12)-(((INDEX(Scenario_Engine!$H$53:$L$53,1,G$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,G$7))/12+IF(G$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(G$6<=6,Startup_6mo!$F$44/6,0)+IF(G$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((G53+(IF(H$6<=Launch_Readiness!$B$7,0,IF((H$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$30:$L$30,1,ROUNDUP((H$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((H$6-Launch_Readiness!$B$7)/12,0))))))-(IF(H$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$H$47:$L$47,1,H$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,H$7))))-(INDEX(Scenario_Engine!$H$52:$L$52,1,H$7)/12)-(((INDEX(Scenario_Engine!$H$53:$L$53,1,H$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,H$7))/12+IF(H$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(H$6<=6,Startup_6mo!$F$44/6,0)+IF(H$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)
+54		=ROUND(((IF(B$6<=Launch_Readiness!$B$7,0,IF((B$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$30:$R$30,1,ROUNDUP((B$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((B$6-Launch_Readiness!$B$7)/12,0))))))-(IF(B$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$47:$R$47,1,B$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,B$7))))-(INDEX(Scenario_Engine!$N$52:$R$52,1,B$7)/12)-(((INDEX(Scenario_Engine!$N$53:$R$53,1,B$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,B$7))/12+IF(B$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(B$6<=6,Startup_6mo!$F$44/6,0)+IF(B$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((B54+(IF(C$6<=Launch_Readiness!$B$7,0,IF((C$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$30:$R$30,1,ROUNDUP((C$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((C$6-Launch_Readiness!$B$7)/12,0))))))-(IF(C$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$47:$R$47,1,C$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,C$7))))-(INDEX(Scenario_Engine!$N$52:$R$52,1,C$7)/12)-(((INDEX(Scenario_Engine!$N$53:$R$53,1,C$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,C$7))/12+IF(C$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(C$6<=6,Startup_6mo!$F$44/6,0)+IF(C$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((C54+(IF(D$6<=Launch_Readiness!$B$7,0,IF((D$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$30:$R$30,1,ROUNDUP((D$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((D$6-Launch_Readiness!$B$7)/12,0))))))-(IF(D$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$47:$R$47,1,D$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,D$7))))-(INDEX(Scenario_Engine!$N$52:$R$52,1,D$7)/12)-(((INDEX(Scenario_Engine!$N$53:$R$53,1,D$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,D$7))/12+IF(D$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(D$6<=6,Startup_6mo!$F$44/6,0)+IF(D$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((D54+(IF(E$6<=Launch_Readiness!$B$7,0,IF((E$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$30:$R$30,1,ROUNDUP((E$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((E$6-Launch_Readiness!$B$7)/12,0))))))-(IF(E$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$47:$R$47,1,E$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,E$7))))-(INDEX(Scenario_Engine!$N$52:$R$52,1,E$7)/12)-(((INDEX(Scenario_Engine!$N$53:$R$53,1,E$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,E$7))/12+IF(E$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(E$6<=6,Startup_6mo!$F$44/6,0)+IF(E$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((E54+(IF(F$6<=Launch_Readiness!$B$7,0,IF((F$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$30:$R$30,1,ROUNDUP((F$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((F$6-Launch_Readiness!$B$7)/12,0))))))-(IF(F$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$47:$R$47,1,F$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,F$7))))-(INDEX(Scenario_Engine!$N$52:$R$52,1,F$7)/12)-(((INDEX(Scenario_Engine!$N$53:$R$53,1,F$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,F$7))/12+IF(F$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(F$6<=6,Startup_6mo!$F$44/6,0)+IF(F$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((F54+(IF(G$6<=Launch_Readiness!$B$7,0,IF((G$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$30:$R$30,1,ROUNDUP((G$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((G$6-Launch_Readiness!$B$7)/12,0))))))-(IF(G$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$47:$R$47,1,G$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,G$7))))-(INDEX(Scenario_Engine!$N$52:$R$52,1,G$7)/12)-(((INDEX(Scenario_Engine!$N$53:$R$53,1,G$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,G$7))/12+IF(G$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(G$6<=6,Startup_6mo!$F$44/6,0)+IF(G$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)	=ROUND((G54+(IF(H$6<=Launch_Readiness!$B$7,0,IF((H$6-Launch_Readiness!$B$7)<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$30:$R$30,1,ROUNDUP((H$6-Launch_Readiness!$B$7)/12,0))/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,ROUNDUP((H$6-Launch_Readiness!$B$7)/12,0))))))-(IF(H$6<Launch_Readiness!$F$6,0,INDEX(Scenario_Engine!$N$47:$R$47,1,H$7)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,H$7))))-(INDEX(Scenario_Engine!$N$52:$R$52,1,H$7)/12)-(((INDEX(Scenario_Engine!$N$53:$R$53,1,H$7)-Launch_Readiness!$F$9*INDEX(Launch_Readiness!$B$24:$F$24,1,H$7))/12+IF(H$6>=Launch_Readiness!$F$6,Launch_Readiness!$F$9/12,0)))-(IF(H$6<=6,Startup_6mo!$F$44/6,0)+IF(H$6<Launch_Readiness!$F$6,Launch_Readiness!$F$8/MAX(1,Launch_Readiness!$F$7),0))),0)
+55		=IF(B52>=0,"Reached","")						
+56		=IF(B53>=0,"Reached","")						
+57		=IF(B54>=0,"Reached","")						
+58		=IF(B38>=0,"Reached","")						
+59								
+60								
+61								
+62								
+63								
+64								
+65								
+66								
+67								
+68								
+69								
+70								
+71								
+72								
+73								
+74								
+75								
+76								
+77								
+78								
+79								
+80								
+81								
+82								
+83								
+84								
+85								
+86								
+87								
+88								
+89								
+90								
+===== Scenario_Engine!A5:R16 VALUES =====
+5		Year 1	Year 2	Year 3	Year 4	Year 5		Year 1	Year 2	Year 3	Year 4	Year 5		Year 1	Year 2	Year 3	Year 4	Year 5
+6																		
+7	VOLUME & DRIVERS																	
+8	Deals processed	5	100	600	1800	6000		10	300	800	15000	30000		37	500	1200	32000	70000
+9	Avg deal value (GBP)	30250	32515	35696.8	39663.79950000001	44333.77908500002		30750	34005	38015.55	42822.53520000001	47897.37657500001		31500	35055	39678.850000000006	44325.33780000002	49322.81557100002
+10	Gross trade value processed (GMV)	151250	3251500	21418080	71394839.10000001	266002674.5100001		307500	10201500	30412440.000000004	642338028.0000002	1436921297.2500002		1165500	17527500	47614620.00000001	1418410809.6000006	3452597089.9700017
+11	Tier A eBL mix	0.05	0.1	0.2	0.3	0.4		0.15	0.3	0.45	0.6	0.7		0.3	0.45	0.65	0.75	0.82
+12	Tier B carrier/API mix	0.25	0.35	0.4	0.45	0.45		0.45	0.45	0.4	0.32	0.25		0.5	0.45	0.3	0.23	0.17
+13	Tier C paper mix	0.7	0.55	0.4	0.25	0.15		0.4	0.25	0.15	0.08	0.05		0.2	0.1	0.05	0.02	0.01
+14	Documents processed	39.75	735	3960.0000000000005	10530	31500		67.5	1755	4080.0000000000005	66599.99999999999	121500		210.9	2475.0000000000005	5040	121920	249900
+15	New counterparties onboarded	5	100	600	1800	6000		10	300	800	15000	30000		37	500	1200	32000	70000
+16	Disputed / amended deals	0.835	14.900000000000002	76.80000000000001	192.60000000000002	546		1.31	32.1	70.4	1080.0000000000002	1890		3.7740000000000005	41.5	79.2	1824.0000000000002	3626
+===== Scenario_Engine!A5:R16 FORMULAS =====
+5																		
+6																		
+7																		
+8		=ROUND(Assumptions!$C$11*Launch_Readiness!B$24,0)	=ROUND(Assumptions!$C$12*Launch_Readiness!C$24,0)	=ROUND(Assumptions!$C$13*Launch_Readiness!D$24,0)	=ROUND(Assumptions!$C$155*Launch_Readiness!E$24,0)	=ROUND(Assumptions!$C$156*Launch_Readiness!F$24,0)		=ROUND(Assumptions!$D$11*Launch_Readiness!B$24,0)	=ROUND(Assumptions!$D$12*Launch_Readiness!C$24,0)	=ROUND(Assumptions!$D$13*Launch_Readiness!D$24,0)	=ROUND(Assumptions!$D$155*Launch_Readiness!E$24,0)	=ROUND(Assumptions!$D$156*Launch_Readiness!F$24,0)		=ROUND(Assumptions!$E$11*Launch_Readiness!B$24,0)	=ROUND(Assumptions!$E$12*Launch_Readiness!C$24,0)	=ROUND(Assumptions!$E$13*Launch_Readiness!D$24,0)	=ROUND(Assumptions!$E$155*Launch_Readiness!E$24,0)	=ROUND(Assumptions!$E$156*Launch_Readiness!F$24,0)
+9		=IF(B8=0,0,B10/B8)	=IF(C8=0,0,C10/C8)	=IF(D8=0,0,D10/D8)	=IF(E8=0,0,E10/E8)	=IF(F8=0,0,F10/F8)		=IF(H8=0,0,H10/H8)	=IF(I8=0,0,I10/I8)	=IF(J8=0,0,J10/J8)	=IF(K8=0,0,K10/K8)	=IF(L8=0,0,L10/L8)		=IF(N8=0,0,N10/N8)	=IF(O8=0,0,O10/O8)	=IF(P8=0,0,P10/P8)	=IF(Q8=0,0,Q10/Q8)	=IF(R8=0,0,R10/R8)
+10		=B8*(B11*'Tier_Economics'!$B$8+B12*'Tier_Economics'!$C$8+B13*'Tier_Economics'!$D$8)	=C8*(C11*'Tier_Economics'!$F$8+C12*'Tier_Economics'!$G$8+C13*'Tier_Economics'!$H$8)	=D8*(D11*'Tier_Economics'!$J$8+D12*'Tier_Economics'!$K$8+D13*'Tier_Economics'!$L$8)	=E8*(E11*'Tier_Economics'!$N$8+E12*'Tier_Economics'!$O$8+E13*'Tier_Economics'!$P$8)	=F8*(F11*'Tier_Economics'!$R$8+F12*'Tier_Economics'!$S$8+F13*'Tier_Economics'!$T$8)		=H8*(H11*'Tier_Economics'!$B$8+H12*'Tier_Economics'!$C$8+H13*'Tier_Economics'!$D$8)	=I8*(I11*'Tier_Economics'!$F$8+I12*'Tier_Economics'!$G$8+I13*'Tier_Economics'!$H$8)	=J8*(J11*'Tier_Economics'!$J$8+J12*'Tier_Economics'!$K$8+J13*'Tier_Economics'!$L$8)	=K8*(K11*'Tier_Economics'!$N$8+K12*'Tier_Economics'!$O$8+K13*'Tier_Economics'!$P$8)	=L8*(L11*'Tier_Economics'!$R$8+L12*'Tier_Economics'!$S$8+L13*'Tier_Economics'!$T$8)		=N8*(N11*'Tier_Economics'!$B$8+N12*'Tier_Economics'!$C$8+N13*'Tier_Economics'!$D$8)	=O8*(O11*'Tier_Economics'!$F$8+O12*'Tier_Economics'!$G$8+O13*'Tier_Economics'!$H$8)	=P8*(P11*'Tier_Economics'!$J$8+P12*'Tier_Economics'!$K$8+P13*'Tier_Economics'!$L$8)	=Q8*(Q11*'Tier_Economics'!$N$8+Q12*'Tier_Economics'!$O$8+Q13*'Tier_Economics'!$P$8)	=R8*(R11*'Tier_Economics'!$R$8+R12*'Tier_Economics'!$S$8+R13*'Tier_Economics'!$T$8)
+11		=Assumptions!$C$64	=Assumptions!$C$67	=Assumptions!$C$70	=Assumptions!$C$157	=Assumptions!$C$160		=Assumptions!$D$64	=Assumptions!$D$67	=Assumptions!$D$70	=Assumptions!$D$157	=Assumptions!$D$160		=Assumptions!$E$64	=Assumptions!$E$67	=Assumptions!$E$70	=Assumptions!$E$157	=Assumptions!$E$160
+12		=Assumptions!$C$65	=Assumptions!$C$68	=Assumptions!$C$71	=Assumptions!$C$158	=Assumptions!$C$161		=Assumptions!$D$65	=Assumptions!$D$68	=Assumptions!$D$71	=Assumptions!$D$158	=Assumptions!$D$161		=Assumptions!$E$65	=Assumptions!$E$68	=Assumptions!$E$71	=Assumptions!$E$158	=Assumptions!$E$161
+13		=Assumptions!$C$66	=Assumptions!$C$69	=Assumptions!$C$72	=Assumptions!$C$159	=Assumptions!$C$162		=Assumptions!$D$66	=Assumptions!$D$69	=Assumptions!$D$72	=Assumptions!$D$159	=Assumptions!$D$162		=Assumptions!$E$66	=Assumptions!$E$69	=Assumptions!$E$72	=Assumptions!$E$159	=Assumptions!$E$162
+14		=B8*(B11*Assumptions!$F$106+B12*Assumptions!$F$107+B13*Assumptions!$F$108)	=C8*(C11*Assumptions!$F$106+C12*Assumptions!$F$107+C13*Assumptions!$F$108)	=D8*(D11*Assumptions!$F$106+D12*Assumptions!$F$107+D13*Assumptions!$F$108)	=E8*(E11*Assumptions!$F$106+E12*Assumptions!$F$107+E13*Assumptions!$F$108)	=F8*(F11*Assumptions!$F$106+F12*Assumptions!$F$107+F13*Assumptions!$F$108)		=H8*(H11*Assumptions!$F$106+H12*Assumptions!$F$107+H13*Assumptions!$F$108)	=I8*(I11*Assumptions!$F$106+I12*Assumptions!$F$107+I13*Assumptions!$F$108)	=J8*(J11*Assumptions!$F$106+J12*Assumptions!$F$107+J13*Assumptions!$F$108)	=K8*(K11*Assumptions!$F$106+K12*Assumptions!$F$107+K13*Assumptions!$F$108)	=L8*(L11*Assumptions!$F$106+L12*Assumptions!$F$107+L13*Assumptions!$F$108)		=N8*(N11*Assumptions!$F$106+N12*Assumptions!$F$107+N13*Assumptions!$F$108)	=O8*(O11*Assumptions!$F$106+O12*Assumptions!$F$107+O13*Assumptions!$F$108)	=P8*(P11*Assumptions!$F$106+P12*Assumptions!$F$107+P13*Assumptions!$F$108)	=Q8*(Q11*Assumptions!$F$106+Q12*Assumptions!$F$107+Q13*Assumptions!$F$108)	=R8*(R11*Assumptions!$F$106+R12*Assumptions!$F$107+R13*Assumptions!$F$108)
+15		=B8*Assumptions!$F$16*Assumptions!$F$62	=C8*Assumptions!$F$16*Assumptions!$F$62	=D8*Assumptions!$F$16*Assumptions!$F$62	=E8*Assumptions!$F$16*Assumptions!$F$62	=F8*Assumptions!$F$16*Assumptions!$F$62		=H8*Assumptions!$F$16*Assumptions!$F$62	=I8*Assumptions!$F$16*Assumptions!$F$62	=J8*Assumptions!$F$16*Assumptions!$F$62	=K8*Assumptions!$F$16*Assumptions!$F$62	=L8*Assumptions!$F$16*Assumptions!$F$62		=N8*Assumptions!$F$16*Assumptions!$F$62	=O8*Assumptions!$F$16*Assumptions!$F$62	=P8*Assumptions!$F$16*Assumptions!$F$62	=Q8*Assumptions!$F$16*Assumptions!$F$62	=R8*Assumptions!$F$16*Assumptions!$F$62
+16		=B8*(B11*Assumptions!$F$94+B12*Assumptions!$F$95+B13*Assumptions!$F$96)	=C8*(C11*Assumptions!$F$94+C12*Assumptions!$F$95+C13*Assumptions!$F$96)	=D8*(D11*Assumptions!$F$94+D12*Assumptions!$F$95+D13*Assumptions!$F$96)	=E8*(E11*Assumptions!$F$94+E12*Assumptions!$F$95+E13*Assumptions!$F$96)	=F8*(F11*Assumptions!$F$94+F12*Assumptions!$F$95+F13*Assumptions!$F$96)		=H8*(H11*Assumptions!$F$94+H12*Assumptions!$F$95+H13*Assumptions!$F$96)	=I8*(I11*Assumptions!$F$94+I12*Assumptions!$F$95+I13*Assumptions!$F$96)	=J8*(J11*Assumptions!$F$94+J12*Assumptions!$F$95+J13*Assumptions!$F$96)	=K8*(K11*Assumptions!$F$94+K12*Assumptions!$F$95+K13*Assumptions!$F$96)	=L8*(L11*Assumptions!$F$94+L12*Assumptions!$F$95+L13*Assumptions!$F$96)		=N8*(N11*Assumptions!$F$94+N12*Assumptions!$F$95+N13*Assumptions!$F$96)	=O8*(O11*Assumptions!$F$94+O12*Assumptions!$F$95+O13*Assumptions!$F$96)	=P8*(P11*Assumptions!$F$94+P12*Assumptions!$F$95+P13*Assumptions!$F$96)	=Q8*(Q11*Assumptions!$F$94+Q12*Assumptions!$F$95+Q13*Assumptions!$F$96)	=R8*(R11*Assumptions!$F$94+R12*Assumptions!$F$95+R13*Assumptions!$F$96)
+===== Model_Checks!A1:G35 VALUES =====
+1	MODEL CHECKS						
+2	Green status means the model reconciles mechanically. Regulatory assumptions still require counsel / FSRA confirmation.						
+3							
+4	Overall model status	PASS					
+5							
+6	Check	Actual	Expected	Difference	Tolerance	Status	Interpretation
+7	Business scenario selector	3	3	0	0	PASS	Integer 1-3.
+8	Regulatory path selector	2	2	0	0	PASS	Integer 1-3.
+9	P&L operating-cost roll-up	1399437	1399437	0	1	PASS	Payroll + fixed opex + one-off.
+10	P&L cumulative roll-forward	40824151	40824151	0	1	PASS	Cumulative result equals sum of annual results.
+11	Cash closing balance roll-forward	66977086	66977086	0	1	PASS	Unrestricted + restricted cash.
+12	Restricted capital tie-out	0	0	0	1	PASS	Capital is funded and held separately.
+13	Total raise presentation tie	3201909	3201909	0	1	PASS	Operating ask plus restricted capital.
+14	No cash receipts before permitted month	0	0	0	1	PASS	Receipt lag enforced.
+15	Minimum unrestricted closing cash	192283	0	0	1	PASS	Funding plan avoids an operating cash shortfall.
+16	Dashboard headline cells evaluate	0	0	0	0	PASS	Zero means the key dashboard KPI formulas evaluate without errors.
+17	Receipts reconcile to revenue	51495343	51495329	14	100	PASS	60-month receipts equal five-year revenue less the lag tail falling after month 60.
+18	Regulatory one-off tie-out	60000	60000	0	2	PASS	Regulatory one-off charged across the P&L equals the active path figure.
+19	Selected scenario revenue ties to active P&L	54568969	54568969	0	5	PASS	Selected Scenario_Engine revenue equals the active P&L.
+20	Selected scenario COGS ties to active P&L	5991282	5991282	0	5	PASS	Selected Scenario_Engine COGS equals the active P&L.
+21	Tier deal-value assumptions populated	6	6	0	0	PASS	All three Year-1 values and all three annual growth rates must be numeric.
+22	Tier GMV ties to five-year P&L	0	0	0	0.01	PASS	P&L GMV must be sourced from the tier-level calculation.
+23	Blended deal values reconcile	0	0	0	0.000001	PASS	The displayed average must equal total GMV divided by deal count.
+24	Tier escrow revenue ties to P&L	46122229.46	46122229.46	0	1	PASS	Escrow revenue must retain tier-specific rates and minimum fees.
+25	Selected scenario GMV ties to P&L	4937315519.57	4937315519.57	0	5	PASS	The active Low / Base / High volume scenario must use the same tier-value schedule as the P&L.
+26							
+27							
+28							
+29							
+30							
+31							
+32							
+33							
+34							
+35							
+===== Model_Checks!A1:G35 FORMULAS =====
+1							
+2							
+3							
+4		=IF(COUNTIF(F7:F25,"FAIL")>0,"FAIL","PASS")					
+5							
+6							
+7		=Assumptions!$C$4	=MIN(3,MAX(1,ROUND(B7,0)))	=B7-C7	=0	=IF(ABS(D7)<=E7,"PASS","FAIL")	
+8		=Launch_Readiness!$B$5	=MIN(3,MAX(1,ROUND(B8,0)))		=0		
+9		=ROUND('P&L_5yr'!$C$60,0)	=ROUND('P&L_5yr'!$C$42+'P&L_5yr'!$C$56+'P&L_5yr'!$C$58,0)		=1		
+10		=ROUND('P&L_5yr'!$G$63,0)	=ROUND(SUM('P&L_5yr'!$C$62:$G$62),0)		=1		
+11		=ROUND(Cash_Flow_Statement!$BI$35,0)	=ROUND(Cash_Flow_Statement!$BI$33+Cash_Flow_Statement!$BI$34,0)		=1		
+12		=ROUND(MAX(Cash_Flow_Statement!$B$34:$BI$34),0)	=ROUND(Launch_Readiness!$F$10,0)		=1		
+13		=ROUND(Launch_Readiness!$F$12,0)	=ROUND(MAX('P&L_5yr'!$C$66:$G$66)+Launch_Readiness!$F$10,0)		=1		
+14		=ROUND(SUM(Cash_Flow_Statement!$B$12:INDEX(Cash_Flow_Statement!$B$12:$BI$12,1,MAX(1,Launch_Readiness!$F$11-1))),0)	=0		=1		
+15		=ROUND(MIN(Cash_Flow_Statement!$B$33:$BI$33),0)	=0	=MIN(0,B15)-C15	=1		
+16		=IF(SUM(IF(ISERROR(Dashboard!$C$10),1,0),IF(ISERROR(Dashboard!$G$10),1,0),IF(ISERROR(Dashboard!$K$10),1,0),IF(ISERROR(Dashboard!$O$10),1,0),IF(ISERROR(Dashboard!$T$11),1,0),IF(ISERROR(Dashboard!$U$11),1,0),IF(ISERROR(Dashboard!$T$15),1,0),IF(ISERROR(Dashboard!$U$15),1,0),IF(ISERROR(Dashboard!$T$19),1,0),IF(ISERROR(Dashboard!$U$19),1,0))>0,1,0)	=0	=B16-C16	=0		
+17		=ROUND(SUM(Cash_Flow_Statement!$B$12:$BI$12),0)	=ROUND(SUM('P&L_5yr'!$C$18:$G$18)-INDEX('P&L_5yr'!$C$18:$G$18,1,5)/MAX(1,INDEX(Launch_Readiness!$B$22:$F$22,1,5))*Launch_Readiness!$B$7,0)	=B17-C17	=100		
+18		=ROUND(SUM('P&L_5yr'!$C$58:$G$58)-Startup_6mo!$F$44,0)	=ROUND(Launch_Readiness!$F$8,0)	=B18-C18	=2		
+19		=ROUND(CHOOSE(Assumptions!$C$4,SUM(Scenario_Engine!$B$30:$F$30),SUM(Scenario_Engine!$H$30:$L$30),SUM(Scenario_Engine!$N$30:$R$30)),0)	=ROUND(SUM('P&L_5yr'!$C$18:$G$18),0)	=B19-C19	=5		
+20		=ROUND(CHOOSE(Assumptions!$C$4,SUM(Scenario_Engine!$B$47:$F$47),SUM(Scenario_Engine!$H$47:$L$47),SUM(Scenario_Engine!$N$47:$R$47)),0)	=ROUND(SUM('P&L_5yr'!$C$29:$G$29),0)	=B20-C20	=5		
+21		=COUNT(Assumptions!$F$170:$F$175)	=6	=B21-C21		=IF(ABS(D21)<=E21,"PASS","FAIL")	
+22		=ROUND(SUM(ABS('Tier_Economics'!E9-'P&L_5yr'!C9),ABS('Tier_Economics'!I9-'P&L_5yr'!D9),ABS('Tier_Economics'!M9-'P&L_5yr'!E9),ABS('Tier_Economics'!Q9-'P&L_5yr'!F9),ABS('Tier_Economics'!U9-'P&L_5yr'!G9)),2)	=0	=B22-C22		=IF(ABS(D22)<=E22,"PASS","FAIL")	
+23		=ROUND(SUM(ABS('P&L_5yr'!C8-IF('P&L_5yr'!C7=0,0,'P&L_5yr'!C9/'P&L_5yr'!C7)),ABS('P&L_5yr'!D8-IF('P&L_5yr'!D7=0,0,'P&L_5yr'!D9/'P&L_5yr'!D7)),ABS('P&L_5yr'!E8-IF('P&L_5yr'!E7=0,0,'P&L_5yr'!E9/'P&L_5yr'!E7)),ABS('P&L_5yr'!F8-IF('P&L_5yr'!F7=0,0,'P&L_5yr'!F9/'P&L_5yr'!F7)),ABS('P&L_5yr'!G8-IF('P&L_5yr'!G7=0,0,'P&L_5yr'!G9/'P&L_5yr'!G7))),6)	=0	=B23-C23		=IF(ABS(D23)<=E23,"PASS","FAIL")	
+24		=ROUND(SUM('P&L_5yr'!C14:G14),2)	=ROUND(SUM('Tier_Economics'!E12,'Tier_Economics'!I12,'Tier_Economics'!M12,'Tier_Economics'!Q12,'Tier_Economics'!U12),2)	=B24-C24		=IF(ABS(D24)<=E24,"PASS","FAIL")	
+25		=ROUND(CHOOSE(Assumptions!$C$4,SUM(Scenario_Engine!B10:F10),SUM(Scenario_Engine!H10:L10),SUM(Scenario_Engine!N10:R10)),2)	=ROUND(SUM('P&L_5yr'!C9:G9),2)	=B25-C25		=IF(ABS(D25)<=E25,"PASS","FAIL")	
+26							
+27							
+28							
+29							
+30							
+31							
+32							
+33							
+34							
+35							

@@ -1,0 +1,518 @@
+{
+  "workbook": "C:/Users/cwbec/BlockMed/outputs/deal-value-update-2026-08-11/Blockmediary_Financial_Model_Detailed_2026-08-11.xlsx",
+  "sheets": [
+    "README",
+    "Dashboard",
+    "Launch_Readiness",
+    "Tier_Economics",
+    "Revenue_Risk_AddOns",
+    "P&L_5yr",
+    "Cash_Flow_Statement",
+    "Scenario_Engine",
+    "Assumptions",
+    "Startup_6mo",
+    "Driver_Tables",
+    "Sensitivity",
+    "Risk_Register",
+    "Model_Checks"
+  ],
+  "formulaErrorCount": 0,
+  "formulaErrors": [],
+  "legacyReferenceCount": 0,
+  "legacyReferences": [],
+  "assumptions": [
+    {
+      "address": "Assumptions!F170",
+      "value": 35000,
+      "formula": ""
+    },
+    {
+      "address": "Assumptions!F171",
+      "value": 0.1,
+      "formula": ""
+    },
+    {
+      "address": "Assumptions!F172",
+      "value": 30000,
+      "formula": ""
+    },
+    {
+      "address": "Assumptions!F173",
+      "value": 0.08,
+      "formula": ""
+    },
+    {
+      "address": "Assumptions!F174",
+      "value": 30000,
+      "formula": ""
+    },
+    {
+      "address": "Assumptions!F175",
+      "value": 0.05,
+      "formula": ""
+    }
+  ],
+  "headlineCells": [
+    {
+      "address": "P&L_5yr!C7",
+      "value": 37,
+      "formula": "=ROUND((Assumptions!$F$11)*Launch_Readiness!$B$24,0)"
+    },
+    {
+      "address": "P&L_5yr!C8",
+      "value": 31500,
+      "formula": "=IF(C7=0,0,C9/C7)"
+    },
+    {
+      "address": "P&L_5yr!C9",
+      "value": 1165500,
+      "formula": "='Tier_Economics'!E9"
+    },
+    {
+      "address": "P&L_5yr!C14",
+      "value": 18093,
+      "formula": "=Tier_Economics!E12"
+    },
+    {
+      "address": "P&L_5yr!C18",
+      "value": 23991.9,
+      "formula": "=SUM(C14:C17)"
+    },
+    {
+      "address": "P&L_5yr!C30",
+      "value": 18633.38421875,
+      "formula": "=C18-C29"
+    },
+    {
+      "address": "P&L_5yr!C61",
+      "value": -750499.9491145833,
+      "formula": "=C30-C42-C56"
+    },
+    {
+      "address": "P&L_5yr!C62",
+      "value": -1380803.549114583,
+      "formula": "=C30-C60"
+    },
+    {
+      "address": "P&L_5yr!C66",
+      "value": 1581341,
+      "formula": "=ROUND(C64+C65,0)"
+    },
+    {
+      "address": "P&L_5yr!D7",
+      "value": 500,
+      "formula": "=ROUND((Assumptions!$F$12)*Launch_Readiness!$C$24,0)"
+    },
+    {
+      "address": "P&L_5yr!D8",
+      "value": 35055,
+      "formula": "=IF(D7=0,0,D9/D7)"
+    },
+    {
+      "address": "P&L_5yr!D9",
+      "value": 17527500,
+      "formula": "='Tier_Economics'!I9"
+    },
+    {
+      "address": "P&L_5yr!D14",
+      "value": 225900,
+      "formula": "=Tier_Economics!I12"
+    },
+    {
+      "address": "P&L_5yr!D18",
+      "value": 448137,
+      "formula": "=SUM(D14:D17)"
+    },
+    {
+      "address": "P&L_5yr!D30",
+      "value": 389003.7109375,
+      "formula": "=D18-D29"
+    },
+    {
+      "address": "P&L_5yr!D61",
+      "value": -753076.2890625,
+      "formula": "=D30-D42-D56"
+    },
+    {
+      "address": "P&L_5yr!D62",
+      "value": -753076.2890625,
+      "formula": "=D30-D60"
+    },
+    {
+      "address": "P&L_5yr!D66",
+      "value": 2367050,
+      "formula": "=ROUND(D64+D65,0)"
+    },
+    {
+      "address": "P&L_5yr!E7",
+      "value": 1200,
+      "formula": "=ROUND((Assumptions!$F$13)*Launch_Readiness!$D$24,0)"
+    },
+    {
+      "address": "P&L_5yr!E8",
+      "value": 39678.850000000006,
+      "formula": "=IF(E7=0,0,E9/E7)"
+    },
+    {
+      "address": "P&L_5yr!E9",
+      "value": 47614620.00000001,
+      "formula": "='Tier_Economics'!M9"
+    },
+    {
+      "address": "P&L_5yr!E14",
+      "value": 512755.80000000005,
+      "formula": "=Tier_Economics!M12"
+    },
+    {
+      "address": "P&L_5yr!E18",
+      "value": 887793.8,
+      "formula": "=SUM(E14:E17)"
+    },
+    {
+      "address": "P&L_5yr!E30",
+      "value": 785498.8,
+      "formula": "=E18-E29"
+    },
+    {
+      "address": "P&L_5yr!E61",
+      "value": -646131.2,
+      "formula": "=E30-E42-E56"
+    },
+    {
+      "address": "P&L_5yr!E62",
+      "value": -646131.2,
+      "formula": "=E30-E60"
+    },
+    {
+      "address": "P&L_5yr!E66",
+      "value": 2962398,
+      "formula": "=ROUND(E64+E65,0)"
+    },
+    {
+      "address": "P&L_5yr!F7",
+      "value": 32000,
+      "formula": "=ROUND((Assumptions!$F$155)*Launch_Readiness!$E$24,0)"
+    },
+    {
+      "address": "P&L_5yr!F8",
+      "value": 44325.33780000001,
+      "formula": "=IF(F7=0,0,F9/F7)"
+    },
+    {
+      "address": "P&L_5yr!F9",
+      "value": 1418410809.6000004,
+      "formula": "='Tier_Economics'!Q9"
+    },
+    {
+      "address": "P&L_5yr!F14",
+      "value": 13783278.144000005,
+      "formula": "=Tier_Economics!Q12"
+    },
+    {
+      "address": "P&L_5yr!F18",
+      "value": 16325358.144000005,
+      "formula": "=SUM(F14:F17)"
+    },
+    {
+      "address": "P&L_5yr!F30",
+      "value": 14345032.644000005,
+      "formula": "=F18-F29"
+    },
+    {
+      "address": "P&L_5yr!F61",
+      "value": 12609332.644000005,
+      "formula": "=F30-F42-F56"
+    },
+    {
+      "address": "P&L_5yr!F62",
+      "value": 12609332.644000005,
+      "formula": "=F30-F60"
+    },
+    {
+      "address": "P&L_5yr!F66",
+      "value": 3201909,
+      "formula": "=ROUND(F64+F65,0)"
+    },
+    {
+      "address": "P&L_5yr!G7",
+      "value": 70000,
+      "formula": "=ROUND((Assumptions!$F$156)*Launch_Readiness!$F$24,0)"
+    },
+    {
+      "address": "P&L_5yr!G8",
+      "value": 49322.81557100002,
+      "formula": "=IF(G7=0,0,G9/G7)"
+    },
+    {
+      "address": "P&L_5yr!G9",
+      "value": 3452597089.970001,
+      "formula": "='Tier_Economics'!U9"
+    },
+    {
+      "address": "P&L_5yr!G14",
+      "value": 31582202.51830001,
+      "formula": "=Tier_Economics!U12"
+    },
+    {
+      "address": "P&L_5yr!G18",
+      "value": 36883688.51830001,
+      "formula": "=SUM(G14:G17)"
+    },
+    {
+      "address": "P&L_5yr!G30",
+      "value": 33039519.11205001,
+      "formula": "=G18-G29"
+    },
+    {
+      "address": "P&L_5yr!G61",
+      "value": 30994829.11205001,
+      "formula": "=G30-G42-G56"
+    },
+    {
+      "address": "P&L_5yr!G62",
+      "value": 30994829.11205001,
+      "formula": "=G30-G60"
+    },
+    {
+      "address": "P&L_5yr!G66",
+      "value": 3201909,
+      "formula": "=ROUND(G64+G65,0)"
+    }
+  ],
+  "tierCells": [
+    {
+      "address": "Tier_Economics!B8",
+      "value": 35000,
+      "formula": "=Assumptions!$F$170"
+    },
+    {
+      "address": "Tier_Economics!C8",
+      "value": 30000,
+      "formula": "=Assumptions!$F$172"
+    },
+    {
+      "address": "Tier_Economics!D8",
+      "value": 30000,
+      "formula": "=Assumptions!$F$174"
+    },
+    {
+      "address": "Tier_Economics!E8",
+      "value": 31500,
+      "formula": "=IF(E5=0,0,E9/E5)"
+    },
+    {
+      "address": "Tier_Economics!E9",
+      "value": 1165500,
+      "formula": "=SUM(B9:D9)"
+    },
+    {
+      "address": "Tier_Economics!E12",
+      "value": 18093,
+      "formula": "=SUM(B12:D12)"
+    },
+    {
+      "address": "Tier_Economics!F8",
+      "value": 38500,
+      "formula": "=Assumptions!$F$170*(1+Assumptions!$F$171)^1"
+    },
+    {
+      "address": "Tier_Economics!G8",
+      "value": 32400.000000000004,
+      "formula": "=Assumptions!$F$172*(1+Assumptions!$F$173)^1"
+    },
+    {
+      "address": "Tier_Economics!H8",
+      "value": 31500,
+      "formula": "=Assumptions!$F$174*(1+Assumptions!$F$175)^1"
+    },
+    {
+      "address": "Tier_Economics!I8",
+      "value": 35055,
+      "formula": "=IF(I5=0,0,I9/I5)"
+    },
+    {
+      "address": "Tier_Economics!I9",
+      "value": 17527500,
+      "formula": "=SUM(F9:H9)"
+    },
+    {
+      "address": "Tier_Economics!I12",
+      "value": 225900,
+      "formula": "=SUM(F12:H12)"
+    },
+    {
+      "address": "Tier_Economics!J8",
+      "value": 42350.00000000001,
+      "formula": "=Assumptions!$F$170*(1+Assumptions!$F$171)^2"
+    },
+    {
+      "address": "Tier_Economics!K8",
+      "value": 34992,
+      "formula": "=Assumptions!$F$172*(1+Assumptions!$F$173)^2"
+    },
+    {
+      "address": "Tier_Economics!L8",
+      "value": 33075,
+      "formula": "=Assumptions!$F$174*(1+Assumptions!$F$175)^2"
+    },
+    {
+      "address": "Tier_Economics!M8",
+      "value": 39678.850000000006,
+      "formula": "=IF(M5=0,0,M9/M5)"
+    },
+    {
+      "address": "Tier_Economics!M9",
+      "value": 47614620.00000001,
+      "formula": "=SUM(J9:L9)"
+    },
+    {
+      "address": "Tier_Economics!M12",
+      "value": 512755.80000000005,
+      "formula": "=SUM(J12:L12)"
+    },
+    {
+      "address": "Tier_Economics!N8",
+      "value": 46585.000000000015,
+      "formula": "=Assumptions!$F$170*(1+Assumptions!$F$171)^3"
+    },
+    {
+      "address": "Tier_Economics!O8",
+      "value": 37791.36000000001,
+      "formula": "=Assumptions!$F$172*(1+Assumptions!$F$173)^3"
+    },
+    {
+      "address": "Tier_Economics!P8",
+      "value": 34728.75000000001,
+      "formula": "=Assumptions!$F$174*(1+Assumptions!$F$175)^3"
+    },
+    {
+      "address": "Tier_Economics!Q8",
+      "value": 44325.33780000001,
+      "formula": "=IF(Q5=0,0,Q9/Q5)"
+    },
+    {
+      "address": "Tier_Economics!Q9",
+      "value": 1418410809.6000004,
+      "formula": "=SUM(N9:P9)"
+    },
+    {
+      "address": "Tier_Economics!Q12",
+      "value": 13783278.144000005,
+      "formula": "=SUM(N12:P12)"
+    },
+    {
+      "address": "Tier_Economics!R8",
+      "value": 51243.500000000015,
+      "formula": "=Assumptions!$F$170*(1+Assumptions!$F$171)^4"
+    },
+    {
+      "address": "Tier_Economics!S8",
+      "value": 40814.66880000001,
+      "formula": "=Assumptions!$F$172*(1+Assumptions!$F$173)^4"
+    },
+    {
+      "address": "Tier_Economics!T8",
+      "value": 36465.18750000001,
+      "formula": "=Assumptions!$F$174*(1+Assumptions!$F$175)^4"
+    },
+    {
+      "address": "Tier_Economics!U8",
+      "value": 49322.81557100002,
+      "formula": "=IF(U5=0,0,U9/U5)"
+    },
+    {
+      "address": "Tier_Economics!U9",
+      "value": 3452597089.970001,
+      "formula": "=SUM(R9:T9)"
+    },
+    {
+      "address": "Tier_Economics!U12",
+      "value": 31582202.51830001,
+      "formula": "=SUM(R12:T12)"
+    }
+  ],
+  "scenarioCells": [
+    {
+      "address": "Scenario_Engine!H8",
+      "value": 10,
+      "formula": "=ROUND(Assumptions!$D$11*Launch_Readiness!B$24,0)"
+    },
+    {
+      "address": "Scenario_Engine!H9",
+      "value": 30750,
+      "formula": "=IF(H8=0,0,H10/H8)"
+    },
+    {
+      "address": "Scenario_Engine!H10",
+      "value": 307500,
+      "formula": "=H8*(H11*'Tier_Economics'!$B$8+H12*'Tier_Economics'!$C$8+H13*'Tier_Economics'!$D$8)"
+    },
+    {
+      "address": "Scenario_Engine!H19",
+      "value": 6045,
+      "formula": "=H8*(H11*MAX('Tier_Economics'!$B$8*Assumptions!$F$73,Assumptions!$F$76)+H12*MAX('Tier_Economics'!$C$8*Assumptions!$F$74,Assumptions!$F$77)+H13*MAX('Tier_Economics'!$D$8*Assumptions!$F$75,Assumptions!$F$78))"
+    },
+    {
+      "address": "Scenario_Engine!I9",
+      "value": 34005,
+      "formula": "=IF(I8=0,0,I10/I8)"
+    },
+    {
+      "address": "Scenario_Engine!I10",
+      "value": 10201500,
+      "formula": "=I8*(I11*'Tier_Economics'!$F$8+I12*'Tier_Economics'!$G$8+I13*'Tier_Economics'!$H$8)"
+    },
+    {
+      "address": "Scenario_Engine!I19",
+      "value": 164205,
+      "formula": "=I8*(I11*MAX('Tier_Economics'!$F$8*Assumptions!$F$73,Assumptions!$F$76)+I12*MAX('Tier_Economics'!$G$8*Assumptions!$F$74,Assumptions!$F$77)+I13*MAX('Tier_Economics'!$H$8*Assumptions!$F$75,Assumptions!$F$78))"
+    },
+    {
+      "address": "Scenario_Engine!L9",
+      "value": 47897.37657500001,
+      "formula": "=IF(L8=0,0,L10/L8)"
+    },
+    {
+      "address": "Scenario_Engine!L10",
+      "value": 1436921297.2500002,
+      "formula": "=L8*(L11*'Tier_Economics'!$R$8+L12*'Tier_Economics'!$S$8+L13*'Tier_Economics'!$T$8)"
+    },
+    {
+      "address": "Scenario_Engine!L19",
+      "value": 14841491.677500004,
+      "formula": "=L8*(L11*MAX('Tier_Economics'!$R$8*Assumptions!$F$73,Assumptions!$F$76)+L12*MAX('Tier_Economics'!$S$8*Assumptions!$F$74,Assumptions!$F$77)+L13*MAX('Tier_Economics'!$T$8*Assumptions!$F$75,Assumptions!$F$78))"
+    }
+  ],
+  "checkCells": [
+    {
+      "address": "Model_Checks!B4",
+      "value": "PASS",
+      "formula": "=IF(COUNTIF(F7:F25,\"FAIL\")>0,\"FAIL\",\"PASS\")"
+    },
+    {
+      "address": "Model_Checks!F21",
+      "value": "PASS",
+      "formula": "=IF(ABS(D21)<=E21,\"PASS\",\"FAIL\")"
+    },
+    {
+      "address": "Model_Checks!F22",
+      "value": "PASS",
+      "formula": "=IF(ABS(D22)<=E22,\"PASS\",\"FAIL\")"
+    },
+    {
+      "address": "Model_Checks!F23",
+      "value": "PASS",
+      "formula": "=IF(ABS(D23)<=E23,\"PASS\",\"FAIL\")"
+    },
+    {
+      "address": "Model_Checks!F24",
+      "value": "PASS",
+      "formula": "=IF(ABS(D24)<=E24,\"PASS\",\"FAIL\")"
+    },
+    {
+      "address": "Model_Checks!F25",
+      "value": "PASS",
+      "formula": "=IF(ABS(D25)<=E25,\"PASS\",\"FAIL\")"
+    }
+  ]
+}

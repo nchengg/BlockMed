@@ -1,0 +1,422 @@
+{
+  "modelStatus": "PASS",
+  "failures": [],
+  "formulaErrors": "{\"kind\":\"notice\",\"message\":\"Cell search matched 0 entries.\"}",
+  "assumptionValueChangesExcludingNoteH185": [],
+  "assumptionFormulaChanges": [],
+  "pass1FinancialVsFinal": {
+    "Launch Readiness!B26:F34": [],
+    "P&L 5yr!C7:G66": [
+      {
+        "row": 58,
+        "col": 1,
+        "before": 1068227,
+        "after": 1112727
+      },
+      {
+        "row": 58,
+        "col": 2,
+        "before": 1976300,
+        "after": 1998729
+      },
+      {
+        "row": 58,
+        "col": 3,
+        "before": 2436689,
+        "after": 2473748
+      },
+      {
+        "row": 58,
+        "col": 4,
+        "before": 2649419,
+        "after": 2686478
+      },
+      {
+        "row": 58,
+        "col": 5,
+        "before": 2649419,
+        "after": 2686478
+      },
+      {
+        "row": 60,
+        "col": 1,
+        "before": 1259743,
+        "after": 1304243
+      },
+      {
+        "row": 60,
+        "col": 2,
+        "before": 2167816,
+        "after": 2190245
+      },
+      {
+        "row": 60,
+        "col": 3,
+        "before": 2628205,
+        "after": 2665264
+      },
+      {
+        "row": 60,
+        "col": 4,
+        "before": 2840935,
+        "after": 2877994
+      },
+      {
+        "row": 60,
+        "col": 5,
+        "before": 2840935,
+        "after": 2877994
+      }
+    ],
+    "Cash Flow Statement!B12:BI40": [
+      {
+        "row": 8,
+        "col": 18,
+        "before": -112068,
+        "after": -72447
+      },
+      {
+        "row": 8,
+        "col": 19,
+        "before": -69522,
+        "after": -72447
+      },
+      {
+        "row": 8,
+        "col": 20,
+        "before": -69522,
+        "after": -72447
+      },
+      {
+        "row": 8,
+        "col": 21,
+        "before": -69522,
+        "after": -72447
+      },
+      {
+        "row": 8,
+        "col": 22,
+        "before": -69522,
+        "after": -72447
+      },
+      {
+        "row": 8,
+        "col": 23,
+        "before": -69522,
+        "after": -72447
+      },
+      {
+        "row": 8,
+        "col": 24,
+        "before": -69522,
+        "after": -72447
+      },
+      {
+        "row": 8,
+        "col": 25,
+        "before": -111777,
+        "after": -114703
+      },
+      {
+        "row": 8,
+        "col": 26,
+        "before": -29830,
+        "after": -32756
+      },
+      {
+        "row": 8,
+        "col": 27,
+        "before": -29830,
+        "after": -32756
+      },
+      {
+        "row": 8,
+        "col": 28,
+        "before": -29830,
+        "after": -32756
+      },
+      {
+        "row": 8,
+        "col": 29,
+        "before": -29830,
+        "after": -32756
+      },
+      {
+        "row": 8,
+        "col": 49,
+        "before": 238590,
+        "after": 238591
+      },
+      {
+        "row": 8,
+        "col": 50,
+        "before": 979417,
+        "after": 979418
+      },
+      {
+        "row": 8,
+        "col": 51,
+        "before": 979417,
+        "after": 979418
+      },
+      {
+        "row": 8,
+        "col": 52,
+        "before": 979417,
+        "after": 979418
+      },
+      {
+        "row": 8,
+        "col": 53,
+        "before": 979417,
+        "after": 979418
+      },
+      {
+        "row": 8,
+        "col": 54,
+        "before": 979417,
+        "after": 979418
+      },
+      {
+        "row": 8,
+        "col": 55,
+        "before": 979417,
+        "after": 979418
+      },
+      {
+        "row": 8,
+        "col": 56,
+        "before": 979417,
+        "after": 979418
+      }
+    ],
+    "Scenario Engine!B8:R60": [
+      {
+        "row": 51,
+        "col": 7,
+        "before": 1068227,
+        "after": 1112727
+      },
+      {
+        "row": 51,
+        "col": 8,
+        "before": 1976300,
+        "after": 1998729
+      },
+      {
+        "row": 51,
+        "col": 9,
+        "before": 2436689,
+        "after": 2473748
+      },
+      {
+        "row": 51,
+        "col": 10,
+        "before": 2649419,
+        "after": 2686478
+      },
+      {
+        "row": 51,
+        "col": 11,
+        "before": 2649419,
+        "after": 2686478
+      },
+      {
+        "row": 53,
+        "col": 7,
+        "before": 1259743,
+        "after": 1304243
+      },
+      {
+        "row": 53,
+        "col": 8,
+        "before": 2167816,
+        "after": 2190245
+      },
+      {
+        "row": 53,
+        "col": 9,
+        "before": 2628205,
+        "after": 2665264
+      },
+      {
+        "row": 53,
+        "col": 10,
+        "before": 2840935,
+        "after": 2877994
+      },
+      {
+        "row": 53,
+        "col": 11,
+        "before": 2840935,
+        "after": 2877994
+      }
+    ]
+  },
+  "timingCases": [
+    {
+      "caseNumber": 1,
+      "firstPaidPilot": 9,
+      "firstReceipt": 10,
+      "varaIdqStart": 1,
+      "fullSubmissionTarget": 3,
+      "fullVaraLicenceTarget": 12,
+      "revenueActiveMonths": [
+        4,
+        12,
+        12,
+        12,
+        12
+      ],
+      "prePilotPartnerMonths": [
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "varaOperatingMonths": [
+        1,
+        12,
+        12,
+        12,
+        12
+      ],
+      "varaApplicationFeeTiming": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "partnerFeeFactor": [
+        0.25,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fundingNeed": 2909886
+    },
+    {
+      "caseNumber": 2,
+      "firstPaidPilot": 12,
+      "firstReceipt": 13,
+      "varaIdqStart": 1,
+      "fullSubmissionTarget": 4,
+      "fullVaraLicenceTarget": 18,
+      "revenueActiveMonths": [
+        1,
+        12,
+        12,
+        12,
+        12
+      ],
+      "prePilotPartnerMonths": [
+        11,
+        0,
+        0,
+        0,
+        0
+      ],
+      "varaOperatingMonths": [
+        0,
+        7,
+        12,
+        12,
+        12
+      ],
+      "varaApplicationFeeTiming": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "partnerFeeFactor": [
+        0.08333333333333333,
+        0.4166666666666667,
+        0,
+        0,
+        0
+      ],
+      "fundingNeed": 2877994
+    },
+    {
+      "caseNumber": 3,
+      "firstPaidPilot": 18,
+      "firstReceipt": 19,
+      "varaIdqStart": 1,
+      "fullSubmissionTarget": 6,
+      "fullVaraLicenceTarget": 24,
+      "revenueActiveMonths": [
+        0,
+        7,
+        12,
+        12,
+        12
+      ],
+      "prePilotPartnerMonths": [
+        12,
+        5,
+        0,
+        0,
+        0
+      ],
+      "varaOperatingMonths": [
+        0,
+        1,
+        12,
+        12,
+        12
+      ],
+      "varaApplicationFeeTiming": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "partnerFeeFactor": [
+        0,
+        0.5,
+        0,
+        0,
+        0
+      ],
+      "fundingNeed": 2929939
+    }
+  ],
+  "baseCase": {
+    "fundingNeedBefore": 2840446,
+    "fundingNeedAfter": 2877994,
+    "firstPaidPilot": 12,
+    "firstReceipt": 13,
+    "fullVaraLicenceTarget": 18,
+    "varaIdqStart": 1,
+    "fullSubmissionTarget": 4,
+    "year1RevenueBefore": 2449.05,
+    "year1RevenueAfter": 2449.05,
+    "year5RevenueBefore": 17832613.677500002,
+    "year5RevenueAfter": 17832613.677500002,
+    "year1OneOffBefore": 303412.45,
+    "year1OneOffAfter": 345958.45,
+    "year1ComplianceBefore": 219525,
+    "year1ComplianceAfter": 221479.1666666667,
+    "year2ComplianceBefore": 229850,
+    "year2ComplianceAfter": 250330.8333333333,
+    "applicationFeeMonth1Cash": -88569,
+    "restrictedCapitalFundingMonth17": 319095,
+    "restrictedCapitalPlacementMonth17": -319095,
+    "fullLicenceMonth18FixedOpexCash": -31607,
+    "firstReceiptMonth13": 2449,
+    "modelCheck39": [
+      0,
+      0,
+      0,
+      100,
+      "PASS",
+      "Independent subtotal check prevents gross-margin double counting; £100 tolerance covers cumulative monthly rounding."
+    ]
+  }
+}

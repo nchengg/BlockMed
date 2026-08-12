@@ -1,6 +1,8 @@
 # Master Kanban — Blockmediary
 
-> **Version:** v2 (mid-level) · **Date:** 8 June 2026 · **Owner:** Tamer (CEO)
+> **SUPERSEDED — historical baseline only.** This 8 June planning artifact uses the original workstream structure and is not the current controlled board. See [Master Kanban v2.1](project-governance-v2/master-kanban.md).
+
+> **Version:** v2 (legacy numbering; mid-level) · **Date:** 8 June 2026 · **Owner:** Tamer (CEO)
 > **Scope:** Mon 9 Jun → Thu 14 Aug 2026 (10 weeks) — main video submission window
 > **Cadence:** Weekly team meeting · Owners refine subtasks + T-shirt sizing within 48h
 > **WIP limit:** 2 tasks per person in "Doing"
@@ -103,4 +105,3 @@ Each owner returns for their workstream:
 1. Refined / challenged subtasks
 2. T-shirt size per subtask (XS = 3d · S = 7d · M = 12d · L = 20d · XL = 30d · XXL = 30+d)
 3. Dependencies on other workstreams
-

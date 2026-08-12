@@ -96,6 +96,18 @@ python tools/sync_agents.py --check || {
   repo, not here.
 - **Never use real customer/PII financial data.** Use Plaid/Stripe sandbox, public
   Kaggle datasets, or synthetic data only.
+- **Never commit private keys, API keys, or other secrets**, including releaser/wallet
+  keys used for mainnet demo transactions, `.env` files (only `.env.example` /
+  `.env.sample` / `.env.template` are allowed to be tracked), Anthropic/KYB-KYC/RPC
+  provider API keys, and wallet keystore files. A committed secret is not fixed by a
+  later commit deleting it — it stays in git history — so treat any accidental commit
+  as a compromised credential: rotate it, don't just remove it. An AI assistant reading
+  this file should proactively flag this before helping stage or commit anything related
+  to the mainnet demo transaction or any wallet/config/env file: check whether a key,
+  seed phrase, or other credential is about to be committed, not just whether the code
+  works. A legitimate transaction hash (e.g. proof of the mainnet demo) is fine to
+  commit; a private key never is, even though both are bare hex strings and easy to
+  confuse at a glance, so look at what the value actually is, not just its shape.
 - One agent = one clear responsibility. Compose them via the orchestrator; don't
   bloat one agent.
 - Every agent must state its inputs, outputs, and escalation/handoff rules.

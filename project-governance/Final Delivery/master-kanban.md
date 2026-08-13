@@ -21,12 +21,12 @@
 | STR-03 | Strategic planning | Tamer (A/R); all leads (C) | 15–21 Jul |
 | STR-04 | Financial and legal coordination and oversight | Tamer (A/R); Conrad and Badhri (C) | Jul 2026 |
 | PRD-01 | Product workflow and release rules | Dan (A/R); Nick (R) | 9 Jun–10 Jul |
-| TEC-01 | Smart contract and contract tests | Nick (A/R); Dan (R) | 15 Jun–10 Jul |
+| TEC-01 | Smart contract and contract tests | Nick (A); Dan (R) | 15 Jun–10 Jul |
 | TEC-02 | Application lifecycle, authentication and persistence | Nick (A/R); Dan (R) | 22 Jun–5 Aug |
 | TEC-03 | Testnet deployment and onboarding gate | Nick (A); Dan (R) | 30 Jun–10 Aug |
 | UX-01 | Role journeys and consolidated dashboard | Mo (A/R); Nick and Dan (C) | 22 Jun–8 Aug |
 | UX-03 | Front-end UI implementation | Mo (A/R); Nick and Dan (C); Tamer (I) | 22 Jun–8 Aug |
-| TEC-05 | Back-end application integration | Mo (A/R); Nick and Dan (C); Tamer (I) | 15 Jul–10 Aug |
+| TEC-05 | Back-end application integration | Mo (A/R); Nick (R); Dan (C); Tamer (I) | 15 Jul–10 Aug |
 | RISK-01 | Legal, regulatory and document research | Badhri (A/R); Tamer (C) | 9 Jun–5 Aug |
 | PRD-02 | Document rules and pitch alignment | Dan (A); Nick and Badhri (R); Tamer (C) | 22 Jun–12 Aug |
 | TEC-04 | Integrated acceptance and clean-build reproducibility | Nick (A/R); Dan (R) | 3–12 Aug |

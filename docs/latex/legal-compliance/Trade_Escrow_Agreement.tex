@@ -204,12 +204,18 @@ Upon confirmation of the deposit on chain, the Escrow Contract will reflect the 
 state. Blockmediary will notify both Parties. The Seller may then proceed to ship goods
 and prepare the Required Documents.
 
-\subsection*{4.3 No Blockmediary Custody}
+\subsection*{4.3 Custody Position}
 
-The Escrow Amount is held by the Escrow Contract, not by Blockmediary. Blockmediary does
-not at any point hold, control, or have access to the Escrow Amount, except through the
-releaser role functions, being the record verdict and refund functions, which it may only
-call in accordance with this Agreement.
+The Escrow Amount is held by the Escrow Contract rather than in an account or wallet
+Blockmediary itself operates, and Blockmediary does not route the Escrow Amount through a
+customer wallet under its direct control. This describes the architecture rather than a
+settled regulatory classification. Blockmediary can, through the releaser role functions,
+being the record verdict and refund functions, determine when the Escrow Amount moves, and
+this capability may itself be treated by a regulator as an indicator of custody or control
+regardless of where the funds technically sit \citep{difcvarareport2026}. Blockmediary does
+not represent to the Parties that this architecture has been confirmed as non custodial by
+any regulator, and its custody classification and operating model may be updated as
+regulatory guidance develops.
 
 \subsection*{4.4 Know Your Customer, Sanctions, and Export Controls Gate}
 

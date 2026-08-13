@@ -76,13 +76,19 @@ activity, the proposed client asset framework for cryptoassets would require aut
 segregation of customer assets, and custody arrangements that meet the Financial Conduct
 Authority's standards. Blockmediary's response is architectural rather than purely legal.
 By using a smart contract escrow model in which funds sit in the on chain contract rather
-than in a wallet Blockmediary itself controls, the product avoids characterising itself as
-a custodian in the ordinary sense. For production use, the safer path is to partner with an
-authorised cryptoasset custodian for any component of the flow that does resemble
-safeguarding. For the hackathon build, the product operates on testnet with mock USDC,
-so no regulated custody activity is actually triggered, but the Policy Statement expected in
-the summer of 2026 should be monitored and the architecture reassessed once the final rules
-are published.
+than in a wallet Blockmediary itself controls, the product moves away from the clearest
+form of custody, but this is a technical description rather than a complete regulatory
+conclusion. A subsequent readiness review of the United Arab Emirates pathway reached the
+same view and it is adopted here for all jurisdictions: regulators generally examine who
+can cause, prevent, reverse, upgrade or recover a transfer, and who bears responsibility to
+the client, so Blockmediary should not describe itself as definitively non custodial until
+that control analysis over the release key, contract administration and recovery rights has
+been documented \citep{difcvarareport2026}. For production use, the safer path is to
+partner with an authorised cryptoasset custodian for any component of the flow that does
+resemble safeguarding. For the hackathon build, the product operates on testnet with mock
+USDC, so no regulated custody activity is actually triggered, but the Policy Statement
+expected in the summer of 2026 should be monitored and the architecture reassessed once the
+final rules are published.
 
 \subsection*{1.2 Crypto Asset Service Provider Licensing}
 
@@ -408,7 +414,7 @@ revisited only if the underlying regulatory position changes materially.
 \section*{4. United Arab Emirates Regulatory Risks}
 %---------------------------------------------------------------
 
-\subsection*{4.1 The Mainland Regime}
+\subsection*{4.1 The Mainland Regime and the CBUAE Overlay}
 
 The Central Bank of the United Arab Emirates regulates payment tokens, defined as crypto
 assets fully backed by one or more fiat currencies and used for settlement or transfer,
@@ -421,38 +427,102 @@ infrastructure, with a one year transition period running to September 2026
 therefore require a Central Bank licence, such as a stored value facility or payment
 services licence, and administrative penalties for unlicensed activity reach one billion
 United Arab Emirates dirhams. Blockmediary's mitigation is to avoid the mainland regime
-entirely at this stage by structuring market entry through the Abu Dhabi Global Market or
-the Dubai International Financial Centre, both of which offer more accessible crypto
-licensing frameworks, discussed further in section eight.
+entirely at this stage by routing launch activity through the Dubai International
+Financial Centre and a separate Virtual Assets Regulatory Authority licensing track,
+discussed in sections 4.2 and 4.3.
 
-\subsection*{4.2 Dubai and the Virtual Assets Regulatory Authority}
+This mainland avoidance does not, however, close the question entirely. Article 2 of the
+Payment Token Services Regulation excludes Financial Free Zones from its definition of the
+United Arab Emirates, but a locally licensed virtual asset service provider may still need
+to apply for a non-objection registration to custody or transfer certain foreign payment
+tokens \citep{cbuaeptsrarticle2}. Whether a United Arab Emirates buyer may lawfully prefund
+USDC or EURC into Blockmediary's escrow to settle a physical goods purchase, and whether
+the Dubai International Financial Centre partner or the Virtual Assets Regulatory
+Authority entity separately needs a Central Bank licence, registration or non-objection
+for that specific flow, remains an open legal gate that differs depending on whether the
+transaction is structured within the Dubai International Financial Centre, on the
+mainland, or cross border to a United Arab Emirates person. Written advice on this point
+should be obtained before any live United Arab Emirates launch \citep{difcvarareport2026}.
 
-Outside the two financial free zones, virtual asset activity in Dubai is regulated by the
-Virtual Assets Regulatory Authority, whose Rulebook version 2.0 took effect in June 2025
-\citep{vararulebook2025}. Category 1 tokens, which include stablecoins, now require prior
-approval from the Authority before issuance or distribution, so distributing or
-facilitating USDC in Dubai without using an approved stablecoin and a licensed distributor
-could breach the Rulebook, and operating a virtual asset escrow or transfer service in
-Dubai without the relevant Authority licence, whether for virtual asset management and
-investment, broker dealing, or custody, triggers penalties. Blockmediary's mitigation for
-any future production launch specifically targeting Dubai outside the free zones is to
-use only Authority approved stablecoins and licensed distributors, and to obtain the
-appropriate Authority licence before facilitating transactions there.
+\subsection*{4.2 The Dubai International Financial Centre Partner-Led Pilot}
 
-\subsection*{4.3 The Free Zone Alternative}
+Following further discussion within the team, including an existing relationship with a
+Dubai International Financial Centre connected partner, Blockmediary's near term United
+Arab Emirates route is a partner-led pilot within the Centre rather than an independent
+licence application. A Dubai International Financial Centre partner-led pilot is not
+itself a named Dubai Financial Services Authority licence category. It is an operating
+arrangement in which a Dubai Financial Services Authority authorised firm acts as the
+regulated principal and Blockmediary supplies the technology, document verification and
+workflow layer beneath it. A Dubai International Financial Centre Commercial or Innovation
+Licence gives Blockmediary a legal presence in the Centre but does not itself authorise
+regulated financial services \citep{difcvarareport2026}. Under the Authority's outsourcing
+rules, the authorised partner remains responsible for the outsourced functions, must
+conduct due diligence on and supervise Blockmediary as provider, and, where the
+arrangement is material, must notify the Authority and maintain written outsourcing and
+contingency arrangements \citep{dfsaoutsourcing}. The partner agreement and responsibility
+matrix are therefore the central regulatory instrument for the pilot, not a licence held
+by Blockmediary itself.
 
-Two free zone frameworks present a materially lower risk path than either the mainland or
-Dubai's Virtual Assets Regulatory Authority regime. The Financial Services Regulatory
-Authority's Digital Asset Framework within the Abu Dhabi Global Market is well regarded
-internationally and has already granted licences to firms providing crypto custody,
-exchange, and brokerage services, while the Dubai Financial Services Authority's crypto
-token regime within the Dubai International Financial Centre, first issued in 2022 and
-updated since, offers a comparable regulated pathway \citep{difcdfsa2022}. Either free
-zone could serve as Blockmediary's regulatory home for the minimum viable product and
-early production stage, and the Financial Services Regulatory Authority's Innovation
-Programme, known as RegLab, offers a structured pathway that may suit a hackathon to pilot
-trajectory particularly well. Section eight below works through the choice between these
-two free zones, and the mainland alternative, in detail.
+Minimum requirements before the pilot may accept live funds include a written regulatory
+perimeter opinion mapping the customer journey, entities, wallet flows, release key and
+smart contract control; verification that the partner's actual Dubai Financial Services
+Authority permissions cover the specific custody, settlement and customer activity
+involved, not merely generic fintech or payment permissions; an executed partner term
+sheet and outsourcing agreement covering scope, audit rights, incident reporting and
+termination; a written responsibility matrix assigning customer contracting, onboarding,
+sanctions screening, wallet screening, safeguarding, release approval and loss liability;
+and a defined pilot envelope limited to business to business customers, deal values at or
+below the fifty thousand pound automation threshold, approved low risk corridors, and
+manual sign off available on every release. The Dubai Financial Services Authority's
+Innovation Testing Licence is not assumed to be required or sufficient for this route:
+it is a restricted sandbox for a firm that itself needs to test a regulated activity, and
+should be pursued only if the Authority or counsel concludes Blockmediary will itself
+conduct regulated activity during testing, not treated as a default or cheap substitute
+for a properly structured partner arrangement \citep{difcvarareport2026}.
+
+\subsection*{4.3 Virtual Assets Regulatory Authority Licensing for Scale}
+
+Alongside, and starting from the same point in time as, the Dubai International Financial
+Centre pilot, Blockmediary pursues its own Virtual Assets Regulatory Authority licence for
+wider Dubai scale. The Authority regulates virtual asset activity outside the Dubai
+International Financial Centre, and an application must be made through a non-Centre
+entity, meaning Blockmediary needs a separate legal entity or group company established
+outside the Centre, with a physical Dubai office and two full time, fit and proper
+Responsible Individuals \citep{difcvarareport2026}. The Authority licenses each activity
+separately, and the closest apparent fit for Blockmediary is Virtual Asset Transfer and
+Settlement, covering the transmission or settlement of virtual assets from one entity or
+wallet to another, which matches the product's release of escrowed stablecoin to the
+seller once documentary conditions are satisfied. Whether Custody Services also applies is
+conditional rather than settled: direct smart contract funding helps, but the server side
+release key and any administration, upgrade or recovery rights Blockmediary retains may
+still amount to control or safekeeping requiring a written opinion. Broker Dealer
+Services, covering arranging or matching orders to buy or sell virtual assets, is not
+established by the current model, since Blockmediary settles a physical goods sale rather
+than arranging a token purchase or sale, and should not be assumed mandatory
+\citep{difcvarareport2026}. If Custody is ultimately required, the Authority's rules
+generally require Custody to sit in a legally separate entity from other virtual asset
+activities, with only limited scope to combine Custody and Transfer and Settlement subject
+to the Authority's approval and strict operational segregation, so the assumption that one
+entity will hold all three activities should not be treated as settled.
+
+The Authority does not publish a guaranteed approval timeline. The two workstreams start
+together at inception, modelled as Month 1: the Dubai International Financial Centre pilot
+targets its first paid transaction in Month 12, and the Virtual Assets Regulatory Authority
+application targets a full licence in Month 18 in the base case, with Month 12 retained
+only as an early case where the activity perimeter resolves quickly and remediation is
+minimal, and Month 24 as a delayed case reflecting regulatory or partner remediation.
+Approval to Incorporate or in principle approval at an earlier stage is not permission to
+serve customers, and Virtual Assets Regulatory Authority scale activity should begin only
+from the effective date of the full licence \citep{difcvarareport2026}. Indicative fees
+for a broad, three activity scope sit around one hundred and seventy thousand dirhams in
+application fees, four hundred and eighty thousand dirhams a year in supervision, and a
+capital floor of approximately one and a half million dirhams, though a narrower activity
+scope, for instance Transfer and Settlement alone, would reduce each figure materially; a
+Transfer and Settlement only scope is closer to forty thousand dirhams in application
+fees, eighty thousand dirhams a year in supervision, and a capital floor of the higher of
+five hundred thousand dirhams or twenty five per cent of fixed annual overhead
+\citep{vararulebook2025fees}. These remain conservative planning placeholders pending a
+written activity opinion, not confirmed fees.
 
 \subsection*{4.4 Data Protection}
 
@@ -464,15 +534,16 @@ protection officer for high volume sensitive processing, and breach notification
 implementation grace period expected once they are published. Know your business and know
 your customer data collected from United Arab Emirates users, including passports,
 business registration documents, and wallet data linked to identity, is personal data
-under this law. The Dubai International Financial Centre and the Abu Dhabi Global Market
-each maintain their own data protection frameworks, the Dubai International Financial
-Centre's Data Protection Law of 2020 and the Abu Dhabi Global Market's Data Protection
-Regulations of 2021, both of which are arguably more mature than the federal law
-\citep{difcdplaw2020, adgmdpr2021}. Blockmediary's mitigation is to align with the federal
-law's core principles now, to comply with the relevant free zone framework for any entity
-established in the Dubai International Financial Centre or the Abu Dhabi Global Market,
-and to monitor the federal executive regulations once published so that any additional
-requirements can be implemented within the grace period.
+under this law. The Dubai International Financial Centre maintains its own Data
+Protection Law of 2020, arguably more mature than the federal law and the relevant
+framework for the Centre entity conducting the partner-led pilot, and it requires its own
+notification where applicable \citep{difcdplaw2020}. The separate Virtual Assets
+Regulatory Authority entity, established outside the Centre, falls instead under the
+federal law directly. Blockmediary's mitigation is to align with the federal law's core
+principles across both entities now, to comply with the Centre's own framework and
+notification requirements for the Dubai International Financial Centre entity
+specifically, and to monitor the federal executive regulations once published so that any
+additional requirements can be implemented within the grace period.
 
 %---------------------------------------------------------------
 \section*{5. Cross Cutting Risks}
@@ -705,14 +776,21 @@ banning crypto asset payments \citep{cbrt202114}, and the Personal Data Protecti
 known as KVKK \citep{kvkk6698}.
 
 In the United Arab Emirates, the relevant instruments are the Central Bank's Payment
-Token Services Regulation \citep{cbuaeptsr2024}, Federal Decree Law No. 6 of 2025 extending
+Token Services Regulation and its Article 2 exclusion of Financial Free Zones
+\citep{cbuaeptsr2024, cbuaeptsrarticle2}, Federal Decree Law No. 6 of 2025 extending
 oversight to decentralised finance and Web3 infrastructure \citep{uaefdl62025}, the Virtual
-Assets Regulatory Authority's Rulebook version 2.0 \citep{vararulebook2025}, the federal
-Personal Data Protection Law \citep{pdpl2021}, the Dubai International Financial Centre's
-Data Protection Law \citep{difcdplaw2020}, the Abu Dhabi Global Market's Data Protection
-Regulations \citep{adgmdpr2021}, the Dubai Financial Services Authority's crypto token
-regime \citep{difcdfsa2022}, and the Financial Services Regulatory Authority's guidance on
-tokenised securities and decentralised finance \citep{adgmfsra2026}.
+Assets Regulatory Authority's Rulebook version 2.0, its Schedule 1 activity definitions,
+and its Schedule 2 supervision and authorisation fees \citep{vararulebook2025,
+vararulebook2025activities, vararulebook2025fees}, the federal Personal Data Protection Law
+\citep{pdpl2021}, the Dubai International Financial Centre's Data Protection Law
+\citep{difcdplaw2020}, the Dubai Financial Services Authority's crypto token regime and its
+outsourcing rules under GEN 5.3.21 to 5.3.22 \citep{difcdfsa2022, dfsaoutsourcing}, and the
+internal readiness review reconciling all three regulators against Blockmediary's product
+architecture \citep{difcvarareport2026}. The Abu Dhabi Global Market's Data Protection
+Regulations and the Financial Services Regulatory Authority's digital asset guidance
+\citep{adgmdpr2021, adgmfsra2026} are retained here only because the Abu Dhabi Global
+Market was considered and moved away from, as recorded in section 8; they are not part of
+the confirmed launch route.
 
 Globally applicable instruments include the Financial Action Task Force's Recommendation
 16 on the travel rule \citep{fatf2025}, the Uniform Customs and Practice for Documentary
@@ -813,81 +891,65 @@ as compliant, not when a counterparty elects to approve them, which is the speci
 mechanism that closes the gap left open by every one of these five comparators.
 
 %---------------------------------------------------------------
-\section*{8. United Arab Emirates Jurisdiction Choice}
+\section*{8. United Arab Emirates Launch Route: DIFC Pilot and VARA Scale}
 %---------------------------------------------------------------
 
-Three Emirati jurisdictions are available to Blockmediary as it considers a United Arab
-Emirates market entry, and each serves a different purpose. The Jebel Ali Free Zone
-Authority, commonly known as JAFZA, is a tier one logistics and trading free zone, well
-suited to import and export activity, warehousing, and physical goods businesses, but it
-is not a financial services regulator: regulated activities such as crypto escrow,
-payment services, and custody fall instead under the Virtual Assets Regulatory Authority
-in Dubai or the federal Central Bank on the mainland. JAFZA could house a holding company
-or a commercial subsidiary for Blockmediary, but it cannot serve as the regulatory home
-for the financial services product itself, and is therefore not suitable as Blockmediary's
-primary regulatory base, useful only as a commercial or holding entity if one is needed
-alongside the regulated entity.
+This section previously weighed a single choice of regulatory home among the Jebel Ali
+Free Zone Authority, the Dubai International Financial Centre, and the Abu Dhabi Global
+Market, and recommended incorporating in the Abu Dhabi Global Market first. That
+recommendation has since been superseded. Following a team decision informed by an
+existing relationship one of the founders holds with a Dubai International Financial
+Centre connected partner, and by the more detailed readiness analysis summarised in
+sections 4.2 and 4.3, Blockmediary's confirmed route is a Dubai International Financial
+Centre partner-led pilot run in parallel with an independent Virtual Assets Regulatory
+Authority licence application, rather than a single free zone choice or an Abu Dhabi Global
+Market first sequence. The Abu Dhabi Global Market is not part of the confirmed plan and is
+not discussed further here; it is recorded as a route the team considered and moved away
+from, for transparency, rather than omitted silently.
 
-The Dubai International Financial Centre is regulated by the Dubai Financial Services
-Authority, modelled closely on the Financial Conduct Authority, and operates under English
-common law with independent courts, which is familiar territory for United Kingdom and
-European Union trained legal counsel. Its crypto framework, the Investment Token and
-Crypto Token regime published in 2022, allows firms to obtain a licence covering custody,
-exchange, and arranged services for crypto tokens within the centre \citep{difcdfsa2022}.
-The centre hosts an ecosystem of over eight thousand eight hundred registered companies as
-of 2025, including major international banks and professional services firms, alongside
-the FinTech Hive accelerator, and its capital requirements run around twenty to thirty per
-cent higher than the Abu Dhabi Global Market's. Its Innovation Testing Licence allows
-testing of innovative financial products for up to two years without full authorisation,
-and its Data Protection Law of 2020 is a mature, broadly General Data Protection
-Regulation aligned framework. The Dubai International Financial Centre suits Blockmediary
-best if the team wants Financial Conduct Authority style regulation, maximum institutional
-credibility, and access to the largest financial ecosystem in the Middle East.
+The two tracks are legally distinct and start together at inception, modelled as Month 1.
+The Dubai International Financial Centre track, detailed in section 4.2, gives
+Blockmediary an early, controlled route to paying customers under an authorised partner's
+permissions, targeting a first paid transaction in Month 12. It does not by itself make
+Blockmediary a regulated entity, and Blockmediary should not describe itself as Dubai
+Financial Services Authority authorised unless and until it separately obtains that
+authorisation. The Virtual Assets Regulatory Authority track, detailed in section 4.3,
+builds Blockmediary's own licensed platform for wider Dubai scale through a legal entity
+established outside the Centre, targeting a full licence in Month 18 in the base case.
+Running both from Month 1 avoids making the scale track wait for pilot revenue, while
+retaining the pilot as the nearer term route to real customer evidence.
 
-The Abu Dhabi Global Market is regulated by the Financial Services Regulatory Authority, a
-principles based and comparatively flexible regulator that has been crypto forward since
-2018, and likewise operates under English common law. Its virtual asset framework,
-published in 2018, was the first formal framework of its kind in the Middle East, with
-updated guidance issued in March 2026 covering tokenised securities, decentralised
-finance, and artificial intelligence driven systems, and its licence categories include
-multilateral trading facility, broker dealer, custodian, and investment manager
-authorisations for digital assets \citep{adgmfsra2026}. The market held over twelve
-thousand active licences as of 2026, is backed by the Abu Dhabi government, and carries
-strong sovereign wealth fund connections. Its capital requirements sit twenty to thirty per
-cent below the Dubai International Financial Centre's, a meaningful difference for a
-startup, its Digital Lab sandbox offers active engagement with founders and a rapid
-testing pathway, and its Data Protection Regulations of 2021 are similarly General Data
-Protection Regulation aligned. The Abu Dhabi Global Market suits Blockmediary best if the
-team wants lower capital requirements, a more founder friendly regulator, and the most
-advanced crypto specific licensing framework currently available in the United Arab
-Emirates.
+The Jebel Ali Free Zone Authority remains relevant only in the same narrow role
+identified previously: it is a logistics and trading free zone, not a financial services
+regulator, and could house a holding or commercial subsidiary for physical goods related
+activity if the team wanted one, but it has no role in either the Dubai International
+Financial Centre pilot or the Virtual Assets Regulatory Authority licence and is not
+discussed further.
 
-Weighing these three options against the criteria that matter most at this stage, namely
-crypto and fintech licensing availability, the presence of English common law, capital
-requirements, regulator flexibility, ecosystem prestige, the availability of a sandbox or
-innovation pathway, and alignment with the General Data Protection Regulation, the Abu
-Dhabi Global Market wins on licensing availability, capital requirements, regulator
-flexibility, and sandbox availability, the Dubai International Financial Centre wins on
-ecosystem prestige for later stage institutional conversations, and the two are tied on
-common law availability and data protection alignment, while JAFZA does not compete on
-financial licensing at all. The recommended path is to incorporate in the Abu Dhabi Global
-Market and apply for the Financial Services Regulatory Authority's Digital Lab or
-Innovation Testing Licence for the minimum viable product phase, using the Abu Dhabi
-Global Market as the regulatory home for Gulf Cooperation Council and wider Middle East and
-North Africa market launch, before considering a second entity in the Dubai International
-Financial Centre once institutional partnerships with banks or trade finance houses are
-being actively pursued, since that ecosystem is better suited to those specific
-conversations. JAFZA would only be relevant if the team separately wanted a holding or
-trading entity for physical goods logistics, which is not the fintech product itself. On
-data protection specifically, both free zones maintain their own frameworks that are
-separate from, and more developed than, the federal Personal Data Protection Law, and both
-are closely aligned with the General Data Protection Regulation's principles of lawful
-basis, data minimisation, data subject rights, and breach notification, so compliance with
-the General Data Protection Regulation will largely, though not entirely, satisfy either
-free zone's requirements; European Union residents' data remains subject to the General
-Data Protection Regulation directly regardless of where Blockmediary itself is
-incorporated, so incorporation in either free zone does not exempt the product from that
-separate obligation.
+On data protection, the confirmed route means the Dubai International Financial Centre's
+own Data Protection Law of 2020 is the operative free zone framework, since the Centre
+entity is the one conducting the partner-led pilot, while the separate Virtual Assets
+Regulatory Authority entity, established outside the Centre, falls under the federal
+Personal Data Protection Law directly rather than under a second free zone framework, as
+set out in section 4.4. European Union residents' data remains subject to the General
+Data Protection Regulation directly regardless of where Blockmediary is incorporated, so
+neither entity's location exempts the product from that separate obligation.
+
+Three points of continuing uncertainty, carried over directly from the readiness report,
+should be tracked as open items rather than treated as resolved by this route decision.
+First, whether Blockmediary's release key, contract administration and recovery design
+amount to custody or control under either the Dubai Financial Services Authority's or the
+Virtual Assets Regulatory Authority's rules is not yet settled and determines entity
+structure and capital. Second, the exact Virtual Assets Regulatory Authority activity
+scope, and in particular whether Custody Services applies alongside Transfer and
+Settlement, is not yet confirmed and affects fees, capital and whether a further separate
+entity is required. Third, the Central Bank of the United Arab Emirates treatment of
+United Arab Emirates denominated USDC or EURC settlement remains a hard legal gate
+independent of which free zone or licence route is chosen, discussed in section 4.1. The
+single most valuable next step identified in the readiness review is a single integrated
+perimeter memorandum, prepared with counsel and covering the Dubai Financial Services
+Authority, Virtual Assets Regulatory Authority and Central Bank positions together, rather
+than three separate opinions \citep{difcvarareport2026}.
 
 \newpage
 \bibliographystyle{apacite}

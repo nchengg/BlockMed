@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useSession } from '@/lib/auth/useSession';
+import { previewDocuments, savePreviewDocumentStatus, type PreviewDocument, type PreviewDocumentStatus } from '@/lib/preview/documents';
 import {
   actorFromSession,
   createDeal,
@@ -29,7 +30,7 @@ function formatUsdc(value: string | number | null | undefined): string {
 }
 
 export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?: string }) {
-  const { account } = useSession();
+  const { account, isUiPreview, uiPreviewRole } = useSession();
   const accountId = account?.id;
   const actor = actorFromSession(account);
   const [deals, setDeals] = useState<DealListItem[] | null>(null);
@@ -41,6 +42,10 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
   const demoDeals = demoDealRows(account?.companyName ?? 'Demo Trading Co');
 
   const refreshBackendDeals = async () => {
+    if (isUiPreview) {
+      setDeals([]);
+      return;
+    }
     try {
       const r = await fetchDeals(accountId);
       setDeals(r.deals ?? []);
@@ -51,6 +56,10 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
 
   useEffect(() => {
     const load = async () => {
+      if (isUiPreview) {
+        setDeals([]);
+        return;
+      }
       try {
         const r = await fetchDeals(accountId);
         setDeals(r.deals ?? []);
@@ -65,13 +74,16 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
       clearTimeout(initial);
       clearInterval(id);
     };
-  }, [accountId, busy, creating]);
+  }, [accountId, busy, creating, isUiPreview]);
 
   useEffect(() => {
+    if (isUiPreview) {
+      return;
+    }
     void fetchCompanies(account?.id)
       .then(r => setCompanies(r.companies ?? []))
       .catch(() => setCompanies([]));
-  }, [account?.id]);
+  }, [account?.id, isUiPreview]);
 
   const submit = async (input: Parameters<typeof createDeal>[0]) => {
     setBusy(true);
@@ -120,7 +132,7 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
             Create escrow terms, track counterparty actions, and open each deal record.
           </p>
         </div>
-        {!creating && (
+        {!creating && !isUiPreview && (
           <button
             type="button"
             className="bm-button bm-button-primary"
@@ -146,7 +158,7 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
       {deals === null ? (
         <p className="bm-body">Loading deals.</p>
       ) : deals.length === 0 ? (
-        !creating && <DemoDealsWorkspace deals={demoDeals} />
+        !creating && <DemoDealsWorkspace deals={demoDeals} previewRole={isUiPreview ? uiPreviewRole : null} />
       ) : (
         <div className="bm-demo-shell">
           <section>
@@ -170,7 +182,7 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
               ))}
             </div>
           </section>
-          <DemoDealsWorkspace deals={demoDeals} />
+          <DemoDealsWorkspace deals={demoDeals} previewRole={isUiPreview ? uiPreviewRole : null} />
         </div>
       )}
 
@@ -219,7 +231,7 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
   );
 }
 
-function DemoDealsWorkspace({ deals }: { deals: DealListItem[] }) {
+function DemoDealsWorkspace({ deals, previewRole }: { deals: DealListItem[]; previewRole: 'buyer' | 'seller' | 'platform' | null }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = selectedId ? deals.find(deal => deal.dealId === selectedId) ?? null : null;
 
@@ -228,9 +240,7 @@ function DemoDealsWorkspace({ deals }: { deals: DealListItem[] }) {
   const releaseReady = deals
     .filter(deal => deal.state === 'ReleasePending')
     .reduce((sum, deal) => sum + Number(deal.terms?.amountUsdc ?? 0), 0);
-  const docsInReview = deals
-    .flatMap(deal => demoDocuments(deal.dealId))
-    .filter(doc => doc.status === 'Review' || doc.status === 'Pending').length;
+  const docsInReview = deals.flatMap(deal => previewDocuments(deal.dealId)).filter(document => document.status !== 'Received').length;
   const blockedRules = deals
     .flatMap(deal => demoRules(deal.dealId))
     .filter(rule => rule.status === 'Blocked').length;
@@ -249,7 +259,6 @@ function DemoDealsWorkspace({ deals }: { deals: DealListItem[] }) {
   }
 
   const progress = demoProgress(selected);
-  const selectedDocuments = demoDocuments(selected.dealId);
   const selectedRules = demoRules(selected.dealId);
   const selectedTimeline = demoTimeline(selected.dealId);
   const selectedAudit = demoAudit(selected.dealId);
@@ -322,15 +331,7 @@ function DemoDealsWorkspace({ deals }: { deals: DealListItem[] }) {
           <div>
             <div className="bm-demo-record-title">Documents</div>
             <div className="bm-demo-compact-list">
-              {selectedDocuments.map(document => (
-                <div key={document.name} className="bm-demo-compact-row">
-                  <div>
-                    <strong>{document.name}</strong>
-                    <small>{document.note}</small>
-                  </div>
-                  <span className={demoStatusClass(document.status)}>{document.status}</span>
-                </div>
-              ))}
+              <PreviewDocumentChecklist key={selected.dealId} dealId={selected.dealId} previewRole={previewRole} />
             </div>
           </div>
 
@@ -785,6 +786,37 @@ function DemoDealPreview({ deal }: { deal: DealListItem }) {
 
 type DemoItemStatus = 'Passed' | 'Review' | 'Pending' | 'Missing' | 'Blocked' | 'Ready' | 'Not due';
 
+function PreviewDocumentChecklist({ dealId, previewRole }: { dealId: string; previewRole: 'buyer' | 'seller' | 'platform' | null }) {
+  const [documents, setDocuments] = useState<PreviewDocument[]>(() => previewDocuments(dealId));
+  const move = (id: string, status: PreviewDocumentStatus) => {
+    savePreviewDocumentStatus(dealId, id, status);
+    setDocuments(current => current.map(document => document.id === id ? { ...document, status } : document));
+  };
+  return documents.map(document => {
+    const canSend = previewRole === 'seller' && document.status === 'Pending';
+    const canReceive = previewRole === 'buyer' && document.status === 'Sent';
+    return (
+      <div key={document.id} className="bm-demo-compact-row bm-preview-document-row">
+        <div>
+          <strong>{document.name}</strong>
+          <small>{document.status === 'Pending' ? 'Waiting for seller to send.' : document.status === 'Sent' ? 'Sent by seller; awaiting buyer confirmation.' : 'Received by buyer; ready for review.'}</small>
+        </div>
+        <div className="bm-preview-document-action">
+          <span className={previewDocumentStatusClass(document.status)}>{document.status}</span>
+          {canSend && <button type="button" className="bm-button" onClick={() => move(document.id, 'Sent')}>Mark sent</button>}
+          {canReceive && <button type="button" className="bm-button" onClick={() => move(document.id, 'Received')}>Confirm receipt</button>}
+        </div>
+      </div>
+    );
+  });
+}
+
+function previewDocumentStatusClass(status: PreviewDocumentStatus): string {
+  if (status === 'Received') return 'bm-status bm-status-success';
+  if (status === 'Sent') return 'bm-status bm-status-info';
+  return 'bm-status bm-status-warning';
+}
+
 function demoProgress(deal: DealListItem): { percent: number; phase: string; label: string } {
   if (deal.state === 'ReleasePending') {
     return {
@@ -812,36 +844,6 @@ function demoProgress(deal: DealListItem): { percent: number; phase: string; lab
     phase: 'Proposal',
     label: 'The deal is waiting for both sides to accept the proposed terms.',
   };
-}
-
-function demoDocuments(dealId: string): Array<{
-  name: string;
-  party: string;
-  status: DemoItemStatus;
-  note: string;
-}> {
-  if (dealId.includes('SHENZHEN')) {
-    return [
-      { name: 'Commercial invoice', party: 'Seller uploaded', status: 'Passed', note: 'Amount, buyer, and seller match the agreed terms.' },
-      { name: 'Packing list', party: 'Seller uploaded', status: 'Passed', note: 'Carton count and product category match the invoice.' },
-      { name: 'Bill of lading', party: 'Carrier document', status: 'Passed', note: 'Shipment reference and destination match the rulebook.' },
-      { name: 'Buyer release approval', party: 'Buyer action', status: 'Ready', note: 'All document rules passed. Funds can be released.' },
-    ];
-  }
-  if (dealId.includes('COLOMBIA')) {
-    return [
-      { name: 'Commercial invoice', party: 'Seller due after funding', status: 'Not due', note: 'Invoice upload unlocks after escrow is funded.' },
-      { name: 'Packing list', party: 'Seller due after funding', status: 'Not due', note: 'Required before document review.' },
-      { name: 'Bill of lading', party: 'Carrier document', status: 'Not due', note: 'Required after shipment leaves port.' },
-      { name: 'Certificate of origin', party: 'Chamber document', status: 'Not due', note: 'Optional for this buyer, but shown in the rulebook.' },
-    ];
-  }
-  return [
-    { name: 'Commercial invoice', party: 'Seller uploaded', status: 'Passed', note: 'Invoice names and escrow value match the accepted terms.' },
-    { name: 'Packing list', party: 'Seller uploaded', status: 'Passed', note: 'Container size and product description match the deal record.' },
-    { name: 'Bill of lading', party: 'Carrier document', status: 'Review', note: 'Shipment date is present. Destination check still needs review.' },
-    { name: 'Certificate of origin', party: 'Seller required', status: 'Missing', note: 'Release cannot proceed until this file is added.' },
-  ];
 }
 
 function demoRules(dealId: string): Array<{

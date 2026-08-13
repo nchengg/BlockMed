@@ -9,6 +9,14 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type { SignupInput, FieldErrors } from './validate';
 
+// This preview is a client-only development aid. It intentionally never makes
+// an auth request, writes a cookie, or receives authority from an API route.
+// Keep it out of production even if a browser has an old localStorage value.
+const UI_PREVIEW_STORAGE_KEY = 'blockmediary.ui-preview-role';
+const UI_PREVIEW_ENABLED = process.env.NODE_ENV === 'development';
+
+export type UiPreviewRole = 'buyer' | 'seller' | 'platform';
+
 export type SessionAccount = {
   id: string;
   email: string;
@@ -21,6 +29,30 @@ export type SessionAccount = {
   walletLinkedAt: string | null;
 };
 
+const UI_PREVIEW_ACCOUNTS: Record<UiPreviewRole, SessionAccount> = {
+  buyer: {
+    id: 'ui-preview-buyer', email: 'buyer.preview@blockmediary.test',
+    companyName: 'Meridian Imports Ltd.', contactName: 'Maya Patel', country: 'United Kingdom',
+    type: 'buyer', walletAddress: null, walletLinkedAt: null,
+  },
+  seller: {
+    id: 'ui-preview-seller', email: 'seller.preview@blockmediary.test',
+    companyName: 'Ege Weave Ltd.', contactName: 'Emre Kaya', country: 'Türkiye',
+    type: 'seller', walletAddress: null, walletLinkedAt: null,
+  },
+  platform: {
+    id: 'ui-preview-platform', email: 'platform.preview@blockmediary.test',
+    companyName: 'Blockmediary Operations', contactName: 'Alex Morgan', country: 'United Kingdom',
+    type: 'platform', walletAddress: null, walletLinkedAt: null,
+  },
+};
+
+function storedPreviewRole(): UiPreviewRole | null {
+  if (!UI_PREVIEW_ENABLED || typeof window === 'undefined') return null;
+  const role = window.localStorage.getItem(UI_PREVIEW_STORAGE_KEY);
+  return role === 'buyer' || role === 'seller' || role === 'platform' ? role : null;
+}
+
 type SessionState = {
   account: SessionAccount | null;
   /** False until the first session check completes — avoids a sign-in flash. */
@@ -29,6 +61,11 @@ type SessionState = {
   login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   signup: (input: SignupInput) => Promise<{ ok: boolean; errors?: FieldErrors }>;
   logout: () => Promise<void>;
+  isUiPreview: boolean;
+  uiPreviewRole: UiPreviewRole | null;
+  canUseUiPreview: boolean;
+  startUiPreview: (role: UiPreviewRole) => void;
+  clearUiPreview: () => Promise<void>;
 };
 
 const Ctx = createContext<SessionState | null>(null);
@@ -46,8 +83,17 @@ async function readJson<T>(response: Response): Promise<T | null> {
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [account, setAccount] = useState<SessionAccount | null>(null);
   const [ready, setReady] = useState(false);
+  const [uiPreviewRole, setUiPreviewRole] = useState<UiPreviewRole | null>(null);
 
   const refresh = useCallback(async () => {
+    const previewRole = storedPreviewRole();
+    if (previewRole) {
+      setUiPreviewRole(previewRole);
+      setAccount(UI_PREVIEW_ACCOUNTS[previewRole]);
+      setReady(true);
+      return;
+    }
+    setUiPreviewRole(null);
     try {
       const r = await fetch('/api/auth/session', { cache: 'no-store' });
       const j = await readJson<{ account?: SessionAccount | null }>(r);
@@ -65,6 +111,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   }, [refresh]);
 
   const login = useCallback(async (email: string, password: string) => {
+    if (UI_PREVIEW_ENABLED) window.localStorage.removeItem(UI_PREVIEW_STORAGE_KEY);
+    setUiPreviewRole(null);
     const r = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -78,6 +126,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signup = useCallback(async (input: SignupInput) => {
+    if (UI_PREVIEW_ENABLED) window.localStorage.removeItem(UI_PREVIEW_STORAGE_KEY);
+    setUiPreviewRole(null);
     const r = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -91,12 +141,41 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
+    if (uiPreviewRole) {
+      if (UI_PREVIEW_ENABLED) window.localStorage.removeItem(UI_PREVIEW_STORAGE_KEY);
+      setUiPreviewRole(null);
+      setAccount(null);
+      return;
+    }
     await fetch('/api/auth/logout', { method: 'POST' });
     setAccount(null);
+  }, [uiPreviewRole]);
+
+  const startUiPreview = useCallback((role: UiPreviewRole) => {
+    if (!UI_PREVIEW_ENABLED) return;
+    window.localStorage.setItem(UI_PREVIEW_STORAGE_KEY, role);
+    setUiPreviewRole(role);
+    setAccount(UI_PREVIEW_ACCOUNTS[role]);
+    setReady(true);
   }, []);
 
+  const clearUiPreview = useCallback(async () => {
+    if (!UI_PREVIEW_ENABLED) return;
+    window.localStorage.removeItem(UI_PREVIEW_STORAGE_KEY);
+    setUiPreviewRole(null);
+    setAccount(null);
+    await refresh();
+  }, [refresh]);
+
   return (
-    <Ctx.Provider value={{ account, ready, refresh, login, signup, logout }}>
+    <Ctx.Provider value={{
+      account, ready, refresh, login, signup, logout,
+      isUiPreview: uiPreviewRole !== null,
+      uiPreviewRole,
+      canUseUiPreview: UI_PREVIEW_ENABLED,
+      startUiPreview,
+      clearUiPreview,
+    }}>
       {children}
     </Ctx.Provider>
   );

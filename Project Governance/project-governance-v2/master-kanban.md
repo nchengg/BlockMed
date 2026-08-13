@@ -3,7 +3,7 @@
 > **Window:** 8 June 2026 to 14 August 2026\
 > **Status date:** 12 August 2026\
 > **Board owner:** Tamer — CEO / Project Lead\
-> **Gantt status:** v2.1 workbook pending; legacy M0–M8 schedule is superseded\
+> **Gantt status:** [master-gantt.xlsx](master-gantt.xlsx) generated and reconciled; legacy M0–M8 schedule is superseded\
 > **WIP policy:** Maximum two Doing tasks per person; Review work must be cleared before new non-critical work starts\
 > **Flow:** Backlog → Design → To Do → Doing → Review → Done\
 > **Exceptions:** Blocked is a flag; Deferred and Removed are terminal dispositions
@@ -164,7 +164,7 @@ At each update, the owner must:
 2. record the observed date and evidence when entering Review or Done;
 3. record a variance when planned finish is missed;
 4. flag a blocker with owner and resolution date;
-5. update the project plan and RACI when dates or accountability change; queue the same change for Gantt reconciliation until the v2.1 workbook exists, then update it in the same change; and
+5. update the project plan, RACI and [master-gantt.xlsx](master-gantt.xlsx) in the same change when dates or accountability change; and
 6. move non-critical additions to Deferred after scope freeze.
 
 ## 12. Verification log — 12 August 2026
@@ -184,4 +184,4 @@ Evidence is separated from card state so successful checks do not silently conve
 | Deployment record | Present; Base Sepolia chain ID 84532 | Testnet evidence retained |
 | Route surface | 14 page routes, including legacy/integrated/admin/dev paths | UX-04 remains overdue |
 | Board arithmetic | **PASS:** 24 Done / 8 Review / 6 Doing / 6 To Do / 8 Deferred | Snapshot matches the controlled rows |
-| v2.1 Gantt | **MISSING** | Four-report control is not yet operational |
+| v2.1 Gantt | **PASS:** [master-gantt.xlsx](master-gantt.xlsx) reconciles all 52 controlled cards and the 24/8/6/6/8 status snapshot | Four-report control is operational |

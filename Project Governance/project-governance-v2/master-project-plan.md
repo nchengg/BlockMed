@@ -7,7 +7,7 @@
 > **Status date:** 12 August 2026\
 > **Plan owner:** Tamer — CEO / Project Lead\
 > **Companion reports:** [Master Kanban](master-kanban.md), [Master RACI](master-raci.md)\
-> **Gantt control:** `master-gantt.xlsx` is not yet generated. The legacy `../master-gantt.md` uses M0–M8 identifiers and is historical evidence only; it is not a v2.1 companion report.
+> **Gantt control:** [master-gantt.xlsx](master-gantt.xlsx) is generated, task-ID aligned and verified. The legacy `../master-gantt.md` uses M0–M8 identifiers and is historical evidence only; it is not a v2.1 companion report.
 
 ## 1. Purpose
 
@@ -39,7 +39,7 @@ The governance design calls for four reports generated from one logical control 
 
 The following controls apply:
 
-- Task IDs are aligned across the plan, Kanban and RACI. The same IDs must populate the v2.1 Gantt before the four-report control is considered operational.
+- Task IDs are aligned across the plan, Kanban, RACI and [master-gantt.xlsx](master-gantt.xlsx); the four-report control is operational.
 - Each deliverable has exactly one accountable owner.
 - Each task has one accountable owner and at least one responsible owner.
 - Planned dates are a reconstructed baseline, not a claim that those dates were agreed contemporaneously.
@@ -249,14 +249,14 @@ Acceptable evidence includes a submission receipt, approved document version, co
 | DEC-02 | 11 Aug | Reconstruct baseline and observed execution separately | Prevents retrospective dates from being represented as contemporaneous fact |
 | DEC-03 | 11 Aug | Use seven coherent workstreams and retain old IDs only as aliases | Preserves useful history without inheriting conflicting categories |
 | DEC-04 | 11 Aug | Treat AI/OCR and live compliance integrations as roadmap | Pitch claims must match the deterministic prototype |
-| DEC-05 | 11 Aug | Treat the Gantt as a view of the same task register | **Design decision not yet operational:** no v2.1 workbook exists; dates and ownership cannot be claimed as four-report controlled until it is generated |
+| DEC-05 | 11 Aug | Treat the Gantt as a view of the same task register | **Operational:** [master-gantt.xlsx](master-gantt.xlsx) is generated from the controlled register and reconciles dates, ownership and states |
 | DEC-06 | Pending | Approve `/dashboard` as the only recorded product route | Required to avoid presenting competing legacy surfaces |
 | DEC-07 | Pending | Approve local deterministic walkthrough plus Base Sepolia as separate deployment proof | Separates demo reliability from testnet evidence |
 | DEC-08 | Pending | Choose one beachhead and approve pricing/ask assumptions | Required before commercial narrative freeze |
 | DEC-09 | 12 Aug | Preserve the original BMC as an achieved artifact but classify it Amber pending revision | Full-product ambition remains visible while final pitch claims are aligned to delivered evidence |
 | DEC-10 | 12 Aug | Record verification separately from task-owner status | Passing tests prove technical evidence without silently converting integrated Review gates to Done |
 | DEC-11 | 12 Aug | Keep Conrad accountable for BUS-05 and DEL-08 integration while Mo retains BUS-02/BUS-03 accountability | Removes ambiguity between component ownership and commercial-case roll-up |
-| DEC-12 | 12 Aug | Record the v2.1 Gantt as missing rather than cite the legacy schedule | The four-report control remains incomplete until a task-ID-aligned workbook is generated and verified |
+| DEC-12 | 12 Aug | Generate the task-ID-aligned v2.1 Gantt rather than cite the legacy schedule | **Resolved:** [master-gantt.xlsx](master-gantt.xlsx) is generated and verified; the legacy schedule remains historical evidence only |
 | DEC-13 | Pending | Establish a saved claims register before treating claim freeze as evidenced | A claim register cannot be cited until a reviewable artifact exists |
 
 ## 16. Risk register
@@ -272,7 +272,7 @@ Acceptable evidence includes a submission receipt, approved document version, co
 | R-07 | Video link, PDF permission or upload fails | Low | High | Tamer | Independent private-browser test and upload buffer on 14 Aug |
 | R-08 | Repository state differs across team machines | **Confirmed** | High | Nick | Clean app install is not reproducible: Prisma expects untracked `app/.env`, no app-level example exists, and npm/pnpm authority is ambiguous; correct and verify from a fresh dependency-free checkout |
 | R-09 | Original BMC is presented as current delivered capability | High | High | Conrad / Tamer | Complete BUS-07; remove yield and overclaims; freeze one beachhead and fee structure |
-| R-10 | Four-report governance control is incomplete because the v2.1 Gantt does not exist | High | Medium | Tamer | Generate `master-gantt.xlsx` from the controlled task register and reconcile all task IDs, dates, owners and states before citing the control as operational |
+| R-10 | Four-report governance control becomes incomplete if the v2.1 Gantt is absent or drifts from the reports | **Closed at snapshot** | Medium | Tamer | [master-gantt.xlsx](master-gantt.xlsx) is generated and reconciled; maintain it in the same change as the plan, Kanban and RACI |
 
 ## 17. Change control
 
@@ -283,7 +283,7 @@ From scope freeze, a change may enter the build only if it:
 3. corrects a materially misleading claim; or
 4. is approved by the accountable owner and does not endanger the critical path.
 
-All other work is moved to Deferred. Any accepted change must update the Kanban task, project-plan dates, RACI ownership where affected, and decision log. Until the v2.1 Gantt exists, every date or owner change must also be recorded for Gantt reconciliation; once generated, the Gantt must be updated in the same change.
+All other work is moved to Deferred. Any accepted change must update the Kanban task, project-plan dates, RACI ownership where affected, decision log and [master-gantt.xlsx](master-gantt.xlsx) in the same change.
 
 ## 18. Old-to-new categorisation crosswalk
 

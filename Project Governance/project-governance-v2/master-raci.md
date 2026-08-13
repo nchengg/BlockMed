@@ -4,7 +4,7 @@
 > **Status date:** 12 August 2026\
 > **Owner:** Tamer — CEO / Project Lead\
 > **Rule:** Every row has exactly one **A**. A person may also be Responsible on the same row.
-> **Gantt status:** v2.1 workbook pending; any date/owner change must be queued for reconciliation until it exists.
+> **Gantt status:** [master-gantt.xlsx](master-gantt.xlsx) generated and reconciled; any date/owner change must update it in the same change.
 
 ## 1. Team roles
 
@@ -146,7 +146,7 @@ An accountability change is valid only when:
 4. any affected handoff is recorded; and
 5. the change does not conceal an overdue or incomplete task.
 
-Until `master-gantt.xlsx` exists, the same owner/date change must be logged for Gantt reconciliation and the four-report control must remain classified as not operational. Once generated, the Gantt must be updated in the same change.
+[master-gantt.xlsx](master-gantt.xlsx) must be updated in the same change as any owner/date change so the four-report control remains operational.
 
 ## 8. Delivered-artifact accountability map
 
@@ -159,6 +159,6 @@ This map identifies who is answerable for acceptance and maintenance of each art
 | Badhri | CCO | `docs/legal-risk.md`; `docs/UCP600.md`; `docs/Incoterms2020.md`; `docs/document-templates.md`; UAE licensing research; final claim sign-off outstanding |
 | Mo | CRO | Landing/dashboard UX; `docs/Competitor-analysis.md`; `project-initialisation/customer-demographics.md`; canonical route approval and polish acceptance outstanding |
 | Conrad | CFO | Financial model; `proposal/sizing.md`; original BMC; evidence-aligned BMC, pricing and funding-ask assumption freeze outstanding |
-| Tamer | CEO | BRD; TRD; v2.1 governance set; final claims control; submission evidence; task-ID-aligned Gantt outstanding |
+| Tamer | CEO | BRD; TRD; v2.1 governance set; final claims control; submission evidence; task-ID-aligned [master-gantt.xlsx](master-gantt.xlsx) maintenance |
 
 An owner attached to a Done task without corresponding artifact or acceptance evidence is a reporting defect. Component accountability remains with the task owner even where another owner integrates it into a parent deliverable.

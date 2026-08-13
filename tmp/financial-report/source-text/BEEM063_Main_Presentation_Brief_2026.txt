@@ -1,0 +1,48 @@
+SOURCE: BEEM063_Main_Presentation_Brief_2026
+PAGES: 1
+
+=== PAGE 1 ===
+beem063 Hackathon Main Presentation Brief 2026 
+ 
+You will work together in your groups to prepare a video that you will submit by Friday 14th 
+August (10 weeks after the proposal video submission). This will be graded as a group, 
+counting 10% to your grade on the module.  
+ 
+Your objective is to present a 5 minute video summarising your FinTech business that you 
+build during the summer.  
+ 
+You should treat this as an opportunity to demonstrate your product, as if it were a pitch to a 
+potential investor. Your presentation should be balanced between explaining any technical 
+contributions, alongside what the product actually does and how it is of real value. You will also 
+need to be clear about what stage you have reached compared to any longer business plan time 
+horizon. When you submit your group document, it should include links to the video, and any 
+other relevant links to your prototype product.  
+ 
+ 
+ 
+1. Potential Real Value of FinTech Product  
+ 
+Your mission as a group is to work in your teams on creating a real FinTech product. This is likely 
+to be in the form of a prototype, as opposed to something real working in a real market place. 
+You may of course find it helpful to have something working for real (eg hosted on a real server) 
+for your career, but this is not expected. The main criterion you are judged on is its potential 
+real value, which should be explained. In order for this to be understood, you will inevitably 
+need to describe what the product is, what it seeks to solve, and why you believe it has 
+potential to succeed. Depending on how it goes, this could just be an update of what you laid 
+out in your proposal video.  
+ 
+ 
+2. Presentation  
+ 
+Remember to make the most of your different skills in the group. The aim of this presentation is 
+to show what you have created, and sell it to a potential investor. It is up to you as a group how 
+best to achieve this, you may all be involved, or even just one of you, depending on what you 
+think will work best as a pitch. These criteria will be used to judge your submissions according to 
+the following weightings:  
+ 
+ 
+Potential Real Value of FinTech Product(s)  70% 
+Presentation  30% 
+Organisation  10% 
+Effective use of Presentation Aids  10% 
+Language Proficiency and Presentation Style  10%

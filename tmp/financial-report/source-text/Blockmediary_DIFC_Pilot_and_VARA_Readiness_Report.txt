@@ -1,0 +1,821 @@
+SOURCE: Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report
+PAGES: 14
+
+=== PAGE 1 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+1
+BLOCKMEDIARY
+DIFC Partner-Led Pilot and VARA Scale 
+Readiness Report
+Requirements, activity mapping, parallel timeline and financial-model implications
+Recommended planning position
+Begin the DIFC partner-led pilot and VARA application workstreams in parallel from Month 1. Retain 
+Month 12 for the first paid pilot. Model full VARA licensing at Month 18 in the base case, with Month 12 as 
+an early case and Month 24 as a delayed case.
+Prepared by Blockmediary project team
+Purpose Master's-level preliminary business report for academic and investor review
+Status Business-planning report; not legal advice or a licence application
+Reference model Blockmediary Financial Model, 12 August 2026
+Research date 12 August 2026
+Scope note: This report interprets current public regulatory material against Blockmediary’s stated product 
+architecture. Final permissions depend on the actual legal entities, contracts, wallet and key controls, 
+customer location and regulator/counsel decisions.
+Terminology: The correct term is “VARA-licensed,” not “VARA-certified.”
+
+=== PAGE 2 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+2
+Contents
+1. Executive conclusion
+2. Blockmediary’s regulatory boundary
+3. Track A — DIFC partner-led pilot
+4. Track B — VARA licensing for scale
+5. Parallel implementation timeline
+6. Product-readiness gaps and launch gates
+7. Financial-model implications
+8. Open regulatory questions and validation priorities
+9. Conclusion
+References
+1. Executive conclusion
+Blockmediary can pursue a limited DIFC partner-led pilot and a VARA licensing programme in parallel from 
+inception. They are not competing alternatives: the pilot is a controlled commercial route under a suitably 
+authorised partner, while the VARA workstream builds Blockmediary’s own non-DIFC Dubai licensing 
+platform for wider scale.
+Question Conclusion Planning treatment
+Can both workstreams 
+start together?
+Yes. Begin both in Month 1 of the 
+model.
+Parallel workstreams; do not make VARA preparation 
+wait for pilot revenue.
+Can the first paid pilot 
+remain Month 12?
+Yes, provided the partner structure 
+and production controls are 
+completed.
+Retain Month 12 as the base pilot date.
+Can full VARA licensing 
+be achieved by Month 
+12?
+Possible, but optimistic. VARA 
+publishes a process, not a guaranteed 
+approval period.
+Early case: M12; base: M18; delayed: M24.
+Does a DIFC Innovation 
+Licence authorise the 
+pilot?
+No. A commercial licence does not 
+authorise regulated financial services.
+The regulated partner must hold the relevant DFSA 
+permissions; Blockmediary’s own status must be 
+confirmed.
+Which VARA permissions 
+are required?
+Transfer and Settlement is the closest 
+apparent fit; Custody is control-
+dependent; Broker-Dealer is not 
+established by the current facts.
+Use activity-scope scenarios until a written perimeter 
+opinion or regulator response is obtained.
+Base-case recommendation
+Use Month 18 as the expected full VARA licence date. Month 12 should be retained as a credible early case 
+only where the activity scope is resolved quickly, the applicant entity and two Responsible Individuals are 
+in place, the full submission is made early, and the regulator requires limited remediation. VARA Approval 
+to Incorporate or in-principle approval must not be counted as permission to serve customers. [9][10]
+
+=== PAGE 3 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+3
+The main constraint is not the age of the business. It is the unresolved regulatory perimeter: whether 
+Blockmediary’s smart-contract and server-side release controls amount to custody, transfer and settlement, 
+or a technology service supporting a licensed principal. The answer determines entity structure, capital, 
+fees, safeguarding and the design of the pilot.
+2. Blockmediary’s regulatory boundary
+The Blockmediary BRD defines a prefunded documentary escrow. A buyer sends stablecoin directly to a 
+smart contract; Blockmediary verifies trade documents off-chain; an authorised server-side function 
+submits the release decision on-chain. Blockmediary does not lend, provide working capital, guarantee the 
+goods, or route customer funds through an ordinary Blockmediary wallet. The delivered prototype is 
+testnet-based and uses a deterministic document-rules engine. Production KYB/sanctions screening, legal 
+agreements, human-review operations and partner API hardening remain roadmap items. [1]
+Design feature Regulatory relevance Current interpretation
+Direct smart-
+contract escrow
+Removing an ordinary platform wallet reduces 
+one custody indicator, but does not by itself 
+remove custody or settlement risk.
+Functional control over contract administration, 
+release keys, upgrades and recovery must be 
+analysed.
+Server-side release 
+key
+Blockmediary can determine when funds move 
+after document review.
+Material indicator of operational control; 
+requires separation of duties, secure key 
+management and legal classification.
+Document 
+verification
+The core service is documentary conformity, not 
+goods inspection or lending.
+Supports a narrower technology/operational 
+role, especially in the partner pilot.
+USDC/EURC 
+settlement
+Use of a token does not alone define the DFSA 
+financial service; the underlying activity matters. 
+Mainland payment-token restrictions can still 
+apply. [7][18][19]
+Token, customer location and payment purpose 
+must be confirmed before live launch.
+No financing spread The product is prefunded escrow rather than 
+credit intermediation.
+Avoids a lending model but does not remove 
+custody, transfer, AML or payment-token 
+questions.
+Important interpretation
+“The smart contract holds the assets” is a technical description, not a complete regulatory conclusion. 
+Regulators generally examine who can cause, prevent, reverse, upgrade or recover transfers and who 
+bears responsibility to the client. Blockmediary should not describe itself as definitively non-custodial until 
+that control analysis is documented.
+3. Track A — DIFC partner-led pilot
+3.1 What the route is
+A “DIFC partner-led pilot” is not a named DFSA licence category. It is a proposed operating arrangement in 
+which a DFSA-authorised firm acts as the regulated principal and Blockmediary supplies technology, 
+document-verification and workflow services. Firms conducting financial services in or from DIFC require 
+DFSA authorisation, and a DIFC Commercial or Innovation Licence does not itself permit regulated financial 
+services. [3][4][5]
+
+=== PAGE 4 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+4
+Under DFSA outsourcing rules, an authorised firm remains responsible for outsourced functions, must 
+conduct due diligence and supervise the provider, and—where the arrangement is material—must notify 
+the DFSA, maintain written outsourcing and contingency arrangements, and preserve regulatory access. [6] 
+This makes the partner agreement and responsibility matrix the central regulatory instrument for the pilot.
+3.2 Minimum requirements for the pilot
+Requirement Primary owner Blockmediary application Launch status
+Written regulatory-
+perimeter opinion Shared
+Map the exact customer journey, entities, wallet flows, 
+release key, smart-contract control and token use. Confirm 
+whether Blockmediary is an outsourced provider or 
+independently regulated.
+Required before 
+accepting live funds
+Suitable DFSA-
+authorised partner Partner
+Check the DFSA public register and the partner’s 
+permissions. The permissions must cover the actual 
+custody/settlement/customer activity, not merely generic 
+fintech or payment services.
+Required
+Partner term sheet and 
+outsourcing agreement Shared
+Set scope, service levels, audit rights, subcontracting, data 
+access, incident reporting, business continuity, termination 
+and migration.
+Required
+Regulatory 
+responsibility matrix Shared
+Assign customer contracting, onboarding, KYB/sanctions, 
+wallet screening, transaction monitoring, safeguarding, 
+release approval, complaints, reporting and loss liability.
+Required
+Customer agreements 
+and disclosures Shared
+Complete the Trade Escrow Agreement; identify the 
+regulated principal; disclose document-only verification, 
+token/chain risks, objection window, fees, liability and 
+dispute forum.
+BRD roadmap item
+KYB, sanctions and 
+transaction controls Partner / Shared
+Hard gate before funding; include UBO verification, 
+sanctions screening, wallet risk, escalation, re-screening and 
+record retention.
+BRD roadmap item
+Production smart-
+contract and key 
+security
+Blockmediary
+Independent audit; role separation; multisignature or 
+equivalent release controls; upgrade/emergency procedures; 
+key compromise response; audit logs.
+Production gap
+Data protection and 
+processing Shared
+Determine controller/processor roles; execute data-
+processing terms; complete DIFC notification where 
+required; implement production PII, retention and breach 
+controls. [8]
+Production gap
+Human review and 
+exception process Blockmediary
+Apply mandatory review above £50,000 and to discrepancies 
+or low-confidence cases; document reviewer authority, QA 
+and audit evidence.
+Console/SOP partly 
+roadmap
+Pilot limits and exit 
+criteria Shared
+Set customer count, maximum deal value, approved 
+corridors/tokens, transaction cap, manual sign-off, incident 
+thresholds and migration/wind-down rules.
+Required
+3.3 Recommended pilot envelope
+For this preliminary business plan, the proposed pilot is deliberately controlled rather than fully scaled:
+ Business-to-business customers only, with a small named cohort recruited through the regulated partner.
+ Initial deal values at or below the current £50,000 automation cap, with human sign-off available for every 
+release.
+ Approved low-risk corridors and non-prohibited goods; no sanctioned parties or high-risk regulated goods.
+
+=== PAGE 5 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+5
+ A narrow document set and explicit release rules; no claim that the platform verifies physical quality or 
+delivery.
+ Partner-approved token, blockchain, wallets and funding/redemption path.
+ Manual exception, complaint, refund and incident procedures before the first live transaction.
+ No public claim that Blockmediary itself is DFSA-authorised unless and until it obtains a DFSA licence.
+3.4 Is a DFSA Innovation Testing Licence required?
+Not automatically. The ITL is a restricted DFSA sandbox for a firm that itself needs to test regulated financial 
+services. A genuinely partner-led arrangement may instead operate within the authorised partner’s 
+permissions and outsourcing framework. Blockmediary should pursue an ITL only if the DFSA or counsel 
+concludes that Blockmediary itself will conduct a regulated activity during the test. It should not be assumed 
+to be a cheap substitute for a properly structured partner model.
+4. Track B — VARA licensing for scale
+4.1 Applicant entity and process
+VARA regulates virtual-asset activity in Dubai outside DIFC. A new application must be made through the 
+Dubai Department of Economy and Tourism or a Dubai free zone excluding DIFC. Blockmediary therefore 
+needs a separate VARA-eligible legal entity or group company outside DIFC. VARA prefers an LLC or free-
+zone company and requires physical presence in Dubai. [9][10]
+Stage Official position Blockmediary action
+1. IDQ and 
+Approval to 
+Incorporate
+Submit the Initial Disclosure Questionnaire 
+through DET or the selected non-DIFC free zone, 
+pay the initial portion of fees and obtain Approval 
+to Incorporate.
+Confirm commercial licensor, entity, 
+shareholding, UBOs, initial activity scope, funding 
+and business plan.
+2. Build the 
+applicant
+ATI allows incorporation and operational 
+preparation; it is not permission to conduct 
+regulated VA activity.
+Establish office, appoint key staff and two 
+Responsible Individuals, fund capital, complete 
+policies, audit technology and prepare the full 
+application.
+3. Full VASP 
+application
+Submit the regulatory package; respond to 
+meetings, interviews and information requests; 
+pay the balance of application and first-year 
+supervision fees.
+Demonstrate governance, fitness and propriety, 
+AML, technology, financial resources, client 
+controls, wind-down and activity-specific 
+compliance.
+4. Full licence
+A licence may include operational conditions. 
+Preliminary or in-principle status does not permit 
+customer operations.
+Start VARA-scale activity only from the full licence 
+effective date and within the approved activities 
+and conditions.
+4.2 Likely VARA activity mapping
+VARA licences each activity separately. The table below is an initial mapping, not a legal conclusion. [10][11]
+Activity Official definition in brief Fit to Blockmediary Planning status
+VA Transfer and 
+Settlement
+Transmission, transfer or settlement 
+of virtual assets from one entity to 
+another or to another wallet/address.
+Closest apparent fit: the product releases 
+stablecoin from buyer-funded escrow to the 
+seller when documentary conditions are 
+satisfied.
+Likely core 
+application scope
+
+=== PAGE 6 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+6
+Activity Official definition in brief Fit to Blockmediary Planning status
+Custody Services
+Safekeeping virtual assets for 
+another entity and acting on verified 
+instructions.
+Conditional. Direct smart-contract funding 
+helps, but the server-side release key, 
+admin/upgrade controls and recovery rights 
+may amount to control or safekeeping.
+Obtain written 
+opinion / 
+regulator view
+Broker-Dealer 
+Services
+Arranging, accepting or matching 
+orders for the purchase or sale of 
+virtual assets, or dealing/market-
+making in them.
+Not established by the current model. 
+Blockmediary arranges settlement of a 
+physical-goods sale and does not describe 
+token purchase/sale or order matching.
+Do not assume 
+mandatory
+Structural issue if Custody is required
+VARA requires a Custody VASP to be a separate legal entity from group entities providing other VA 
+activities, with a limited possibility of combining Custody and Transfer and Settlement subject to VARA 
+approval and strict operational segregation. The current assumption that one entity will simply hold 
+Custody, Transfer and Settlement and Broker-Dealer permissions should not be treated as settled. [14]
+4.3 Core licence-readiness requirements
+Requirement category What VARA expects Blockmediary-specific evidence
+Corporate and 
+ownership
+Non-DIFC Dubai applicant; incorporation and 
+licensing documents; UBO/controller information; 
+source of funds; group and close-links 
+information.
+Clear DIFC-partner entity versus VARA-scale entity 
+chart, IP/service agreements and ownership funding 
+trail.
+Governance and 
+people
+Suitable senior management and two full-time, 
+fit-and-proper Responsible Individuals who are 
+UAE residents or UAE passport holders. [10][13]
+Named CEO/operations and compliance 
+accountability; approved RIs; conflicts, delegation and 
+succession arrangements.
+Physical presence Private Dubai office for Custody, Broker-Dealer 
+and Transfer and Settlement activities. [10]
+Office and staffing plan consistent with the proposed 
+activities and transaction volume.
+Regulatory business 
+plan
+Detailed activity scope, target customers, 
+products, jurisdictions, revenue, financial 
+projections, risks and operating model.
+Explain documentary escrow, no-lending boundary, 
+customer journey, partner migration and 
+transaction/value limits.
+AML/CFT and 
+sanctions
+Customer due diligence, ongoing monitoring, 
+sanctions, suspicious-activity escalation, 
+counterparty-VASP due diligence and Travel Rule 
+controls.
+KYB/UBO and wallet screening before funding; 
+unhosted-wallet approach; originator/beneficiary 
+data for relevant transfers. [16]
+Client asset / custody 
+controls
+Safeguarding, wallet segregation, control, 
+reconciliation and prohibition on rehypothecation 
+where Custody applies. [14]
+Per-deal/client segregation design, reconciliation 
+between contract and ledger, recovery and wind-
+down treatment.
+Technology and cyber
+Cybersecurity policy, CISO accountability, secure 
+development, access controls, incident response, 
+vendor management, independent testing and 
+smart-contract review. [15]
+Independent contract audit before production, key-
+management design, multisignature/separation of 
+duties, monitoring, emergency pause and recovery.
+Operational resilience
+Business continuity, disaster recovery, 
+outsourcing controls, capacity, complaint 
+handling and incident reporting.
+Fallback document review, release-key continuity, 
+chain/stablecoin outage playbooks and manual 
+settlement/refund procedures.
+Financial resources
+Activity-specific application/supervision fees, 
+paid-up capital and evidence of ongoing capital 
+maintenance.
+Capital and fee model linked to confirmed activity 
+scope and allocated fixed overheads; not a single 
+unsupported lump sum.
+
+=== PAGE 7 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+7
+Requirement category What VARA expects Blockmediary-specific evidence
+Client documentation Fair disclosures, terms, complaints, risk warnings, 
+fees and activity-specific customer protections.
+Trade Escrow Agreement, stablecoin/chain risk, 
+document-only decision scope, objection window, fee 
+and liability disclosures.
+Wind-down and 
+recovery
+Orderly wind-down, succession, financial and 
+operational contingency arrangements.
+How open escrows, documents, keys, customer data 
+and refunds are handled if Blockmediary or a partner 
+exits.
+4.4 Indicative VARA fees and capital
+The accompanying financial model uses AED 200,000 for application fees, AED 480,000 for annual 
+supervision and AED 1.5 million of restricted capital. These are reasonable placeholders for a broad multi-
+activity case, but they do not represent one confirmed requirement.
+Illustrative scope Application fee Annual supervision Capital floor before overhead test
+Transfer and Settlement only AED 40,000 AED 80,000 Higher of AED 500,000 or 25% of activity 
+fixed annual overhead
+Custody + Transfer and 
+Settlement
+Approx. AED 
+120,000* AED 280,000
+At least AED 1.1m in combined floors, 
+subject to activity overhead allocation 
+and structure
+Custody + Transfer and 
+Settlement + Broker-Dealer
+Approx. AED 
+170,000* AED 480,000
+Approx. AED 1.5m floor only if the lower 
+Broker-Dealer capital treatment applies; 
+structure may require more than one 
+entity
+*Illustrative multi-activity fee calculation using VARA’s 50%-of-lower-application-fee extension rule. VARA may 
+impose additional fees based on risk. Capital is the higher of the stated floor and the relevant percentage of fixed 
+annual overhead and must be maintained in an approved form. [12][13]
+4.5 CBUAE payment-token overlay
+VARA authorisation does not automatically resolve Central Bank requirements. The CBUAE Payment Token 
+Services Regulation restricts the provision of payment-token services in or directed to the UAE and restricts 
+merchants’ acceptance of virtual assets for goods and services, while expressly excluding Financial Free 
+Zones from Article 2’s definition of “the UAE.” A locally licensed VASP may apply for a non-objection 
+registration for certain foreign-payment-token custody and transfer activity. [18][19][20]
+Blockmediary-specific legal gate
+Before any live UAE launch, obtain a written opinion on whether a UAE buyer may prefund USDC or EURC 
+into this escrow for settlement of a physical-goods purchase, and whether the proposed partner or VARA 
+entity requires a CBUAE licence, registration or non-objection. The answer may differ between an in-DIFC 
+pilot, a mainland customer and a cross-border transaction directed to a UAE person.
+
+=== PAGE 8 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+8
+5. Parallel implementation timeline
+VARA does not publish a guaranteed approval period. The timing below is therefore a business-planning 
+estimate based on the official two-stage process and Blockmediary’s readiness tasks, not a regulatory 
+service-level commitment. [9]
+Period DIFC partner-led pilot track VARA scale track Decision / output
+Months 1–3
+Regulatory-perimeter advice; partner 
+selection; initial responsibility map; pilot 
+customer profile.
+Select non-DIFC commercial licensor; pre-
+application engagement; IDQ; activity 
+hypothesis; entity and funding plan.
+Proceed only if token, 
+custody and customer-
+contract structure is 
+viable.
+Months 4–6
+Negotiate outsourcing and commercial 
+terms; design KYB/sanctions, escrow 
+agreement, complaints and pilot controls.
+Target ATI and incorporation; appoint key 
+advisers; begin RI recruitment; prepare 
+policies, forecasts and capital plan.
+Lock legal entities and 
+responsibility matrix.
+Months 7–11
+Complete production audit, security/key 
+controls, data protection, SOPs, partner 
+testing and first-customer onboarding.
+Complete full submission, office and staffing; 
+independent audit; AML/Travel Rule and client-
+asset controls; respond to regulator.
+Pilot gate review; full 
+VARA file submitted or 
+near-complete.
+Month 12 First paid partner-led pilot in base case. Full licence possible only in the early case; 
+ATI/IPA alone is not sufficient.
+Launch limited pilot; do 
+not start VARA-scale 
+activity without full 
+licence.
+Months 13–18
+Operate controlled cohort; collect 
+incidents, review data and customer 
+evidence; remediate partner findings.
+Regulatory questions, interviews, remediation, 
+capital and operational-condition completion.
+Base-case full VARA 
+licence in Month 18.
+Months 19–24 Prepare customer/transaction migration 
+and partner exit or coexistence model.
+Delayed-case remediation or 
+narrower/resubmitted activity scope.
+Delayed full licence by 
+Month 24.
+Case Pilot gate 
+complete First paid pilot VARA starts Full VARA licence 
+target Use in model
+Early M8 M9 M1 M12 Upside / execution case
+Base M11 M12 M1 M18 Recommended 
+presentation case
+Delayed M17 M18 M1 M24 Regulatory/remediation 
+sensitivity
+What would need to be true for Month 12 VARA?
+ The activity perimeter is resolved in the first one to two months, without a later redesign of the custody or 
+entity structure.
+ The IDQ and initial application are submitted immediately through the selected non-DIFC licensing channel.
+ The applicant, UBO funding, office, two Responsible Individuals and senior-management structure are 
+available early.
+ A substantially complete full application is filed within the first half of Year 1.
+ Smart-contract, key-management, AML/Travel Rule, client-asset and wind-down controls are production-
+ready rather than demonstrator-grade.
+ Regulatory feedback is limited and no additional licence category or separate custody entity is required.
+ CBUAE treatment of the chosen stablecoin and customer flow is resolved without a separate long approval 
+sequence.
+
+=== PAGE 9 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+9
+These conditions make Month 12 credible as an early case, but too dependent on favourable classification 
+and execution to be the central forecast.
+6. Product-readiness gaps and launch gates
+The BRD correctly separates the delivered demonstrator from the production roadmap. The following items 
+should appear as explicit launch gates rather than being implied by the prototype. [1]
+Capability BRD position Needed for partner 
+pilot?
+Needed for VARA 
+scale? Recommended gate
+Stablecoin escrow 
+contract Testnet delivered Yes — production 
+deployment and audit
+Yes — full technology 
+controls
+Independent audit, mainnet/token 
+approval and emergency controls
+Document verification
+Single structured 
+transport document 
+delivered
+Yes — narrow 
+approved set 
+acceptable
+Yes — scalable full 
+process
+Document SOP, reviewer evidence and 
+discrepancy path
+KYB/sanctions
+Identity capture 
+delivered; screening 
+roadmap
+Yes Yes Live provider, UBO/wallet screening and 
+escalation
+Trade Escrow 
+Agreement Roadmap Yes Yes Approved contract and customer 
+disclosures
+Human-review 
+console/SOP Roadmap Yes Yes Mandatory review above £50k and 
+exceptions; QA and audit log
+Production PII/data 
+protection Roadmap Yes Yes Controller/processor terms, privacy 
+notice, retention and breach process
+Partner API hardening Roadmap Yes Yes Authentication, authorisation, keys, rate 
+limits, CORS, monitoring
+Disputes/
+amendments/waivers Partly roadmap Yes Yes Named authority, service levels, 
+evidence and external forum
+Travel Rule/unhosted 
+wallets Not specified in BRD Partner-dependent Yes for relevant VARA 
+transfers
+Originator/beneficiary data and 
+counterparty-VASP controls
+Safeguarding/
+reconciliation
+Direct smart contract 
+described
+Yes, responsibility 
+assigned Yes, activity-dependent Daily/transaction reconciliation and 
+client-asset recovery plan
+7. Financial-model implications
+The accompanying Financial Model workbook is framed as an indicative planning model rather than a 
+regulatory filing. Its launch tab presents the parallel strategy through a concise set of timing, fee and capital 
+assumptions. [2]
+Current model item Recommended treatment Reason
+Heading: “one sequential 
+UAE route”
+Replace with “parallel DIFC partner pilot and VARA 
+licensing.”
+The workstreams start together and 
+have separate operating gates.
+VARA application start 
+M12/M18/M24 Set M1 in all three cases. Start pre-application, entity and 
+perimeter work immediately.
+VARA target M24/M30/M36 Use M12/M18/M24. Reflect early/base/delayed full-licence 
+outcomes from a Month-1 start.
+
+=== PAGE 10 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+10
+Current model item Recommended treatment Reason
+First paid pilot M9/M12/M18 Retain these sensitivities.
+Pilot timing remains driven by partner 
+and production readiness, not VARA 
+approval.
+AED 200k application fee Keep as a rounded conservative placeholder; label “scope-
+dependent.”
+Official illustrative fees range materially 
+by activity; broad three-activity fees are 
+approximately AED 170k before risk 
+add-ons.
+AED 480k annual 
+supervision Apply only in the three-activity case. T&S only is AED 80k; Custody + T&S is 
+AED 280k.
+AED 1.5m restricted capital Retain as a broad planning case, but add lower/narrower 
+and overhead-driven scenarios.
+Capital is activity-specific, overhead-
+tested and structurally affected by 
+custody segregation.
+VARA revenue start Start only from the full VASP licence date. ATI or IPA cannot be treated as 
+permission to operate.
+Partner £60k setup / £67k 
+annual Keep as management estimates pending a term sheet. Public rules do not establish a standard 
+partner price.
+CBUAE costs/timing Add a qualitative gate or modest legal/advisory 
+contingency; avoid false precision.
+The applicable licence or non-objection 
+route is unresolved.
+Model presentation
+The accompanying submission presents one base timeline and two sensitivities without unnecessary 
+month-by-month regulatory micro-costing. Its principal outputs are the Month 12 paid pilot, Month 18 
+base VARA licence, the distinction between preliminary and full approval, and the activity-scope sensitivity 
+for fees and capital.
+8. Open regulatory questions and validation priorities
+Public rules define the framework but do not resolve Blockmediary’s exact classification. The following 
+questions are therefore treated as open assumptions in this submission:
+Priority Question Why it matters Best validation
+1
+Does Blockmediary’s release key, smart-
+contract administration or recovery design 
+constitute custody or control?
+Determines Custody permission, entity 
+separation, capital and safeguarding.
+Written UAE regulatory-
+perimeter opinion with 
+architecture diagram
+2 Is VA Transfer and Settlement the correct 
+primary VARA activity?
+Sets the core application, policies, fees 
+and capital.
+VARA pre-application 
+discussion / counsel 
+confirmation
+3
+Is Broker-Dealer permission required where 
+Blockmediary settles a physical-goods trade 
+but does not arrange token purchase or sale?
+Could add fees, capital, staffing and a 
+separate group structure.
+Written activity analysis; do 
+not assume
+4 Can USDC/EURC be used in the proposed UAE 
+physical-goods settlement flow?
+May trigger CBUAE restrictions, licensing 
+or non-objection requirements.
+CBUAE-focused legal advice 
+and partner confirmation
+5 Which entity is the customer-facing regulated 
+principal in the DIFC pilot?
+Determines contracts, AML, complaints, 
+client assets and liability.
+Executed partner 
+responsibility matrix and 
+outsourcing agreement
+
+=== PAGE 11 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+11
+Priority Question Why it matters Best validation
+6
+Can the partner’s existing permissions and 
+systems support the specific escrow/release 
+architecture?
+A generic payments or custody licence 
+may not cover the actual workflow.
+Partner compliance sign-off 
+and DFSA 
+notification/engagement if 
+material
+7 What evidence and staffing will VARA expect 
+for a Month-12 application?
+Controls whether the early case is 
+genuinely achievable.
+Initial Disclosure 
+Questionnaire feedback and 
+adviser readiness review
+Single most valuable next step
+Commission one integrated UAE perimeter memorandum
+The highest-value next step is to provide counsel with the BRD, a smart-contract control/key diagram, the 
+proposed DIFC partner responsibility matrix, the exact USDC/EURC customer flow and the intended VARA 
+entity. The resulting memorandum should map activities across DFSA, VARA and CBUAE and recommend a 
+pre-application engagement plan, resolving the assumptions with the largest effect on timing, capital and 
+launch legality.
+9. Conclusion
+The recommended strategy begins both routes at inception. The DIFC track provides a controlled route to 
+customer validation through an authorised partner, while the VARA track builds Blockmediary’s own 
+platform for wider Dubai scale. The two tracks remain legally and operationally separated: the partner is 
+responsible for the regulated pilot functions, and the VARA applicant is established outside DIFC.
+For the academic financial model, Month 18 is the strongest base-case full-licence assumption. Month 12 
+remains a credible early case only with fast perimeter resolution, early entity and personnel readiness, a 
+substantially complete application within the first half-year, and limited regulatory remediation. Month 24 
+provides a reasonable delayed case.
+The report’s central caveat is that the exact VARA activity set and CBUAE treatment are not yet settled. 
+Transfer and Settlement appears most closely aligned; Custody depends on actual control; Broker-Dealer is 
+not demonstrated by the current physical-goods business model. The financial model represents this 
+uncertainty through clear scenarios rather than one apparently precise cost figure.
+Decision Recommended assumption Confidence
+Start both workstreams Month 1 High
+First paid partner-led pilot Month 12 base Medium
+Full VARA licence Month 18 base; M12 early; M24 delayed Medium
+Primary VARA activity Transfer and Settlement — subject to confirmation Medium-low
+Custody permission Conditional on control analysis Low until opinion
+Broker-Dealer permission Do not assume required Medium-low
+CBUAE treatment Hard legal gate before live UAE stablecoin settlement Low until opinion
+
+=== PAGE 12 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+12
+References
+Official sources were prioritised. All web sources were accessed on 12 August 2026. Internal materials are 
+cited as planning sources, not as legal authorities.
+[1] Blockmediary / Transakt. Business Requirements Document — Blockmediary, version 1.0, 9 August 
+2026. Internal project source.
+[2] Blockmediary / Transakt. Blockmediary Financial Model — Launch Readiness tab, 12 August 2026. 
+Internal project planning workbook.
+[3] Dubai International Financial Centre. Innovation Licence. https://www.difc.com/business/establish-a-
+business/innovation-licence
+[4] Dubai International Financial Centre. Registrar of Companies — Commercial Licence. 
+https://www.difc.com/business/registrars-and-commissioners/registrar-of-companies
+[5] Dubai Financial Services Authority. Authorisation Services: Overview. 
+https://www.dfsa.ae/what-we-do/authorisation-services/overview
+[6] Dubai Financial Services Authority Rulebook. GEN 5.3.21–5.3.22: Outsourcing. 
+https://dfsaen.thomsonreuters.com/entiresection/2033
+[7] Dubai Financial Services Authority. Crypto Token Regulation — Applying for Authorisation. 
+https://www.dfsa.ae/crypto
+[8] Dubai International Financial Centre. Data Protection Law No. 5 of 2020 and notification requirements. 
+https://www.difc.com/business/laws-and-regulations/legal-database/difc-laws/data-protection-law-difc-
+law-no-5-2020
+[9] Virtual Assets Regulatory Authority. Licence Applications. 
+https://www.vara.ae/en/licenses-and-register/licence-applications/
+[10] Virtual Assets Regulatory Authority. Licensed Activities and FAQs. https://www.vara.ae/en/faq/
+[11] Virtual Assets Regulatory Authority Rulebook. Schedule 1 — VA Activities. 
+https://rulebooks.vara.ae/rulebook/schedule-1-va-activities
+[12] Virtual Assets Regulatory Authority Rulebook. Schedule 2 — Supervision and Authorisation Fees. 
+https://rulebooks.vara.ae/rulebook/schedule-2-supervision-and-authorisation-fees
+[13] Virtual Assets Regulatory Authority Rulebook. Company Rulebook: Paid-Up Capital and Responsible 
+Individuals. Responsible Individual requirements are also at https://rulebooks.vara.ae/rulebook/c-
+responsible-individuals. https://rulebooks.vara.ae/rulebook/b-paid-capital
+[14] Virtual Assets Regulatory Authority Rulebook. Custody Services Rulebook: Segregation and Control. 
+https://rulebooks.vara.ae/rulebook/b-segregation-and-control
+[15] Virtual Assets Regulatory Authority Rulebook. Technology and Information Rulebook. 
+https://rulebooks.vara.ae/entiresection/189
+[16] Virtual Assets Regulatory Authority Rulebook. FATF Travel Rule. https://rulebooks.vara.ae/rulebook/g-
+fatf-travel-rule
+[17] Virtual Assets Regulatory Authority Rulebook. Transfer and Settlement Services Rulebook: General 
+Requirements. https://rulebooks.vara.ae/rulebook/general-requirements
+
+=== PAGE 13 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+13
+[18] Central Bank of the UAE Rulebook. Payment Token Services Regulation. 
+https://rulebook.centralbank.ae/en/rulebook/payment-token-services-regulation
+[19] Central Bank of the UAE Rulebook. Article 2: Prohibitions on Activities and Promotions. 
+https://rulebook.centralbank.ae/en/rulebook/article-2-prohibitions-activities-and-promotions
+[20] Central Bank of the UAE Rulebook. Article 8: Non-Objection for Foreign Payment Token Custody and 
+Transfer. https://rulebook.centralbank.ae/en/rulebook/article-8-application-non-objection-perform-
+payment-token-conversion-or-foreign-payment
+[21] Central Bank of the UAE Rulebook. Article 14: Regulatory Capital for Payment Token Custodians and 
+Transferors. https://rulebook.centralbank.ae/en/rulebook/article-14-regulatory-capital-requirement-
+licensed-payment-token-custodians-and
+[22] Blockmediary / Transakt. Dubai Fintech License Requirements. Internal project planning note 
+used to identify assumptions for verification; official sources supersede it where inconsistent.
+
+=== PAGE 14 ===
+BLOCKMEDIARY  |  REGULATORY READINESS
+14
+Appendix A — concise launch-readiness checklist
+Workstream Evidence required before launch
+Regulatory perimeter Written DFSA/VARA/CBUAE activity map signed off
+DIFC partner Authorisation verified; term sheet and outsourcing agreement executed
+Responsibility matrix Customer, custody, release, AML, complaints, reporting and liability assigned
+Customer documents Trade Escrow Agreement, risk disclosures and privacy notices approved
+Financial crime KYB/UBO, sanctions, wallet screening, monitoring and escalation live
+Technology Production contract audited; keys, roles, multisig, monitoring and emergency controls 
+tested
+Operations Document review, £50k escalation, objections, refunds, incidents and QA tested
+Data protection Controller/processor roles, data processing, retention and breach controls complete
+VARA applicant Non-DIFC entity, office, two RIs, senior management and funding in place
+VARA submission IDQ/ATI and full application package submitted; capital and fees funded
+CBUAE overlay USDC/EURC physical-goods settlement route confirmed
+Go-live gate Pilot begins only under partner approval; scale begins only on full VARA licence

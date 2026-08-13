@@ -39,32 +39,63 @@ The escrow contract is live on Base Sepolia with real testnet transactions:
 ---
 
 ## 🗂 Repository structure
+
+Two kinds of thing live here — **the build** (code you can run) and **the paperwork**
+(documents that specify, govern and pitch it). Every directory has its own README
+explaining its contents.
+
+**Code:**
 | Path | What's there |
 |---|---|
 | [`app/`](app/) | The web application — Next.js 16, React 19, Prisma + Postgres, viem. Dashboard, escrow API, auth. |
-| [`contracts/`](contracts/) | The `Escrow.sol` smart contract, Hardhat tests, and Base Sepolia deploy scripts. |
-| [`docs/`](docs/) | Requirements, legal, domain and design documents. |
-| [`project-governance/`](project-governance/) | Project plan, Kanban, RACI, Gantt. |
-| [`proposal/`](proposal/) | Proposal-video deck and pitch materials. |
-| [`financial-projections/`](financial-projections/) | Financial model and pricing. |
+| [`contracts/`](contracts/) | The `Escrow.sol` smart contract, Hardhat tests, and deploy scripts (local + Base Sepolia). |
 | [`data/`](data/) | Synthetic / sandbox datasets only — no real PII. |
+
+**Documents:**
+| Path | What's there |
+|---|---|
+| [`docs/`](docs/) | Requirements (BRD/TRD), legal & compliance, verification model, domain rules, architecture. |
+| [`project-governance/`](project-governance/) | Project plan, Kanban, RACI, Gantt. |
+| [`proposal/`](proposal/) | Pitch decks, presentation scripts, business model canvas. |
+| [`financial-projections/`](financial-projections/) | Financial model and pricing. |
+| [`reference-documents/`](reference-documents/) | The real-world trade documents (B/L, invoices, certificates) the rules engine models. |
 
 ---
 
 ## ▶️ Run it locally (optional — the live site is easier)
 
-**App** — needs Node 22+ and a Postgres connection string (`DATABASE_URL`):
+Prerequisites: **Node 22+** and a Postgres database (a free [Neon](https://neon.tech) instance
+works, or locally: `docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=dev postgres:16`).
+
+**Full local demo — app + your own private blockchain.** This is entirely
+self-contained: the local Hardhat chain uses publicly-known dev keys, so no
+secrets are needed and nothing touches a real network.
+
 ```bash
-cd app
-npm install
-npm run dev        # http://localhost:3000
+# terminal 1 — a local chain
+cd contracts && npm install
+npx hardhat node
+
+# terminal 2 — deploy the escrow to it, then start the app
+cd contracts && npx hardhat run scripts/deploy-local.ts --network localhost
+cd ../app && npm install
+cp .env.example .env    # then set DATABASE_URL to your Postgres; add ESCROW_DEMO_LOGIN=1
+npm run db:seed:demo    # migrations + demo companies (passwordless demo sign-in)
+npm run dev             # http://localhost:3000
 ```
 
-**Contracts** — Hardhat test suite:
+`ESCROW_NETWORK` defaults to `local`, so the app talks to the Hardhat chain
+automatically. Sign in via the demo company picker and run a deal end to end —
+create → accept → fund → submit documents → release.
+
+**Pointing a local app at Base Sepolia** additionally needs
+`ESCROW_NETWORK=baseSepolia` and a `RELEASER_PRIVATE_KEY` that holds
+`RELEASER_ROLE` on the deployed contract. That key is deliberately **not in the
+repo** — for the testnet experience, use the hosted site above instead.
+
+**Contracts test suite** (no setup beyond `npm install`):
 ```bash
-cd contracts
-npm install
-npx hardhat test
+cd contracts && npx hardhat test
 ```
 
 ---

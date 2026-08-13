@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Build proposal/transakt-slides-4-6.pptx — slides 4, 5 and 6 of the Transakt deck.
+"""Build proposal/business-model-canvas.pptx — slides 4, 5 and 6 of the Transakt deck.
+
+NAMING: the file is named for slide 6, the Business Model Canvas, because that is the
+submitted artefact. It nonetheless contains THREE slides — 4 and 5 travel with it. Do not
+assume from the filename that this is a one-slide canvas; `business-model-canvas.pdf` is
+the canvas on its own.
 
     4  Product Architecture   <- proposal/product-architecture-slide.md
     5  Market                 <- proposal/market-slide.md
@@ -39,7 +44,7 @@ WHITE  = RGBColor(0xFF, 0xFF, 0xFF)
 FONT = "Aptos"
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT  = os.path.join(HERE, "transakt-slides-4-6.pptx")
+OUT  = os.path.join(HERE, "business-model-canvas.pptx")
 
 
 # ---- primitives --------------------------------------------------------------

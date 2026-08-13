@@ -182,8 +182,12 @@ See "Rebuilding the PDF" at the foot of this file.
 - Two renderings exist, both generated — never hand-edited:
   - `business-model-canvas.html` → `business-model-canvas.pdf`, a full-bleed 16:9 page for
     standalone circulation and for dropping in as an image.
-  - **Slide 6 of `transakt-slides-4-6.pptx`**, built natively by `build_slides_4_5_6.py`,
+  - **Slide 6 of `business-model-canvas.pptx`**, built natively by `build_slides_4_5_6.py`,
     for editing inside the deck alongside slides 4 and 5.
+    **That .pptx holds THREE slides — 4 (Product Architecture), 5 (Market) and 6 (this
+    canvas).** It is named for slide 6 because the canvas is the submitted artefact, but
+    do not assume from the filename that it is canvas-only. `business-model-canvas.pdf`
+    is the canvas on its own; the .pptx is the submission bundle.
 - Keeping both means the figures live in two renderers. This markdown remains the single
   source of truth: change it first, then mirror into BOTH the HTML and the build script,
   then regenerate. If they ever disagree, this file wins.

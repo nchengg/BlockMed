@@ -25,6 +25,22 @@ Design notes for team:
     (legal-risk §4.2).
   * Do NOT claim "non-custodial". The server-side release key means the custody
     perimeter is unresolved pending a written control analysis (Readiness Report §2).
+- Block 1 leads with the FIXED-COST argument, not the rejection rate. ADB Dec 2025 found
+  SME rejection (41%) has fallen to near-parity with large/mid-cap corporates (40%), so
+  "SMEs are uniquely rejected" is no longer a safe hero claim. The per-deal fixed-cost
+  economics are unaffected by that finding and are the stronger, defensible lead.
+- "Rejected SMEs fall back on trust, prepayment, or drop the trade" replaced "Most SME
+  cross-border trade still on trust, in cash, or not at all" — the old line read as a
+  statistic but traced only to a June slide with no source behind it.
+- SOURCED FIGURES — verified against primary publications, not internal docs:
+  * $2.5tn = GLOBAL trade finance gap, not the SME-only gap. Do not relabel it.
+  * 41% = SME rejection rate, ADB Dec 2025. The old "~45%" is the 2023 figure.
+  * The "4-6 week LC wait" claim was removed: unsourced, and industry sources put
+    issuance at 3-7 business days (existing relationship) to 1-2 weeks (first-time).
+- KNOWN Q&A RISK: Block 1 cites a "$10K trade" to illustrate the bank's fixed-cost
+  problem, while our own launch ticket is GBP 30-35K. That is deliberate — the $10K
+  example describes the BANK's economics, not our target deal. If asked, say so; do not
+  claim we serve $10K trades, because the tier minimum fees make them uneconomic.
 - All figures are base case unless stated. GMV is trade value processed, not revenue.
 -->
 
@@ -36,10 +52,10 @@ Design notes for team:
 *Where is the gap in the market, and how do you intend to fill it?*
 
 **The Problem**
-- $2.5T global SME trade finance gap (ADB, 2025); ~45% rejection rate
 - Same fixed compliance cost on a $10K trade as a $5M trade
 - SME ticket sizes uneconomic for banks at scale
-- Most SME cross-border trade still on trust, in cash, or not at all
+- $2.5T global trade finance gap (ADB, 2025); 41% of SME applications rejected
+- Rejected SMEs fall back on trust, prepayment, or drop the trade
 
 **Our Solution**
 - UCP 600-inspired documentary release, stablecoin settlement, no issuing bank
@@ -64,10 +80,10 @@ Design notes for team:
 - SME importers/exporters; UAE launch market
 - Corridor: UAE–India (CEPA); further low-risk corridors per pilot envelope
 - Sectors: manufacturing, consumer goods, electronics, textiles
-- Ticket: £20K–£50K at launch → £36K–£87K by Year 5
+- Ticket: £30K–£35K at launch → £36K–£51K by Year 5
 
 **Strategic goals**
-- Payment without LC cost or the 4–6 week wait
+- Payment without LC cost or bank issuance delay
 - Counterparty access without bank gatekeeping
 - Verified trade reputation that travels across deals
 
@@ -97,7 +113,7 @@ Design notes for team:
 **Projected revenue — base case**
 - Year 3: £1.37m revenue on 2,000 deals and £76m GMV
 - Blended take rate falls 2.0% → 1.0% as Tier A grows 15% → 70%
-- Gross margin 71–79%; ancillary fees are 17–26% of revenue
+- Gross margin 71–79%; ancillary fees 31% of Y3 revenue, 18% by Y5
 - Monthly cash-flow break-even in Year 4, Month 8
 
 ### Block 6 — Costs
@@ -136,7 +152,7 @@ Design notes for team:
 
 - **Bank-issued LCs** — trust and networks; 1–3% commission before the fee stack
 - **Tazapay** — escrow-as-a-service; manual review, custodial fiat rails
-- **Truzo** — narrow UK–Africa corridor; manual KYC
+- **Truzo** — narrow UK–South Africa corridor; manual KYC, fiat rails
 - **XREX** — licensed custodial escrow; releases on agreement, not documents
 - **Komgo / Contour** — bank-consortium LC digitisation; Contour shut in 2023
 
@@ -240,27 +256,30 @@ Single line, 6pt Soft grey, left-aligned:
 
 ## Figure provenance
 
-Every number in Blocks 5 and 6 traces to the financial model. Check these before re-recording if the model is revised.
+Every figure on the canvas traces to a stated source — a model cell or a primary publication. Nothing here is inferred. Check these before re-recording if the model is revised.
 
-| Figure on canvas | Model source |
+| Figure on canvas | Source |
 |---|---|
-| 0.8% / 1.5% / 3.0% take rates | `Assumptions!F63:F65` |
-| Blended 2.0% → 1.0% | `Tier Economics` escrow fee ÷ GMV, Y1 / Y5 |
+| $2.5tn global trade finance gap | ADB Global Trade Finance Gap Survey, Dec 2025 (see Sources). **Global**, not SME-only. |
+| 41% SME applications rejected | Same ADB survey. Supersedes the 45% figure, which is 2023. |
+| 0.8% / 1.5% / 3.0% take rates | `Assumptions!F63:F65` (0.008 / 0.015 / 0.03) |
+| Blended 2.0% → 1.0% | `Tier Economics` escrow fee ÷ GMV (Y1 1.97%, Y5 1.033%), cross-checked against the workbook's own `Pitch Deck References` row, which states 2% / 1.3% / 1% independently. |
 | Tier A mix 15% → 70% | `Assumptions!D54, D139` |
 | Y3 £1.37m revenue, 2,000 deals, £76m GMV | `P&L 5yr!E7:E18` |
 | Gross margin 71–79% | `Scenario Engine!H49:L49` |
-| Ancillary 17–26% of revenue | `Revenue Risk Add-Ons` vs `P&L 5yr` total revenue |
+| Ancillary 31% Y3 / 18% Y5 | `P&L 5yr!E16:E17` over `E18` — *Document review and exception-handling fees* plus *Partner / API and ancillary services*, over *Total revenue*. Do NOT derive as `1 − escrow ÷ total`: that nets the *Less: launch discounts and credits* contra-revenue line against ancillary and understates it. Full Y1–Y5: 38 / 48 / 31 / 22 / 18%. |
 | Break-even Y4 M8 | `Cash Flow Statement!B45:B47` |
 | £3.06m operating funding | `Launch Readiness!E12` |
 | £319k VARA restricted capital | `Launch Readiness!E17` — broad three-activity placeholder. `docs/legal-risk.md` §4.3 notes Broker-Dealer is *not* established by the current model; a Transfer-and-Settlement-only scope drops the floor to ~AED 500k (~£106k). The model is deliberately conservative. |
 | 8 → 24 FTE | `P&L 5yr!C36:G36` |
-| Ticket £20K–£50K → £36K–£87K | `Sensitivity` deal-value cases (Low/Base/High by tier) |
+| Ticket £30K–£35K → £36K–£51K | `Sensitivity` deal-value table, **Base case only** (A £35,000→£51,244; B £30,000→£40,815; C £30,000→£36,465). Do NOT mix cases: the full Low–High span is £20K–£50K → £22K–£87K, and quoting a Low-case floor beside a Base-case floor is an error. Blended P&L average is £30,750 → £47,897 (`P&L 5yr!C8:G8`). |
 | Pilot M12 / receipts M13 / licence M18 | `Launch Readiness!E6, E11, E14` |
 | Enhanced review above £50K | `Revenue Risk Add-Ons` |
 
 ## Sources
 
-- Asian Development Bank. (2025). *Trade finance gaps, growth, and jobs survey 2025.* ADB.
+- Asian Development Bank. (2025, December). *ADB global trade finance gap survey.* ADB Briefs. https://www.adb.org/publications/adb-global-trade-finance-gap-survey
+  — 9th iteration; data collected 2023–2025 from 110+ providers. Global gap **$2.5tn**, unchanged from 2023, ~10% of global trade (down from 10.6%). SME rejection rate **41%** (2023: 45%); large/mid-cap corporates 40%.
 - International Chamber of Commerce. (2007). *Uniform customs and practice for documentary credits (UCP 600), ICC Publication No. 600.* ICC.
 - Central Bank of the UAE. (2024). *Payment Token Services Regulation.*
 - Virtual Assets Regulatory Authority. (2026). *VARA Rulebook — Schedule 2: supervision and authorisation fees; Part B: paid capital.* https://rulebooks.vara.ae

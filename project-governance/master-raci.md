@@ -1,104 +1,59 @@
-# Master RACI — Blockmediary
+# RACI Matrix
 
-> **SUPERSEDED — historical baseline only.** This 8 June planning artifact uses the original workstream structure and is not the current controlled accountability matrix. See [Master RACI v2.1](project-governance-v2/master-raci.md).
+> **Window:** 8 June–14 August 2026  
+> **Status:** Active scope complete  
+> **Project lead:** Tamer  
 
-> **Version:** v2 (legacy numbering) · **Date:** 8 June 2026 · **Owner:** Tamer (CEO)
-> **Legend:** R = Responsible (does the work) · A = Accountable (one only, owns the outcome) · C = Consulted · I = Informed
-> **Rule:** one **A** per row. If a row has more than one A after editing, it is broken.
+## RACI key
 
-Header row is reused for each workstream so the matrix stays readable instead of one long table.
+| Code | Meaning |
+|---|---|
+| A | Accountable for the result |
+| R | Performs or coordinates the work |
+| C | Consulted before completion |
+| I | Informed of the result |
 
----
+Each task has one accountable owner. **A/R** means the same person is accountable and responsible.
 
-## Workstream 1 — Product & Architecture (Backend)
+## Team
 
-| Task | CEO | CTO | CFO | COO | CCO | CRO |
-|---|---|---|---|---|---|---|
-| N1. Smart contract escrow | I | **A** | I | R | C | I |
-| N2. Off-chain platform | I | **A** | I | R | C | C |
-| N3. API layer | I | **A** | I | R | C | C |
-| N4. Document verification engine | I | **A** | I | R | C | C |
+| Person | Main role |
+|---|---|
+| Tamer | Project leadership, strategy, cross-functional oversight and submission |
+| Nick | Technical architecture, integration and acceptance |
+| Conrad | Finance and commercial model |
+| Dan | Product operations, demo and recording |
+| Badhri | Legal, compliance and document controls |
+| Mo | Front-end UI, back-end application integration, UX, customers and presentation support |
 
----
+## Task RACI
 
-## Workstream 2 — Frontend
-
-| Task | CEO | CTO | CFO | COO | CCO | CRO |
-|---|---|---|---|---|---|---|
-| M1. Buyer dashboard | C | C | I | C | I | **A**, R |
-| M2. Seller dashboard | C | C | I | C | I | **A**, R |
-| M3. Review console | C | C | I | C | C | **A**, R |
-| M4. Demo polish | C | C | I | C | I | **A**, R |
-
-*Mo owns frontend end-to-end: accountable for delivery and doing the build. Dan is consulted on workflow / sprint / demo fit. CEO is consulted on direction.*
-
----
-
-## Workstream 3 — Compliance & Legal
-
-| Task | CEO | CTO | CFO | COO | CCO | CRO |
-|---|---|---|---|---|---|---|
-| B1. KYB/KYC framework | C | C | I | C | **A** | I |
-| B2. Sanctions + screening | I | C | I | C | **A** | I |
-| B3. Trade Escrow Agreement | C | I | I | C | **A** | I |
-| B4. Regulatory mapping | C | I | I | I | **A** | I |
-| B5. Market analysis (regulatory) | C | I | C | I | **A** | I |
-
----
-
-## Workstream 4 — Operations & Delivery
-
-| Task | CEO | CTO | CFO | COO | CCO | CRO |
-|---|---|---|---|---|---|---|
-| D1. Workflow design | I | C | I | **A** | C | C |
-| D2. Doc review console (ops) | I | C | I | **A** | C | C |
-| D3. Sprint cadence + delivery | C | C | C | **A** | C | C |
-| D4. Demo prep orchestration | C | C | I | **A** | I | C |
-| D5. Backend contribution | I | A | I | **R** | I | I |
-
-*D5 is the one shared-work item — CTO is A on backend overall (N1–N4), Dan is R on the contribution itself.*
-
----
-
-## Workstream 5 — Finance & Funding
-
-| Task | CEO | CTO | CFO | COO | CCO | CRO |
-|---|---|---|---|---|---|---|
-| C1. Financial model | C | I | **A** | I | I | C |
-| C2. Unit economics deep-dive | C | I | **A** | I | C | C |
-| C3. Funding ask + use of funds | C | I | **A** | C | I | C |
-| C4. Market analysis (sizing) | C | I | **A** | I | C | C |
-
----
-
-## Workstream 6 — Revenue & GTM
-
-| Task | CEO | CTO | CFO | COO | CCO | CRO |
-|---|---|---|---|---|---|---|
-| M5. Beachhead refinement | C | I | C | I | C | **A** |
-| M6. Forwarder BD | C | I | I | I | I | **A** |
-| M7. Customer discovery | C | I | I | I | I | **A** |
-| M8. Pricing | C | I | C | I | I | **A** |
-
----
-
-## Workstream 7 — Strategy & Execution
-
-| Task | CEO | CTO | CFO | COO | CCO | CRO |
-|---|---|---|---|---|---|---|
-| T1. BRD ownership | **A** | C | C | C | C | C |
-| T2. Business Model Canvas | **A** | C | C | C | C | C |
-| T3. Pain & Gain model | **A** | I | C | I | C | R |
-| T4. Sketch pad | **A** | C | I | C | C | C |
-| T5. Critic pad | **A** | C | C | C | C | C |
-| T6. Strategy implementation | **A** | C | C | C | C | C |
-| T7. Execution oversight | **A** | I | I | C | I | I |
-| T8. Monitoring | **A** | I | I | R | I | I |
-| T9. Consolidated market analysis | **A** | I | R | I | R | I |
-| T10. Competitive analysis | **A** | I | C | I | C | C |
-
----
-
-## Quick audit — one A per row
-
-Every row above has exactly one **A**. If the team renegotiates ownership in the meeting, re-run this check before signing off.
+| ID | Task | Status | Timing | Tamer | Nick | Conrad | Dan | Badhri | Mo |
+|---|---|---|---|---|---|---|---|---|---|
+| GOV-01 | Proposal handoff | Done | 8 Jun | A/R |  |  |  |  |  |
+| GOV-02 | Requirements and governance baseline | Done | 9–21 Jun | A | R | C | R | C | C |
+| GOV-03 | Project coordination through submission | Done | 9 Jun–14 Aug | A/R | I | I | R | I | I |
+| STR-01 | Market research | Done | 1–7 Jul | A/R |  | C |  |  | C |
+| STR-02 | Strategic analysis | Done | 8–14 Jul | A/R | C | C | C | C | C |
+| STR-03 | Strategic planning | Done | 15–21 Jul | A/R | C | C | C | C | C |
+| STR-04 | Financial and legal coordination and oversight | Done | Jul 2026 | A/R |  | C |  | C |  |
+| PRD-01 | Product workflow and release rules | Done | 9 Jun–10 Jul | C | R |  | A/R | C | C |
+| PRD-02 | Document rules and pitch alignment | Done | 22 Jun–12 Aug | C | R |  | A | R | C |
+| TEC-01 | Smart contract and contract tests | Done | 15 Jun–10 Jul | I | A/R |  | R | C |  |
+| TEC-02 | Application lifecycle, authentication and persistence | Done | 22 Jun–5 Aug | I | A/R |  | R |  | C |
+| TEC-03 | Testnet deployment and onboarding gate | Done | 30 Jun–10 Aug | I | A |  | R | C |  |
+| TEC-04 | Integrated acceptance and clean-build reproducibility | Done | 3–12 Aug | I | A/R |  | R |  | C |
+| UX-01 | Role journeys and consolidated dashboard | Done | 22 Jun–8 Aug | C | C |  | C |  | A/R |
+| UX-02 | Canonical demo route and polish | Done | 3–12 Aug | C | C |  | R |  | A/R |
+| UX-03 | Front-end UI implementation | Done | 22 Jun–8 Aug | I | C |  | C |  | A/R |
+| TEC-05 | Back-end application integration | Done | 15 Jul–10 Aug | I | C |  | C |  | A/R |
+| RISK-01 | Legal, regulatory and document research | Done | 9 Jun–5 Aug | C | I |  | C | A/R |  |
+| RISK-02 | Final legal and compliance claim review | Done | 3–12 Aug | C | C | I | I | A/R | C |
+| BUS-01 | Financial model, pricing and funding assumptions | Done | 9 Jun–12 Aug | C | I | A/R |  | C | R |
+| BUS-02 | Customer, competitor and market case | Done | 9 Jun–12 Aug | C | I | C |  | C | A/R |
+| BUS-03 | Business model and commercial narrative | Done | 12 Aug | A/R | I | C |  | C |  |
+| SUB-01 | Final deck and script | Done | 27 Jul–12 Aug | A/R | C | C | R | C | R |
+| SUB-02 | Demo runbook | Done | 3–12 Aug | C | R |  | A/R |  | C |
+| SUB-03 | Rehearsals and recordings | Done | 10–13 Aug | R | C |  | A/R |  | R |
+| SUB-04 | Submission QA and upload | Done | 13–14 Aug | A/R | I | I | R | I | C |
+| DEF-01 | Post-MVP integrations and production hardening | Deferred | After assessment | A | C | C | C | C | C |

@@ -111,11 +111,37 @@ export async function POST(req: Request) {
   }
 
   const steps: {
-    kind: "approve" | "deposit";
+    kind: "approve" | "deposit" | "fee";
     to: string;
     data: string;
     label: string;
+    /** Hex gas limit, estimated server-side — see estimateStepGas below. */
+    gas?: string;
   }[] = [];
+
+  // Estimate gas HERE rather than letting the wallet do it.
+  //
+  // MetaMask's estimator has been returning ~140,000,000 for a plain ERC-20
+  // approve that actually costs ~39,000. That is thousands of times too high AND
+  // above Base's 25,000,000 per-transaction cap, so the node rejects the signed
+  // transaction outright ("exceeds maximum per-tx gas limit"). Estimating
+  // against the chain and passing an explicit limit sidesteps a wallet bug we
+  // cannot fix, and costs nothing: gas is charged on what is USED, not what is
+  // requested, so a 25% buffer is free insurance against slightly different
+  // state at mining time.
+  const estimateStepGas = async (to: string, data: string): Promise<string | undefined> => {
+    try {
+      const est = await pc.estimateGas({
+        account: expected as `0x${string}`,
+        to: to as `0x${string}`,
+        data: data as `0x${string}`,
+      });
+      return `0x${((est * 125n) / 100n).toString(16)}`;
+    } catch {
+      // No estimate is better than a wrong one: the wallet falls back to its own.
+      return undefined;
+    }
+  };
 
   if (allowance < amountMinor) {
     steps.push({
@@ -127,6 +153,9 @@ export async function POST(req: Request) {
         args: [dep.escrow, amountMinor],
       }),
       label: `Allow the escrow to move ${deal.terms.amountUsdc} USDC`,
+      gas: await estimateStepGas(dep.usdc, encodeFunctionData({
+        abi: usdcAbi, functionName: "approve", args: [dep.escrow, amountMinor],
+      })),
     });
   }
 
@@ -139,6 +168,12 @@ export async function POST(req: Request) {
       args: [deal.onChainDealId as `0x${string}`],
     }),
     label: `Lock ${deal.terms.amountUsdc} USDC in escrow`,
+    // Estimating deposit BEFORE the approve is mined reverts (no allowance yet),
+    // so this is undefined on a first run and the wallet estimates it itself at
+    // signing time — by which point the approval exists.
+    gas: await estimateStepGas(dep.escrow, encodeFunctionData({
+      abi: escrowAbi, functionName: "deposit", args: [deal.onChainDealId as `0x${string}`],
+    })),
   });
 
   return NextResponse.json({

@@ -70,12 +70,22 @@ export async function signMessage(address: string, message: string): Promise<str
  * to the wallet to estimate — MetaMask does this better than we can, and a bad
  * hardcoded limit is a common cause of mysterious failures.
  */
-export async function sendTransaction(from: string, to: string, data: string): Promise<string> {
+export async function sendTransaction(
+  from: string,
+  to: string,
+  data: string,
+  gas?: string,
+): Promise<string> {
   const provider = getProvider();
   if (!provider) throw new Error('No browser wallet found.');
+  // Pass an explicit gas limit when the server estimated one. MetaMask's own
+  // estimator has returned values thousands of times too high on Base —
+  // above the chain's per-transaction cap, so the node refuses the signed
+  // transaction. Gas is charged on what is USED, so an explicit limit never
+  // costs more; it only stops the wallet asking for an impossible amount.
   return (await provider.request({
     method: 'eth_sendTransaction',
-    params: [{ from, to, data }],
+    params: [{ from, to, data, ...(gas ? { gas } : {}) }],
   })) as string;
 }
 

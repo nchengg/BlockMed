@@ -13,7 +13,14 @@ import {
   getChainId, ensureChain, requestAddress, sendTransaction, waitForReceipt, walletErrorMessage,
 } from '@/lib/wallet/browser';
 
-export type FundStep = { kind: 'approve' | 'deposit'; to: string; data: string; label: string };
+export type FundStep = {
+  kind: 'approve' | 'deposit' | 'fee';
+  to: string;
+  data: string;
+  label: string;
+  /** Server-side gas estimate; absent when it could not be estimated. */
+  gas?: string;
+};
 
 export type FundProgress = {
   /** Which step is in flight, so the UI can say what the wallet is asking for. */
@@ -78,7 +85,7 @@ export async function fundWithWallet(
     for (let i = 0; i < steps.length; i++) {
       const step = steps[i];
       onProgress?.({ step, index: i, total: steps.length });
-      const hash = await sendTransaction(prep.from, step.to, step.data);
+      const hash = await sendTransaction(prep.from, step.to, step.data, step.gas);
       hashes[step.kind] = hash;
       // Wait for it to be mined before the next step: the deposit depends on
       // the approval already being on-chain.

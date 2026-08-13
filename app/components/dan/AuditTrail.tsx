@@ -8,6 +8,26 @@ const EXPLORER_TX: Record<number, string> = {
   11155111: 'https://sepolia.etherscan.io/tx/',
 };
 
+const EXPLORER_ADDRESS: Record<number, string> = {
+  84532: 'https://sepolia.basescan.org/address/',
+  8453: 'https://basescan.org/address/',
+  11155111: 'https://sepolia.etherscan.io/address/',
+};
+
+/** Explorer URL for a transaction, or undefined off-chain / on a local chain. */
+export function explorerTxUrl(chainId: number | undefined, txHash: string | null | undefined): string | undefined {
+  if (!chainId || !txHash) return undefined;
+  const base = EXPLORER_TX[chainId];
+  return base ? `${base}${txHash}` : undefined;
+}
+
+/** Explorer URL for an address (e.g. the escrow contract). */
+export function explorerAddressUrl(chainId: number | undefined, address: string | null | undefined): string | undefined {
+  if (!chainId || !address) return undefined;
+  const base = EXPLORER_ADDRESS[chainId];
+  return base ? `${base}${address}` : undefined;
+}
+
 const ACTOR_CLASS: Record<string, string> = {
   buyer: 'bm-status bm-status-info',
   seller: 'bm-status bm-status-info',

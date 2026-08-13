@@ -411,3 +411,36 @@ describe("certificate of origin (DOC-04)", () => {
     expect(gradeDocuments(p, TERMS).verdict).toBe("Compliant");
   });
 });
+
+// Regression: the submit route once rebuilt the pack from three fixed fields,
+// silently dropping the certificate of origin and both customs references. The
+// engine then failed the pack for a document the seller HAD filled in, which is
+// indistinguishable from a genuine discrepancy at the UI. These pin the shape
+// the route must preserve.
+describe("pack completeness (route contract)", () => {
+  it("a pack carrying every document grades on its contents, not its shape", () => {
+    const full = { ...ukToUaePack(), ...{
+      ukCustoms: { mrn: "26GB1234567890ABC1", exportLicenceNumber: "" },
+      uaeCustoms: {
+        importerName: TERMS.buyerName, importerTrn: "1", declarationNumber: "MRS2-1",
+        declarationType: "Type 1", declaredValue: "2500.00", currency: "USDC",
+        hsCode: "5208.52", countryOfOrigin: "GB", attachmentsConfirmed: "confirmed",
+      },
+    } } as DocumentPack;
+    expect(gradeDocuments(full, UK_TO_UAE).verdict).toBe("Compliant");
+  });
+
+  it("dropping the certificate of origin is Discrepant, and says which document", () => {
+    const { certificateOfOrigin: _drop, ...stripped } = ukToUaePack();
+    const v = gradeDocuments(stripped as DocumentPack, TERMS);
+    const failed = v.rules.filter((r) => !r.pass).map((r) => r.rule);
+    expect(failed).toContain("document_present (certificate of origin)");
+  });
+
+  it("dropping the customs references on a corridor that needs them is Discrepant", () => {
+    const v = gradeDocuments(ukToUaePack(), UK_TO_UAE);
+    const failed = v.rules.filter((r) => !r.pass).map((r) => r.rule);
+    expect(failed).toContain("uk_export_cleared (CDS MRN present)");
+    expect(failed).toContain("uae_import_cleared (Mirsal2 declaration number)");
+  });
+});

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '@/lib/auth/useSession';
 import { FunctionalDashboardFrame } from '@/components/dashboard/FunctionalDashboardShell';
 import { DealActions } from '@/components/dan/DealActions';
-import { AuditTrail } from '@/components/dan/AuditTrail';
+import { AuditTrail, explorerTxUrl, explorerAddressUrl } from '@/components/dan/AuditTrail';
 import { AuthForms } from '@/components/dan/AuthForms';
 import { runDealAction, type DealAction } from '@/components/dan/dealActionRunner';
 import { actorFromSession, fetchDeal, type DealListItem } from '@/lib/escrow/client';
@@ -26,6 +26,7 @@ export default function DashboardDealPage({ params }: { params: Promise<{ dealId
 
   const [deal, setDeal] = useState<DealListItem | null>(null);
   const [chainId, setChainId] = useState<number | undefined>(undefined);
+  const [escrowAddress, setEscrowAddress] = useState<string | undefined>(undefined);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,6 +43,7 @@ export default function DashboardDealPage({ params }: { params: Promise<{ dealId
       setLoadError(null);
       setDeal(r.deal ?? null);
       setChainId(r.chainId ?? undefined);
+      setEscrowAddress(r.escrow ?? undefined);
     } catch (e) {
       setLoadError((e as Error).message);
     }
@@ -133,12 +135,32 @@ export default function DashboardDealPage({ params }: { params: Promise<{ dealId
             <div style={{ width: `${dealProgress(deal)}%` }} />
           </div>
           <div className="bm-deal-stage-list">
-            {dealStages(deal).map(stage => (
-              <div key={stage.label} className="bm-deal-stage" data-active={stage.active}>
-                <span />
-                <p>{stage.label}</p>
-              </div>
-            ))}
+            {dealStages(deal).map(stage => {
+              const txUrl = explorerTxUrl(chainId, stage.txHash);
+              return (
+                <div key={stage.label} className="bm-deal-stage" data-active={stage.active}>
+                  <span />
+                  <p>
+                    {stage.label}
+                    {txUrl && (
+                      <>
+                        {' '}
+                        <a
+                          href={txUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bm-link"
+                          style={{ fontSize: 11 }}
+                          title="View this transaction on BaseScan"
+                        >
+                          tx ↗
+                        </a>
+                      </>
+                    )}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </aside>
       </section>
@@ -171,6 +193,22 @@ export default function DashboardDealPage({ params }: { params: Promise<{ dealId
                 <Detail label="On-chain deal id" value={deal.onChainDealId} mono wrap />
               </div>
             )}
+            {(() => {
+              const contractUrl = explorerAddressUrl(chainId, escrowAddress);
+              return contractUrl ? (
+                <div style={{ marginTop: 14 }}>
+                  <a
+                    href={contractUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bm-link"
+                    style={{ fontSize: 13 }}
+                  >
+                    View escrow contract on BaseScan ↗
+                  </a>
+                </div>
+              ) : null;
+            })()}
           </Card>
 
           <Card title={null}>
@@ -314,12 +352,36 @@ function dealProgress(deal: DealListItem): number {
   return 12;
 }
 
-function dealStages(deal: DealListItem): Array<{ label: string; active: boolean }> {
+function dealStages(deal: DealListItem): Array<{ label: string; active: boolean; txHash?: string }> {
   const state = deal.state;
+
+  // Each on-chain stage was caused by exactly one transaction, and the audit
+  // trail recorded its hash. Matching on the action text keeps this in step
+  // with what the server actually writes (lib/escrow/settlement.ts and the
+  // fund/confirm route) — the stage links point at the proof, not at a guess.
+  const txFor = (needle: string): string | undefined =>
+    deal.audit?.find(e => e.txHash && e.action.includes(needle))?.txHash ?? undefined;
+
   return [
-    { label: deal.awaitingViewer ? 'Awaiting acceptance' : 'Terms accepted', active: Boolean(deal.awaitingViewer || state) },
-    { label: 'Escrow funded', active: state === 'Funded' || state === 'ReleasePending' || state === 'Released' },
-    { label: 'Documents checked', active: state === 'ReleasePending' || state === 'Released' },
-    { label: 'Settlement complete', active: state === 'Released' },
+    {
+      label: deal.awaitingViewer ? 'Awaiting acceptance' : 'Terms accepted',
+      active: Boolean(deal.awaitingViewer || state),
+      txHash: txFor('createDeal'),
+    },
+    {
+      label: 'Escrow funded',
+      active: state === 'Funded' || state === 'ReleasePending' || state === 'Released',
+      txHash: txFor('Deposited into escrow'),
+    },
+    {
+      label: 'Documents checked',
+      active: state === 'ReleasePending' || state === 'Released',
+      txHash: txFor('recordVerdict'),
+    },
+    {
+      label: 'Settlement complete',
+      active: state === 'Released',
+      txHash: txFor('Release executed'),
+    },
   ];
 }

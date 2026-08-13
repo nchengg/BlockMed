@@ -60,9 +60,11 @@ export interface Deployment {
 /**
  * Which deployment to talk to.
  *
- * ESCROW_NETWORK selects the file: "local" (default) or "baseSepolia". Keeping
- * one file per network means both can coexist — switching is an env change, not
- * a redeploy, and the local demo keeps working untouched.
+ * ESCROW_NETWORK selects the file: "local" (default), "baseSepolia", or "base"
+ * (Base Mainnet — real funds; requires deployments/base.json from
+ * contracts/scripts/deploy-base-mainnet.ts). Keeping one file per network means
+ * they coexist — switching is an env change, not a redeploy, and the local demo
+ * keeps working untouched.
  */
 export function networkName(): string {
   return process.env.ESCROW_NETWORK?.trim() || "local";

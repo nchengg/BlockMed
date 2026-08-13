@@ -14,13 +14,14 @@
     "db:seed:demo": "prisma migrate deploy && node prisma/seed-demo.mjs"
   },
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^7.9.1",
+    "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^12.42.0",
     "gsap": "^3.15.0",
     "lenis": "^1.3.24",
     "next": "16.2.9",
+    "pg": "^8.23.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "viem": "^2.54.6"

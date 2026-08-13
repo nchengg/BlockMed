@@ -1,0 +1,958 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{apacite}
+\usepackage{natbib}
+\usepackage{times}
+\usepackage{microtype}
+\usepackage[none]{hyphenat}
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\onehalfspacing
+
+\title{\textbf{Blockmediary: Legal and Compliance Risk Assessment}}
+\author{Badhri Narayanan Giri \\ Chief Compliance Officer, Transakt}
+\date{August 2026 \\ BEEM063 FinTech Hackathon \\ University of Exeter}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+%---------------------------------------------------------------
+\section*{Introduction}
+%---------------------------------------------------------------
+
+Blockmediary is a programmable documentary escrow layer for small and medium sized
+enterprise cross border trade. The product locks stablecoin, specifically USDC on the
+Base network, into a smart contract, verifies the trade documents a seller submits
+against agreed release conditions, and releases the funds once those conditions are
+satisfied. This mechanism creates regulatory surface area across six distinct domains:
+crypto asset and stablecoin regulation, payment services law, anti money laundering and
+know your business and know your customer obligations, data privacy law, trade finance
+law, and consumer and business protection law. The purpose of this assessment is to work
+through each domain in turn, across the jurisdictions Blockmediary has identified as
+realistic near term markets, namely the United Kingdom, the European Union, and the
+United Arab Emirates, and to record why Turkey has been excluded as a target market
+despite the size of its trading relationship with the Gulf region.
+
+The assessment is organised as follows. The first section addresses the regulatory
+position in the United Kingdom, the second addresses the European Union, and the third
+addresses Turkey briefly, as an excluded jurisdiction rather than an active one. The
+fourth section addresses the United Arab Emirates, distinguishing between the federal
+mainland regime and the more accessible free zone frameworks. The fifth section addresses
+risks that cut across all jurisdictions rather than belonging to any single regulator, such
+as sanctions screening, trade based money laundering, and the legal standards that govern
+documentary release itself. The sixth section consolidates the regulatory instruments
+referenced throughout the assessment into a single index. The seventh section compares
+Blockmediary's compliance posture against the closest competing platforms. The eighth and
+final section works through the choice between the three principal Emirati jurisdictions
+available to a fintech entrant. This document is a working compliance reference prepared
+for an academic hackathon project and does not constitute legal advice; qualified legal
+counsel should be sought before Blockmediary operates in any of the jurisdictions discussed
+with real funds or real users.
+
+%---------------------------------------------------------------
+\section*{1. United Kingdom Regulatory Risks}
+%---------------------------------------------------------------
+
+\subsection*{1.1 Stablecoin Issuance and Cryptoasset Custody}
+
+The Financial Conduct Authority published consultation paper CP25/14 in May 2025, setting
+out proposed rules for firms that issue qualifying stablecoins and for firms that provide
+custody of cryptoassets \citep{fcacp2514}. The final rules are expected during 2026 and the
+regime will take effect once it clears parliamentary approval. Blockmediary does not issue
+USDC, Circle does, so the issuance limb of CP25/14 is not directly engaged. The custody
+limb is a closer question. If Blockmediary's smart contract ever holds USDC on behalf of a
+buyer or seller in a manner that amounts to safeguarding a cryptoasset as a regulated
+activity, the proposed client asset framework for cryptoassets would require authorisation,
+segregation of customer assets, and custody arrangements that meet the Financial Conduct
+Authority's standards. Blockmediary's response is architectural rather than purely legal.
+By using a smart contract escrow model in which funds sit in the on chain contract rather
+than in a wallet Blockmediary itself controls, the product moves away from the clearest
+form of custody, but this is a technical description rather than a complete regulatory
+conclusion. A subsequent readiness review of the United Arab Emirates pathway reached the
+same view and it is adopted here for all jurisdictions: regulators generally examine who
+can cause, prevent, reverse, upgrade or recover a transfer, and who bears responsibility to
+the client, so Blockmediary should not describe itself as definitively non custodial until
+that control analysis over the release key, contract administration and recovery rights has
+been documented \citep{difcvarareport2026}. For production use, the safer path is to
+partner with an authorised cryptoasset custodian for any component of the flow that does
+resemble safeguarding. For the hackathon build, the product operates on testnet with mock
+USDC, so no regulated custody activity is actually triggered, but the Policy Statement
+expected in the summer of 2026 should be monitored and the architecture reassessed once the
+final rules are published.
+
+\subsection*{1.2 Crypto Asset Service Provider Licensing}
+
+Consultation paper CP25/40 sets out the Financial Conduct Authority's broader framework
+for regulating cryptoasset activities, extending the existing Financial Services and
+Markets Act 2000 regime to cover exchange, custody, and related cryptoasset services
+provided to United Kingdom persons \citep{fcacp2540}. Whether Blockmediary needs to
+register or seek authorisation under this expanded regime depends on how its role in
+arranging or operating the escrow is characterised. The existing cryptoasset registration
+regime under the Money Laundering Regulations focuses narrowly on anti money laundering
+compliance, but the new framework introduces conduct, prudential, and consumer protection
+obligations that go considerably further. Blockmediary's approach is to take legal advice
+on whether its activity constitutes a regulated cryptoasset service under the new regime,
+while operating in testnet only during the hackathon phase so that no United Kingdom
+persons transact with real funds. For production, the team should budget for a
+twelve to eighteen month authorisation timeline, or alternatively consider launching first
+in a free zone jurisdiction such as the Abu Dhabi Global Market or the Dubai International
+Financial Centre, where the path to authorisation is comparatively cleaner, before
+returning to the United Kingdom market once the domestic regime has settled.
+
+\subsection*{1.3 Payment Services}
+
+The Payment Services Regulations 2017 implement the European Union's second Payment
+Services Directive into United Kingdom law and regulate the provision of payment services
+\citep{ukpsr2017}. If Blockmediary's escrow function is characterised as holding funds on
+behalf of parties, or as executing payment transactions, it could constitute a payment
+service requiring authorisation as a payment institution or an electronic money
+institution. The smart contract escrow model partially mitigates this concern because
+funds pass directly into the contract rather than through an account Blockmediary
+operates, but the release instruction, the step at which Blockmediary authorises the on
+chain transfer, may still be characterised as execution of a payment transaction. The
+mitigation is twofold. First, Blockmediary should obtain a legal opinion on whether the
+release instruction itself constitutes execution of a payment transaction under the
+regulations. Second, in all product communications and legal documentation, Blockmediary's
+role should be framed consistently as verification and orchestration rather than as
+payment execution, and for production deployment the fiat on and off ramp layer should be
+delivered through a partnership with an already licensed payment institution rather than
+by Blockmediary seeking its own licence for that specific function.
+
+\subsection*{1.4 Anti Money Laundering, Know Your Business, and Know Your Customer}
+
+The Money Laundering, Terrorist Financing and Transfer of Funds Regulations 2017, as
+amended, require cryptoasset businesses to apply customer due diligence, transaction
+monitoring, and suspicious activity reporting \citep{mlr2017}, and the European Union's
+sixth Anti Money Laundering Directive tightens the equivalent obligations across the
+European Union \citep{amld6}. Underlying this procedural framework is the Proceeds of
+Crime Act 2002, which makes money laundering a criminal offence in the United Kingdom and
+creates the money laundering reporting officer's mandatory suspicious activity report
+obligation under section 330 \citep{poca2002}. A failure to file a suspicious activity
+report where one is required is a criminal offence for both the firm and the individual
+reporting officer, and the Terrorism Act 2000 creates a parallel disclosure obligation for
+suspected terrorist financing \citep{terrorismact2000}. Blockmediary is a virtual asset
+service provider under the Financial Action Task Force's definition, since it facilitates
+the transfer and custody of virtual assets, and this triggers the full suite of anti money
+laundering and counter financing of terrorism obligations. Trade based money laundering is
+a particular concern in cross border trade escrow, since over invoicing, under invoicing,
+phantom shipments, and document fraud are established typologies within this sector.
+Blockmediary's mitigation is to implement a compliance gate before any escrow is funded,
+requiring both parties to complete know your business and know your customer checks,
+sanctions screening, and wallet screening, using a reputable provider such as Sumsub,
+Jumio, or Onfido, and to maintain a trade based money laundering red flag checklist that
+watches for invoice prices inconsistent with market rates, unusual shipment routes, vague
+goods descriptions, and discrepancies across submitted documents. A United Kingdom money
+laundering reporting officer should be appointed for production operation, bearing in mind
+that this individual carries personal criminal liability under section 330 of the Proceeds
+of Crime Act for failure to disclose. A related complication arises where a third party
+platform or freight forwarder initiates a deal on behalf of a buyer and seller rather than
+the principals approaching Blockmediary directly. In that scenario, Blockmediary must
+ensure that know your customer and know your business checks on the underlying principals
+are performed either directly by Blockmediary or by a third party acting under regulation
+39 of the Money Laundering Regulations, which permits reliance on third parties subject to
+strict conditions: the third party must itself be subject to equivalent anti money
+laundering obligations, a written reliance agreement must be in place, and Blockmediary
+must be able to obtain the underlying customer due diligence data within two business days
+of request. A platform initiated deal should never be permitted to fund before the
+underlying buyer and seller have been verified under one of these two routes.
+
+\subsection*{1.5 The Financial Action Task Force Travel Rule}
+
+Recommendation 16 of the Financial Action Task Force, as revised in June 2025, requires
+virtual asset service providers to collect, verify, and transmit originator and
+beneficiary information alongside virtual asset transfers above a threshold that in most
+jurisdictions sits at the equivalent of one thousand United States dollars or euros
+\citep{fatf2025}. Every escrow funding and release transaction that Blockmediary processes
+is a virtual asset transfer for these purposes, so the Travel Rule requires Blockmediary to
+collect and, where the counterparty is itself a virtual asset service provider, share
+identifying information about both parties. The revised standards take full effect
+domestically across most jurisdictions by the end of 2030, but the United Kingdom, the
+European Union under the Markets in Crypto Assets Regulation, and the United Arab Emirates
+are already implementing equivalent requirements ahead of that deadline. Because
+Blockmediary already collects full know your business and know your customer data at
+onboarding as part of its anti money laundering programme, this same dataset satisfies the
+Travel Rule's data requirement, and for wallet to contract transfers the product should
+implement Travel Rule data transmission to counterpart virtual asset service providers
+where both sides of a transaction are themselves regulated as such. During the hackathon
+phase, testnet transactions do not trigger a live obligation, but the compliance design
+should document how this requirement would be satisfied in production.
+
+\subsection*{1.6 Data Privacy}
+
+The retained United Kingdom General Data Protection Regulation and the European Union's
+General Data Protection Regulation impose obligations on any entity processing the
+personal data of United Kingdom or European Union residents, including a lawful basis for
+processing, purpose limitation, data minimisation, a right to erasure, and breach
+notification duties \citep{gdpr2016}. The central tension for Blockmediary is that on
+chain immutability is structurally incompatible with the right to erasure under Article
+17: any personal data written to a public blockchain cannot subsequently be deleted. A
+live architectural risk sits within this tension. The full product design commits a
+cryptographic hash of the canonical escrow specification to the Base network at the point
+a deal is created, and that specification contains party names and know your customer
+reference identifiers. Even though a hash is not the underlying plaintext, where
+Blockmediary controls both the off chain store containing the names and the on chain hash,
+the hash can be linked back to an identified individual, which brings it within the
+functional definition of personal data under the General Data Protection Regulation, and
+committing that hash to an immutable public ledger creates a permanent record that cannot
+be erased, in direct tension with Article 17. This question has not yet been closed and
+requires a design decision before the product moves to mainnet. The confirmed
+architectural position, however, is that all personal data is kept off chain: the smart
+contract stores only wallet addresses, deal amounts, state transitions, and document
+hashes, never names, documents, or know your customer records. On chain wallet addresses
+are linked to off chain identity records through an internal pseudonymous reference rather
+than directly by name. Blockmediary intends to resolve the specification hash problem
+before mainnet deployment by stripping personal data from the specification entirely
+before it is hashed, which is the simplest of the available options, alongside publishing a
+privacy notice, appointing a data protection officer for production, and implementing a
+seventy two hour breach notification procedure to the Information Commissioner's Office
+consistent with the retained United Kingdom regime.
+
+\subsection*{1.7 Smart Contract Legal Enforceability}
+
+The Law Commission published a report in 2021 confirming that smart contracts can
+constitute legally binding agreements under English law, while identifying continuing
+uncertainty around offer and acceptance, consideration, mistake, and available remedies
+\citep{lawcommission2021}. Blockmediary's smart contract automatically enforces financial
+obligations, including fund release and refund, which raises the question of whether the
+smart contract itself is the binding agreement between the parties or merely the execution
+mechanism for a separate agreement negotiated off chain. A related complication is that on
+chain state transitions, once executed, may not be reversible even where a court later
+orders that they should be. Blockmediary's response is to maintain a separate signed Trade
+Escrow Agreement in natural language that governs the substantive rights of the parties,
+treating the smart contract as the automated execution layer for that agreement rather than
+the agreement itself. The Trade Escrow Agreement specifies English law as the default
+governing law, reflecting its maturity for commercial and trade finance disputes, and
+includes an explicit clause addressing the relationship between on chain outcomes and the
+underlying agreement, together with a dispute escalation path to an external forum such as
+the International Chamber of Commerce's DOCDEX procedure or arbitration under the London
+Court of International Arbitration.
+
+\subsection*{1.8 The Electronic Trade Documents Act 2023}
+
+The Electronic Trade Documents Act 2023 came into force in September 2023 and was the
+first United Kingdom statute to give electronic trade documents, including electronic
+bills of lading, ship's delivery orders, sea waybills, and warehouse receipts, the same
+legal status as paper originals under English law \citep{etda2023}. The Act is based on
+the United Nations Commission on International Trade Law's Model Law on Electronic
+Transferable Records, and equivalent legislation has been adopted in Singapore, Bahrain,
+and within the Dubai International Financial Centre, all of which are relevant to
+Blockmediary's target corridors \citep{uncitralmletr}. Blockmediary accepts uploaded trade
+documents as the basis for releasing escrowed funds, and the legal validity of an
+electronic bill of lading in particular, specifically whether it functions as a document
+of title giving its holder the right to claim the goods, depends on whether the Act's
+requirements are satisfied. Central to this is the Act's control requirement: a person has
+control of an electronic trade document only where they can use it, transfer it, and
+prevent others from doing so simultaneously, meaning a document that can be freely copied,
+such as a portable document format file circulated by email, does not qualify, because it
+does not enforce singularity of control. Releasing funds against a document that fails
+this test exposes Blockmediary to liability for treating a legally invalid document as
+equivalent to an original. For the minimum viable product, Blockmediary's mitigation is to
+accept scanned paper documents only, which sidesteps the Act's requirements entirely since
+scanned originals remain valid as paper documents, and to defer support for genuine
+electronic bills of lading to a post launch phase in which the platform integrates with an
+Act qualifying electronic system such as Bolero, essDOCS, or WaveBL, rather than accepting
+an ordinary electronic file as if it were equivalent.
+
+\subsection*{1.9 The Financial Conduct Authority's Consumer Duty}
+
+The Consumer Duty, introduced through policy statement PS22/9 and in force since July
+2023, substantially expanded the Financial Conduct Authority's previous Principles for
+Businesses framework for firms whose products reach retail customers, requiring firms to
+deliver good outcomes across four pillars: products and services, price and value,
+consumer understanding, and consumer support \citep{fcaconsumerduty}. The Duty applies not
+only to firms with a direct retail relationship but to firms anywhere in the distribution
+chain through which a retail product reaches an end user. The central question for
+Blockmediary is whether its small and medium sized enterprise buyers and sellers count as
+retail customers under the Financial Conduct Authority's definition, which excludes only
+large institutional counterparties and professional clients meeting specific financial
+sophistication thresholds that most small and medium sized enterprises will not meet. If,
+as is likely, most of Blockmediary's users are retail customers for these purposes, the
+Consumer Duty applies in full, and its obligations go considerably beyond the older
+Principles for Businesses framework: the consumer understanding pillar requires that all
+communications, including marketing materials, terms of service, and the Trade Escrow
+Agreement itself, be tested against whether a reasonable small or medium sized enterprise
+in the target market would genuinely understand what it is agreeing to and what risks it is
+accepting, and the Duty imposes a proactive obligation to pursue good outcomes rather than
+merely to avoid harm. Blockmediary's mitigation is to conduct a formal retail and
+professional client classification exercise for its target users, to design the product
+and its communications around the consumer understanding standard from the outset, and to
+build a complaints handling process that satisfies the Financial Conduct Authority's
+dispute resolution rules, including an eight week written response obligation and
+referral rights to the Financial Ombudsman Service for eligible complainants. This
+obligation applies to the production product; it is not triggered by a testnet build with
+no real users.
+
+%---------------------------------------------------------------
+\section*{2. European Union Regulatory Risks}
+%---------------------------------------------------------------
+
+\subsection*{2.1 The Markets in Crypto Assets Regulation}
+
+The Markets in Crypto Assets Regulation is the European Union's comprehensive framework
+for crypto asset activity \citep{mica2023}. Title III governs asset referenced tokens,
+stablecoins pegged to multiple assets, requiring authorisation by a national competent
+authority, reserve requirements, and whitepaper disclosure. Title IV governs e money
+tokens, stablecoins pegged to a single fiat currency, which must be issued by an
+authorised credit institution or electronic money institution. Title V governs crypto
+asset service providers and requires authorisation to provide services including custody,
+exchange, and transfer of crypto assets within the European Union, with full application
+from December 2024 and national transitional arrangements expiring on 1 July 2026. USDC is
+an e money token under this classification, and Circle, its issuer, must itself hold
+Markets in Crypto Assets authorisation to issue USDC within the European Union, which it
+obtained through electronic money institution authorisation in France in 2024
+\citep{ebamica}. Separately, Blockmediary itself may qualify as a crypto asset service
+provider if it provides crypto asset transfer or custody services to European Union
+persons, which would require its own Markets in Crypto Assets authorisation, since the
+national transitional arrangements that some firms currently rely upon expire on 1 July
+2026, after which operating without authorisation for European Union users becomes
+unlawful. Blockmediary's mitigation is to confirm with Circle that the specific USDC
+deployment it uses remains compliant with the regulation, to apply for crypto asset
+service provider authorisation with a national competent authority ahead of any European
+Union market entry, which requires an entity established within the European Union, and in
+the interim to treat the Abu Dhabi Global Market or the Dubai International Financial
+Centre as the initial regulatory home from which European Union authorisation can later be
+sought.
+
+\subsection*{2.2 The Digital Operational Resilience Act}
+
+The Digital Operational Resilience Act came into full force on 17 January 2025 and applies
+to financial entities operating in the European Union, including crypto asset service
+providers authorised under the Markets in Crypto Assets Regulation \citep{dora2022}. The
+Act establishes a harmonised framework for information and communication technology risk
+management, comprising a mandatory risk management framework, mandatory incident
+reporting to competent authorities, digital operational resilience testing including
+threat led penetration testing for significant firms, and contractual requirements
+governing third party technology providers. The Act is not a standalone licence; rather,
+it is a compliance obligation that automatically attaches once a firm holds a Markets in
+Crypto Assets authorisation, so the two cannot be addressed separately. Blockmediary's
+architecture depends on several third party technology providers, including Anthropic for
+artificial intelligence based document analysis, cloud infrastructure for document storage
+and the audit ledger, a know your business and know your customer provider, and a
+blockchain node provider for mainnet access, each of which counts as a third party
+information and communication technology provider under the Act, requiring a documented
+risk assessment, contractual terms covering audit rights and exit arrangements, and
+inclusion in Blockmediary's technology risk register. A significant incident, such as
+compromise of the releaser key discussed in section five, a prolonged outage of the
+document verification service, or a breach affecting the know your customer database,
+would all be reportable under the Act's escalating timeline: an initial notification
+within four hours of classification, an intermediate report within seventy two hours, and
+a final report within one month. Blockmediary's mitigation is to build its technology risk
+framework alongside, rather than after, its Markets in Crypto Assets authorisation
+application, to maintain a register of every third party technology provider with its
+associated risk classification and contractual terms, and to designate an incident
+classification and reporting function, which at minimum viable product stage can sit with
+the Chief Compliance Officer.
+
+\subsection*{2.3 Electronic Identification and Trust Services}
+
+The eIDAS 2.0 Regulation, published in April 2024, governs electronic identification and
+trust services across the European Union and introduces the European Union Digital
+Identity Wallet alongside an updated legal framework for electronic signatures, under
+which a qualified electronic signature carries the same legal effect as a handwritten
+signature in every member state \citep{eidas2024}. In the United Kingdom, the equivalent
+framework is the Electronic Communications Act 2000 \citep{ukeca2000}. The Trade Escrow
+Agreement is a binding contract between buyer, seller, and Blockmediary, and its
+enforceability across European Union jurisdictions depends on the electronic signature
+method used to execute it. A simple click through acceptance or an unconfirmed email may
+not satisfy the higher signature standard some member states require for certain contract
+types, and a wallet signature produced through signing in with an Ethereum address does
+not currently qualify as a qualified electronic signature because it is not issued by a
+qualified trust service provider, although it is arguably an advanced electronic signature
+in the sense that it is uniquely linked to the signatory's private key and can detect
+subsequent tampering. Blockmediary's mitigation is to specify explicitly in the Trade
+Escrow Agreement which signature method has been used for a given deal, whether click
+through acceptance, wallet signature, or a third party signing platform, and to offer an
+advanced electronic signature option through a qualified trust service provider such as
+DocuSign or Signicat for higher value or contested deals. Under the United Kingdom's more
+functional approach in the Electronic Communications Act 2000, both click through
+acceptance and wallet signatures should be treated as valid provided the parties clearly
+intend to be bound by them, and the Trade Escrow Agreement includes an explicit clause
+confirming that intention.
+
+%---------------------------------------------------------------
+\section*{3. Turkey: An Excluded Jurisdiction}
+%---------------------------------------------------------------
+
+Turkey is excluded from Blockmediary's target markets, and this section records why
+rather than analysing the jurisdiction as an active target. Three instruments drive the
+exclusion. The Central Bank of the Republic of Turkey's Regulation No. 2021/14 bans the
+use of crypto assets, including stablecoins, as a means of payment for goods and services
+within Turkey \citep{cbrt202114}. This is the primary hindrance, because it prohibits
+precisely what Blockmediary's product does: using a stablecoin to settle a commercial
+transaction. Stablecoins may still be held and traded on licensed platforms in Turkey,
+but they cannot be used to pay for a shipment, which makes the core product unusable for
+any deal in which a Turkish resident or entity is a buyer or seller. Second, Law No. 7518,
+which amended Turkey's Capital Markets Law in 2024, brings crypto asset service providers
+under the supervision of the Capital Markets Board and sets a minimum capital requirement
+of one hundred million Turkish lira, equivalent to roughly two point three million pounds
+sterling, for platforms seeking authorisation, with a certificate of authorisation
+required by 30 June 2026 \citep{cmblaw7518}. This capital threshold is a further hindrance
+independent of the payments ban, since it would require a dedicated Turkish entity holding
+substantial capital purely to serve a market Blockmediary cannot legally transact in under
+the payments ban regardless. Third, Turkey's Personal Data Protection Law, known as
+KVKK, imposes its own cross border data transfer regime that would apply to any know your
+customer data collected from Turkish users \citep{kvkk6698}, but this consideration is
+secondary and dormant, since the payments ban already excludes Turkey before any data
+protection question arises. Taken together, the payments ban makes the product illegal to
+operate in Turkey regardless of licensing, the capital requirement makes licensing
+prohibitively expensive even if the ban did not exist, and the data protection regime adds
+a further compliance layer on top of both. Turkey is therefore excluded from
+Blockmediary's target markets as a considered decision rather than an oversight, to be
+revisited only if the underlying regulatory position changes materially.
+
+%---------------------------------------------------------------
+\section*{4. United Arab Emirates Regulatory Risks}
+%---------------------------------------------------------------
+
+\subsection*{4.1 The Mainland Regime and the CBUAE Overlay}
+
+The Central Bank of the United Arab Emirates regulates payment tokens, defined as crypto
+assets fully backed by one or more fiat currencies and used for settlement or transfer,
+under its Payment Token Services Regulation, effective since August 2024
+\citep{cbuaeptsr2024}. Any entity issuing, redeeming, or facilitating payment tokens on
+the mainland must hold a Central Bank licence, and Federal Decree Law No. 6 of 2025
+extends this oversight to decentralised finance, cross chain bridges, and broader Web3
+infrastructure, with a one year transition period running to September 2026
+\citep{uaefdl62025}. Facilitating USDC denominated escrow for mainland parties may
+therefore require a Central Bank licence, such as a stored value facility or payment
+services licence, and administrative penalties for unlicensed activity reach one billion
+United Arab Emirates dirhams. Blockmediary's mitigation is to avoid the mainland regime
+entirely at this stage by routing launch activity through the Dubai International
+Financial Centre and a separate Virtual Assets Regulatory Authority licensing track,
+discussed in sections 4.2 and 4.3.
+
+This mainland avoidance does not, however, close the question entirely. Article 2 of the
+Payment Token Services Regulation excludes Financial Free Zones from its definition of the
+United Arab Emirates, but a locally licensed virtual asset service provider may still need
+to apply for a non-objection registration to custody or transfer certain foreign payment
+tokens \citep{cbuaeptsrarticle2}. Whether a United Arab Emirates buyer may lawfully prefund
+USDC or EURC into Blockmediary's escrow to settle a physical goods purchase, and whether
+the Dubai International Financial Centre partner or the Virtual Assets Regulatory
+Authority entity separately needs a Central Bank licence, registration or non-objection
+for that specific flow, remains an open legal gate that differs depending on whether the
+transaction is structured within the Dubai International Financial Centre, on the
+mainland, or cross border to a United Arab Emirates person. Written advice on this point
+should be obtained before any live United Arab Emirates launch \citep{difcvarareport2026}.
+
+\subsection*{4.2 The Dubai International Financial Centre Partner-Led Pilot}
+
+Following further discussion within the team, including an existing relationship with a
+Dubai International Financial Centre connected partner, Blockmediary's near term United
+Arab Emirates route is a partner-led pilot within the Centre rather than an independent
+licence application. A Dubai International Financial Centre partner-led pilot is not
+itself a named Dubai Financial Services Authority licence category. It is an operating
+arrangement in which a Dubai Financial Services Authority authorised firm acts as the
+regulated principal and Blockmediary supplies the technology, document verification and
+workflow layer beneath it. A Dubai International Financial Centre Commercial or Innovation
+Licence gives Blockmediary a legal presence in the Centre but does not itself authorise
+regulated financial services \citep{difcvarareport2026}. Under the Authority's outsourcing
+rules, the authorised partner remains responsible for the outsourced functions, must
+conduct due diligence on and supervise Blockmediary as provider, and, where the
+arrangement is material, must notify the Authority and maintain written outsourcing and
+contingency arrangements \citep{dfsaoutsourcing}. The partner agreement and responsibility
+matrix are therefore the central regulatory instrument for the pilot, not a licence held
+by Blockmediary itself.
+
+Minimum requirements before the pilot may accept live funds include a written regulatory
+perimeter opinion mapping the customer journey, entities, wallet flows, release key and
+smart contract control; verification that the partner's actual Dubai Financial Services
+Authority permissions cover the specific custody, settlement and customer activity
+involved, not merely generic fintech or payment permissions; an executed partner term
+sheet and outsourcing agreement covering scope, audit rights, incident reporting and
+termination; a written responsibility matrix assigning customer contracting, onboarding,
+sanctions screening, wallet screening, safeguarding, release approval and loss liability;
+and a defined pilot envelope limited to business to business customers, deal values at or
+below the fifty thousand pound automation threshold, approved low risk corridors, and
+manual sign off available on every release. The Dubai Financial Services Authority's
+Innovation Testing Licence is not assumed to be required or sufficient for this route:
+it is a restricted sandbox for a firm that itself needs to test a regulated activity, and
+should be pursued only if the Authority or counsel concludes Blockmediary will itself
+conduct regulated activity during testing, not treated as a default or cheap substitute
+for a properly structured partner arrangement \citep{difcvarareport2026}.
+
+\subsection*{4.3 Virtual Assets Regulatory Authority Licensing for Scale}
+
+Alongside, and starting from the same point in time as, the Dubai International Financial
+Centre pilot, Blockmediary pursues its own Virtual Assets Regulatory Authority licence for
+wider Dubai scale. The Authority regulates virtual asset activity outside the Dubai
+International Financial Centre, and an application must be made through a non-Centre
+entity, meaning Blockmediary needs a separate legal entity or group company established
+outside the Centre, with a physical Dubai office and two full time, fit and proper
+Responsible Individuals \citep{difcvarareport2026}. The Authority licenses each activity
+separately, and the closest apparent fit for Blockmediary is Virtual Asset Transfer and
+Settlement, covering the transmission or settlement of virtual assets from one entity or
+wallet to another, which matches the product's release of escrowed stablecoin to the
+seller once documentary conditions are satisfied. Whether Custody Services also applies is
+conditional rather than settled: direct smart contract funding helps, but the server side
+release key and any administration, upgrade or recovery rights Blockmediary retains may
+still amount to control or safekeeping requiring a written opinion. Broker Dealer
+Services, covering arranging or matching orders to buy or sell virtual assets, is not
+established by the current model, since Blockmediary settles a physical goods sale rather
+than arranging a token purchase or sale, and should not be assumed mandatory
+\citep{difcvarareport2026}. If Custody is ultimately required, the Authority's rules
+generally require Custody to sit in a legally separate entity from other virtual asset
+activities, with only limited scope to combine Custody and Transfer and Settlement subject
+to the Authority's approval and strict operational segregation, so the assumption that one
+entity will hold all three activities should not be treated as settled.
+
+The Authority does not publish a guaranteed approval timeline. The two workstreams start
+together at inception, modelled as Month 1: the Dubai International Financial Centre pilot
+targets its first paid transaction in Month 12, and the Virtual Assets Regulatory Authority
+application targets a full licence in Month 18 in the base case, with Month 12 retained
+only as an early case where the activity perimeter resolves quickly and remediation is
+minimal, and Month 24 as a delayed case reflecting regulatory or partner remediation.
+Approval to Incorporate or in principle approval at an earlier stage is not permission to
+serve customers, and Virtual Assets Regulatory Authority scale activity should begin only
+from the effective date of the full licence \citep{difcvarareport2026}. Indicative fees
+for a broad, three activity scope sit around one hundred and seventy thousand dirhams in
+application fees, four hundred and eighty thousand dirhams a year in supervision, and a
+capital floor of approximately one and a half million dirhams, though a narrower activity
+scope, for instance Transfer and Settlement alone, would reduce each figure materially; a
+Transfer and Settlement only scope is closer to forty thousand dirhams in application
+fees, eighty thousand dirhams a year in supervision, and a capital floor of the higher of
+five hundred thousand dirhams or twenty five per cent of fixed annual overhead
+\citep{vararulebook2025fees}. These remain conservative planning placeholders pending a
+written activity opinion, not confirmed fees.
+
+\subsection*{4.4 Data Protection}
+
+The United Arab Emirates' federal Personal Data Protection Law applies to any entity
+processing the personal data of United Arab Emirates residents regardless of where that
+entity is located, and requires a lawful basis for processing, data minimisation, a data
+protection officer for high volume sensitive processing, and breach notification
+\citep{pdpl2021}. Executive regulations remain pending as of early 2026, with a six month
+implementation grace period expected once they are published. Know your business and know
+your customer data collected from United Arab Emirates users, including passports,
+business registration documents, and wallet data linked to identity, is personal data
+under this law. The Dubai International Financial Centre maintains its own Data
+Protection Law of 2020, arguably more mature than the federal law and the relevant
+framework for the Centre entity conducting the partner-led pilot, and it requires its own
+notification where applicable \citep{difcdplaw2020}. The separate Virtual Assets
+Regulatory Authority entity, established outside the Centre, falls instead under the
+federal law directly. Blockmediary's mitigation is to align with the federal law's core
+principles across both entities now, to comply with the Centre's own framework and
+notification requirements for the Dubai International Financial Centre entity
+specifically, and to monitor the federal executive regulations once published so that any
+additional requirements can be implemented within the grace period.
+
+%---------------------------------------------------------------
+\section*{5. Cross Cutting Risks}
+%---------------------------------------------------------------
+
+\subsection*{5.1 Sanctions Screening}
+
+Because Blockmediary's model spans multiple trade corridors, every deal potentially
+involves a party, a wallet, a category of goods, or a corridor subject to sanctions
+imposed by the Office of Foreign Assets Control, the United Nations Security Council, His
+Majesty's Treasury, or the United Arab Emirates. Blockmediary's mitigation is to screen
+both parties, all wallets, the category of goods, and the trade corridor against every
+applicable sanctions list before allowing escrow funding, to re-screen at the point of
+document review and again at the point of fund release, since sanctions can be imposed
+between deal creation and settlement, to maintain a blocked countries, blocked goods, and
+blocked corridors list, and to escalate any hit to the Chief Compliance Officer before
+proceeding under any circumstances.
+
+\subsection*{5.2 Trade Based Money Laundering}
+
+Cross border trade escrow is a recognised vector for trade based money laundering. The
+established red flags include an invoice value inconsistent with the market price of the
+goods described, a vague goods description such as general merchandise, unusual trade
+routes or transshipment points, shipment to or from a high risk jurisdiction, repeated
+transactions between the same parties with changing terms, and alterations or
+inconsistencies across successive versions of a submitted document. Blockmediary's
+mitigation is to build a trade based money laundering red flag checklist into the document
+review workflow, to use artificial intelligence assisted document extraction to flag price
+and quantity inconsistencies automatically, to require mandatory human review before any
+release involving a first time counterparty pairing, and to train document reviewers on
+the Financial Action Task Force's published typologies for this form of laundering.
+
+\subsection*{5.3 Governing Law, Jurisdiction, and Dispute Forum}
+
+Without a clear governing law and dispute resolution clause, a dispute between a buyer in
+one jurisdiction and a seller in another over a Blockmediary structured escrow risks
+jurisdictional confusion. Blockmediary's mitigation is to default to English law as the
+governing law, given its maturity for commercial and trade finance disputes, to default to
+the International Chamber of Commerce's DOCDEX procedure for documentary disputes and to
+London Court of International Arbitration or International Chamber of Commerce
+arbitration for larger commercial disputes \citep{iccdocdex}, while allowing parties to
+elect an alternative governing law or forum within the set of jurisdictions Blockmediary
+supports, with the chosen clause recorded explicitly in the Trade Escrow Agreement
+template.
+
+\subsection*{5.4 Smart Contract Security and Audit}
+
+A bug or exploit in the escrow smart contract could result in the loss of user funds, and
+regulators including the Financial Conduct Authority, the Virtual Assets Regulatory
+Authority, and the Turkish Capital Markets Board increasingly expect cryptoasset firms to
+demonstrate security standards. During the hackathon, the mitigation is limited to code
+review and peer testing, with the build clearly marked as a testnet minimum viable
+product, but production deployment requires an independent smart contract audit from a
+reputable firm before real funds are placed at risk, alongside role based access control,
+a multi signature requirement for the release authority, and a time lock mechanism, backed
+by a bug bounty programme once the audit is complete.
+
+Within this category, releaser key compromise is the single most severe technical risk
+Blockmediary faces. The releaser role's private key is the sole bridge between an off
+chain compliance verdict and the corresponding on chain state transition, meaning that an
+attacker who compromises this key can move any deal to a release pending state regardless
+of whether the underlying documents were actually compliant, can redirect funded deals
+toward a refund, and cannot be stopped once a malicious transaction has been submitted to
+the chain. This is not merely a technical incident; it is a customer funds loss event that
+would trigger breach notification to the Financial Conduct Authority under the payment
+services or cryptoasset regime, incident reporting to the Virtual Assets Regulatory
+Authority within twenty four hours under its Rulebook, potential criminal liability under
+the Proceeds of Crime Act, and civil liability to the affected buyers and sellers.
+Blockmediary's mitigation for production is to hold the releaser key in a hardware
+security module or a threshold signature scheme rather than a conventional hot wallet, to
+implement role rotation so that the releaser key can be replaced immediately on suspected
+compromise without redeploying the contract, to pause the contract immediately on
+suspected compromise using a separate, ideally multi signature, administrator key, and to
+maintain a documented incident response sequence running from pause, to revocation, to
+rotation, to an audit ledger review, and finally to regulatory and user notification.
+
+A related risk is that the same pause capability that protects against key compromise can
+also function as a censorship lever if misused: once a deal has reached a release pending
+state, meaning the documents have been verified as compliant and any objection window has
+expired without a valid objection, the seller has a contractual right to payment, and
+invoking a pause at that point exposes Blockmediary to a breach of contract claim.
+Blockmediary's mitigation is to define exhaustive, narrow grounds for pausing in the Trade
+Escrow Agreement, limited to a suspected exploit or critical vulnerability, a regulatory
+direction or court order, or a confirmed sanctions hit discovered after the verdict was
+recorded, to treat any other use of the pause function as a breach, to require joint
+approval from the Chief Compliance Officer and the Chief Technology Officer before a pause
+is invoked, and to notify both parties immediately with the stated reason and an estimated
+resolution timeline whenever a pause does occur.
+
+\subsection*{5.5 Documentary Credit Standards}
+
+Blockmediary positions its product as applying the logic of a documentary credit without
+requiring an issuing bank, so the International Chamber of Commerce's Uniform Customs and
+Practice for Documentary Credits, universally known as UCP 600, functions as an inherited
+operational standard even though Blockmediary's Trade Escrow Agreement is a distinct
+instrument and not itself a letter of credit \citep{ucp600}. A number of UCP 600 articles
+translate directly into requirements for Blockmediary's document verification engine.
+Articles 4 and 5 establish the autonomy principle, under which a documentary credit deals
+only in documents rather than in the underlying goods or performance, meaning that once
+Blockmediary's rules engine confirms compliant documents, funds must release even where
+the buyer separately claims the goods themselves are defective, a position that must be
+disclosed clearly in the Trade Escrow Agreement. Article 14(a) sets a five banking day
+examination window, which Blockmediary must replicate as a hard review deadline, since
+missing it precludes the platform from later treating documents as non compliant. Article
+14(b) permits data to differ in wording across documents provided it does not conflict,
+so Blockmediary's automated checker should flag genuine conflicts, such as a quantity
+stated as five thousand metric tonnes on the invoice against five metric tonnes on the
+bill of lading, rather than immaterial differences in phrasing. Article 14(c) requires a
+transport document to be presented within twenty one days of the shipment date, which
+Blockmediary must validate against the stated shipment date. Article 14(d) requires the
+goods description on the invoice to match the underlying agreement exactly, while other
+documents need only avoid inconsistency, a distinction the verification engine must
+preserve rather than applying a uniformly strict or uniformly loose standard. Article
+14(g) provides that a condition without a named supporting document is disregarded, so
+every compliance condition Blockmediary builds into a deal must map to a specific
+document. Article 15 makes a complying presentation mandatory to honour, removing any
+discretion to delay release once compliance is confirmed, and Article 16 requires that
+refusal be accompanied by an itemised discrepancy notice within the same five banking day
+window, with late notice forfeiting the right to rely on non compliance, which
+Blockmediary's rejection workflow must mirror, including a mechanism for the buyer to
+waive a discrepancy. Article 17 requires at least one original of each document, which the
+upload flow must enforce, with electronic documents governed separately by the eUCP
+supplement \citep{eucp}. Article 18 sets four checks for a commercial invoice: that it is
+issued by the seller, that the buyer is the named consignee, that the currency matches the
+deal currency, a point of particular importance for a USDC denominated escrow, and that
+the goods description matches exactly. Article 20 sets the corresponding checks for a bill
+of lading: an on board notation with a date, a named vessel, a clean document with no
+damage clause, and matching ports of loading and discharge, all of which the verification
+engine must parse. Article 27 makes clear that any damage or defect clause on a transport
+document removes it from automatic processing and requires human review. Article 28
+requires that where insurance is required, typically under a cost, insurance, and freight
+or carriage and insurance paid term, cover must be at least one hundred and ten per cent
+of the relevant value, must extend to the destination, and cannot be satisfied by a mere
+cover note. Article 30 sets tolerances of plus or minus ten per cent where a quantity is
+qualified as about or approximately, and plus or minus five per cent otherwise, which the
+verification engine's tolerance logic must implement directly.
+
+The International Chamber of Commerce's Incoterms 2020 rules operate alongside UCP 600 and
+determine which documents a given deal requires, since the Incoterm agreed between buyer
+and seller fixes where risk transfers, who bears freight and insurance costs, and which
+documents the seller must produce \citep{incoterms2020}. Getting the document checklist
+wrong for the stated Incoterm either exposes the buyer to an incomplete presentation being
+accepted or exposes the seller to a compliant presentation being wrongly rejected. Terms
+requiring insurance, cost, insurance, and freight and carriage and insurance paid, demand
+an insurance certificate rather than the cover note UCP 600 Article 28(c) prohibits, and
+carriage and insurance paid specifically requires cover to Institute Cargo Clauses A, the
+all risks standard the 2020 revision introduced in place of the narrower C clauses used
+previously. Delivered duty paid terms require evidence of import customs clearance, the
+absence of which produces an incomplete presentation. Free on board, cost and freight, and
+cost, insurance, and freight all require an on board bill of lading, and although these
+sea and inland waterway terms are technically inappropriate for containerised cargo, they
+remain widely used in practice, so Blockmediary's verification engine must accommodate the
+practice while flagging the technical mismatch for review. The 2020 revision also renamed
+delivered at terminal to delivered at place unloaded and permits the buyer's own carrier to
+issue an on board bill of lading to the seller under free carrier terms, resolving a long
+standing mismatch between that term and documentary credit practice, and Blockmediary
+should build this election into deal setup as an option. Ex works terms are not recommended
+on the platform for cross border deals, because the seller bears almost no documentary
+obligation under that term, which makes Blockmediary's release logic largely unworkable.
+Blockmediary's mitigation across both standards is to require the Incoterm to be specified
+at deal setup and to generate the document checklist dynamically from it, to validate that
+the transport mode matches the Incoterm selected, to check that any required insurance
+certificate meets the correct Institute Cargo Clauses standard and value threshold, and to
+include a representation in the Trade Escrow Agreement that the stated Incoterm governs
+the parties' documentary obligations without any duty on Blockmediary's part to verify
+physical delivery beyond the documentary evidence presented.
+
+\subsection*{5.6 Export Controls}
+
+Independently of sanctions, several export control regimes impose a positive obligation to
+obtain a licence before shipping certain categories of goods, regardless of whether either
+counterparty is sanctioned. The United Kingdom's Export Control Order 2008 covers military
+goods and dual use goods mirroring the European Union's dual use list, administered by the
+Export Control Joint Unit \citep{ukeco2008}. The European Union's Dual Use Regulation,
+updated in 2021, covers goods, software, and technology with both civilian and military
+applications, including encryption, certain chemicals, optical equipment, and electronics
+\citep{eudualuse2021}. The United States Export Administration Regulations and
+International Traffic in Arms Regulations apply to United States origin goods, United
+States technology, and transactions involving United States persons regardless of where
+Blockmediary itself is incorporated, meaning that a seller shipping United States origin
+goods subject to the Export Administration Regulations may need a licence from the Bureau
+of Industry and Security even where the transaction is structured through a United Kingdom
+or United Arab Emirates entity \citep{usear, usitar}. A cross border escrow platform that
+releases payment for a shipment of export controlled goods without checking for a valid
+export licence risks facilitating an illegal export, a criminal offence under each of
+these regimes. Dual use goods are not confined to obviously military items; they include
+encryption software, certain chemicals, precision optics, drone components, thermal
+imaging equipment, and high performance computers, categories a small or medium sized
+enterprise exporter may not recognise as controlled. Blockmediary's target market already
+excludes sanctioned corridors and high risk regulated goods in principle, but this
+exclusion requires an operational mechanism rather than a policy statement alone.
+Blockmediary's mitigation is to add an export control goods category screen to the deal
+intake compliance gate, distinct from sanctions screening, collecting the goods
+description, the Harmonised System code, and the origin and destination countries at
+intake, and cross referencing these against the United Kingdom and European Union dual use
+lists and the United States Commerce Control List, requiring the seller to confirm and
+evidence a valid export licence where the goods fall on a controlled list, maintaining a
+controlled goods category list within the platform's rules engine, and consulting export
+control counsel before onboarding any corridor involving United States origin goods or
+United States persons.
+
+%---------------------------------------------------------------
+\section*{6. Regulatory Reference Index}
+%---------------------------------------------------------------
+
+The instruments referenced throughout this assessment are consolidated here by
+jurisdiction. In the United Kingdom, the relevant instruments are the Financial Conduct
+Authority's consultation papers CP25/14 on stablecoin issuance and cryptoasset custody and
+CP25/40 on the broader regulation of cryptoasset activities \citep{fcacp2514, fcacp2540},
+the Payment Services Regulations 2017 \citep{ukpsr2017}, the Money Laundering Regulations
+2017 as amended \citep{mlr2017}, the retained United Kingdom General Data Protection
+Regulation \citep{gdpr2016}, the Law Commission's 2021 report on smart legal contracts
+\citep{lawcommission2021}, the Electronic Trade Documents Act 2023 \citep{etda2023}, the
+Consumer Duty under policy statement PS22/9 \citep{fcaconsumerduty}, the Electronic
+Communications Act 2000 \citep{ukeca2000}, the Proceeds of Crime Act 2002
+\citep{poca2002}, the Terrorism Act 2000 \citep{terrorismact2000}, and the Export Control
+Order 2008 \citep{ukeco2008}.
+
+In the European Union, the relevant instruments are the Markets in Crypto Assets
+Regulation \citep{mica2023} and the European Banking Authority's guidance on asset
+referenced and e money tokens issued under it \citep{ebamica}, the General Data Protection
+Regulation \citep{gdpr2016}, the sixth Anti Money Laundering Directive \citep{amld6}, the
+Digital Operational Resilience Act \citep{dora2022}, the eIDAS 2.0 Regulation
+\citep{eidas2024}, and the Dual Use Regulation \citep{eudualuse2021}.
+
+In Turkey, the relevant instruments, retained here for reference despite the
+jurisdiction's exclusion, are Law No. 7518 governing capital markets and crypto asset
+service provider licensing \citep{cmblaw7518}, Central Bank Regulation No. 2021/14
+banning crypto asset payments \citep{cbrt202114}, and the Personal Data Protection Law
+known as KVKK \citep{kvkk6698}.
+
+In the United Arab Emirates, the relevant instruments are the Central Bank's Payment
+Token Services Regulation and its Article 2 exclusion of Financial Free Zones
+\citep{cbuaeptsr2024, cbuaeptsrarticle2}, Federal Decree Law No. 6 of 2025 extending
+oversight to decentralised finance and Web3 infrastructure \citep{uaefdl62025}, the Virtual
+Assets Regulatory Authority's Rulebook version 2.0, its Schedule 1 activity definitions,
+and its Schedule 2 supervision and authorisation fees \citep{vararulebook2025,
+vararulebook2025activities, vararulebook2025fees}, the federal Personal Data Protection Law
+\citep{pdpl2021}, the Dubai International Financial Centre's Data Protection Law
+\citep{difcdplaw2020}, the Dubai Financial Services Authority's crypto token regime and its
+outsourcing rules under GEN 5.3.21 to 5.3.22 \citep{difcdfsa2022, dfsaoutsourcing}, and the
+internal readiness review reconciling all three regulators against Blockmediary's product
+architecture \citep{difcvarareport2026}. The Abu Dhabi Global Market's Data Protection
+Regulations and the Financial Services Regulatory Authority's digital asset guidance
+\citep{adgmdpr2021, adgmfsra2026} are retained here only because the Abu Dhabi Global
+Market was considered and moved away from, as recorded in section 8; they are not part of
+the confirmed launch route.
+
+Globally applicable instruments include the Financial Action Task Force's Recommendation
+16 on the travel rule \citep{fatf2025}, the Uniform Customs and Practice for Documentary
+Credits, UCP 600, and its electronic supplement, the eUCP \citep{ucp600, eucp}, Incoterms
+2020 \citep{incoterms2020}, the International Chamber of Commerce's DOCDEX dispute
+resolution procedure \citep{iccdocdex}, the United Nations Commission on International
+Trade Law's Model Law on Electronic Transferable Records \citep{uncitralmletr}, and the
+United States Export Administration Regulations and International Traffic in Arms
+Regulations \citep{usear, usitar}.
+
+%---------------------------------------------------------------
+\section*{7. Competitive Landscape: Compliance Comparison}
+%---------------------------------------------------------------
+
+Understanding how the closest competing platforms handle compliance and release logic
+sharpens Blockmediary's own positioning. Tazapay operates one of the largest cross border
+payment and escrow infrastructure platforms for business to business trade, collecting
+payments from buyers, holding them in escrow, and releasing them to sellers once agreed
+conditions are met, and it also supports conversion between stablecoins and fiat currency
+\citep{tazapay2025}. It operates across seventy markets for collections and pays out to
+over one hundred countries, and is licensed in Singapore, Canada, Australia, and the
+United States, with licence applications pending in the United Arab Emirates and the
+European Union. Its release model is buyer discretion: although Tazapay checks some
+documents, funds are ultimately released when the buyer clicks approve rather than through
+an independent documentary compliance check. This is the key distinction from
+Blockmediary, whose release is triggered by document compliance regardless of whether the
+buyer separately approves, a mechanism much closer to how a letter of credit functions,
+and Tazapay has no on chain smart contract component at all.
+
+Truzo is a regulated digital escrow and payment platform originally focused on the United
+Kingdom to South Africa trade corridor, and is notable as the first Financial Conduct
+Authority approved digital escrow service focused on Africa, partnering with Currencycloud
+for cross border currency conversion \citep{truzo2023}. It is smaller and corridor
+focused, backed by the United Kingdom's Department for International Trade, and operates
+in fiat only. Its release model is traditional escrow, holding funds in a bank account and
+releasing them on delivery confirmation, with no blockchain or smart contract component.
+Truzo is, in substance, a digital version of a conventional escrow agent running on
+ordinary banking rails, whereas Blockmediary targets a broader set of corridors using on
+chain stablecoin escrow with documentary release logic.
+
+XREX operates a Taiwanese crypto financial platform whose cross border escrow product,
+BitCheck, escrows stablecoins and other cryptocurrencies between buyers and sellers for
+business to business transactions, with all users passing through know your customer and
+anti money laundering verification \citep{xrex2025}. It is licensed by the Monetary
+Authority of Singapore, registered as a money services business in the United States, and
+has entered Lithuania for European Union market access, though it holds no confirmed
+licence in the United Kingdom or the United Arab Emirates. Its release model, like
+Tazapay's, is buyer discretion: the seller requests release after shipping and the buyer
+then approves it, meaning the buyer can still delay or block payment even where the
+underlying documents are fully compliant. XREX is the closest competitor in the sense that
+it also uses stablecoin escrow for cross border trade, but its release model is buyer
+approval rather than documentary compliance, which is precisely the gap Blockmediary's
+Uniform Customs and Practice for Documentary Credits inspired release logic closes: once
+documents are verified compliant, funds must release and the buyer cannot simply refuse,
+which is what makes Blockmediary a genuine letter of credit alternative rather than a
+digital hold and release service. XREX's primary markets in Taiwan, Singapore, and
+Southeast Asia also do not significantly overlap with Blockmediary's target markets in the
+United Kingdom, the European Union, and the United Arab Emirates.
+
+Komgo operates a blockchain based platform for commodity trade finance, principally oil,
+gas, metals, and agricultural commodities, digitising and accelerating the existing letter
+of credit process rather than replacing it, and its principal users are large commodity
+traders and banks, backed by institutions including Societe Generale, ING, ABN AMRO, and
+Citi \citep{komgo2020}. It runs on JPMorgan's Quorum, an Ethereum variant, connected to the
+Vakt post trade platform, and uses smart contracts to automate letter of credit matching
+and processing, cutting turnaround from roughly ten days to roughly one hour in production.
+Critically, however, the letter of credit itself remains the underlying legal instrument;
+Komgo is the digital rail beneath it rather than a replacement for it. Because Komgo
+modernises letters of credit for large commodity traders and banks rather than serving
+small and medium sized enterprises directly, it is not a direct competitor to
+Blockmediary, though its document verification and smart contract architecture remain
+worth studying as a reference point and a potential future integration partner for
+institutional commodity trade flows.
+
+Contour represented the most ambitious attempt to replace the traditional letter of credit
+with a blockchain based alternative, backed by nine major banks including HSBC, Standard
+Chartered, Citi, and BNP Paribas, and built on R3's Corda blockchain, before winding down
+in November 2023 \citep{contour2023}. The stated reasons for its closure were that its
+bank shareholders withdrew funding, the platform was processing only sixty to seventy
+transactions per month at the point of closure, no single lead investor existed to drive
+strategic direction, and the surrounding regulatory frameworks took too long to catch up
+with what the platform was attempting to build. Contour's failure left the letter of
+credit replacement space open rather than closed. Its core lesson for Blockmediary is
+architectural: Contour tried to bring banks onto a new shared network, whereas Blockmediary
+bypasses the banking layer entirely through a smart contract model that does not depend on
+bank participation to function. Because pitch audiences and regulators alike are likely to
+already know Contour's history, framing Blockmediary as having learned from that specific
+failure, rather than simply asserting novelty, is a stronger and more credible narrative.
+
+Across all five comparators, the pattern that emerges is consistent: none of Tazapay,
+Truzo, or XREX releases funds on the basis of documentary compliance, all three instead
+relying on some form of buyer discretion or delivery confirmation, Komgo digitises the
+letter of credit rather than replacing it and is not aimed at small and medium sized
+enterprises, and Contour attempted a genuine replacement but failed for governance and
+funding reasons rather than technical ones. Blockmediary's defensible differentiator is
+therefore documentary release itself: funds move when the submitted documents are verified
+as compliant, not when a counterparty elects to approve them, which is the specific
+mechanism that closes the gap left open by every one of these five comparators.
+
+%---------------------------------------------------------------
+\section*{8. United Arab Emirates Launch Route: DIFC Pilot and VARA Scale}
+%---------------------------------------------------------------
+
+This section previously weighed a single choice of regulatory home among the Jebel Ali
+Free Zone Authority, the Dubai International Financial Centre, and the Abu Dhabi Global
+Market, and recommended incorporating in the Abu Dhabi Global Market first. That
+recommendation has since been superseded. Following a team decision informed by an
+existing relationship one of the founders holds with a Dubai International Financial
+Centre connected partner, and by the more detailed readiness analysis summarised in
+sections 4.2 and 4.3, Blockmediary's confirmed route is a Dubai International Financial
+Centre partner-led pilot run in parallel with an independent Virtual Assets Regulatory
+Authority licence application, rather than a single free zone choice or an Abu Dhabi Global
+Market first sequence. The Abu Dhabi Global Market is not part of the confirmed plan and is
+not discussed further here; it is recorded as a route the team considered and moved away
+from, for transparency, rather than omitted silently.
+
+The two tracks are legally distinct and start together at inception, modelled as Month 1.
+The Dubai International Financial Centre track, detailed in section 4.2, gives
+Blockmediary an early, controlled route to paying customers under an authorised partner's
+permissions, targeting a first paid transaction in Month 12. It does not by itself make
+Blockmediary a regulated entity, and Blockmediary should not describe itself as Dubai
+Financial Services Authority authorised unless and until it separately obtains that
+authorisation. The Virtual Assets Regulatory Authority track, detailed in section 4.3,
+builds Blockmediary's own licensed platform for wider Dubai scale through a legal entity
+established outside the Centre, targeting a full licence in Month 18 in the base case.
+Running both from Month 1 avoids making the scale track wait for pilot revenue, while
+retaining the pilot as the nearer term route to real customer evidence.
+
+The Jebel Ali Free Zone Authority remains relevant only in the same narrow role
+identified previously: it is a logistics and trading free zone, not a financial services
+regulator, and could house a holding or commercial subsidiary for physical goods related
+activity if the team wanted one, but it has no role in either the Dubai International
+Financial Centre pilot or the Virtual Assets Regulatory Authority licence and is not
+discussed further.
+
+On data protection, the confirmed route means the Dubai International Financial Centre's
+own Data Protection Law of 2020 is the operative free zone framework, since the Centre
+entity is the one conducting the partner-led pilot, while the separate Virtual Assets
+Regulatory Authority entity, established outside the Centre, falls under the federal
+Personal Data Protection Law directly rather than under a second free zone framework, as
+set out in section 4.4. European Union residents' data remains subject to the General
+Data Protection Regulation directly regardless of where Blockmediary is incorporated, so
+neither entity's location exempts the product from that separate obligation.
+
+Three points of continuing uncertainty, carried over directly from the readiness report,
+should be tracked as open items rather than treated as resolved by this route decision.
+First, whether Blockmediary's release key, contract administration and recovery design
+amount to custody or control under either the Dubai Financial Services Authority's or the
+Virtual Assets Regulatory Authority's rules is not yet settled and determines entity
+structure and capital. Second, the exact Virtual Assets Regulatory Authority activity
+scope, and in particular whether Custody Services applies alongside Transfer and
+Settlement, is not yet confirmed and affects fees, capital and whether a further separate
+entity is required. Third, the Central Bank of the United Arab Emirates treatment of
+United Arab Emirates denominated USDC or EURC settlement remains a hard legal gate
+independent of which free zone or licence route is chosen, discussed in section 4.1. The
+single most valuable next step identified in the readiness review is a single integrated
+perimeter memorandum, prepared with counsel and covering the Dubai Financial Services
+Authority, Virtual Assets Regulatory Authority and Central Bank positions together, rather
+than three separate opinions \citep{difcvarareport2026}.
+
+\newpage
+\bibliographystyle{apacite}
+\bibliography{Risk}
+
+\end{document}

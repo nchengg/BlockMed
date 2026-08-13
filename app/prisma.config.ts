@@ -1,11 +1,14 @@
 // Prisma 7 moves the datasource URL out of schema.prisma into here.
-// Local dev uses a SQLite file; DATABASE_URL overrides it (see .env).
+// The datasource is Postgres; DATABASE_URL holds the connection string (see .env).
 import path from 'node:path';
+import { existsSync } from 'node:fs';
 import { defineConfig } from 'prisma/config';
 
-// The config file is evaluated before Prisma loads .env, so read it here.
-// Next.js loads .env itself at runtime; this is only for the Prisma CLI.
-process.loadEnvFile?.(path.join(process.cwd(), '.env'));
+// The config file is evaluated before Prisma loads .env, so read it here — but
+// only if a .env file exists. On hosts like Vercel the env vars are already in
+// process.env and there is no .env file to load.
+const envFile = path.join(process.cwd(), '.env');
+if (existsSync(envFile)) process.loadEnvFile?.(envFile);
 
 export default defineConfig({
   schema: path.join('prisma', 'schema.prisma'),
@@ -13,6 +16,6 @@ export default defineConfig({
     path: path.join('prisma', 'migrations'),
   },
   datasource: {
-    url: process.env.DATABASE_URL ?? 'file:./dev.db',
+    url: process.env.DATABASE_URL,
   },
 });

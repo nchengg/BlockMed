@@ -8,6 +8,7 @@ import { DashboardTab } from '@/components/dan/DashboardTab';
 import { DemoAccountSwitcher } from '@/components/dan/DemoAccountSwitcher';
 import { DealsTab } from '@/components/dan/DealsTab';
 import { KybForm } from '@/components/dan/KybForm';
+import { UiPreviewSwitcher } from '@/components/dan/UiPreviewSwitcher';
 import { useSession } from '@/lib/auth/useSession';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -44,7 +45,7 @@ export function FunctionalDashboardFrame({ activeTab, onTabChange, children }: {
   onTabChange?: (tab: FunctionalDashboardTab) => void;
   children: React.ReactNode;
 }) {
-  const { account, logout } = useSession();
+  const { account, isUiPreview, logout } = useSession();
 
   const tabControl = (tab: FunctionalDashboardTab) => {
     const active = tab === activeTab;
@@ -75,7 +76,6 @@ export function FunctionalDashboardFrame({ activeTab, onTabChange, children }: {
       <header className="bm-topbar">
         <div className="bm-topbar-inner">
           <div className="bm-brand">
-            <span className="bm-brand-mark">B</span>
             <span className="bm-brand-name">Blockmediary</span>
           </div>
 
@@ -85,10 +85,10 @@ export function FunctionalDashboardFrame({ activeTab, onTabChange, children }: {
 
           <div className="bm-top-actions">
             <ThemeToggle />
-            {account && <DemoAccountSwitcher compact />}
+            {account && (isUiPreview ? <UiPreviewSwitcher compact /> : <DemoAccountSwitcher compact />)}
             {account && (
               <button type="button" className="bm-button" onClick={() => { void logout(); }}>
-                Sign out
+                {isUiPreview ? 'Exit preview' : 'Sign out'}
               </button>
             )}
           </div>

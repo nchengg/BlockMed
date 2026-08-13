@@ -230,6 +230,34 @@ html, body {
   white-space: nowrap;
 }
 
+.bm-icon-button {
+  width: 42px;
+  height: 42px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.bm-icon-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.bm-icon-button svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
 .bm-dashboard-rail {
   width: 260px;
   flex-shrink: 0;
@@ -780,6 +808,26 @@ html, body {
 .bm-demo-accounts-compact .bm-demo-switch-trigger small {
   font-size: 11px;
 }
+
+.bm-preview-access {
+  max-width: 680px;
+}
+
+.bm-preview-compact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bm-preview-compact .bm-button {
+  padding: 7px 9px;
+  font-size: 12px;
+}
+
+.bm-preview-document-row { gap: 16px; }
+.bm-preview-document-action, .bm-preview-document-summary { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.bm-preview-document-action { justify-content: flex-end; }
+.bm-preview-document-action .bm-button { padding: 6px 9px; font-size: 12px; }
 
 .bm-welcome-head {
   margin-top: 8px;

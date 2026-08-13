@@ -403,7 +403,7 @@ def slide_06(prs):
     block(0, 1, GREEN, "Revenue", None,
           [("Streams", [
               ("A. Tiered escrow fee: 0.8% / 1.5% / 3.0% by verification tier", {"bold": True}),
-              "B. Document review, dispute, expedited and onboarding fees",
+              "B. Dispute, expedited and onboarding fees",
               "C. Partner/API setup and committed-volume fees"]),
            ("Projected revenue — base case", [
               "Year 3: £1.37m revenue on 2,000 deals and £76m GMV",

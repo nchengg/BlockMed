@@ -122,7 +122,7 @@ See "Rebuilding the PDF" at the foot of this file.
 
 **Streams**
 - A. Tiered escrow fee: 0.8% / 1.5% / 3.0% by verification tier
-- B. Document review, dispute, expedited and onboarding fees
+- B. Dispute, expedited and onboarding fees
 - C. Partner/API setup and committed-volume fees
 
 **Projected revenue — base case**

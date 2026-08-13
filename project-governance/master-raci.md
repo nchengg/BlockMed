@@ -39,14 +39,14 @@ Each task has one accountable owner. **A/R** means the same person is accountabl
 | STR-04 | Financial and legal coordination and oversight | Done | Jul 2026 | A/R |  | C |  | C |  |
 | PRD-01 | Product workflow and release rules | Done | 9 Jun–10 Jul | C | R |  | A/R | C | C |
 | PRD-02 | Document rules and pitch alignment | Done | 22 Jun–12 Aug | C | R |  | A | R | C |
-| TEC-01 | Smart contract and contract tests | Done | 15 Jun–10 Jul | I | A/R |  | R | C |  |
+| TEC-01 | Smart contract and contract tests | Done | 15 Jun–10 Jul | I | A |  | R | C |  |
 | TEC-02 | Application lifecycle, authentication and persistence | Done | 22 Jun–5 Aug | I | A/R |  | R |  | C |
 | TEC-03 | Testnet deployment and onboarding gate | Done | 30 Jun–10 Aug | I | A |  | R | C |  |
 | TEC-04 | Integrated acceptance and clean-build reproducibility | Done | 3–12 Aug | I | A/R |  | R |  | C |
 | UX-01 | Role journeys and consolidated dashboard | Done | 22 Jun–8 Aug | C | C |  | C |  | A/R |
 | UX-02 | Canonical demo route and polish | Done | 3–12 Aug | C | C |  | R |  | A/R |
 | UX-03 | Front-end UI implementation | Done | 22 Jun–8 Aug | I | C |  | C |  | A/R |
-| TEC-05 | Back-end application integration | Done | 15 Jul–10 Aug | I | C |  | C |  | A/R |
+| TEC-05 | Back-end application integration | Done | 15 Jul–10 Aug | I | R |  | C |  | A/R |
 | RISK-01 | Legal, regulatory and document research | Done | 9 Jun–5 Aug | C | I |  | C | A/R |  |
 | RISK-02 | Final legal and compliance claim review | Done | 3–12 Aug | C | C | I | I | A/R | C |
 | BUS-01 | Financial model, pricing and funding assumptions | Done | 9 Jun–12 Aug | C | I | A/R |  | C | R |

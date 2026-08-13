@@ -45,14 +45,14 @@ This is the shared v3 task list used by the Project Plan, Kanban and RACI.
 | STR-04 | Financial and legal coordination and oversight | Tamer (A/R); Conrad and Badhri (C) | Jul 2026 | Jul 2026 | Done | STR-02 |
 | PRD-01 | Product workflow and release rules | Dan (A/R); Nick (R) | 9 Jun | 10 Jul | Done | GOV-02 |
 | PRD-02 | Document rules and pitch alignment | Dan (A); Nick and Badhri (R); Tamer (C) | 22 Jun | 12 Aug | Done | PRD-01 |
-| TEC-01 | Smart contract and contract tests | Nick (A/R); Dan (R) | 15 Jun | 10 Jul | Done | PRD-01 |
+| TEC-01 | Smart contract and contract tests | Nick (A); Dan (R) | 15 Jun | 10 Jul | Done | PRD-01 |
 | TEC-02 | Application lifecycle, authentication and persistence | Nick (A/R); Dan (R) | 22 Jun | 5 Aug | Done | TEC-01 |
 | TEC-03 | Testnet deployment and onboarding gate | Nick (A); Dan (R) | 30 Jun | 10 Aug | Done | TEC-01 |
 | TEC-04 | Integrated acceptance and clean-build reproducibility | Nick (A/R); Dan (R) | 3 Aug | 12 Aug | Done | TEC-02, TEC-03 |
 | UX-01 | Role journeys and consolidated dashboard | Mo (A/R); Nick and Dan (C) | 22 Jun | 8 Aug | Done | PRD-01 |
 | UX-02 | Canonical demo route and polish | Mo (A/R); Dan (R); Tamer (C) | 3 Aug | 12 Aug | Done | UX-01, TEC-04 |
 | UX-03 | Front-end UI implementation | Mo (A/R); Nick and Dan (C); Tamer (I) | 22 Jun | 8 Aug | Done | UX-01 |
-| TEC-05 | Back-end application integration | Mo (A/R); Nick and Dan (C); Tamer (I) | 15 Jul | 10 Aug | Done | TEC-02 |
+| TEC-05 | Back-end application integration | Mo (A/R); Nick (R); Dan (C); Tamer (I) | 15 Jul | 10 Aug | Done | TEC-02 |
 | RISK-01 | Legal, regulatory and document research | Badhri (A/R); Tamer (C) | 9 Jun | 5 Aug | Done | GOV-02 |
 | RISK-02 | Final legal and compliance claim review | Badhri (A/R); Tamer and Nick (C) | 3 Aug | 12 Aug | Done | RISK-01, PRD-02 |
 | BUS-01 | Financial model, pricing and funding assumptions | Conrad (A/R); Mo (R); Tamer (C) | 9 Jun | 12 Aug | Done | STR-04 |

@@ -13,7 +13,9 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+# This script lives at agent-tooling/tools/; data/ stays at the repo root, so go
+# up three levels (tools/ -> agent-tooling/ -> repo root).
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATA = ROOT / "data"
 
 

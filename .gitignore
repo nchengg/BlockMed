@@ -46,5 +46,8 @@ BlockMed.code-workspace
 .vscode/
 .idea/
 
+# MS Office lock/temp files (e.g. ~$Pitch-Deck.pptx) — created while a doc is open
+~$*
+
 # Manual point-in-time deck backups (use git history, not sibling files)
 proposal/*_backup-*.pptx

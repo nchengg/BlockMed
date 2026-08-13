@@ -1,0 +1,238 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Business Model Canvas</title>
+<!--
+  Slide rendering of business-model-canvas.md. THAT FILE IS THE SOURCE OF TRUTH —
+  edit it first, then mirror the change here, then regenerate the PDF:
+
+    "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" \
+      --headless --disable-gpu --no-pdf-header-footer \
+      --print-to-pdf=proposal/business-model-canvas.pdf \
+      proposal/business-model-canvas.html
+
+  Any Chromium build works. Figures are base case and trace to the provenance table
+  at the foot of the markdown — do not edit a number here without updating that table.
+-->
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 13.333in; height: 7.5in; }
+  body {
+    background: #FFFFFF;
+    font-family: "Aptos", "Inter", "Helvetica Neue", Arial, sans-serif;
+    color: #1B2430;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    padding: 0.30in;
+    position: relative;
+  }
+  /* ---- title bar ---- */
+  .titlebar {
+    height: 0.60in; width: 12.73in;
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1pt solid #D8D2C7;
+  }
+  .titlebar h1 { font-size: 18pt; font-weight: 700; color: #0B1B3A; letter-spacing: -0.01em; }
+  .titlebar .sub { font-size: 10pt; font-style: italic; color: #6B7280; }
+
+  /* ---- grid ---- */
+  .grid {
+    margin-top: 0.10in;
+    width: 12.73in; height: 5.90in;
+    display: grid;
+    grid-template-columns: repeat(4, 3.11in);
+    grid-template-rows: repeat(2, 2.90in);
+    gap: 0.10in;
+  }
+  .block {
+    background: #F7F4EF;
+    border: 0.75pt solid #EAE6DE;
+    padding: 0.12in;
+    padding-top: calc(0.12in + 3pt);
+    position: relative;
+    overflow: hidden;
+  }
+  .block::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3pt;
+    background: var(--accent);
+  }
+  .block h2 { font-size: 11pt; font-weight: 700; color: #0B1B3A; line-height: 1.15; }
+  .block .q { font-size: 7pt; font-style: italic; color: #6B7280; line-height: 1.2; margin-top: 1pt; }
+  .lbl { font-size: 8pt; font-weight: 700; color: var(--accent); margin-top: 4pt; margin-bottom: 1pt; }
+  ul { list-style: none; }
+  li {
+    font-size: 8pt; line-height: 1.15; color: #1B2430;
+    padding-left: 7pt; text-indent: -7pt; margin-bottom: 1.5pt;
+  }
+  li::before { content: "• "; color: #6B7280; }
+  li b { font-weight: 700; color: #0B1B3A; }
+  .hero { font-weight: 600; }
+
+  /* ---- footer ---- */
+  .footer {
+    position: absolute; left: 0.30in; top: 6.90in; width: 12.73in; height: 0.30in;
+    font-size: 6pt; color: #6B7280; font-style: italic; line-height: 1.4;
+  }
+</style></head>
+<body>
+
+<div class="titlebar">
+  <h1>Business Model Canvas</h1>
+  <div class="sub">Transakt — Blockmediary</div>
+</div>
+
+<div class="grid">
+
+  <!-- 1 -->
+  <div class="block" style="--accent:#0B1B3A">
+    <h2>The Business Opportunity</h2>
+    <div class="q">Where is the gap in the market, and how do you intend to fill it?</div>
+    <div class="lbl">The Problem</div>
+    <ul>
+      <li class="hero">Same fixed compliance cost on a $10K trade as a $5M trade</li>
+      <li>SME ticket sizes uneconomic for banks at scale</li>
+      <li>$2.5T global trade finance gap (ADB, 2025); 41% of SME applications rejected</li>
+      <li>Rejected SMEs fall back on trust, prepayment, or drop the trade</li>
+    </ul>
+    <div class="lbl">Our Solution</div>
+    <ul>
+      <li>UCP 600-inspired documentary release, stablecoin settlement, no issuing bank</li>
+      <li>Buyer escrow → seller documents → release on compliant presentation</li>
+      <li>Four verification layers plus an invoked escalation route</li>
+      <li>Blockmediary addresses the documentary trust and payment-assurance gap, not working-capital finance</li>
+    </ul>
+  </div>
+
+  <!-- 2 -->
+  <div class="block" style="--accent:#5A4FBF">
+    <h2>Business Description</h2>
+    <div class="q">Brief outline of your business model</div>
+    <ul style="margin-top:5pt">
+      <li class="hero">Documentary escrow operator: verification, release rules, settlement</li>
+      <li>Smart-contract escrow holds stablecoins against documentary release rules</li>
+      <li>UCP 600-inspired Article 14 release logic — a Trade Escrow Agreement, not an LC</li>
+      <li>Settlement on stablecoin rails (USDC), not bank correspondent networks</li>
+      <li>Not a bank: no deposits, no lending, no token issuance</li>
+      <li>Not DeFi: centralised trust and compliance layer by design</li>
+      <li>Pilot planned through a suitably DFSA-authorised partner, subject to confirmed permissions and executed agreements</li>
+      <li>First paid deal targeted Month 12; full VARA licence Month 18 — the gate for UAE-wide scale</li>
+    </ul>
+  </div>
+
+  <!-- 3 -->
+  <div class="block" style="--accent:#1F6FB2">
+    <h2>Target Market</h2>
+    <div class="lbl">Sector &amp; geography</div>
+    <ul>
+      <li class="hero">SME importers/exporters; UAE launch market</li>
+      <li>Corridor: UAE–India (CEPA); more added per pilot envelope</li>
+      <li>Sectors: manufacturing, consumer goods, electronics, textiles</li>
+      <li>Ticket: the $10K–$50K "LC dead zone"; average deal £31K → £48K by Y5</li>
+    </ul>
+    <div class="lbl">Strategic goals</div>
+    <ul>
+      <li>Payment without LC cost or bank issuance delay</li>
+      <li>Counterparty access without bank gatekeeping</li>
+      <li>Verified trade reputation that travels across deals</li>
+    </ul>
+    <div class="lbl">Pain points &amp; risks</div>
+    <ul>
+      <li>LC pricing and access barrier at SME tickets</li>
+      <li>Pre-shipment payment-trust gap</li>
+      <li>Document fraud and discrepancy risk</li>
+      <li>Corridor FX and regulatory friction</li>
+    </ul>
+  </div>
+
+  <!-- 4 -->
+  <div class="block" style="--accent:#0E8C7F">
+    <h2>USPs</h2>
+    <div class="q">How does your product/service compare? What makes you unique?</div>
+    <ul style="margin-top:5pt">
+      <li class="hero">UCP 600-inspired documentary release on stablecoin rails</li>
+      <li>Four-layer verification: screening → extraction → source corroboration → contracted examiner</li>
+      <li>Customer-selected verification tiers — speed traded against cost of trust</li>
+      <li>Two-track UAE route: DIFC partner pilot, then own VARA licence for scale</li>
+      <li>Modelled to undercut traditional LC fees on Tier A and selected Tier B transactions</li>
+      <li>Compliance-first by design: not a bank, not DeFi</li>
+    </ul>
+  </div>
+
+  <!-- 5 -->
+  <div class="block" style="--accent:#2C7A33">
+    <h2>Revenue</h2>
+    <div class="lbl">Streams</div>
+    <ul>
+      <li class="hero">A. Tiered escrow fee: 0.8% / 1.5% / 3.0% by verification tier</li>
+      <li>B. Document review, dispute, expedited and onboarding fees</li>
+      <li>C. Partner/API setup and committed-volume fees</li>
+    </ul>
+    <div class="lbl">Projected revenue — base case</div>
+    <ul>
+      <li>Year 3: £1.37m revenue on 2,000 deals and £76m GMV</li>
+      <li>Blended take rate falls 2.0% → 1.0% as Tier A grows 15% → 70%</li>
+      <li>Gross margin 71–79%; ancillary fees 25% of Y3 revenue, 17% by Y5</li>
+      <li>Monthly cash-flow break-even in Year 4, Month 8</li>
+    </ul>
+  </div>
+
+  <!-- 6 -->
+  <div class="block" style="--accent:#C77D18">
+    <h2>Costs</h2>
+    <div class="lbl">Funding requirement</div>
+    <ul>
+      <li class="hero">£3.06m operating funding to break-even; £319k VARA capital separate</li>
+    </ul>
+    <div class="lbl">Fixed</div>
+    <ul>
+      <li>Payroll — 8 FTE at launch to 24 by Year 5; dominant cost</li>
+      <li>Compliance, MLRO, VARA supervision and operational resilience</li>
+      <li>Engineering, cloud, monitoring and security tooling</li>
+      <li>Insurance (PI, cyber, D&amp;O) and legal retainer</li>
+    </ul>
+    <div class="lbl">Variable (per deal)</div>
+    <ul>
+      <li>eBL/carrier API lookup, or paper collection</li>
+      <li>Contracted documentary examiner time</li>
+      <li>KYB/KYC screening per new counterparty</li>
+      <li>On-chain gas and settlement cost</li>
+      <li>Dispute handling and enhanced review above £50K</li>
+    </ul>
+  </div>
+
+  <!-- 7 -->
+  <div class="block" style="--accent:#1F6FB2">
+    <h2>Channels</h2>
+    <div class="q">How will you promote your product or service?</div>
+    <div class="lbl">Direct</div>
+    <ul>
+      <li class="hero">Dubai and Sharjah chambers of commerce</li>
+      <li>Freight forwarder referrals</li>
+      <li>DIFC FinTech Hive; Gulfood, GITEX, Dubai FinTech Summit</li>
+    </ul>
+    <div class="lbl">Indirect</div>
+    <ul>
+      <li>Regulated-partner distribution — the base case's primary scale route</li>
+      <li>Fintech wallet integrations (white-label verification API)</li>
+      <li>Logistics platform API partnerships</li>
+    </ul>
+  </div>
+
+  <!-- 8 -->
+  <div class="block" style="--accent:#0B1B3A">
+    <h2>Competition</h2>
+    <div class="q">Who are your competitors and what are their USPs?</div>
+    <ul style="margin-top:5pt">
+      <li><b>Bank-issued LCs</b> — trust and networks; 1–3% commission before the fee stack</li>
+      <li><b>Tazapay</b> — escrow-as-a-service; manual review, custodial fiat rails</li>
+      <li><b>Truzo</b> — narrow UK–South Africa corridor; escrow wallet, no document layer</li>
+      <li><b>XREX</b> — licensed custodial escrow; releases on agreement, not documents</li>
+      <li><b>Komgo / Contour</b> — bank-consortium LC digitisation; Contour shut in 2023</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  Sources: ADB (2025); ICC UCP 600 (2007); VARA Rulebook (2026); Blockmediary financial model and legal &amp; compliance risk register, 13 Aug 2026. UCP 600-inspired release logic; not a letter of credit. Pilot planned through a suitably DFSA-authorised partner, subject to confirmed permissions and executed agreements. Blockmediary provides documentary escrow and payment assurance, not working-capital finance. Figures are base case. GMV is trade value processed, not revenue.
+</div>
+
+</body></html>

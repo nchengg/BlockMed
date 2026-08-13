@@ -25,7 +25,37 @@ Design notes for team:
     (legal-risk §4.2).
   * Do NOT claim "non-custodial". The server-side release key means the custody
     perimeter is unresolved pending a written control analysis (Readiness Report §2).
+    Note docs/Competitor-analysis.md §2 still prints "Non-custodial (smart contract)"
+    in its comparison table — that is the looser claim, do not copy it onto the canvas.
+  * The $2.5T ADB figure is the GLOBAL trade finance gap, not an SME-only gap. The SME
+    rejection rate is 41% (2025 survey); 45% is the superseded 2023 number. Both
+    corrections were applied 13 Aug 2026 — do not revert to the older wording.
+  * The ADB gap is a FINANCING gap and we do not fill it. Blockmediary lends nothing and
+    provides no working capital. The scope line in Block 1 and the matching footer
+    sentence exist to stop the $2.5T stat implying a trade-finance offering — if you cut
+    the stat, you may cut the scope line; if you keep the stat, both stay.
+  * Partner status is PROSPECTIVE, not agreed. No DFSA-authorised partner is signed and
+    "DIFC partner-led pilot" is not a named DFSA licence category (Readiness Report §3.1).
+    Always "planned through a suitably DFSA-authorised partner, subject to confirmed
+    permissions and executed agreements". Never "runs under", never "operates under",
+    never "now". This claim appears in THREE places — Block 2, Block 4, and the footer —
+    keep them in step.
+  * LC cost comparison is MODELLED and partial: "modelled to undercut traditional LC
+    FEES on Tier A and selected Tier B". Tier C does not undercut. Never a flat
+    "cheaper than an LC". "Fees" not "pricing" is deliberate — the Deal Value Research
+    report warns the LC is not a like-for-like substitute (it bundles a bank undertaking,
+    collateral, confirmation, financing and FX that we do not provide), so the claim is
+    scoped to the fee line we actually beat, not to the whole instrument.
+  * "Customer-selected verification tiers", not "self-pricing" — the latter reads as if
+    the customer names their own price.
 - All figures are base case unless stated. GMV is trade value processed, not revenue.
+- Ticket sizes on this canvas are the MODELLED AVERAGE deal value (Scenario Engine row 9),
+  not the target segment band. The $10K–$50K "LC dead zone" is the segment; £31K → £48K
+  is what the base case actually processes. Keep both lines — they answer different questions.
+
+BUILD: this markdown is the source of truth. `business-model-canvas.html` is its slide
+rendering and must be kept in step; `business-model-canvas.pdf` is generated from the HTML.
+See "Rebuilding the PDF" at the foot of this file.
 -->
 
 ---
@@ -36,15 +66,16 @@ Design notes for team:
 *Where is the gap in the market, and how do you intend to fill it?*
 
 **The Problem**
-- $2.5T global SME trade finance gap (ADB, 2025); ~45% rejection rate
 - Same fixed compliance cost on a $10K trade as a $5M trade
 - SME ticket sizes uneconomic for banks at scale
-- Most SME cross-border trade still on trust, in cash, or not at all
+- $2.5T global trade finance gap (ADB, 2025); 41% of SME applications rejected
+- Rejected SMEs fall back on trust, prepayment, or drop the trade
 
 **Our Solution**
 - UCP 600-inspired documentary release, stablecoin settlement, no issuing bank
 - Buyer escrow → seller documents → release on compliant presentation
 - Four verification layers plus an invoked escalation route
+- Blockmediary addresses the documentary trust and payment-assurance gap, not working-capital finance
 
 ### Block 2 — Business Description
 *Brief outline of your business model*
@@ -55,19 +86,19 @@ Design notes for team:
 - Settlement on stablecoin rails (USDC), not bank correspondent networks
 - Not a bank: no deposits, no lending, no token issuance
 - Not DeFi: centralised trust and compliance layer by design
-- Pilot runs under a DFSA-authorised partner's permissions — first paid deal Month 12
-- Full VARA licence targeted Month 18 — the gate for UAE-wide scale
+- Pilot planned through a suitably DFSA-authorised partner, subject to confirmed permissions and executed agreements
+- First paid deal targeted Month 12; full VARA licence Month 18 — the gate for UAE-wide scale
 
 ### Block 3 — Target Market
 
 **Sector & geography**
 - SME importers/exporters; UAE launch market
-- Corridor: UAE–India (CEPA); further low-risk corridors per pilot envelope
+- Corridor: UAE–India (CEPA); more added per pilot envelope
 - Sectors: manufacturing, consumer goods, electronics, textiles
-- Ticket: £20K–£50K at launch → £36K–£87K by Year 5
+- Ticket: the $10K–$50K "LC dead zone"; average deal £31K → £48K by Y5
 
 **Strategic goals**
-- Payment without LC cost or the 4–6 week wait
+- Payment without LC cost or bank issuance delay
 - Counterparty access without bank gatekeeping
 - Verified trade reputation that travels across deals
 
@@ -82,9 +113,9 @@ Design notes for team:
 
 - UCP 600-inspired documentary release on stablecoin rails
 - Four-layer verification: screening → extraction → source corroboration → contracted examiner
-- Self-pricing tiered model — customers trade speed against cost of trust
-- Two-track UAE route: DIFC partner pilot now, own VARA licence for scale
-- Cheaper all-in than an LC on the deals that matter most
+- Customer-selected verification tiers — speed traded against cost of trust
+- Two-track UAE route: DIFC partner pilot, then own VARA licence for scale
+- Modelled to undercut traditional LC fees on Tier A and selected Tier B transactions
 - Compliance-first by design: not a bank, not DeFi
 
 ### Block 5 — Revenue
@@ -97,7 +128,7 @@ Design notes for team:
 **Projected revenue — base case**
 - Year 3: £1.37m revenue on 2,000 deals and £76m GMV
 - Blended take rate falls 2.0% → 1.0% as Tier A grows 15% → 70%
-- Gross margin 71–79%; ancillary fees are 17–26% of revenue
+- Gross margin 71–79%; ancillary fees 25% of Y3 revenue, 17% by Y5
 - Monthly cash-flow break-even in Year 4, Month 8
 
 ### Block 6 — Costs
@@ -136,7 +167,7 @@ Design notes for team:
 
 - **Bank-issued LCs** — trust and networks; 1–3% commission before the fee stack
 - **Tazapay** — escrow-as-a-service; manual review, custodial fiat rails
-- **Truzo** — narrow UK–Africa corridor; manual KYC
+- **Truzo** — narrow UK–South Africa corridor; escrow wallet, no document layer
 - **XREX** — licensed custodial escrow; releases on agreement, not documents
 - **Komgo / Contour** — bank-consortium LC digitisation; Contour shut in 2023
 
@@ -148,7 +179,10 @@ Design notes for team:
 - Format: 16:9 widescreen
 - Dimensions: 13.333" × 7.5" (12192000 × 6858000 EMU — matches the Aug 2026 deck)
 - Background: pure white `#FFFFFF`
-- File: `transakt-business-model-canvas.pptx`
+- Built as `business-model-canvas.html` → `business-model-canvas.pdf` at exactly this page
+  size, so the PDF drops into the deck as a full-bleed 16:9 slide. No PPTX is produced:
+  the canvas is a dense static artefact with no build sequence, so a native PPTX rebuild
+  buys nothing and adds a second place for the figures to drift.
 
 ### Locked colour palette
 
@@ -234,7 +268,7 @@ Content order above is identical to this table. Build top-left to bottom-right.
 
 Single line, 6pt Soft grey, left-aligned:
 
-> *Sources: ADB (2025); ICC UCP 600 (2007); VARA Rulebook (2026); Blockmediary financial model and legal & compliance risk register, 13 Aug 2026. UCP 600-inspired release logic; not a letter of credit. Pilot operates under a DFSA-authorised partner. GMV is trade value processed, not revenue.*
+> *Sources: ADB (2025); ICC UCP 600 (2007); VARA Rulebook (2026); Blockmediary financial model and legal & compliance risk register, 13 Aug 2026. UCP 600-inspired release logic; not a letter of credit. Pilot planned through a suitably DFSA-authorised partner, subject to confirmed permissions and executed agreements. Blockmediary provides documentary escrow and payment assurance, not working-capital finance. GMV is trade value processed, not revenue.*
 
 ---
 
@@ -245,22 +279,42 @@ Every number in Blocks 5 and 6 traces to the financial model. Check these before
 | Figure on canvas | Model source |
 |---|---|
 | 0.8% / 1.5% / 3.0% take rates | `Assumptions!F63:F65` |
-| Blended 2.0% → 1.0% | `Tier Economics` escrow fee ÷ GMV, Y1 / Y5 |
+| Blended 2.0% → 1.0% | `Tier Economics` escrow fee ÷ GMV, Y1 / Y5. Cross-check: `Pitch Deck References` prints 2% / 1.3% / 1% for Y1 / Y3 / Y5 |
 | Tier A mix 15% → 70% | `Assumptions!D54, D139` |
-| Y3 £1.37m revenue, 2,000 deals, £76m GMV | `P&L 5yr!E7:E18` |
+| Y3 £1.37m revenue, 2,000 deals, £76m GMV | `P&L 5yr!E7:E18`. Base £1,371,288 on 2,000 deals and £76,031,100 GMV (`Scenario Engine!J8:J10, J30`). Scenario range for Y3 revenue is £1.0m–1.9m |
 | Gross margin 71–79% | `Scenario Engine!H49:L49` |
-| Ancillary 17–26% of revenue | `Revenue Risk Add-Ons` vs `P&L 5yr` total revenue |
+| Ancillary 25% of Y3 revenue, 17% by Y5 | `Scenario Engine`: (total revenue − escrow transaction fees) ÷ total revenue. Y3 = (1,371,288 − 1,022,499) ÷ 1,371,288 = 25.4%; Y5 = 16.8%. **Net of the first-deal discount drag (row 22).** Computing it gross of the drag gives 31% / 18% — that is the wrong basis, do not use it |
 | Break-even Y4 M8 | `Cash Flow Statement!B45:B47` |
 | £3.06m operating funding | `Launch Readiness!E12` |
 | £319k VARA restricted capital | `Launch Readiness!E17` — broad three-activity placeholder. `docs/legal-risk.md` §4.3 notes Broker-Dealer is *not* established by the current model; a Transfer-and-Settlement-only scope drops the floor to ~AED 500k (~£106k). The model is deliberately conservative. |
-| 8 → 24 FTE | `P&L 5yr!C36:G36` |
-| Ticket £20K–£50K → £36K–£87K | `Sensitivity` deal-value cases (Low/Base/High by tier) |
-| Pilot M12 / receipts M13 / licence M18 | `Launch Readiness!E6, E11, E14` |
+| 8 → 24 FTE | `P&L 5yr!C37:G37` — total FTE 7.67 (Y1) to 24 (Y5); 7.67 rounds to 8 |
+| Average ticket £31K → £48K | `Scenario Engine!H9:L9` base row: £30,750 (Y1) → £47,897 (Y5). Matches the approved `Pitch Deck References` copy ("GBP 31K → GBP 38K, Y1 to Y3; GBP 48K by Y5") |
+| $10K–$50K "LC dead zone" segment | `docs/Competitor-analysis.md` §1 — segment definition, not a model output. Deliberately in $ because the source and the corridor research are in $ |
+| Pilot M12 / receipts M13 / licence M18 | `Launch Readiness!E6, E11, E14` — base timing case (row 22) |
 | Enhanced review above £50K | `Revenue Risk Add-Ons` |
+| $2.5T gap; 41% SME rejection | ADB (2025) *Global Trade Finance Gap Survey* — gap held at $2.5T, ≈10% of global trade; SME rejection rate fell to 41% from 45% in 2023 |
+| Truzo UK–South Africa; no document layer | `docs/Competitor-analysis.md` §4.2 — FCA/FSCA regulated escrow wallet on Currencycloud fiat rails, manual KYC only, no document verification |
+
+## Rebuilding the PDF
+
+`business-model-canvas.html` implements the design spec above. The PDF is generated from it —
+never hand-edited — at the exact 13.333in × 7.5in page size, so it drops into the deck as a
+full-bleed 16:9 slide.
+
+```bash
+"/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" \
+  --headless --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf=proposal/business-model-canvas.pdf \
+  proposal/business-model-canvas.html
+```
+
+Any Chromium build (Chrome, Brave, Edge) works. Order of edits: markdown → HTML → PDF.
+The blocks are set at a fixed height with `overflow: hidden`, so after adding a bullet
+open the PDF and check nothing has been clipped at the foot of a block.
 
 ## Sources
 
-- Asian Development Bank. (2025). *Trade finance gaps, growth, and jobs survey 2025.* ADB.
+- Asian Development Bank. (2025). *Global trade finance gap survey.* ADB. (Gap held at $2.5T, ≈10% of global trade; SME rejection rate 41%, down from 45% in the 2023 survey.)
 - International Chamber of Commerce. (2007). *Uniform customs and practice for documentary credits (UCP 600), ICC Publication No. 600.* ICC.
 - Central Bank of the UAE. (2024). *Payment Token Services Regulation.*
 - Virtual Assets Regulatory Authority. (2026). *VARA Rulebook — Schedule 2: supervision and authorisation fees; Part B: paid capital.* https://rulebooks.vara.ae

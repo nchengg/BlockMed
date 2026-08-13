@@ -54,6 +54,6 @@ Each task has one accountable owner. **A/R** means the same person is accountabl
 | BUS-03 | Business model and commercial narrative | Done | 12 Aug | A/R | I | C |  | C |  |
 | SUB-01 | Final deck and script | Done | 27 Jul–12 Aug | A/R | C | C | R | C | R |
 | SUB-02 | Demo runbook | Done | 3–12 Aug | C | R |  | A/R |  | C |
-| SUB-03 | Rehearsals and recordings | Done | 10–13 Aug | R | C |  | A/R |  | R |
+| SUB-03 | Rehearsals and recordings | Done | 10–13 Aug | A | C | C | R | C | C |
 | SUB-04 | Submission QA and upload | Done | 13–14 Aug | A/R | I | I | R | I | C |
 | DEF-01 | Post-MVP integrations and production hardening | Deferred | After assessment | A | C | C | C | C | C |

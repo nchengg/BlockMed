@@ -38,7 +38,7 @@
 | BUS-03 | Business model and commercial narrative | Tamer (A/R); Conrad and Badhri (C) | 12 Aug |
 | SUB-01 | Final deck and script | Tamer (A/R); Dan and Mo (R); other leads (C) | 27 Jul–12 Aug |
 | SUB-02 | Demo runbook | Dan (A/R); Nick (R); Mo (C) | 3–12 Aug |
-| SUB-03 | Rehearsals and recordings | Dan (A/R); Tamer and Mo (R); Nick (C) | 10–13 Aug |
+| SUB-03 | Rehearsals and recordings | Tamer (A); Dan (R); Nick, Conrad, Badhri and Mo (C) | 10–13 Aug |
 | SUB-04 | Submission QA and upload | Tamer (A/R); Dan (R); Mo (C) | 13–14 Aug |
 
 ## Deferred

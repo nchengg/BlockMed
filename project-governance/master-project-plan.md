@@ -60,7 +60,7 @@ This is the shared v3 task list used by the Project Plan, Kanban and RACI.
 | BUS-03 | Business model and commercial narrative | Tamer (A/R); Conrad and Badhri (C) | 12 Aug | 12 Aug | Done | BUS-01, BUS-02, STR-03 |
 | SUB-01 | Final deck and script | Tamer (A/R); Dan and Mo (R); other leads (C) | 27 Jul | 12 Aug | Done | PRD-02, RISK-02, BUS-03 |
 | SUB-02 | Demo runbook | Dan (A/R); Nick (R); Mo (C) | 3 Aug | 12 Aug | Done | TEC-04, UX-02 |
-| SUB-03 | Rehearsals and recordings | Dan (A/R); Tamer and Mo (R); Nick (C) | 10 Aug | 13 Aug | Done | SUB-01, SUB-02 |
+| SUB-03 | Rehearsals and recordings | Tamer (A); Dan (R); Nick, Conrad, Badhri and Mo (C) | 10 Aug | 13 Aug | Done | SUB-01, SUB-02 |
 | SUB-04 | Submission QA and upload | Tamer (A/R); Dan (R); Mo (C) | 13 Aug | 14 Aug | Done | SUB-03 |
 | DEF-01 | Post-MVP integrations and production hardening | Tamer (A); technical and domain leads (C) | — | — | Deferred | After assessment |
 

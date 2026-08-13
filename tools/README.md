@@ -21,7 +21,7 @@ Grouped by the documentary-escrow lifecycle (see [docs/product-blockmediary.md](
 
 ## Connectors (MCP) to consider
 
-- **Stablecoin / chain RPC** for the escrow contract (USDC, EURC on a PoS chain — Solana / Polygon / Base / Avalanche; final selection in Build).
+- **Stablecoin / chain RPC** for the escrow contract (USDC on Base Sepolia, delivered; EURC and mainnet on the roadmap).
 - **Sanctions / KYC providers** — sandbox endpoints only.
 - **OCR / document-extraction provider** — for the document-checker pipeline.
 - **Audit ledger DB** — immutable append-only store.

@@ -53,11 +53,20 @@ as sanctions screening, trade based money laundering, and the legal standards th
 documentary release itself. The sixth section consolidates the regulatory instruments
 referenced throughout the assessment into a single index. The seventh section compares
 Blockmediary's compliance posture against the closest competing platforms. The eighth and
-final section works through the choice between the three principal Emirati jurisdictions
-available to a fintech entrant. This document is a working compliance reference prepared
+final section sets out the confirmed United Arab Emirates launch route among the three
+principal Emirati jurisdictions available to a fintech entrant, and records why the
+earlier choice was superseded. This document is a working compliance reference prepared
 for an academic hackathon project and does not constitute legal advice; qualified legal
 counsel should be sought before Blockmediary operates in any of the jurisdictions discussed
 with real funds or real users.
+
+Blockmediary has validated the core escrow mechanism on testnet as a proof of concept.
+Mainnet deployment for real value would additionally require licensing or Virtual Asset
+Service Provider registration, resolution of client asset custody status, sanctions
+screening, resolution of the General Data Protection Regulation question raised by the
+on-chain specification hash, and an independent security audit. These requirements are set
+out throughout this assessment as a forward looking compliance roadmap, not as requirements
+already satisfied.
 
 %---------------------------------------------------------------
 \section*{1. United Kingdom Regulatory Risks}
@@ -335,10 +344,12 @@ threat led penetration testing for significant firms, and contractual requiremen
 governing third party technology providers. The Act is not a standalone licence; rather,
 it is a compliance obligation that automatically attaches once a firm holds a Markets in
 Crypto Assets authorisation, so the two cannot be addressed separately. Blockmediary's
-architecture depends on several third party technology providers, including Anthropic for
-artificial intelligence based document analysis, cloud infrastructure for document storage
-and the audit ledger, a know your business and know your customer provider, and a
-blockchain node provider for mainnet access, each of which counts as a third party
+target architecture depends on several third party technology providers, including
+Anthropic for artificial intelligence based document analysis, a roadmap capability not
+yet delivered in the current prototype, which instead uses a deterministic rules engine,
+cloud infrastructure for document storage and the audit ledger, a know your business and
+know your customer provider, and a blockchain node provider for mainnet access, each of
+which counts as a third party
 information and communication technology provider under the Act, requiring a documented
 risk assessment, contractual terms covering audit rights and exit arrangements, and
 inclusion in Blockmediary's technology risk register. A significant incident, such as
@@ -571,10 +582,12 @@ routes or transshipment points, shipment to or from a high risk jurisdiction, re
 transactions between the same parties with changing terms, and alterations or
 inconsistencies across successive versions of a submitted document. Blockmediary's
 mitigation is to build a trade based money laundering red flag checklist into the document
-review workflow, to use artificial intelligence assisted document extraction to flag price
-and quantity inconsistencies automatically, to require mandatory human review before any
-release involving a first time counterparty pairing, and to train document reviewers on
-the Financial Action Task Force's published typologies for this form of laundering.
+review workflow, to add artificial intelligence assisted document extraction once that
+roadmap capability is delivered to flag price and quantity inconsistencies automatically,
+to require mandatory human review before any release involving a first time counterparty
+pairing, and to train document reviewers on the Financial Action Task Force's published
+typologies for this form of laundering. The current prototype's deterministic rules engine
+already performs the equivalent checks on submitted structured fields.
 
 \subsection*{5.3 Governing Law, Jurisdiction, and Dispute Forum}
 

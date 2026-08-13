@@ -12,7 +12,7 @@
 - Two structurally different approaches compete for this market:
   1. **Bank-consortium blockchain networks** (Komgo, Contour, we.trade, Marco Polo Network) — digitize the *existing* LC/bank workflow, banks stay in the loop.
   2. **Fintech escrow platforms** (Tazapay, Truzo) — remove the LC entirely but keep a *centralized, custodial* intermediary (the fintech itself) plus manual document review.
-- **Blockmediary's bet**: neither camp has combined (a) full bank removal, (b) non-custodial on-chain settlement, and (c) automated AI document verification. That combination is the open lane.
+- **Blockmediary's bet**: neither camp has combined (a) full bank removal, (b) non-custodial on-chain settlement, and (c) a deterministic document verification engine (AI extraction and a human review console are on the near-term roadmap, not yet delivered). That combination is the open lane.
 
 ---
 
@@ -25,7 +25,7 @@
 | **Removes banks from flow?** | ✅ Yes | ❌ No (bank/EMI rails) | ❌ No (bank/EMI rails) | ⚠️ Partial (licensed intermediary) | ❌ No (digitizes bank workflow) | ❌ No (bank-issued LC, just faster) |
 | **Custody model** | Non-custodial (smart contract) | Custodial | Custodial | Custodial | N/A (software only) | Custodial (via banks) |
 | **Settlement rail** | On-chain, Base + USDC | SWIFT/local rails (+ stablecoin add-on) | Fiat via Currencycloud | Multi-asset (BTC/ETH/SOL/stables), custodial | Traditional bank settlement | Bank settlement (LC), Corda for docs only |
-| **Document/trust verification** | **AI (Claude)** automated | Manual back-office review | Manual KYC/compliance | Manual KYC + wallet risk scoring | Bank underwriting (Komgo just moves paperwork) | Bank underwriting |
+| **Document/trust verification** | **Deterministic rules engine** (AI extraction + human console: roadmap) | Manual back-office review | Manual KYC/compliance | Manual KYC + wallet risk scoring | Bank underwriting (Komgo just moves paperwork) | Bank underwriting |
 | **Open-source contracts** | ✅ Yes | No | No | No | No | No |
 | **Target customer** | SME buyer/seller, direct | B2B marketplaces (embedded) | UK↔SA trade corridor | Emerging-market SMEs (APAC focus) | Banks & large commodity traders | Banks & their corporate clients |
 | **Fees** | Tiered 0.8% / 1.5% / 3.0% (Tier A/B/C), blended ~2% in Y1 falling toward ~1% by Y5 as Tier A mix grows | 0.8–3.8% + fixed fees | 0.8–3.1% tiered + FX | <1% transfers; 10 USDT/escrow | Not disclosed (enterprise licensing) | N/A (bank LC fees, ~1–3%) |
@@ -42,17 +42,17 @@
 
 - **Favourable trade agreements underpin the beachhead corridor:** UAE–India CEPA (active since 2022) and UAE–Türkiye CEPA (in force since September 2023) give the chosen $10K–$50K textiles/garments corridor political tailwind — high trade volume, low tariff friction.
 - **Corridor exclusions are politically driven, not just commercial:** China was struck from the corridor mix because of the PBoC's 2021 ban on crypto-asset speculation, which prevents Chinese SME sellers from legally holding or receiving USDC. Turkey's stablecoin-payments ban (CBRT Regulation 2021/14) is a similar political constraint — it's why Turkey is excluded as a target *market* even though the UAE–Türkiye trade corridor itself is in scope (Turkish counterparties on the other side of a UAE deal are not Blockmediary customers).
-- **Regulators are actively building on-ramps for firms like Blockmediary**, not just gatekeeping: ADGM's FSRA Innovation Programme (RegLab) and DIFC's FinTech Hive are politically motivated to attract crypto/fintech innovation to the UAE free zones — this is why they're the planned regulatory home rather than UAE mainland (CBUAE) or Dubai VARA, both of which are stricter.
+- **Regulators are actively building on-ramps for firms like Blockmediary**, not just gatekeeping: DIFC's FinTech Hive is politically motivated to attract crypto/fintech innovation to the free zone, and VARA has been building out a licensing track for exactly this kind of activity since 2025 — this is why the confirmed route is a DIFC partner-led pilot run in parallel with an independent VARA licence application, rather than the stricter UAE mainland (CBUAE) regime. ADGM was considered earlier and is no longer part of the plan.
 - **Divergent political postures across target jurisdictions matter for market entry sequencing:** UK/EU regulators (FCA, ESMA) are mid-transition toward comprehensive crypto regimes (still politically contested, timelines slipping); UAE free-zone regulators are more overtly courting fintech entrants. This favours UAE-first market entry, which is exactly the beachhead already chosen.
 - **Sanctions regimes are a live political variable per deal**, not a one-off: OFAC, UN Security Council, HM Treasury, and UAE sanctions lists can change between deal creation and fund release, and geopolitical shifts (e.g. new sanctions on a corridor) can eliminate a market segment overnight.
-- **Competitor regulatory-regime comparison (folded in here rather than repeated per company):** Truzo operates under UK FCA + South Africa FSCA; XREX under Singapore MAS + Taiwan VASP registration; Komgo under EU/Swiss banking-consortium oversight. None of the five researched competitors are pursuing the ADGM/DIFC free-zone-first strategy Blockmediary is — this is a distinct, and arguably underexploited, political positioning choice.
+- **Competitor regulatory-regime comparison (folded in here rather than repeated per company):** Truzo operates under UK FCA + South Africa FSCA; XREX under Singapore MAS + Taiwan VASP registration; Komgo under EU/Swiss banking-consortium oversight. None of the five researched competitors are pursuing the DIFC-pilot-plus-VARA-licence strategy Blockmediary is — this is a distinct, and arguably underexploited, political positioning choice.
 
 ### Economic
 
 - **The core economic opportunity is a market gap, not just a market size:** the global SME cross-border trade finance market is projected to grow from ~$50.9B (2026) to ~$89.5B by 2034 (7.3% CAGR) (Source: https://www.intelmarketresearch.com/cross-border-trade-finance-for-smes-market-44536), but the $10K–$50K deal size is what the team calls the "LC dead zone" — too small for banks to serve economically under a traditional Letter of Credit, too large to be handled on trust alone. Every researched competitor (Tazapay, Truzo, XREX, Komgo) is priced or structured for larger or different segments; none targets this exact dead zone.
 - **Currency instability is a direct economic driver of adoption in the beachhead corridor:** Türkish lira inflation has already pushed Türkish SMEs toward stablecoin-native behaviour, meaning less user education is needed to get counterparties comfortable with USDC settlement — an economic tailwind specific to the UAE–Türkiye leg.
 - **Fee economics are the headline competitive lever:** traditional LC fees run 1–3%; researched competitors cluster in a similar 0.8–3.8% range (Tazapay), 0.22–3.1% (Truzo), <1% (XREX transfers, though its escrow product charges a flat 10 USDT). Blockmediary prices by verification tier rather than a flat rate: 0.8% (Tier A, eBL-verified), 1.5% (Tier B, API-verified), 3.0% (Tier C, manual paper), validated in `docs/Blockmediary_Deal_Value_Research_Report.pdf` and the financial model. Removing the bank still removes the largest cost line on Tier A/B, undercutting the LC range at the low end; the blended take rate starts near 2% in Year 1 and falls toward 1% by Year 5 as Tier A adoption grows from 15% to 70% — a structural cost advantage on the deals that matter most, not a flat "~0%" claim.
-- **SME cash-flow economics are the underlying pain point:** the ~90-day payment delay pattern in traditional cross-border trade (seller ships, waits for LC processing/payment) directly damages SME working capital — Blockmediary's near-instant AI-verified release changes the economics of running an SME trading business, not just the cost of a single transaction.
+- **SME cash-flow economics are the underlying pain point:** the ~90-day payment delay pattern in traditional cross-border trade (seller ships, waits for LC processing/payment) directly damages SME working capital — Blockmediary's near-instant, rules-based release changes the economics of running an SME trading business, not just the cost of a single transaction.
 - **Macro rate environment affects willingness to prefund:** higher global interest rates increase the opportunity cost of a buyer locking capital in escrow before goods arrive — this is a genuine economic headwind for any prefunded-escrow model (Blockmediary included) that a report should acknowledge rather than gloss over.
 
 ### Social
@@ -64,7 +64,7 @@
 
 ### Technological
 
-- **Two specific technology maturations make Blockmediary possible now that weren't feasible a few years ago:** (1) low-cost, fast-finality L2 blockchains (Base) make micro-value on-chain escrow economically viable — this would have been cost-prohibitive on Ethereum L1; (2) LLM-based document understanding (Claude) makes automated verification of commercial invoices, bills of lading, and packing lists against a rules engine accurate enough to reduce (not eliminate) human review — earlier OCR-only approaches couldn't handle the judgement calls UCP 600-style document checking requires.
+- **Two specific technology maturations make Blockmediary possible now that weren't feasible a few years ago:** (1) low-cost, fast-finality L2 blockchains (Base) make micro-value on-chain escrow economically viable — this would have been cost-prohibitive on Ethereum L1; (2) LLM-based document understanding (Claude) now makes automated verification of commercial invoices, bills of lading, and packing lists against a rules engine accurate enough to reduce (not eliminate) human review — earlier OCR-only approaches couldn't handle the judgement calls UCP 600-style document checking requires. **Status check:** the delivered prototype currently runs on the deterministic rules engine alone; this LLM extraction layer is a near-term roadmap item, not yet built.
 - **Legal recognition of electronic trade documents is catching up to the technology:** the UK's Electronic Trade Documents Act 2023 and UNCITRAL's Model Law on Electronic Transferable Records (adopted in DIFC, Singapore, Bahrain) are what will eventually let Blockmediary move beyond scanned-PDF bills of lading to fully electronic, title-conferring eBLs — this is a near-term roadmap item gated by legal-tech convergence, not pure engineering.
 - **The prior generation of blockchain trade-finance technology failed for organisational reasons, not technical ones** — Komgo, Contour, we.trade, and Marco Polo Network all had working DLT (Corda, Quorum, Hyperledger Fabric); they failed on adoption economics and consortium governance (see §4.5). The lesson for Blockmediary's technology strategy: technical sophistication is necessary but not sufficient — the architecture also has to avoid requiring closed-network, both-sides-onboarded infrastructure.
 - **Key technology risk, not just enabler:** the releaser private key is a single point of failure (flagged in `docs/legal-risk.md` §5.4.1 as the platform's top security risk) — production deployment requires an HSM or threshold signature scheme, not a hot wallet. This is a live technological constraint on scaling past MVP.
@@ -72,7 +72,7 @@
 
 ### Legal
 
-- **The regulatory picture is a genuine patchwork, not a single hurdle:** UK (FCA CP25/14 stablecoin custody rules, CP25/40 CASP licensing), EU (MiCA Title V CASP authorisation, mandatory from July 2026, plus DORA operational-resilience obligations), and UAE (CBUAE Payment Token Services Regulation on the mainland, VARA Rulebook v2.0 in Dubai, versus the lighter-touch DIFC/ADGM free-zone frameworks) each impose different licensing thresholds — see `docs/legal-risk.md` for the full 31-item risk register.
+- **The regulatory picture is a genuine patchwork, not a single hurdle:** UK (FCA CP25/14 stablecoin custody rules, CP25/40 CASP licensing), EU (MiCA Title V CASP authorisation, mandatory from July 2026, plus DORA operational-resilience obligations), and UAE (CBUAE Payment Token Services Regulation on the mainland, versus the confirmed DIFC partner-led pilot and parallel VARA licence route) each impose different licensing thresholds — see `docs/legal-risk.md` for the full 31-item risk register.
 - **AML/KYC/sanctions compliance is a mandatory gate on every deal, not a one-time cost:** MLR 2017, 6AMLD, and the FATF Travel Rule (revised June 2025) require customer due diligence and screening before funding, and sanctions lists (OFAC, UN, HMT, UAE) must be re-checked at both funding and release — this is an ongoing operational/legal cost baked into the unit economics.
 - **Smart contract enforceability is still legally unsettled in the UK** (per the Law Commission's 2021 report) — Blockmediary mitigates this with a separate, signed Trade Escrow Agreement that governs legal rights, with the smart contract as the execution layer only. None of the researched blockchain-trade-finance competitors that failed (Contour, we.trade, Marco Polo) solved this differently; it's an industry-wide open question, not a Blockmediary-specific gap.
 - **Data protection law directly shapes the architecture:** GDPR's right to erasure (Art. 17) is fundamentally incompatible with writing personal data on an immutable public chain, which is why the confirmed architecture keeps all PII off-chain and only commits hashes/wallet addresses on-chain — a legal constraint that became a core design decision, not an afterthought.
@@ -97,7 +97,7 @@ Started as a payment gateway, now runs a flagship **Escrow-as-a-Service** produc
 
 **Weaknesses:** Trustpilot ~2/5 (495 reviews) — recurring complaints about refund friction, arbitrary account suspensions, multi-day payment freezes during fraud review, and (most damaging for an escrow brand) allegations that funds were sometimes released to suppliers *before* goods arrived.
 
-**Contrast:** Tazapay is the clearest "same problem, old architecture" foil — centralized, custodial, human-reviewed. Blockmediary directly targets its weakest points: opacity and slow/arbitrary release become instant AI-verified, on-chain release.
+**Contrast:** Tazapay is the clearest "same problem, old architecture" foil — centralized, custodial, human-reviewed. Blockmediary directly targets its weakest points: opacity and slow/arbitrary release become instant, rules-based, on-chain release.
 
 ---
 
@@ -119,7 +119,7 @@ A full blockchain-enabled financial institution: crypto-fiat exchange, custody, 
 
 **Weaknesses:** Fundamentally **custodial** — XREX holds funds/keys, the opposite of non-custodial. Verification is manual KYC + automated wallet risk-scoring (via Sumsub/CipherTrace/TRM Labs), not document-based trust — no evidence of invoice/bill-of-lading verification, AI or otherwise. No open-source contracts.
 
-**Contrast:** Closest in ethos (stablecoin-first, SME/emerging-market focus) but architecturally opposite on custody and trust model. Blockmediary: non-custodial smart contracts + AI document verification vs. XREX: custodial licensed intermediary + KYC/wallet-risk scoring.
+**Contrast:** Closest in ethos (stablecoin-first, SME/emerging-market focus) but architecturally opposite on custody and trust model. Blockmediary: non-custodial smart contracts + deterministic rules-engine document verification (AI extraction on the roadmap) vs. XREX: custodial licensed intermediary + KYC/wallet-risk scoring.
 
 ---
 
@@ -150,7 +150,7 @@ Note: Contour's brand/IP was acquired by fintech Xalts in Feb 2024, then by XDC 
 **Lessons directly applied to Blockmediary's design:**
 - No consortium governance — a single accountable product, not a coalition of competing banks.
 - No closed-network onboarding requirement — buyer + seller just need USDC on Base; no counterparty-bank integration needed.
-- Trust layer removes banks entirely (AI + smart contract) rather than routing trust through issuing/advising banks faster.
+- Trust layer removes banks entirely (deterministic rules engine + smart contract, with AI extraction on the roadmap) rather than routing trust through issuing/advising banks faster.
 - Self-serve fee model, not dependent on bank subsidy or goodwill.
 - Public L2 (Base) + standard USDC rails instead of expensive permissioned enterprise DLT.
 
@@ -185,7 +185,7 @@ Surfaced during research but not core to the five requested — worth a footnote
 2. **"No lead investor" / consortium governance is a proven failure mode** — cite Contour's CEO directly. Use this as evidence that bank-led blockchain trade finance structurally can't move fast; a focused, non-bank-owned product can.
 3. **Custody and verification are the two axes that separate every competitor from Blockmediary** — the comparison table (§2) is built around exactly these two columns because no researched competitor is both non-custodial *and* automated-document-verified.
 4. **Fee story:** Tazapay (0.8–3.8%) and Truzo (0.22–3.1%) both land in or above the 1–3% LC-fee range. Blockmediary's tiered 0.8%/1.5%/3.0% structure undercuts that range on Tier A and matches it on Tier B/C, with a blended take rate starting near 2% in Year 1 and falling toward 1% by Year 5 as Tier A adoption grows — a useful side-by-side stat for a slide, now backed by Conrad's deal-value research report rather than an aspirational "~0%" claim.
-5. **Caveat to state explicitly in the report:** several "competitors" (Komgo, XREX) are larger, regulated, well-funded incumbents — Blockmediary's honest counter is speed of trust (AI verification in minutes vs. bank underwriting) and cost (no bank margin), not scale or regulatory maturity, which are real gaps to acknowledge in the Reflection section.
+5. **Caveat to state explicitly in the report:** several "competitors" (Komgo, XREX) are larger, regulated, well-funded incumbents — Blockmediary's honest counter is speed of trust (rules-based verification in minutes vs. bank underwriting in days) and cost (no bank margin), not scale or regulatory maturity. AI extraction and a human review console are themselves still roadmap, not delivered — a second gap worth acknowledging directly in the Reflection section alongside scale and regulatory maturity.
 
 ---
 

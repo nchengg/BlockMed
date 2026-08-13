@@ -179,10 +179,14 @@ See "Rebuilding the PDF" at the foot of this file.
 - Format: 16:9 widescreen
 - Dimensions: 13.333" × 7.5" (12192000 × 6858000 EMU — matches the Aug 2026 deck)
 - Background: pure white `#FFFFFF`
-- Built as `business-model-canvas.html` → `business-model-canvas.pdf` at exactly this page
-  size, so the PDF drops into the deck as a full-bleed 16:9 slide. No PPTX is produced:
-  the canvas is a dense static artefact with no build sequence, so a native PPTX rebuild
-  buys nothing and adds a second place for the figures to drift.
+- Two renderings exist, both generated — never hand-edited:
+  - `business-model-canvas.html` → `business-model-canvas.pdf`, a full-bleed 16:9 page for
+    standalone circulation and for dropping in as an image.
+  - **Slide 6 of `transakt-slides-4-6.pptx`**, built natively by `build_slides_4_5_6.py`,
+    for editing inside the deck alongside slides 4 and 5.
+- Keeping both means the figures live in two renderers. This markdown remains the single
+  source of truth: change it first, then mirror into BOTH the HTML and the build script,
+  then regenerate. If they ever disagree, this file wins.
 
 ### Locked colour palette
 

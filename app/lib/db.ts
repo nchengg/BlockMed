@@ -1,18 +1,18 @@
 // Prisma client singleton. Next.js hot-reloads modules in dev, which would
-// otherwise open a new connection on every edit until SQLite complains — so the
-// instance is cached on globalThis.
+// otherwise open a new connection on every edit — so the instance is cached on
+// globalThis.
 //
-// Prisma 7 requires an explicit driver adapter; SQLite is a local file, which
-// suits the demo. Swapping to Postgres later means changing the adapter and the
-// datasource provider, not the queries.
+// Prisma 7 requires an explicit driver adapter. We run on Postgres (Neon in the
+// cloud) so the data survives across serverless deploys; DATABASE_URL holds the
+// connection string.
 import { PrismaClient } from '@/lib/generated/prisma';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 function createClient(): PrismaClient {
-  const adapter = new PrismaBetterSqlite3({
-    url: process.env.DATABASE_URL ?? 'file:./dev.db',
+  const adapter = new PrismaPg({
+    connectionString: process.env.DATABASE_URL,
   });
   return new PrismaClient({
     adapter,

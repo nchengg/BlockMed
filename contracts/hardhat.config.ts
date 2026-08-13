@@ -25,6 +25,16 @@ const config: HardhatUserConfig = {
       accounts: [configVariable("BASE_SEPOLIA_PRIVATE_KEY")],
       chainId: 84532,
     },
+    // Base Mainnet — real funds. OP-stack, same contract, config-only addition (AP-6).
+    // Used by scripts/deploy-base-mainnet.ts, which binds the escrow to Circle's
+    // native USDC and writes deployments/base.json. Deploying here spends real ETH.
+    base: {
+      type: "http",
+      chainType: "op",
+      url: configVariable("BASE_MAINNET_RPC_URL"),
+      accounts: [configVariable("BASE_MAINNET_PRIVATE_KEY")],
+      chainId: 8453,
+    },
   },
 };
 

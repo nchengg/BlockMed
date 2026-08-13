@@ -5,12 +5,18 @@
 // example portfolio covers the empty state. All values are synthetic.
 import bcrypt from 'bcryptjs';
 import { randomBytes } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import prismaClientPackage from '../lib/generated/prisma/index.js';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { PrismaPg } from '@prisma/adapter-pg';
+
+// Run via plain `node`, which (unlike the Prisma CLI) does not auto-load .env.
+// Load it here for local runs; on hosts like Vercel the env vars are already in
+// process.env and there is no .env file, so only load it when present.
+const envFile = new URL('../.env', import.meta.url);
+if (existsSync(envFile)) process.loadEnvFile(envFile);
 
 const { PrismaClient } = prismaClientPackage;
-const databaseUrl = process.env.DATABASE_URL ?? 'file:./dev.db';
-const adapter = new PrismaBetterSqlite3({ url: databaseUrl });
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 // Demo workspaces use /api/auth/demo-login, not shared credentials. Generate an

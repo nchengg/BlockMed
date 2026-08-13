@@ -1,8 +1,10 @@
-# Slide 5 — Product Architecture
+# Slide 4 — Product Architecture
 
 **Transakt — Pitch Deck (Blockmediary)**
 
-> Replaces the previous Slide 5 ("Product / Service" user-journey swimlane). Grounded in the
+> **Slide 4** in the June-8 deck sequence (Solution is 3, Market is 5, Business Model Canvas is 6).
+> Earlier drafts of this file numbered it Slide 5 — that was the pre-June ordering and is wrong.
+> Replaces the previous "Product / Service" user-journey swimlane. Grounded in the
 > **Business Requirements Document** ([docs/business-requirements.md](../docs/business-requirements.md) §11)
 > and the **Technical Requirements Document** ([docs/technical-requirements.md](../docs/technical-requirements.md) §3).
 > Purpose: show *how the product is built* — the three-tier trust split — in **30 seconds**.
@@ -86,7 +88,8 @@ engineer or grader takes the build seriously.
 
 ## Closing line
 
-> *Narrow on-chain, smart off-chain, audited around every action — LC-grade trust without the bank.*
+> *Narrow on-chain, smart off-chain, audited around every action — documentary-grade trust
+> without the issuing bank.*
 
 <!--
 Design notes for the team:
@@ -105,7 +108,57 @@ Design notes for the team:
   slide unmistakably an engineering/depth slide rather than a second telling of the mechanism.
 - Source of truth for every claim here: TRD §3 (AP-1…AP-9, component model) and BRD §11.
 - PPTX render: house style (cream #F7F4EF, Aptos / Aptos Display), consistent with Slide 6.
+- CLAIM DISCIPLINE — the closing line previously read "LC-grade trust without the bank".
+  Changed 13 Aug 2026: "LC-grade" reads as a claim to BE a letter of credit, which the
+  Trade Escrow Agreement is not (docs/legal-risk.md §5.5) and which the Business Model
+  Canvas explicitly disclaims. Use "documentary-grade" and never "LC-grade".
 -->
+
+## PPTX Design Specification
+
+Same house style as Market (slide 5) and the Business Model Canvas (slide 6):
+white page, cream cards, navy type, one accent per band.
+
+### Slide setup
+- 16:9, 13.333" × 7.5" — matches the June-8 deck exactly
+- Background: white `#FFFFFF`
+- Kicker "PRODUCT ARCHITECTURE" top-left, 11pt bold Amber `#C77D18`, 0.2em tracking, ALL CAPS
+- Page number "04" bottom-right, 9pt Soft grey `#6B7280`
+
+### Locked palette
+
+| Role | Hex | Used for |
+|------|-----|----------|
+| Blue | `#1F6FB2` | Client tier band |
+| Teal | `#0E8C7F` | Off-chain tier band |
+| Navy | `#0B1B3A` | On-chain tier band, titles, audit-ledger sub-card |
+| Amber | `#C77D18` | Kicker, releaser-bridge arrow, "Base Sepolia" chip |
+| Charcoal | `#1B2430` | Body |
+| Soft grey | `#6B7280` | Captions |
+| Cream | `#F7F4EF` | Band fill |
+| Warm grey | `#EAE6DE` | Band border, 0.75pt |
+
+### Layout
+- **Title**: `x=0.55, y=0.72`, 26pt bold Navy — "Three trust tiers. Narrow on-chain, smart off-chain."
+- **Three bands**, stacked, `x=0.55, w=8.10`, `h=1.28` each, `0.16` gap:
+  - Client `y=1.60` · Off-chain `y=3.04` · On-chain `y=4.48`
+  - Each: cream fill, 0.75pt warm-grey border, 3pt top accent bar in the band colour
+  - Band label 11pt bold in the band colour; caption 9pt Charcoal beneath
+- **Releaser bridge**: a single 2.5pt Amber down-arrow from the off-chain band into the
+  on-chain band at `x=4.60`, with the label "releaser key — the ONE bridge" in 8pt bold Amber
+  to its right. This is the slide's most important mark: draw it as **one** line so the
+  audience reads "only one way in". Nothing else on the slide may be amber except the kicker.
+- **Design-decision chips**: right column `x=8.95, w=3.85`, four stacked cards `h=1.05`,
+  `0.12` gap, starting `y=1.60` — cream fill, 0.75pt border, 2pt Navy left accent bar.
+  Title 9.5pt bold Navy + code (AP-n) 8pt Amber; body 8pt Charcoal.
+- **Closing line**: `y=6.30`, 11pt italic Navy, left-aligned under the bands
+
+### Visual discipline
+- No drop shadows, gradients, icons or build sequences
+- The three bands must read top-to-bottom as a descent toward the money
+- The amber bridge arrow is the only diagonal/vertical connector — everything else is orthogonal
+
+---
 
 ## 30-second narration (≈ 85 words)
 

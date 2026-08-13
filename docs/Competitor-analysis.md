@@ -23,7 +23,7 @@
 | **Founded** | 2026 | 2020 | 2017 | 2018 | 2018 | 2020 (shut down 2023) |
 | **HQ** | — | Singapore | Johannesburg / London | Taipei | Geneva | Singapore |
 | **Removes banks from flow?** | ✅ Yes | ❌ No (bank/EMI rails) | ❌ No (bank/EMI rails) | ⚠️ Partial (licensed intermediary) | ❌ No (digitizes bank workflow) | ❌ No (bank-issued LC, just faster) |
-| **Custody model** | Non-custodial (smart contract) | Custodial | Custodial | Custodial | N/A (software only) | Custodial (via banks) |
+| **Custody model** | Direct smart-contract escrow — no platform wallet; custody perimeter under review* | Custodial | Custodial | Custodial | N/A (software only) | Custodial (via banks) |
 | **Settlement rail** | On-chain, Base + USDC | SWIFT/local rails (+ stablecoin add-on) | Fiat via Currencycloud | Multi-asset (BTC/ETH/SOL/stables), custodial | Traditional bank settlement | Bank settlement (LC), Corda for docs only |
 | **Document/trust verification** | **Deterministic rules engine** (AI extraction + human console: roadmap) | Manual back-office review | Manual KYC/compliance | Manual KYC + wallet risk scoring | Bank underwriting (Komgo just moves paperwork) | Bank underwriting |
 | **Open-source contracts** | ✅ Yes | No | No | No | No | No |
@@ -31,6 +31,15 @@
 | **Fees** | Tiered 0.8% / 1.5% / 3.0% (Tier A/B/C), blended ~2% in Y1 falling toward ~1% by Y5 as Tier A mix grows | 0.8–3.8% + fixed fees | 0.8–3.1% tiered + FX | <1% transfers; 10 USDT/escrow | Not disclosed (enterprise licensing) | N/A (bank LC fees, ~1–3%) |
 | **Funding raised** | — (hackathon/pre-seed) | ~$57.9M | ~$0.64M (stale, last raise 2020) | ~$42.7M (+ $18.75M Tether strategic) | ~CHF 26M+ from bank shareholders | ~$18.3M (shut down anyway) |
 | **Current status** | In development | Active, expanding | Active, narrow corridor | Active, growing | Active, growing (400+ clients) | **Shut down Nov 2023** |
+
+> \* **Custody wording is deliberate — do not restore "non-custodial".** This row previously
+> read "Non-custodial (smart contract)". Removing the platform wallet reduces one custody
+> indicator but does not by itself settle the question: a server-side release key means
+> functional control over release, upgrade and recovery still has to be analysed, and
+> Blockmediary should not describe itself as definitively non-custodial until that control
+> analysis is written up (DIFC Pilot and VARA Readiness Report §2). The Business Model Canvas
+> refuses the claim on the same grounds, so restoring it here would put two submitted
+> documents in direct contradiction.
 
 ---
 

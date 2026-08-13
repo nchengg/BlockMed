@@ -1,7 +1,28 @@
-# Slide 6 — Business Model Canvas
+# Slide 6 — Business Model Canvas (superseded — do not use)
 
 **Transakt — Pitch Deck**
 Template: Tony Wood facilitator deck, slides 50 and 53 (BMC, 8 blocks).
+
+> **SUPERSEDED (2026-08-13).** The current canvas is
+> [`proposal/business-model-canvas.md`](../business-model-canvas.md) (+ `.pdf`).
+> Do not pull any number or claim from this file. Kept for drafting history only.
+>
+> **Regulatory — not just stale:**
+> - **UAE–Türkiye is named as a corridor below. Türkiye is fully excluded.** CBRT
+>   Regulation 2021/14 bans crypto-assets as a means of payment for goods and services —
+>   precisely this product's settlement model. See `docs/legal-risk.md` §3.2.
+> - **KSA** is not in the plan: the financial model is a single-track UAE route with no
+>   second regulator costed. See `docs/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.md`.
+> - **"UCP 600 documentary credit"** must not be used — the Trade Escrow Agreement is not
+>   a letter of credit. Correct wording is "UCP 600-inspired" (`docs/legal-risk.md` §5.5).
+> - **"regulator-ready"** overstates status: Blockmediary is not itself regulated during
+>   the DIFC partner-led pilot (`docs/legal-risk.md` §4.2).
+>
+> **Superseded figures:** 0.5–1.0% flat fee → tiered **0.8% / 1.5% / 3.0%**, blended 2.0%
+> → 1.0% · Year 3 $400K–$1.0M → **£1.37m** on 2,000 deals and £76m GMV · 60–70% blended
+> margin → **71–79%** · Tier C ~36% margin → **~72%** · six-layer verification → **four
+> layers plus an invoked escalation route** (`docs/verification-model-v2.md`) · "~45%
+> rejection rate" is the ADB **2023** figure; the Dec 2025 survey reports **41%**.
 
 <!--
 Design notes for team:

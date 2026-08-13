@@ -1,0 +1,554 @@
+{
+  "workbook": "C:\\Users\\cwbec\\BlockMed\\financial-projections\\Blockmediary_Financial_Model_Submission_Ready_2026-08-13.xlsx",
+  "model_date": "2026-08-13",
+  "sheet_names": [
+    "README",
+    "Dashboard",
+    "Launch Readiness",
+    "Tier Economics",
+    "Revenue Risk Add-Ons",
+    "P&L 5yr",
+    "Cash Flow Statement",
+    "Scenario Engine",
+    "Assumptions",
+    "Startup 6mo",
+    "Sensitivity",
+    "Risk Register",
+    "Driver Tables",
+    "Model Checks",
+    "Client Funds Memo",
+    "Pitch Deck References"
+  ],
+  "operating": {
+    "years": [
+      "Year 1",
+      "Year 2",
+      "Year 3",
+      "Year 4",
+      "Year 5"
+    ],
+    "deals": [
+      3,
+      240,
+      2000,
+      15000,
+      30000
+    ],
+    "avg_deal_value": [
+      30750,
+      34005,
+      38015.55,
+      42822.535200000006,
+      47897.37657500001
+    ],
+    "gmv": [
+      92250,
+      8161200,
+      76031100,
+      642338028.0000001,
+      1436921297.2500002
+    ],
+    "documents": [
+      20.25,
+      1404,
+      10200,
+      66600,
+      121500
+    ],
+    "total_revenue": [
+      2449.05,
+      220066,
+      1371288,
+      8942691.920000002,
+      17832613.677500002
+    ],
+    "cogs": [
+      707.15578125,
+      47212.2375,
+      313831.75,
+      1982922.8125,
+      3812867.4375
+    ],
+    "gross_profit": [
+      1741.8942187500002,
+      172853.7625,
+      1057456.25,
+      6959769.107500002,
+      14019746.240000002
+    ],
+    "gross_margin": [
+      0.7112530241318062,
+      0.7854632814701045,
+      0.7711408908996505,
+      0.7782633204588804,
+      0.7861857209237465
+    ],
+    "total_fte": [
+      7.666666666666666,
+      12,
+      15,
+      21,
+      24
+    ],
+    "payroll": [
+      483950,
+      797900,
+      1015250,
+      1413350,
+      1630700
+    ],
+    "fixed_opex": [
+      282112.5,
+      364660.8333333333,
+      451490,
+      544390,
+      636030
+    ],
+    "one_offs": [
+      345958.45,
+      0,
+      0,
+      0,
+      0
+    ],
+    "ebitda_pre_one_off": [
+      -764320.6057812499,
+      -989707.0708333333,
+      -409283.75,
+      5002029.107500002,
+      11753016.240000002
+    ],
+    "operating_result": [
+      -1110279.05578125,
+      -989707.0708333333,
+      -409283.75,
+      5002029.107500002,
+      11753016.240000002
+    ],
+    "cumulative_result": [
+      -1110279.05578125,
+      -2099986.126614583,
+      -2509269.876614583,
+      2492759.2308854186,
+      14245775.47088542
+    ],
+    "peak_deficit": [
+      1214837,
+      2160867,
+      2666088,
+      2871694,
+      2871694
+    ],
+    "reserve": [
+      191516,
+      191516,
+      191516,
+      191516,
+      191516
+    ],
+    "funding_need": [
+      1406353,
+      2352383,
+      2857604,
+      3063210,
+      3063210
+    ],
+    "deals_per_active_customer": [
+      3,
+      4,
+      6,
+      8,
+      10
+    ],
+    "active_customers": [
+      1,
+      60,
+      333.3333333333333,
+      1875,
+      3000
+    ],
+    "revenue_per_deal": [
+      816.35,
+      916.9416666666667,
+      685.644,
+      596.1794613333335,
+      594.4204559166667
+    ],
+    "revenue_per_active_customer": [
+      2449.05,
+      3667.766666666667,
+      4113.8640000000005,
+      4769.435690666668,
+      5944.204559166667
+    ],
+    "gross_new_customers": [
+      1,
+      59.1,
+      279.3333333333333,
+      1575,
+      1312.5
+    ],
+    "new_customers_per_commercial_fte": [
+      3,
+      29.55,
+      93.1111111111111,
+      225,
+      164.0625
+    ],
+    "revenue_yield": [
+      0.0265479674796748,
+      0.02696490712150174,
+      0.0180358826848487,
+      0.013922096357651738,
+      0.01241029255508169
+    ],
+    "gmv_per_revenue_pound": [
+      37.66766705457218,
+      37.08523806494415,
+      55.44502686525369,
+      71.82826309418473,
+      80.5782777127624
+    ]
+  },
+  "revenue_breakdown": {
+    "years": [
+      "Year 1",
+      "Year 2",
+      "Year 3",
+      "Year 4",
+      "Year 5"
+    ],
+    "escrow_transaction_fees": [
+      1813.5000000000002,
+      131364,
+      1022499,
+      7325332.920000002,
+      14841491.677500004
+    ],
+    "launch_discounts": [
+      -302,
+      -16147,
+      -69871,
+      -376441,
+      -278278
+    ],
+    "document_and_exception_fees": [
+      641.5500000000001,
+      37968,
+      234100,
+      1269000,
+      2034000
+    ],
+    "partner_api_and_ancillary": [
+      296,
+      66881,
+      184560,
+      724800,
+      1235400
+    ],
+    "total_revenue": [
+      2449.05,
+      220066,
+      1371288,
+      8942691.920000002,
+      17832613.677500002
+    ]
+  },
+  "tiers": [
+    {
+      "name": "Tier A - eBL",
+      "deal_value": 35000,
+      "take_rate": 0.008,
+      "minimum_fee": 150,
+      "review_fee": 25,
+      "dispute_rate": 0.04,
+      "conditional_dispute_fee": 100,
+      "standard_fee": 305.0,
+      "standard_fee_pct_of_deal": 0.008714285714285714,
+      "deal_value_per_fee_pound": 114.75409836065573,
+      "expected_revenue_per_deal": 309.0,
+      "variable_cost_per_deal": 10.4,
+      "contribution_per_deal_before_shared_cogs": 298.6,
+      "tier_gross_margin_before_shared_cogs": 0.9663430420711974
+    },
+    {
+      "name": "Tier B - carrier/API",
+      "deal_value": 30000,
+      "take_rate": 0.015,
+      "minimum_fee": 250,
+      "review_fee": 90,
+      "dispute_rate": 0.1,
+      "conditional_dispute_fee": 200,
+      "standard_fee": 540.0,
+      "standard_fee_pct_of_deal": 0.018,
+      "deal_value_per_fee_pound": 55.55555555555556,
+      "expected_revenue_per_deal": 560.0,
+      "variable_cost_per_deal": 48.00000000000001,
+      "contribution_per_deal_before_shared_cogs": 512.0,
+      "tier_gross_margin_before_shared_cogs": 0.9142857142857144
+    },
+    {
+      "name": "Tier C - paper",
+      "deal_value": 30000,
+      "take_rate": 0.03,
+      "minimum_fee": 500,
+      "review_fee": 300,
+      "dispute_rate": 0.2,
+      "conditional_dispute_fee": 500,
+      "standard_fee": 1200.0,
+      "standard_fee_pct_of_deal": 0.04,
+      "deal_value_per_fee_pound": 25.0,
+      "expected_revenue_per_deal": 1300.0,
+      "variable_cost_per_deal": 390.0,
+      "contribution_per_deal_before_shared_cogs": 910.0,
+      "tier_gross_margin_before_shared_cogs": 0.7000000000000001
+    }
+  ],
+  "tier_mix": {
+    "years": [
+      "Year 1",
+      "Year 2",
+      "Year 3",
+      "Year 4",
+      "Year 5"
+    ],
+    "tier_a": [
+      0.15,
+      0.3,
+      0.45,
+      0.6,
+      0.7
+    ],
+    "tier_b": [
+      0.45,
+      0.45,
+      0.4,
+      0.32,
+      0.25
+    ],
+    "tier_c": [
+      0.4,
+      0.25,
+      0.15,
+      0.08,
+      0.05
+    ],
+    "blended_escrow_take_rate": [
+      0.019658536585365857,
+      0.016096162329069255,
+      0.013448430971010547,
+      0.011404171325195151,
+      0.01032867402404283
+    ],
+    "docs_per_deal": [
+      6.75,
+      5.85,
+      5.1,
+      4.44,
+      4.05
+    ],
+    "tier_margin_before_shared_cogs": [
+      0.7810716686014542,
+      0.8267734391609384,
+      0.8688841866020902,
+      0.9078462508524746,
+      0.9310597864504798
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "Low",
+      "year_3_revenue": 1036841.4000000001,
+      "year_3_active_customers": 480,
+      "year_3_ebitda": -748355.7249999999,
+      "monthly_break_even": "Beyond Month 60",
+      "peak_cash_gap": 4087547,
+      "month_60_operating_cash_flow": -3104474,
+      "operating_reserve": "Year 5",
+      "funding_need": 4279063
+    },
+    {
+      "name": "Base",
+      "year_3_revenue": 1371288,
+      "year_3_active_customers": 333.3333333333333,
+      "year_3_ebitda": -409283.75,
+      "monthly_break_even": "Y4 M8",
+      "peak_cash_gap": 2871700,
+      "month_60_operating_cash_flow": 12717172,
+      "operating_reserve": "Year 4",
+      "funding_need": 3063210
+    },
+    {
+      "name": "High",
+      "year_3_revenue": 1912064.8000000003,
+      "year_3_active_customers": 320,
+      "year_3_ebitda": 100088.80000000028,
+      "monthly_break_even": "Y4 M4",
+      "peak_cash_gap": 2263509,
+      "month_60_operating_cash_flow": 33595887,
+      "operating_reserve": "Year 3",
+      "funding_need": 2455025
+    }
+  ],
+  "use_of_funds": [
+    {
+      "category": "Engineering & product",
+      "amount": 570988.0251028514,
+      "share": 0.18640185462402234
+    },
+    {
+      "category": "Ops, people & G&A",
+      "amount": 1062631.3876964755,
+      "share": 0.34690125316138154
+    },
+    {
+      "category": "Compliance, legal & regulatory",
+      "amount": 1067397.075823289,
+      "share": 0.3484570355356927
+    },
+    {
+      "category": "GTM & acquisition",
+      "amount": 170677.51137738395,
+      "share": 0.055718514687985464
+    },
+    {
+      "category": "Working capital + contingency",
+      "amount": 191516,
+      "share": 0.06252134199091802
+    }
+  ],
+  "timing_and_capital": {
+    "first_paid_pilot_month": 12,
+    "first_cash_receipt_month": 13,
+    "full_vara_licence_month": 18,
+    "average_pre_revenue_burn": 104270,
+    "initial_operating_funding_need": 3063210,
+    "vara_application_fee_gbp": 42546,
+    "vara_supervision_gbp_per_year": 102110,
+    "vara_restricted_capital": 319095,
+    "partner_pilot_one_off": 60000,
+    "partner_pilot_annual_run_rate": 67000,
+    "startup_six_month_total_including_contingency": 243412.45,
+    "combined_staged_capital_envelope": 3382305
+  },
+  "client_funds": {
+    "years": [
+      "Year 1",
+      "Year 2",
+      "Year 3",
+      "Year 4",
+      "Year 5"
+    ],
+    "holding_period_days": [
+      14,
+      14,
+      14,
+      14,
+      14
+    ],
+    "average_safeguarded_assets": [
+      3538.356164383562,
+      313032.3287671233,
+      2916261.3698630137,
+      24637622.991780825,
+      55114789.48356165
+    ],
+    "operating_cash_availability": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "recognized_yield": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "cash_runway": {
+    "checkpoints": [
+      "Y1 M6",
+      "Y1 M12",
+      "Y2 M6",
+      "Y2 M12",
+      "Y3 M6",
+      "Y3 M12",
+      "Y4 M6",
+      "Y4 M12",
+      "Y5 M6",
+      "Y5 M12"
+    ],
+    "low": [
+      -678627.0,
+      -1214483.0,
+      -1751572.0,
+      -2252434.0,
+      -2754803.0,
+      -3077927.0,
+      -3581511.0,
+      -3942453.0,
+      -3696392.0,
+      -3104474.0
+    ],
+    "base": [
+      -678627.0,
+      -1214837.0,
+      -1709758.0,
+      -2160874.0,
+      -2512507.0,
+      -2666095.0,
+      -847085.0,
+      1704985.0,
+      6789610.0,
+      12717172.0
+    ],
+    "high": [
+      -678627.0,
+      -1215512.0,
+      -1625948.0,
+      -1978004.0,
+      -2102052.0,
+      -2000951.9999999998,
+      2345081.0,
+      7997921.0,
+      19891047.0,
+      33595887.0
+    ]
+  },
+  "reserve_sensitivity": [
+    {
+      "months": 3,
+      "reserve": "\u00a30.2m",
+      "funding_need": "\u00a33.1m"
+    },
+    {
+      "months": 6,
+      "reserve": "\u00a30.4m",
+      "funding_need": "\u00a33.3m"
+    },
+    {
+      "months": 9,
+      "reserve": "\u00a30.6m",
+      "funding_need": "\u00a33.4m"
+    }
+  ],
+  "model_checks": {
+    "overall_status": "PASS",
+    "count": 42,
+    "passed": 42,
+    "failed": [],
+    "formula_errors": []
+  },
+  "source_cells": {
+    "five_year_case": "P&L 5yr!C7:G91",
+    "tier_economics": "Tier Economics!B3:U35",
+    "cash_scenarios": "Cash Flow Statement!B45:F47",
+    "launch_readiness": "Launch Readiness!A5:J23",
+    "use_of_funds": "Dashboard!J57:M62",
+    "client_funds": "Client Funds Memo!A5:H31",
+    "checks": "Model Checks!A1:G48"
+  }
+}

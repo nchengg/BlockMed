@@ -1,0 +1,1137 @@
+SOURCE: Blockmediary_Deal_Value_Research_Report_Revised
+PAGES: 29
+
+=== PAGE 1 ===
+BLOCKMEDIARY COMMERCIAL RESEARCH
+Defensible average
+deal values for
+documentary escrow
+Year-1 base cases and Year-2 to Year-5 growth
+assumptions for Tier A, Tier B and Tier C document
+verification.
+Recommended Year 1
+A £35k
+B £30k
+C £30k
+Base growth: 10% / 8% / 5%
+11 August 2026
+Primary launch market: UAE
+Prepared by Blockmediary
+
+=== PAGE 2 ===
+EXECUTIVE CONCLUSION
+The evidence does not support a mechanical Tier A > Tier B > Tier C transaction-size
+ladder. Document maturity and transaction value are correlated only indirectly through
+customer and sector mix. The recommended base case gives Tier A a modest £5k
+premium because larger firms adopt eBL more frequently, while holding Tier B and Tier C
+equal because paper documentation remains common in high-value trade and Tier C
+pricing makes genuinely small deals unattractive.
+TIER A YEAR 1
+£35,000
+$47,000 at 10 Aug 2026 FX; 10%
+annual growth; medium-low
+confidence
+TIER B YEAR 1
+£30,000
+$41,000; 8% annual growth;
+medium confidence
+TIER C YEAR 1
+£30,000
+$41,000; 5% annual growth;
+medium-low confidence
+Decision standard. These are conservative launch-cohort averages, not addressable-market
+averages. They sit above a broad Dubai customs-declaration proxy (~£16k), around the more
+relevant maritime and India export-document proxies (~£30k-£39k), and well below chamber
+certificate-of-origin proxies (~£79k-£84k). [S2][S3][S4][S5][S6][S7][S8]
+Figure 1. Triangulated evidence produces a modest Tier A launch premium, equal Tier B and C bases, and tier-specific growth
+assumptions.
+Blockmediary commercial research | 11 August 2026 Page 2 of 29
+Recommended Year-1 averages:
+Tier A £35k; Tier B and Tier C £30k
+
+=== PAGE 3 ===
+Contents
+1. Five-year recommendation
+2. Evidence method and limitations
+3. T op-down evidence
+4. Bottom-up shipment evidence
+5. Document maturity and transaction size
+6. Tier-by-tier rationale
+7. Unit economics and comparables
+8. Model implications
+9. Research gaps
+10. Final decision statement
+Appendix A. Evidence table
+Appendix B. Direct source links
+Blockmediary commercial research | 11 August 2026 Page 3 of 29
+
+=== PAGE 4 ===
+1. Five-year recommendation
+Recommended values in GBP
+Tier Y1 average deal Y2 Y3 Y4 Y5 Annual growthConfidence
+Tier A £35,000 £38,500 £42,500 £46,500 £51,000 10% Medium-low
+Tier B £30,000 £32,500 £35,000 £38,000 £41,000 8% Medium
+Tier C £30,000 £31,500 £33,000 £34,500 £36,500 5% Medium-low
+Displayed values are rounded to the nearest £500 for commercial use. The workbook retains exact compounding.
+USD equivalents at the fixed exchange-rate date
+Tier Y1 Y2 Y3 Y4 Y5
+Tier A $47,000 $52,000 $57,000 $63,000 $69,000
+Tier B $41,000 $44,000 $47,000 $51,000 $55,000
+Tier C $41,000 $43,000 $45,000 $47,000 $49,000
+Exchange rates use the Central Bank of the UAE’s rates last updated on 10 August 2026: USD/AED 3.6725
+and GBP/AED 4.959487, implying GBP/USD 1.3504. [S1]
+Blockmediary commercial research | 11 August 2026 Page 4 of 29
+Figure 2 Recommended values compared with the prior baseline model and the £50,000 automatic-verdict threshold.
+
+=== PAGE 5 ===
+Sensitivity table
+Tier Case Y1 Annual growth Y5 Average threshold crossing
+Tier A Low £25,000 4% £29,000Not by Y5
+Tier A Base £35,000 10% £51,000Y5
+Tier A High £50,000 15% £87,500Y1
+Tier B Low £20,000 3% £22,500Not by Y5
+Tier B Base £30,000 8% £41,000Not by Y5
+Tier B High £45,000 13% £73,500Y2
+Tier C Low £20,000 2% £21,500Not by Y5
+Tier C Base £30,000 5% £36,500Not by Y5
+Tier C High £45,000 10% £66,000Y3
+Figure 3. The Year-1 planning bands are decision ranges, not empirical interquartile ranges.
+Blockmediary commercial research | 11 August 2026 Page 5 of 29
+
+=== PAGE 6 ===
+Figure 4. Low, base and high Year-5 outcomes under explicit starting-value and growth assumptions.
+Why the growth rates differ
+World merchandise trade volume is forecast to grow only 1.9% in 2026 and 2.6% in 2027, while the IMF
+expected UAE inflation around 2% over the medium term. Those facts support a low-single-digit nominal
+baseline, not 35% annual average-deal growth. [S21][S22]
+The recommended rates therefore use an explicit planning decomposition: roughly 3% for nominal trade-
+value growth, plus 7% for Tier A, 5% for Tier B and 2% for Tier C from repeat-customer trust, larger
+customer acquisition and mix progression. These uplifts are assumptions, not observed causal
+estimates. Tier C grows slowest because successful customers and document flows should migrate toward
+B or A rather than making the manual tier indefinitely larger.
+Figure 14. Four annual steps at 35% produce a 3.32x multiplier, compared with 1.22x-1.46x under the recommended cases.
+Blockmediary commercial research | 11 August 2026 Page 6 of 29
+
+=== PAGE 7 ===
+Figure 15. Planning decomposition of the recommended annual growth assumptions.
+Blockmediary commercial research | 11 August 2026 Page 7 of 29
+
+=== PAGE 8 ===
+2. Evidence method and limitations
+Statistical limitation. No public source found provides a transaction-level dataset linking deal
+value, SME status, corridor, sector, shipment mode and Tier A/B/C verification method. A true tier-
+level mean, median or interquartile range cannot be calculated from public data. Aggregate value-
+per-document ratios are presented as proxies; planning ranges are not relabelled as empirical
+quartiles.
+Three approaches were reconciled
+Top-down. Official trade values were divided only by named denominators such as customs
+declarations, Shipping Bills, Bills of Entry or certificates of origin. The denominator and its limitations
+are stated in every row.
+Bottom-up. WITS/UN Comtrade values and physical quantities were used to derive unit values for
+target-sector goods. Explicit shipment-quantity assumptions then produce illustrative transaction
+ranges.
+Comparable product. Blockmediary’s fee schedule was compared with current general escrow
+prices and UAE documentary-credit fee schedules. Product differences are retained: a bank LC
+includes a bank undertaking, while Blockmediary is prefunded escrow and does not lend.
+How observed facts and assumptions are separated
+Label Meaning Example
+Observed Directly reported by an official or primary source.Dubai Customs processed more than
+26.5m declarations in 2023.
+Derived proxy Arithmetic using an observed numerator and
+denominator.
+AED12.133bn / 62,454 declarations =
+about £39k per declaration.
+Planning
+assumption
+A judgement required because public data do not
+identify shipment size or launch-customer mix.
+6-12 tonnes of metal furniture per
+illustrative shipment.
+Recommendation Tier B Year-1 average = £30k.
+1. 
+2. 
+3. 
+Blockmediary commercial research | 11 August 2026 Page 8 of 29
+The reconciled commercial model
+assumption.
+
+=== PAGE 9 ===
+Figure 18. The evidence base is strong for official inputs and weaker where shipment quantities or tier-level inferences are
+required.
+Figure 19. The most important unresolved variables are launch-cohort deal distributions, trust uplift and manual-review cost.
+Blockmediary commercial research | 11 August 2026 Page 9 of 29
+
+=== PAGE 10 ===
+3. Top-down evidence
+The official ratios do not converge to one “correct” average because the denominators represent different
+events. That dispersion is useful: it identifies a lower broad-market anchor, a more relevant maritime/
+export-document range, and an upper exporter/chamber range.
+Proxy GBP USD DenominatorSource Quality Limitation
+Dubai broad
+customs-declaration
+proxy (2023)
+£15,894 $21,464 customs
+declarations
+[S2]
+[S3]
+Medium-
+low
+Numerator is inferred from a zone
+share; declarations include courier,
+re-exports, transit and multiple
+declarations per commercial deal.
+Hamriyah + Deira
+maritime declaration
+proxy (Q1-Q3 2023)
+£39,172 $52,899 customs
+declarations
+[S4] Medium Only two smaller ports and nine
+months; excludes Jebel Ali;
+declaration is not necessarily one
+trade deal.
+Dubai Chamber
+export/re-export per
+certificate of origin
+(2024)
+£78,909 $106,561certificates of
+origin
+[S5] Medium-
+low
+Includes large firms; a certificate of
+origin is not a one-to-one
+transaction denominator.
+Dubai Chamber
+export/re-export per
+certificate of origin
+(2025)
+£84,351 $113,911certificates of
+origin
+[S6] Medium-
+low
+Includes large firms; a certificate of
+origin is not a one-to-one
+transaction denominator.
+India non-petroleum
+exports per Shipping
+Bill
+£30,109 $40,661 Shipping Bills [S7]
+[S8]
+Medium Trade total and annual document
+count are broad national figures and
+may not cover identical periods;
+Shipping Bill is not necessarily one
+invoice.
+India all merchandise
+exports per Shipping
+Bill
+£35,208 $47,546 Shipping Bills [S7]
+[S8]
+Medium Includes oil, large corporates and
+sectors outside Blockmediary
+targets; Shipping Bill is not
+necessarily one invoice.
+India merchandise
+imports per Bill of
+Entry
+£96,970 $130,953Bills of Entry [S7]
+[S8]
+Medium-
+low
+Includes oil, gold and large industrial
+imports; Bills of Entry can aggregate
+or split commercial transactions.
+Blockmediary commercial research | 11 August 2026 Page 10 of 29
+
+=== PAGE 11 ===
+Figure 5. Official aggregate ratios range from broad declaration activity to exporter-oriented certificate-of-origin activity.
+Interpretation
+Broad Dubai activity: ~£16k. Dubai non-oil trade is inferred from DIEZ’s AED282bn representing
+13.5% of Dubai non-oil trade, then divided by more than 26.5m declarations. This is too broad to use
+directly because the denominator includes many small and administrative customs events. [S2][S3]
+Maritime/wholesale activity: ~£39k. Hamriyah and Deira ports processed 62,454 declarations
+worth AED12.133bn in the first nine months of 2023. This is closer to Blockmediary’s intended
+goods-trade profile but excludes Jebel Ali and covers only two ports. [S4]
+India export forms: ~£30k-£35k. India’s 9.2m annual Shipping Bills combined with FY2024-25
+export values imply about £30k per non-petroleum Shipping Bill and £35k across all merchandise
+exports. This is one of the strongest anchors for UAE-India SME exports, though a Shipping Bill is not
+necessarily one invoice. [S7][S8]
+Exporter/chamber upper anchor: ~£79k-£84k. Dubai Chamber export/re-export value divided
+by certificates of origin is biased toward established exporters and larger firms. The implied ratio
+increased about 6.9% from 2024 to 2025—well below 35%, but one year is not a forecast. [S5][S6]
+• 
+• 
+• 
+• 
+Blockmediary commercial research | 11 August 2026 Page 11 of 29
+
+=== PAGE 12 ===
+Figure 7. India export and import ratios show why transaction direction and goods mix materially affect value.
+Corridor totals are context, not average-deal evidence
+UAE-India non-oil trade was about AED180bn ($49bn), UAE-Türkiye trade exceeded $20bn in 2023, and
+Saudi-Pakistan trade was reported at $5.4bn. None of those sources supplies a transaction, shipment or
+invoice denominator, so the totals establish corridor relevance only. [S26][S27][S28]
+Blockmediary commercial research | 11 August 2026 Page 12 of 29
+
+=== PAGE 13 ===
+4. Bottom-up shipment evidence
+Commodity unit values show why sector and shipment quantity dominate document format. A full
+container of low-value-density goods can be smaller than an LCL shipment of electronic components,
+while one item of manufactured equipment can already exceed £50k.
+Goods Corridor Customs unit valuePlanning
+quantity Illustrative GBP rangeSource Limitation
+Cotton T-
+shirts
+India →
+UAE
+$6.50/itemPlanning
+shipment of
+5,000-15,000
+items.
+£24,063-£72,189[S9] Customs unit value
+is an aggregate
+across qualities
+and contracts;
+shipment quantity
+is a planning
+assumption.
+Large
+diesel
+generating
+set
+India →
+UAE
+$73,073.22/itemOne generator
+per
+transaction.
+£54,111-£54,111[S10] HS line aggregates
+different
+specifications; one-
+item assumption
+may not map to
+one invoice.
+Metal
+furniture
+Türkiye →
+UAE
+$3.87/kg Planning load
+of 6-12
+tonnes.
+£17,191-£34,382[S11] Weight-to-value
+average mixes
+product grades;
+load range is an
+assumption and
+may be LCL or
+partial FCL.
+Cotton bed
+linen
+Pakistan
+→ KSA
+$11.06/kgPlanning load
+of 5-10
+tonnes.
+£40,966-£81,932[S12] Customs unit value
+is an aggregate;
+load range is an
+assumption.
+Rice Pakistan
+→ KSA
+$1.17/kg Planning load
+of 20-25
+tonnes.
+£17,295-£21,619[S13] Rice is outside the
+primary target
+sectors and is
+included only as a
+low-value-density
+floor proxy.
+Electrical
+relays
+India →
+UAE
+$51.54/kgPlanning
+shipment of
+0.5-1.5
+tonnes.
+£19,082-£57,247[S14] Customs unit value
+mixes product
+specifications;
+shipment weight is
+a planning
+assumption.
+Blockmediary commercial research | 11 August 2026 Page 13 of 29
+
+=== PAGE 14 ===
+Figure 6. Illustrative shipment ranges based on customs unit values and explicitly stated planning quantities.
+Shipment mode and arrangement
+LCL versus FCL. Maersk describes LCL as suitable for loads below 15 CBM or 2-3 pallets. CMA CGM
+lists a 20ft dry container at 33.2m³ and 28.25t payload, and a 40ft unit at 67.8m³ with payload up to
+28.78t. These physical measures influence quantity, but not value density. [S15][S16]
+Forwarder versus direct carrier. Forwarders consolidate LCL but also arrange FCL. There is no
+credible public basis for applying a universal forwarder discount or direct-carrier premium to deal
+value.
+SME size. Smaller SMEs often order less, but repeat importers may consolidate purchases, and an
+SME can import a single high-value machine. Turnover is not a usable substitute for invoice value.
+Sector. The planning examples range from roughly £17k-£22k for dense low-value goods to £55k+
+for one generator and up to £82k for an illustrative textiles load. The early customer and sector mix
+therefore matters more than the tier label.
+Reconciliation. The midpoint of the six illustrative bottom-up ranges is roughly in the low-£40k
+area, but this is not a sample mean: the goods were deliberately selected to span the target
+sectors. It supports a conservative £30k-£35k launch base rather than proving one.
+• 
+• 
+• 
+• 
+Blockmediary commercial research | 11 August 2026 Page 14 of 29
+
+=== PAGE 15 ===
+5. Document maturity and transaction size
+No credible public evidence proves eBL transactions are systematically
+larger
+DCSA reported actual eBL adoption around 4% in 2024, up from 2.1% in 2022, and later described around
+11% of bills as electronic in 2025. The FIT Alliance’s respondent survey found 49.2% using eBL in some
+capacity, 50% in the Middle East and 29.4% among freight forwarders. The difference between actual bill
+share and respondent usage illustrates measurement and selection effects. [S17][S18][S19]
+The survey does provide one directional link: firms with more than 250 employees adopt eBL more
+frequently. However, it explicitly says industry type is the strongest factor. The first standards-based
+interoperable eBL transaction was completed only in May 2025, and DCSA identifies platform
+fragmentation as a prior constraint. [S18][S20]
+Figure 17. Actual eBL share increased rapidly from a low base; this is adoption evidence, not transaction-value evidence.
+Question Evidence-backed answer Modelling implication
+Are Tier A deals
+necessarily larger?
+No. Larger firms adopt more often, but industry
+is the stronger adoption factor and small
+transactions can use eBL rails.
+Use only a modest launch-mix premium,
+not a structural hierarchy.
+Are Tier C deals
+necessarily smaller?
+No. Paper/original documents remain common
+and high-value goods can still use manual
+processes.
+Do not force Tier C below Tier B. Screen
+small deals for affordability.
+Does carrier/API
+verification imply
+FCL?
+No. Carriers and forwarders support different
+shipment sizes and document flows.
+Model shipment mode and sector
+separately from tier.
+Blockmediary commercial research | 11 August 2026 Page 15 of 29
+
+=== PAGE 16 ===
+Question Evidence-backed answer Modelling implication
+Will migration raise
+deal value?
+Possibly, but migration changes the tier mix as
+much as it changes within-tier averages.
+Use separate transaction-count migration
+assumptions; avoid double counting in
+average-value growth.
+6. Tier-by-tier rationale
+What the Year-1 averages represent
+The recommended bases assume a small, selected launch cohort: repeat mid-market SME importers/
+exporters or a forwarder-led cluster, with transactions screened for documentary suitability and
+willingness to prefund. They do not represent all customs declarations or all SMEs. Selection raises the
+expected average above the broad £16k declaration proxy, but limited trust and an early operating cap
+justify keeping the bases below exporter-oriented £79k-£84k proxies.
+Tier A £35,000 / $47,000
+Customer and document fit. A modest launch-mix premium is plausible because larger firms
+adopt eBL more often, but the evidence says industry type matters more than firm size. The
+premium is therefore deliberately small, not structural.
+Pricing fit. At the base value, the fee is £252.50 (0.72%). The percentage-fee minimum stops
+binding around £23,077.
+Trust and threshold. Base growth is 10%; the average crosses the £50,000 threshold in Y5.
+Tier B £30,000 / $41,000
+Customer and document fit. This is the broadest launch tier: digital enough to verify efficiently,
+but not dependent on a fully interoperable eBL ecosystem. It aligns closely with India export-
+declaration and commodity-shipment proxies.
+Pricing fit. At the base value, the fee is £360.00 (1.20%). The percentage-fee minimum stops
+binding around £27,778.
+Trust and threshold. Base growth is 8%; the average crosses the £50,000 threshold in Not by Y5.
+Tier C £30,000 / $41,000
+Customer and document fit. Paper documentation does not imply a small trade. A £30k base is
+retained because the all-in customer fee becomes punitive below roughly £25k-£30k and because
+larger manual deals remain commercially possible.
+Pricing fit. At the base value, the fee is £900.00 (3.00%). The percentage-fee minimum stops
+binding around £25,000.
+Trust and threshold. Base growth is 5%; the average crosses the £50,000 threshold in Not by Y5.
+Blockmediary commercial research | 11 August 2026 Page 16 of 29
+
+=== PAGE 17 ===
+Planning concentration bands
+Tier Low / practical lower anchorBase High / practical upper anchorInterpretation
+Tier
+A
+£25k £35k £50k Selected digital-ready customers; high
+anchor reaches the current automatic-
+verdict cap.
+Tier
+B
+£20k £30k £45k Broad API/carrier/issuer verification;
+lower values can remain attractive near
+the minimum fee.
+Tier
+C
+£25k £30k £45k Manual fallback; £20k is retained only as
+a downside sensitivity because the fee
+reaches 4%.
+These are practical planning bands, not statistical interquartile ranges.
+7. Unit economics and customer affordability
+Recommended-base fee check
+Tier Y1 dealY1 customer feeY1 all-in %Y5 deal Y5 fee Y5 all-in %Minimum-fee breakpoint
+Tier
+A
+£35,000 £252.50 0.72% £51,244 £358.08 0.70% £23,077
+Tier
+B
+£30,000 £360.00 1.20% £40,815 £457.33 1.12% £27,778
+Tier
+C
+£30,000 £900.00 3.00% £36,465£1,029.30 2.82% £25,000
+At the recommended Year-1 bases, Tier A costs 0.72% of the deal, Tier B 1.20%, and Tier C 3.00%. Tier A
+and B are comfortably below Escrow.com’s 2.4% standard price for £5k-£50k general-merchandise
+transactions. Tier C is above standard escrow but below the 4.8% concierge rate; its value proposition
+must therefore rest on trade-document verification and controlled release, not generic escrow alone. [S23]
+Blockmediary commercial research | 11 August 2026 Page 17 of 29
+
+=== PAGE 18 ===
+Figure 8. All-in customer fee percentages fall as minimum fees are diluted; Tier C is unattractive at very small values.
+Figure 9. Absolute customer fee grows linearly after each percentage-fee breakpoint.
+Blockmediary commercial research | 11 August 2026 Page 18 of 29
+
+=== PAGE 19 ===
+Figure 10. The escrow-rate minimum stops binding at approximately £23.1k, £27.8k and £25k for Tiers A, B and C.
+Minimum deal size and internal cost
+If variable cost ≤ minimum escrow fee + document fee, any accepted deal covers
+variable cost.
+Otherwise, minimum deal value = (variable cost − document fee) / escrow rate.
+At the recommended Year-1 bases, the total fee revenue available to cover payment, compliance,
+verification and support costs is £252.50 for Tier A, £360 for Tier B and £900 for Tier C. A 50%
+contribution-margin target would cap variable costs at £126.25, £180 and £450 respectively. These are
+cost ceilings, not estimates of actual cost.
+Comparable-product check at £30,000
+Provider/product Fee Fee % Scope Source Important limitation
+Blockmediary Tier A£220.00 0.73% Prefunded escrow +
+tier-specific document
+verification
+Company
+pricing
+assumption
+Direct pricing comparison, but
+product is still differentiated by
+verification depth.
+FAB export LC -
+illustrative
+unconfirmed
+£262.12 0.87% Advising + document
+checking + bill
+handling +
+international courier
+[S25] LC includes a bank undertaking and
+may involve collateral, confirmation,
+financing, FX and discrepancy
+charges; not a like-for-like substitute.
+FAB import LC -
+illustrative digital
+application
+£328.25 1.09% 3-month issuance +
+SWIFT + bill
+processing +
+international courier
+[S24] LC includes a bank undertaking and
+may involve collateral, confirmation,
+financing, FX and discrepancy
+charges; not a like-for-like substitute.
+Blockmediary commercial research | 11 August 2026 Page 19 of 29
+At this preliminary stage, internal variable cost is not yet evidenced by operating data. The break-even rule is:
+
+=== PAGE 20 ===
+Provider/product Fee Fee % Scope Source Important limitation
+Blockmediary Tier B£360.00 1.20% Prefunded escrow +
+tier-specific document
+verification
+Company
+pricing
+assumption
+Direct pricing comparison, but
+product is still differentiated by
+verification depth.
+FAB export LC -
+illustrative with
+minimum
+confirmation
+£463.76 1.55% Unconfirmed
+illustration plus
+minimum confirmation
+fee
+[S25] LC includes a bank undertaking and
+may involve collateral, confirmation,
+financing, FX and discrepancy
+charges; not a like-for-like substitute.
+FAB import LC -
+illustrative paper
+application
+£529.88 1.77% Digital illustration plus
+paper application
+surcharge
+[S24] LC includes a bank undertaking and
+may involve collateral, confirmation,
+financing, FX and discrepancy
+charges; not a like-for-like substitute.
+Escrow.com
+Standard
+£720.00 2.40% General merchandise
+escrow
+[S23] Does not establish equivalent
+documentary-trade verification.
+Blockmediary Tier C£900.00 3.00% Prefunded escrow +
+tier-specific document
+verification
+Company
+pricing
+assumption
+Direct pricing comparison, but
+product is still differentiated by
+verification depth.
+Escrow.com
+Concierge
+£1,440.00 4.80% General merchandise
+escrow with concierge
+service
+[S23] Higher-touch but not a bank
+undertaking or necessarily
+document-rule automation.
+Figure 11. Illustrative fee percentages at £30k. Bank LC calculations use current FAB schedule components but are not like-for-
+like product comparisons.
+FAB’s import-LC schedule charges 0.16% per month on the first AED100k and 0.125% thereafter, with a
+minimum three-month period, plus fixed SWIFT, bill-processing and courier charges; a paper application
+adds AED1,000. The illustrative digital total at £30k is about 1.09%, and the paper application about
+1.77%, before discrepancies, amendments, confirmation, financing, collateral opportunity cost or FX. An
+LC includes a bank undertaking, so it is not merely a cheaper or more expensive version of prefunded
+escrow. [S24][S25]
+Blockmediary commercial research | 11 August 2026 Page 20 of 29
+
+=== PAGE 21 ===
+8. Model implications
+Tier Y1 GMV/deal changeY1 fee/deal changeY5 GMV/deal changeY5 fee/deal change
+Average
+crosses
+£50k
+Tier
+A
++40.0% +34.7% -38.3% -36.6% Y5
+Tier
+B
++20.0% +5.9% -50.8% -45.4% Not by
+Y5
+Tier
+C
++20.0% +12.5% -56.1% -47.5% Not by
+Y5
+Figure 12. Recommended average deal values versus the
+Blockmediary commercial research | 11 August 2026 Page 21 of 29
+Open-account trade can be cheaper in direct payment fees, but it shifts counterparty and documentary-
+performance risk to the buyer or seller. Blockmediary is positioned as a risk-control and workflow
+product rather than the cheapest payment rail.
+Revision to the prior £25k / 35% baseline
+At a fixed transaction count, the new Year-1 bases increase GMV per deal by 40% for Tier A and 20% for
+Tier B/C versus the prior £25k baseline. Fee revenue per deal rises by about 34.7%, 5.9% and 12.5%
+respectively. By Year 5, however, recommended GMV per deal is 38%-56% lower and fee revenue per deal
+37%-48% lower than the prior £83,039 baseline. This materially reduces headline GMV but improves
+defensibility.
+prior Year-1 and Year-5 baseline assumptions
+Recommended Year 1 is higher, but Year 5 is substantially lower than the prior baseline
+
+=== PAGE 22 ===
+Figure 13. Per-deal fee revenue under the
+£50,000 human-review threshold
+Figure 16. Average-value threshold status across five years. Diamonds indicate values at or above £50k.
+Blockmediary commercial research | 11 August 2026 Page 22 of 29
+prior and recommended assumptions
+The prior baseline average crosses the cap in Year 4. Under the base recommendation, Tier A crosses in
+Year 5; Tier B and Tier C do not cross by Year 5. Under high sensitivities, Tier A begins at £50k in Year 1,
+Tier B crosses in Year 2, and Tier C in Year 3.
+The £50k threshold is an operating control, not a commercial maximum. Average values below £50k can still
+contain a meaningful tail above the cap. Human review is triggered deal by deal, so operating cost is
+based on the value distribution rather than only the average.
+
+=== PAGE 23 ===
+Effects on GMV, revenue, margin and workload
+Model outputEffect Required treatment
+GMV Apply tier-specific average values to
+transaction counts; avoid applying one
+blended value to every tier.
+Fee revenueTracks tier fee curves, not GMV one-for-one
+because minimum fees bind at lower values.
+Calculate each tier separately using max(rate
+× value, minimum) + document fee.
+Tier margin Cannot be established without verification,
+compliance, payment and review costs.
+Add variable cost per normal deal and
+incremental cost per above-cap review.
+Operating
+workload
+Model pages/documents, exception rate,
+review time, rework and SLA separately.
+Tier
+migration
+Movement C → B/A can raise the overall company
+average while slowing Tier C’s own average.
+Use migration in the transaction-count mix;
+do not double count it as within-tier growth.
+Blockmediary commercial research | 11 August 2026 Page 23 of 29
+Figure 20. Review-cost calculation reflected in the financial model.
+Review workload is modelled as a separate operating-cost module
+Average deal values are not constrained below £50k solely to suppress reviews; the distribution tail is costed explicitly.
+Higher in Y1 than the prior £25k baseline, lower in
+later years than the 35% growth path.
+Fewer base-average crossings than the prior baseline,
+but tails and manual Tier C packs can still dominate
+labour.
+
+=== PAGE 24 ===
+9. Research gaps and primary validation plan
+The public evidence is adequate for a conservative base case but not for a high-confidence distribution.
+The missing information is concentrated in launch-customer behaviour and operating cost.
+Unanswered
+question
+Why public data are
+insufficient
+Recommended primary
+research Minimum useful output
+Actual invoice
+distribution by target
+corridor and sector
+Customs and trade totals do
+not link shipment, invoice,
+SME status and document
+set.
+15-20 SME importer/exporter
+interviews plus anonymised
+invoice samples.
+Median, mean, 25th/75th/
+90th percentiles, repeat
+frequency and payment
+terms.
+Forwarder-led cluster
+distribution
+Forwarders consolidate LCL
+and book FCL; public carrier
+data lack commercial
+invoice values.
+Obtain 6-12 months of
+anonymised job-level data from
+two UAE forwarders.
+Invoice value, mode,
+container status, corridor,
+sector, direct/forwarded
+and document type.
+Tier A versus paper
+transaction values
+eBL providers publish
+adoption and case studies,
+not value distributions.
+Interview two eBL platforms
+and two carriers; request
+anonymised value bands or
+shipment-size proxies.
+Value or TEU/weight
+distribution by eBL and
+paper, controlling for
+sector.
+Manual-review unit
+cost
+External fee schedules do
+not reveal Blockmediary’s
+workflow or quality-control
+burden.
+Time-and-motion pilot with
+documentary examiners.
+Minutes per pack,
+discrepancy/rework rate,
+pages/documents,
+escalation and loaded
+cost.
+Willingness to pay
+and minimum viable
+deal size
+Competitor prices are not
+proof of customer
+willingness to pay for this
+specific product.
+Conjoint or price-ladder testing
+with 20-30 target users.
+Conversion probability by
+tier, deal value, fee and
+trust mechanism.
+Above-cap review
+share
+An average does not identify
+distribution tails.
+Collect all quoted and
+onboarded deal values from
+first pilot cohort.
+Share above £50k and
+expected reviews per 100
+deals by tier.
+Blockmediary commercial research | 11 August 2026 Page 24 of 29
+Priority validation step. The most useful next evidence is anonymised transaction-level data from one UAE
+freight forwarder covering at least 200 recent SME jobs, including invoice value, sector, corridor, mode,
+FCL/LCL, document format and document count. This dataset would validate the Year-1 distribution, the
+tier relationship and the review workload more efficiently than additional macro research.
+
+=== PAGE 25 ===
+10. Final decision statement
+Recommended numbers
+Tier Year-1 averageUSD comparisonAnnual growthYear-5 averageConfidence
+Tier A £35,000 $47,000 10% £51,000Medium-low
+Tier B £30,000 $41,000 8% £41,000Medium
+Tier C £30,000 $41,000 5% £36,500Medium-low
+Three strongest supporting facts
+India’s official export values and annual Shipping Bill count imply about £30k per non-petroleum
+export document and £35k per all-merchandise export document—close to the proposed launch
+bases. [S7][S8]
+A targeted Dubai maritime-port ratio implies roughly £39k per customs declaration, while the much
+broader all-Dubai ratio is about £16k and chamber certificate proxies are about £79k-£84k. The
+proposed £30k-£35k values sit conservatively within that hierarchy. [S2][S3][S4][S5][S6]
+eBL evidence shows larger firms adopt more often but industry type is the stronger determinant, so
+only a modest Tier A premium is justified and no strict tier-size ordering is defensible. [S18]
+Three greatest uncertainties
+The true launch-cohort median, quartiles and right tail by sector, corridor and tier.
+The extent to which repeat customers entrust larger transactions to Blockmediary, separate from
+nominal trade growth.
+The actual time and cost of manual/document exception review, especially above £50k.
+1. 
+2. 
+3. 
+1. 
+2. 
+3. 
+Blockmediary commercial research | 11 August 2026 Page 25 of 29
+Overall confidence: medium-low. The base case is credible for academic and investor review because it is
+conservative and triangulated. Confidence would increase after transaction-level forwarder or pilot data
+are obtained.
+
+=== PAGE 26 ===
+Appendix A. Evidence table
+Finding or input Value Geography/sectorSource Date Quality Limitation Type
+Official exchange rate USD/AED 3.6725; GBP/AED 4.959487;
+derived GBP/USD 1.3504
+UAE / FX [S1] 10 August 2026High Single-date conversion; future model years retain constant FX for
+comparability.
+Observed +
+derived
+Dubai customs declarationsMore than 26.5m in 2023; 22.5m in 2022Dubai / all customs [S2] 21 Feb 2024 High A declaration is not necessarily one commercial transaction.Observed
+DIEZ trade and Dubai shareAED282bn; 13.5% of Dubai non-oil trade in
+2023
+Dubai economic zones[S3] 12 Aug 2024 High Zone trade mix differs from the whole market. Observed
+Broad Dubai value per
+declaration proxy
+£15,894 / $21,464 Dubai / all modes [S2][S3] 2023 data Medium-
+low
+Numerator is inferred from a zone share; declarations include
+courier, re-exports, transit and multiple declarations per
+commercial deal.
+Derived proxy
+Hamriyah + Deira customs
+declarations
+AED12.133bn across 62,454 declarationsDubai / maritime [S4] 24 Dec 2023 High Nine months and only two ports. Observed
+Hamriyah + Deira value
+per declaration proxy
+£39,172 / $52,899 Dubai / maritime [S4] Q1-Q3 2023 Medium Only two smaller ports and nine months; excludes Jebel Ali;
+declaration is not necessarily one trade deal.
+Derived proxy
+Dubai Chamber export/re-
+export proxy 2024
+£78,909 per certificate of origin Dubai Chamber
+members [S5] 20 Jan 2025 Medium-
+low
+Includes large firms; a certificate of origin is not a one-to-one
+transaction denominator.
+Derived proxy
+Dubai Chamber export/re-
+export proxy 2025
+£84,351 per certificate of origin Dubai Chamber
+members [S6] 14 Jan 2026 Medium-
+low
+Includes large firms; a certificate of origin is not a one-to-one
+transaction denominator.
+Derived proxy
+Implied Chamber proxy
+growth 2024-2025
+6.9% Dubai Chamber
+members [S5][S6] 2024-2025 Medium-
+low
+One-year movement in a proxy, not a forecast or same-deal cohort.Derived proxy
+India customs form
+volumes
+5.5m Bills of Entry and 9.2m Shipping Bills
+annually; ~99% coverage
+India / all trade [S7] Updated 2 Jun
+2026
+High Approximate annual counts; documents may not map one-to-one
+to invoices.
+Observed
+India FY2024-25
+merchandise trade
+$437.42bn exports; $374.08bn non-
+petroleum exports; $720.24bn imports
+India / merchandise[S8] 16 Apr 2025 High Includes large firms and sectors outside target scope.Observed
+India non-petroleum
+exports per Shipping Bill
+£30,109 / $40,661 India / non-petroleum
+exports [S7][S8] FY2024-25 /
+current count
+Medium Trade total and annual document count are broad national figures
+and may not cover identical periods; Shipping Bill is not necessarily
+one invoice.
+Derived proxy
+India all merchandise
+exports per Shipping Bill
+£35,208 / $47,546 India / exports [S7][S8] FY2024-25 /
+current count
+Medium Includes oil, large corporates and sectors outside Blockmediary
+targets; Shipping Bill is not necessarily one invoice.
+Derived proxy
+India imports per Bill of
+Entry
+£96,970 / $130,953 India / imports [S7][S8] FY2024-25 /
+current count
+Medium-
+low
+Includes oil, gold and large industrial imports; Bills of Entry can
+aggregate or split commercial transactions.
+Derived proxy
+Cotton T-shirt customs unit
+value
+$6.50 per item India → UAE / textiles[S9] 2023 data Medium Customs unit value is an aggregate across qualities and contracts;
+shipment quantity is a planning assumption.
+Derived unit value
+Cotton T-shirt planning
+shipment
+£24,063-£72,189 India → UAE / textiles[S9] 2023 data Low Planning shipment of 5,000-15,000 items. Assumption +
+derived
+Large diesel generator unit
+value
+£54,111 per unit India → UAE /
+manufactured
+equipment
+[S10] 2023 data Medium HS line aggregates different specifications; one-item assumption
+may not map to one invoice.
+Derived unit value
+Metal furniture planning
+shipment
+£17,191-£34,382 Türkiye → UAE / furniture[S11] 2023 data Low Planning load of 6-12 tonnes. Assumption +
+derived
+Cotton bed-linen planning
+shipment
+£40,966-£81,932 Pakistan → KSA / textiles[S12] 2023 data Low Planning load of 5-10 tonnes. Assumption +
+derived
+Rice planning shipment£17,295-£21,619 Pakistan → KSA / low-
+value-density proxy[S13] 2023 data Low Rice is outside the primary target sectors and is included only as a
+low-value-density floor proxy.
+Assumption +
+derived
+Electrical-relay planning
+shipment
+£19,082-£57,247 India → UAE / electronics[S14] 2023 data Low Planning shipment of 0.5-1.5 tonnes. Assumption +
+derived
+LCL rule of thumb Less than 15 CBM or 2-3 pallets Ocean freight [S15] Accessed 11 Aug
+2026
+Medium Mode threshold, not a transaction-value statistic. Observed guidance
+Blockmediary commercial research | 11 August 2026 Page 26 of 29
+
+=== PAGE 27 ===
+Finding or input Value Geography/sectorSource Date Quality Limitation Type
+Standard dry-container
+capacity
+20ft: 33.2m³ / 28.25t; 40ft: 67.8m³ / up to
+28.78t
+Ocean freight [S16] Accessed 11 Aug
+2026
+High Physical capacity alone does not determine cargo value.Observed
+specification
+eBL share of bills 2.1% in 2022; around 4% in 2024; around
+11% in 2025
+Global container
+shipping [S17][S19] 2022-2025 Medium-
+high
+Share of bills, not share of trade value or transaction-size
+distribution.
+Observed
+FIT eBL adoption survey49.2% respondent adoption; Middle East
+50%; forwarders 29.4%
+Global / surveyed trade
+participants [S18] 12 Dec 2024 Medium Survey adoption is not actual bill share and may reflect selection
+bias.
+Observed survey
+Firm size and eBL adoptionFirms >250 employees adopt more;
+industry type is the strongest factor
+Global / surveyed firms[S18] 12 Dec 2024 Medium No transaction-value distribution by document format.Observed survey
+eBL interoperability
+maturity
+First standards-based interoperable
+transaction completed 15 May 2025
+Global container
+shipping [S20] 15 May 2025 High Milestone does not show average transaction values.Observed
+World merchandise trade-
+volume outlook
++1.9% in 2026; +2.6% in 2027 Global merchandise
+trade [S21] 19 Mar 2026 High Volume growth is not average transaction-value growth.Observed forecast
+UAE inflation outlook 1.6% in 2025; around 2% medium termUAE [S22] 2 Oct 2025 High Consumer inflation is only a partial proxy for traded-goods values.Observed forecast
+Escrow.com fee benchmark2.4% standard / 4.8% concierge for £5k-
+£50k
+General merchandise
+escrow [S23] Accessed 11 Aug
+2026
+Medium-
+high
+Not necessarily equivalent documentary-trade verification.Observed price
+FAB import-LC fee schedule0.16%/month first AED100k; 0.125%
+thereafter; 3-month minimum; additional
+fixed fees
+UAE / documentary
+credit [S24] Current scheduleHigh LC includes bank undertaking and may add confirmation,
+financing, FX and discrepancy fees.
+Observed price
+UAE-India non-oil trade
+corridor
+About AED180bn ($49bn); Q1 2023
++24.7% year-on-year
+UAE ↔ India [S26] 25 May 2023 High No transaction or shipment denominator. Observed corridor
+total
+UAE-Türkiye bilateral trade
+corridor
+More than $20bn in 2023; five-year target
+$40bn
+UAE ↔ Türkiye [S27] 9 Oct 2024 High No transaction or shipment denominator; one-off growth reflects
+CEPA effects.
+Observed corridor
+total
+Saudi-Pakistan bilateral
+trade corridor
+$5.4bn KSA ↔ Pakistan [S28] 10 Oct 2024 High No transaction or shipment denominator. Observed corridor
+total
+Tier A Year-1 planning
+range
+£25k-£50k; base £35k Blockmediary launch
+mix
+Triangulated
+recommendation
+11 August 2026Medium-
+low
+Planning range, not empirical IQR. Recommendation
+Tier B Year-1 planning
+range
+£20k-£45k; base £30k Blockmediary launch
+mix
+Triangulated
+recommendation
+11 August 2026Medium Planning range, not empirical IQR. Recommendation
+Tier C Year-1 planning
+range
+£25k-£45k; base £30k Blockmediary launch
+mix
+Triangulated
+recommendation
+11 August 2026Medium-
+low
+Planning range, not empirical IQR; £20k low sensitivity is
+commercially stressed.
+Recommendation
+Blockmediary commercial research | 11 August 2026 Page 27 of 29
+
+=== PAGE 28 ===
+Appendix B. Direct source links
+All links were accessed or verified for this report. PDF links may open directly in a browser.
+S1 Central Bank of the UAE. Central Bank of the UAE - Exchange rates against UAE dirham. 10 Aug 2026 (last updated). https://
+www.centralbank.ae/umbraco/Surface/Exchange/GetExchangeRateAllCurrency
+Used for: Official AED rates used to derive GBP/USD: USD/AED 3.6725; GBP/AED 4.959487.
+S2 Government of Dubai Media Office. Hamdan bin Mohammed highlights Dubai as a global trade hub. 21 Feb 2024. https://
+www.mediaoffice.ae/en/news/2024/february/21-02/hamdan-bin-mohammed-highlights-dubai
+Used for: Dubai Customs processed more than 26.5m declarations in 2023, up from 22.5m.
+S3 Government of Dubai Media Office. DIEZ record trade results in 2023. 12 Aug 2024. https://www.mediaoffice.ae/en/news/
+2024/august/12-08/diez
+Used for: AED282bn total trade represented 13.5% of Dubai non-oil trade.
+S4 Dubai Customs. Hamriyah and Deira ports customs declaration value. 24 Dec 2023. https://www.dubaicustoms.gov.ae/en/
+mobile/Pages/newsdetails.aspx?itemid=2005
+Used for: 62,454 declarations with AED12.133bn value in first nine months of 2023.
+S5 Government of Dubai Media Office. Dubai Chamber 2024 performance. 20 Jan 2025. https://www.mediaoffice.ae/en/news/
+2025/january/20-01/new-companies-join-dubai-chamber-of-commerce
+Used for: AED309.6bn exports/re-exports and 791,115 certificates of origin in 2024.
+S6 Government of Dubai Media Office. Dubai Chamber 2025 performance. 14 Jan 2026. https://cd1.mediaoffice.ae/en/news/
+2026/january/14-01/dubai-chambers-of-commerce-for-the-first-time
+Used for: AED356.5bn exports/re-exports and 852,184 certificates of origin in 2025.
+S7 National Informatics Centre, Government of India. Indian Customs EDI System performance indicators. Updated 2 Jun
+2026. https://www.nic.gov.in/project/ices/
+Used for: ICES handles approximately 99% of India trade; 5.5m Bills of Entry and 9.2m Shipping Bills annually.
+S8 Press Information Bureau, Government of India. India trade performance FY2024-25. 16 Apr 2025. https://
+www.pib.gov.in/PressReleasePage.aspx?PRID=2122016&lang=2®=3
+Used for: Merchandise exports $437.42bn; non-petroleum exports $374.08bn; imports $720.24bn.
+S9 World Bank WITS / UN Comtrade. UAE imports of cotton T-shirts by partner, 2023. 2023 data; accessed 11 Aug 2026. 
+https://wits.worldbank.org/trade/comtrade/en/country/ARE/year/2023/tradeflow/Imports/partner/ALL/product/610910
+Used for: India: $188.260m and 28.9669m items.
+S10 World Bank WITS / UN Comtrade. UAE imports of large diesel generating sets by partner, 2023. 2023 data; accessed 11
+Aug 2026. https://wits.worldbank.org/trade/comtrade/en/country/ARE/year/2023/tradeflow/Imports/partner/ALL/product/850213
+Used for: India: $73.658m and 1,008 items.
+S11 World Bank WITS / UN Comtrade. UAE imports of metal furniture by partner, 2023. 2023 data; accessed 11 Aug 2026. 
+https://wits.worldbank.org/trade/comtrade/en/country/ARE/year/2023/tradeflow/Imports/partner/ALL/product/940320
+Used for: Türkiye: $5.624m and 1.45356m kg.
+S12 World Bank WITS / UN Comtrade. Saudi imports of cotton bed linen by partner, 2023. 2023 data; accessed 11 Aug 2026. 
+https://wits.worldbank.org/trade/comtrade/en/country/SAU/year/2023/tradeflow/Imports/partner/ALL/product/630231
+Used for: Pakistan: $3.426m and 309,679 kg.
+S13 World Bank WITS / UN Comtrade. Saudi imports of rice by partner, 2023. 2023 data; accessed 11 Aug 2026. https://
+wits.worldbank.org/trade/comtrade/en/country/SAU/year/2023/tradeflow/Imports/partner/ALL/product/1006
+Used for: Pakistan: $141.539m and 121.201m kg.
+S14 World Bank WITS / UN Comtrade. UAE imports of electrical relays by partner, 2023. 2023 data; accessed 11 Aug 2026. 
+https://wits.worldbank.org/trade/comtrade/en/country/ARE/year/2023/tradeflow/Imports/partner/ALL/product/853649
+Used for: India: $4.995m and 96,911 kg.
+S15 Maersk. What is LCL in ocean shipping?. Accessed 11 Aug 2026. https://www.maersk.com/support/faqs/what-is-lcl-in-ocean-
+shipping
+Used for: LCL described as suitable for less than 15 CBM or 2-3 pallets.
+Blockmediary commercial research | 11 August 2026 Page 28 of 29
+
+=== PAGE 29 ===
+S16 CMA CGM. Container specifications. Accessed 11 Aug 2026. https://www.cma-cgm.com/products-services/containers
+Used for: 20ft nominal capacity 33.2m3 and payload 28.25t; 40ft 67.8m3 and payload up to 28.78t.
+S17 Digital Container Shipping Association. DCSA five years of impact. 2024 data; accessed 11 Aug 2026. https://dcsa.org/
+about-us/5-years-dcsa
+Used for: eBL adoption around 4% in 2024, up from 2.1% in 2022.
+S18 FIT Alliance. FIT Alliance 2024 eBL survey. 12 Dec 2024. https://www.fit-alliance.org/post/press-release-fit-alliance-s-2024-ebl-
+survey-shows-steady-rise-of-electronic-bill-of-lading-adopti
+Used for: 49.2% respondent adoption; Middle East 50%; forwarders 29.4%; firms over 250 employees adopt more, but industry
+type is the strongest factor.
+S19 Digital Container Shipping Association. Soft barriers to eBL adoption. 2026; accessed 11 Aug 2026. https://dcsa.org/
+newsroom/understanding-soft-barriers-to-digital-adoption
+Used for: Around 11% of bills of lading were electronic as of 2025.
+S20 Digital Container Shipping Association. First standards-based interoperable eBL transaction. 15 May 2025. https://
+dcsa.org/newsroom/ebl-interoperability-milestone
+Used for: First successful standards-based interoperable eBL transaction; platform fragmentation had constrained adoption.
+S21 World Trade Organization. Global Trade Outlook and Statistics. 19 Mar 2026. https://www.wto.org/english/news_e/news26_e/
+stat_19mar26_329_e.htm
+Used for: World merchandise trade volume forecast: +1.9% in 2026 and +2.6% in 2027.
+S22 International Monetary Fund. UAE 2025 Article IV mission statement. 2 Oct 2025. https://www.imf.org/en/news/articles/
+2025/10/02/pr-25326-united-arab-emirates-imf-staff-completes-2025-article-iv-mission
+Used for: UAE inflation projected at 1.6% in 2025 and around 2% over the medium term.
+S23 Escrow.com. Escrow.com fee calculator. Accessed 11 Aug 2026. https://www.escrow.com/fee-calculator
+Used for: Pounds sterling: 2.4% standard and 4.8% concierge for £5,000.01-£50,000; 1.9% and 3.8% for £50,000.01-£200,000.
+S24 First Abu Dhabi Bank. Import Letter of Credit - Key Facts Statement. Current schedule; accessed 11 Aug 2026. https://
+www.bankfab.com/-/media/fab-uds/business-banking/key-facts-statements/documents/import-letter-of-credit-en.pdf?view=1
+Used for: Issuance 0.16%/month first AED100k, 0.125% thereafter, minimum 3 months/AED600; paper application AED1,000;
+SWIFT issuance AED500; international courier AED265; bill processing AED200.
+S25 First Abu Dhabi Bank. Export Letter of Credit - Key Facts Statement. Current schedule; accessed 11 Aug 2026. https://
+www.bankfab.com/-/media/fab-uds/business-banking/key-facts-statements/documents/export-letter-of-credit-en.pdf?view=1
+Used for: Advising AED300; confirmation minimum AED1,000; document checking AED250; bill handling 0.15% minimum
+AED500; international courier AED250.
+S26 UAE Ministry of Economy. UAE-India trade partnership. 25 May 2023. https://www.moec.gov.ae/en/-/h.e.-bin-touq-uae-india-
+partnership-a-driver-for-economic-growth-that-creates-trade-investment-opportunities-for-over-3.8-billion-people
+Used for: Non-oil trade about AED180bn ($49bn), up 10% from 2021; Q1 2023 growth 24.7% year-on-year.
+S27 Republic of Türkiye Ministry of Trade. Türkiye-UAE bilateral trade. 9 Oct 2024. https://ticaret.gov.tr/haberler/ticaret-bakani-
+bolat-dubai-is-insanlari-heyetiyle-bir-araya-geldi
+Used for: Bilateral trade exceeded $20bn in 2023, up 107%; stated five-year target $40bn.
+S28 Saudi Press Agency. Saudi-Pakistani Business Forum. 10 Oct 2024. https://www.spa.gov.sa/en/N2186500
+Used for: Bilateral trade volume reached $5.4bn.
+Blockmediary commercial research | 11 August 2026 Page 29 of 29

@@ -1,0 +1,619 @@
+SOURCE: Trade_Escrow_Agreement
+PAGES: 20
+
+=== PAGE 1 ===
+Blockmediary: Trade Escrow Agreement
+BEEM063 FinTech Hackathon
+University of Exeter
+1
+
+=== PAGE 2 ===
+Note on This Template
+This is a working draft of the Trade Escrow Agreement, not a final legal document, and qualified
+legal counsel should be consulted before it is used with real parties or real funds. Fields shown
+in square brackets must be completed for each individual deal before that deal’s version of the
+Agreement is sent to the parties. Sections marked as an open discussion point are decisions the
+team has not yet finalised and are shown here as italicised notes; these notes should be removed
+once the corresponding decision has been made and before any version of the Agreement is sent
+to real counterparties. The Agreement takes effect as of the date on which the last of the three
+parties records electronic approval within the Blockmediary platform.
+Parties
+This Trade Escrow Agreement is entered into between the Buyer, the Seller, and Blockmediary.
+The Buyer is identified in Schedule 1 by full legal name, registered address or country of
+residence, and wallet address. The Seller is identified in Schedule 1 on the same basis.
+Blockmediary is identified by its legal entity name and registered address, also recorded in
+Schedule 1. The Buyer and Seller are together referred to as the Parties. Blockmediary acts as
+the escrow operator under this Agreement and is not a principal to the underlying trade between
+the Buyer and the Seller.
+Recitals
+A. The Buyer and Seller have agreed to a commercial transaction for the sale and purchase
+of goods described in Schedule 1, referred to as the Trade, on terms recorded in their
+underlying sale contract.
+B. The Parties wish to use the Blockmediary platform to manage payment for the Trade
+through a smart contract documentary escrow, under which the Buyer’s payment is held on
+chain and released to the Seller upon verified presentation of compliant trade documents.
+C. This Agreement sets out the terms on which Blockmediary operates the escrow, the
+document release rules, and the rights of the Parties in the event of discrepancy, objection,
+or dispute.
+D. This Agreement is separate from, and does not replace, the underlying sale contract
+between the Parties. Blockmediary is not a party to that contract and has no liability for
+the underlying trade.
+2
+
+=== PAGE 3 ===
+1. Definitions
+In this Agreement, the following defined terms apply. The Audit Ledger means Blockmediary’s
+append only off chain record of every state transition, reviewer decision, and on chain transaction
+relating to this Deal. The Blockchain means the specific Base network deployment, testnet or
+mainnet as specified in Schedule 1, on which the Escrow Contract is deployed. A Compliant
+Presentation means a presentation of Required Documents that satisfies all Release Rules
+specified in Schedule 1, as determined by Blockmediary’s document verification process. The
+Deal means the specific escrow transaction governed by this Agreement, identified by the Deal ID
+recorded in Schedule 1. A Discrepancy means a deficiency in a presented document that prevents
+a Compliant Presentation, as particularised in a Discrepancy Notice. A Discrepancy Notice
+means a written notice from Blockmediary to the Seller identifying each specific Discrepancy
+in a submitted document set. The Escrow Amount means the amount in the Settlement Token,
+and its fiat equivalent at the agreed rate, held by the Escrow Contract, as specified in Schedule 1.
+The Escrow Contract means the smart contract deployed at the address specified in Schedule
+1 on the Blockchain that holds the Escrow Amount and enforces state transitions. The Escrow
+Specification means the canonical structured document generated at deal setup, identified by the
+hash recorded in Schedule 1, that is authoritative for the Release Rules and the required document
+types; this Agreement incorporates the Escrow Specification by reference. A Notice of Release
+means Blockmediary’s written notification to the Parties that a Compliant Presentation has been
+determined and that the Escrow Amount will be released subject to the Objection Window. The
+Objection Window means the period specified in Schedule 1, defaulting to forty eight hours,
+following a Notice of Release, during which the Buyer may raise a valid Permitted Objection. A
+Permitted Objection means an objection by the Buyer during the Objection Window on one or
+more of the grounds specified in clause 7.2. The Release Rules mean the document compliance
+conditions specified in the Escrow Specification and Schedule 1 that must be satisfied for the
+Escrow Amount to be released to the Seller. The Required Documents mean the trade documents
+specified in Schedule 1 that the Seller must present to trigger a compliance determination. The
+Settlement Token means the stablecoin specified in Schedule 1 in which the Escrow Amount is
+denominated and released. The Shipment Deadline means the date specified in Schedule 1, being
+the latest date by which the Required Documents must evidence shipment. The Trade Escrow
+Agreement, or the Agreement, means this document including all Schedules.
+2. The Escrow Arrangement
+2.1 Nature of the Escrow
+Blockmediary operates a documentary escrow. The Buyer deposits the Escrow Amount on chain,
+Blockmediary verifies whether the Seller’s presented documents satisfy the Release Rules, and
+3
+
+=== PAGE 4 ===
+the Escrow Amount is then released to the Seller upon a Compliant Presentation, subject to the
+Objection Window, or returned to the Buyer on a Refund Condition.
+2.2 Blockmediary’s Role
+Blockmediary acts as an independent escrow operator and document verification service. It is not
+a bank, payment institution, or e money institution; it is not a party to the Parties’ underlying sale
+contract; it is not a guarantor of the quality, condition, or title of the goods; and it is not an issuing
+bank or confirming bank within the meaning of UCP 600 (International Chamber of Commerce,
+2007). Blockmediary’s verification is based on the face of the documents presented. It does not
+inspect goods, verify physical delivery, or investigate whether the Seller’s representations in the
+documents are true.
+2.3 UCP 600 Inspired Release Logic
+Blockmediary’s Release Rules are inspired by the International Chamber of Commerce’s Uniform
+Customs and Practice for Documentary Credits, UCP 600, but this Agreement is not a letter of
+credit and Blockmediary is not an issuing bank (International Chamber of Commerce, 2007).
+Where this Agreement is silent, UCP 600 principles provide interpretive guidance but are not
+binding. The Escrow Specification remains authoritative.
+2.4 Electronic Document Acceptance, Minimum Viable Product Scope
+For this Deal, the Seller must present scanned originals of the Required Documents, being
+high resolution portable document format images of physically signed originals. Electronic
+transferable records, including electronic bills of lading, are not accepted under this Agreement
+unless Schedule 1 expressly specifies an Electronic Trade Documents Act qualifying electronic
+system.Open discussion point: post minimum viable product, add an electronic bill of lading
+pathway with the corresponding statutory representation clause.
+3. Deal Setup and Approval
+3.1 Escrow Specification
+The Escrow Specification at Schedule 1 was generated by Blockmediary based on the trade terms
+provided by the party or initiating platform identified in Schedule 1. The Parties confirm that the
+Escrow Specification accurately reflects the agreed trade terms. If there is a conflict between the
+Escrow Specification and the underlying sale contract, the Escrow Specification governs for the
+purposes of this Agreement and the Release Rules.
+4
+
+=== PAGE 5 ===
+3.2 Party Approval
+This Agreement takes effect once all three parties have recorded their approval in the
+Blockmediary platform. Each Party agrees that their electronic approval, whether by wallet
+signature, click acceptance, or another method confirmed in the platform, constitutes a valid and
+binding electronic signature under the Electronic Communications Act 2000 and, where
+applicable, the eIDAS 2.0 Regulation (UK Government, 2000; European Parliament and
+Council, 2024).Open discussion point: confirm the signature method to be used, whether a
+wallet based sign in with Ethereum signature, a third party signing platform, or click wrap
+acceptance, and update this clause accordingly.
+3.3 Initiating Party
+Where this Deal was initiated by a platform or intermediary on behalf of the Buyer and Seller,
+the following applies:
+This Deal was initiated by the Initiator named in Schedule 1 on behalf of the Buyer
+and Seller. The Initiator is not a principal to this Agreement and has no right to
+receive the Escrow Amount. Know your customer and know your business
+verification of the Buyer and Seller has been conducted either directly by
+Blockmediary or by the Initiator under a written reliance agreement made under
+regulation 39 of the Money Laundering Regulations 2017 (UK Government, 2017),
+as recorded in Schedule 1.
+4. Funding
+4.1 Buyer Deposit
+The Buyer shall deposit the Escrow Amount in the Settlement Token to the Escrow Contract
+address specified in Schedule 1 on the Blockchain on or before the Funding Deadline. The
+deposit is made by the Buyer’s wallet address calling the deposit function on the Escrow Contract.
+4.2 Funds Locked
+Upon confirmation of the deposit on chain, the Escrow Contract will reflect the Funded state.
+Blockmediary will notify both Parties. The Seller may then proceed to ship goods and prepare
+the Required Documents.
+5
+
+=== PAGE 6 ===
+4.3 Custody Position
+The Escrow Amount is held by the Escrow Contract rather than in an account or wallet
+Blockmediary itself operates, and Blockmediary does not route the Escrow Amount through a
+customer wallet under its direct control. This describes the architecture rather than a settled
+regulatory classification. Blockmediary can, through the releaser role functions, being the record
+verdict and refund functions, determine when the Escrow Amount moves, and this capability
+may itself be treated by a regulator as an indicator of custody or control regardless of where the
+funds technically sit (Transakt, 2026). Blockmediary does not represent to the Parties that this
+architecture has been confirmed as non custodial by any regulator, and its custody classification
+and operating model may be updated as regulatory guidance develops.
+4.4 Know Your Customer, Sanctions, and Export Controls Gate
+The Buyer’s deposit will be blocked unless each of the following conditions is satisfied before
+funding.
+(a) Both Parties have completed know your customer and know your business verification to
+Blockmediary’s satisfaction.
+(b) Neither Party, nor any wallet address associated with either Party, appears on applicable
+sanctions lists maintained by the Office of Foreign Assets Control, the United Nations, His
+Majesty’s Treasury, or the United Arab Emirates.
+(c) The goods described in Schedule 1 are not subject to an export licence requirement under
+the Export Control Order 2008, the European Union’s Dual Use Regulation 2021/821,
+or the United States Export Administration Regulations or International Traffic in Arms
+Regulations (UK Government, 2008; European Parliament and Council, 2021; US Bureau
+of Industry and Security, 2024; US Directorate of Defense Trade Controls, 2024), or the
+Seller has confirmed that it holds a valid applicable export licence and has provided a copy.
+(d) The trade corridor is not a sanctioned or prohibited corridor.
+Blockmediary will notify the Parties of any hold and its reason. A hold is not a termination of
+the Deal; the Parties may resolve the underlying issue and request re-screening.
+5. Document Submission
+5.1 Seller’s Obligation
+The Seller shall submit the Required Documents via the Blockmediary platform on or before the
+Submission Deadline specified in Schedule 1. The Seller warrants that all documents submitted
+are genuine, have not been altered, and accurately reflect the underlying trade.
+6
+
+=== PAGE 7 ===
+5.2 Completeness
+A presentation that omits any Required Document is an incomplete presentation and will not be
+assessed for compliance. Blockmediary will notify the Seller of any missing document so that it
+may be supplied before the Submission Deadline.
+5.3 Document Format
+Documents must be submitted as high resolution scanned files of paper originals, at a minimum
+resolution specified in Schedule 1. The Seller warrants that each scanned document is a true
+and accurate copy of the original and that the original has not been separately transferred or
+encumbered.
+5.4 Shipment Deadline
+Documents must evidence shipment on or before the Shipment Deadline specified in Schedule 1.
+The shipment date is determined from the transport document, being the bill of lading date, the
+air waybill issue date, or an equivalent, rather than from the Seller’s representations. A shipment
+date after the Shipment Deadline is a Discrepancy.
+6. Document Verification
+6.1 Review Period
+Blockmediary shall complete its document review and issue either a Notice of Release or a
+Discrepancy Notice within the review period specified in Schedule 1, defaulting to five banking
+days, of receipt of a complete presentation. This mirrors the five banking day standard set by
+UCP 600 Article 14(a) (International Chamber of Commerce, 2007).Open discussion point:
+confirm or vary the default review period.
+6.2 Standard of Examination
+Blockmediary examines documents on their face against the Release Rules in the Escrow
+Specification. Data in documents need not be identical across documents but must not conflict,
+consistent with UCP 600 Article 14(b); the invoice goods description must match the Escrow
+Specification exactly; amounts are compared in the token’s minor units using deterministic code
+rather than manual calculation; and quantity tolerances apply of plus or minus five per cent on
+quantities not expressed in units, widening to plus or minus ten per cent only where the Escrow
+Specification uses the qualifier approximately or about, consistent with UCP 600 Article 30
+(International Chamber of Commerce, 2007).
+7
+
+=== PAGE 8 ===
+6.3 Compliant Presentation, Mandatory Release
+If Blockmediary determines that a presentation is Compliant, it shall issue a Notice of Release.
+Upon expiry of the Objection Window with no valid Permitted Objection, Blockmediary must
+call the record verdict function on the Escrow Contract, moving the Deal to the Release Pending
+state. Once in that state, the release function on the Escrow Contract is permissionless: any party,
+including the Seller directly, may call it to transfer the Escrow Amount to the Seller’s wallet.
+Blockmediary has no discretion to delay or refuse release once a Compliant determination has
+been made and the Objection Window has expired with no valid objection. This is the core trust
+guarantee given to the Seller.
+6.4 Review Deadline Failure
+If Blockmediary fails to issue either a Notice of Release or a Discrepancy Notice within the
+review period, Blockmediary is precluded from later claiming that the documents were non
+compliant, consistent with the principle underlying UCP 600 Article 16 (International Chamber
+of Commerce, 2007). In that event, Blockmediary shall treat the presentation as Compliant and
+proceed to issue a Notice of Release. The Seller may contact Blockmediary support to trigger
+this remedy.
+6.5 Human Reviewer Sign-Off
+For any Deal with an Escrow Amount above the value cap specified in Schedule 1, or where
+artificial intelligence assisted extraction confidence falls below the threshold specified in Schedule
+1 on any checked field, a human document reviewer must sign off on the compliance verdict
+before a Notice of Release is issued.Open discussion point: confirm the default value cap.
+7. Objection Window and Release
+7.1 Notice of Release
+Upon a Compliant determination, Blockmediary will notify both Parties. The Buyer’s Objection
+Window begins at the time of that notification.
+7.2 Permitted Objections, Exhaustive List
+The Buyer may raise an objection during the Objection Window only on the following grounds,
+referred to as Permitted Objections.
+(a) A Required Document is missing from the presentation.
+8
+
+=== PAGE 9 ===
+(b) A document field materially conflicts with the Escrow Specification, for example the seller
+name, buyer name, amount, currency, or port of loading or discharge, in a way not already
+identified by Blockmediary.
+(c) The transport document evidences shipment after the Shipment Deadline.
+(d) The Buyer has reasonable grounds, supported by evidence, to believe a submitted document
+is fraudulent.
+(e) A sanctions or know your customer compliance issue has arisen after the Notice of Release
+that was not known at the time of funding.
+(f) Both Parties mutually agree to request an amendment to the Release Rules, in which case
+clause 8.3 applies.
+The following do not constitute Permitted Objections and will be rejected: a change of mind
+about the trade; dissatisfaction with the goods, unless an inspection certificate is itself a Release
+Rule and that certificate reports a deficiency; a wish to renegotiate price or terms after shipment;
+any subjective quality complaint not evidenced by a Required Document; and any ground not
+listed in (a) through (f) above. The Buyer’s right to object is strictly limited to these grounds.
+This limitation is fundamental to the value the product provides to the Seller and is accepted by
+the Buyer at the time of approving this Agreement.
+7.3 Raising a Permitted Objection
+A Permitted Objection must be raised in writing via the Blockmediary platform during the
+Objection Window, stating the specific ground relied upon from clause 7.2, the specific document
+or documents and field or fields in issue, and, where clause 7.2(d) or 7.2(e) applies, supporting
+evidence. Blockmediary will assess whether the objection falls within clause 7.2. A determination
+that an objection is not a Permitted Objection will be recorded in the Audit Ledger together with
+reasons.
+7.4 No Valid Objection
+If the Objection Window expires with no Permitted Objection raised, or any objection raised
+is determined to fall outside clause 7.2, Blockmediary shall proceed with the record verdict
+function and the release function may then be called to transfer the Escrow Amount to the Seller.
+9
+
+=== PAGE 10 ===
+8. Discrepancy, Amendment and Waiver
+8.1 Discrepancy Notice
+If Blockmediary determines that the presentation is Discrepant, it will issue a Discrepancy Notice
+to the Seller identifying each specific Discrepancy, within the review period set out in clause 6.1.
+Blockmediary will not rely on any Discrepancy not stated in the Discrepancy Notice.
+8.2 Seller’s Options on Discrepancy
+On receipt of a Discrepancy Notice, the Seller may proceed in one of three ways.
+(a) Cure: re-present corrected documents before the Submission Deadline. A re-presentation
+restarts the review period under clause 6.1.
+(b) Request waiver: request that the Buyer waive the identified Discrepancy or Discrepancies
+and agree to release. The Buyer’s waiver must be given in writing via the platform. A
+valid waiver authorises Blockmediary to treat the presentation as Compliant for the waived
+Discrepancy or Discrepancies and to proceed to release.
+(c) Accept refund: where the Seller cannot cure and the Buyer will not waive, the Seller may
+request a refund of the Escrow Amount to the Buyer, terminating the Deal.
+8.3 Amendment
+If both Parties wish to change the Release Rules or other material terms of this Agreement, being
+a mutual amendment, the Deal must be terminated, the Escrow Amount refunded to the Buyer,
+and a new Deal created with an updated Escrow Specification. This follows from the smart
+contract architecture: the Escrow Specification hash committed on chain cannot itself be altered
+without deploying a new deal.
+9. Refund
+9.1 Refund Conditions
+Blockmediary shall call the refund function on the Escrow Contract and return the Escrow
+Amount to the Buyer’s wallet if any of the following conditions, referred to as Refund Conditions,
+are met.
+(a) The Seller has not submitted a complete presentation by the Submission Deadline.
+(b) The Seller has submitted a Discrepant presentation that cannot be cured or waived, and the
+Seller requests a refund under clause 8.2(c).
+10
+
+=== PAGE 11 ===
+(c) Both Parties have mutually agreed in writing to cancel the Deal.
+(d) A dispute has been resolved in the Buyer’s favour by the Dispute Forum specified in
+Schedule 2.
+(e) A sanctions or export control issue has been identified that prevents release under applicable
+law.
+9.2 Refund Processing
+A refund requires human reviewer sign off within Blockmediary before the refund function
+is called on chain. Refunds are typically processed within the period specified in Schedule 1,
+defaulting to two banking days, of a Refund Condition being confirmed. Blockmediary will
+notify both Parties.
+10. Dispute Resolution
+10.1 First Line: Blockmediary Determination
+Any dispute about whether a Permitted Objection is valid, whether a Discrepancy exists, or
+whether a Refund Condition has been met shall first be determined by Blockmediary, acting
+as the independent escrow operator. Blockmediary’s determination is made on the face of the
+documents against the Escrow Specification and is recorded in the Audit Ledger.
+10.2 Escalation for Documentary Disputes: ICC DOCDEX
+If a Party disputes Blockmediary’s determination on a documentary matter, being whether a
+presentation is Compliant or Discrepant, either Party may refer the matter to the International
+Chamber of Commerce’s Documentary Instruments Dispute Resolution Expertise procedure,
+known as DOCDEX (International Chamber of Commerce, 2015). A DOCDEX panel of three
+accredited experts will deliver a non binding expert opinion within thirty days. The Parties
+agree to consider the DOCDEX opinion in good faith before escalating further. DOCDEX is not
+arbitration; its decision is binding only if both Parties agree in advance. It is fast and lower cost
+than arbitration, which makes it well suited to documentary disputes specifically.
+10.3 Escalation for Other Disputes: Arbitration
+All other disputes arising out of or in connection with this Agreement, including disputes about
+fraud, breach of contract, or liability, shall, if not resolved by negotiation within the period
+specified in Schedule 2, be finally resolved by arbitration under the rules specified in Schedule 2,
+with the seat of arbitration and language of proceedings likewise specified there.Open discussion
+11
+
+=== PAGE 12 ===
+point: confirm the forum. International Chamber of Commerce arbitration is the global standard
+for trade disputes; London Court of International Arbitration arbitration suits disputes seated in
+London specifically.
+10.4 Escrow Hold During Dispute
+When a Permitted Objection is raised and Blockmediary determines it is valid, or when a dispute
+is escalated, Blockmediary will not call the record verdict function, keeping the Deal in the
+Funded state. The Escrow Amount remains held on chain until the dispute is resolved or a
+Refund Condition is met. The Audit Ledger records the hold and its reason.
+10.5 Governing Law
+This Agreement, and any dispute arising from it, shall be governed by and construed in
+accordance with the laws of England and Wales, unless the Parties have specified an alternative
+governing law in Schedule 1.
+Open discussion point: this default assumes Blockmediary is itself a contracting party to the
+Agreement. For a Deal conducted under the Dubai International Financial Centre partner-led
+pilot route, the Dubai Financial Services Authority authorised partner, rather than Blockmediary,
+may be the contracting regulated principal, in which case this Agreement’s party structure
+and governing law default may need to sit beneath, or be superseded by, the partner’s own
+contracting terms. For a Party domiciled in the European Union who may qualify as a consumer
+rather than a business counterparty, mandatory consumer protections of that Party’s home
+jurisdiction may apply under Article 6 of the Rome I Regulation regardless of the governing
+law selected here. Both points require confirmation from qualified legal counsel before this
+Agreement is used for a Deal under either route.
+11. Pause: Emergency Control
+11.1 Permitted Grounds
+Blockmediary may invoke the pause function on the Escrow Contract, which suspends all fund
+movements including the permissionless release function, only on the following grounds.
+(a) A critical vulnerability or exploit in the Escrow Contract has been identified or is reasonably
+suspected.
+(b) A regulatory direction, court order, or competent authority instruction requires suspension.
+(c) A sanctions or export control issue has been identified, after a Notice of Release has been
+issued, that prevents release under applicable law.
+12
+
+=== PAGE 13 ===
+11.2 Prohibited Use
+Blockmediary must not invoke the pause function as a routine operational control, to delay a
+compliant payout for administrative convenience, or for any reason not listed in clause 11.1.
+Use of the pause function outside these grounds, in circumstances where the Seller is entitled to
+release, is a breach of this Agreement.
+11.3 Notification and Resolution
+If the pause function is invoked, Blockmediary will notify both Parties immediately with the
+stated reason and an estimated resolution timeline, and will lift the pause as soon as the grounds
+are resolved. If the pause function is invoked on a Deal in the Release Pending state without
+a valid ground under clause 11.1, Blockmediary shall be liable to the Seller for any direct loss
+caused by the delay.
+12. Representations and Warranties
+Each Party represents and warrants to the others, as at the Effective Date and as at the date of
+funding, that the following statements are true.
+(a) They have the legal capacity and authority to enter into this Agreement and to perform
+their obligations under it.
+(b) This Agreement constitutes a valid and binding obligation enforceable against them.
+(c) They have successfully completed Blockmediary’s know your customer and know your
+business process and all information provided is accurate and complete.
+(d) They are not subject to any sanctions imposed by the Office of Foreign Assets Control, the
+United Nations, His Majesty’s Treasury, or the United Arab Emirates, nor any other legal
+prohibition that would prevent them from performing this Agreement.
+(e) In the case of the Seller only, the goods described in Schedule 1 do not require an export
+licence under applicable law, or the Seller holds a valid export licence and has provided a
+copy to Blockmediary.
+(f) In the case of the Seller only, all documents submitted via the Blockmediary platform are
+genuine, have not been altered, and accurately reflect the underlying trade.
+(g) In the case of the Buyer only, the Buyer’s wallet address is within the Buyer’s sole control
+and the Buyer has not authorised any third party to operate it for this Deal.
+13
+
+=== PAGE 14 ===
+13. Data Protection
+13.1 Data Controller
+Blockmediary is the data controller for personal data processed in connection with this
+Agreement, including know your customer and know your business records, party names, and
+contact details. Processing is on the lawful basis of contract performance and, for sanctions and
+anti money laundering screening, legal obligation, under Article 6 of the General Data
+Protection Regulation (European Parliament and Council, 2016).
+13.2 Off Chain Only
+All personal data, including party names, identification documents, contact details, and wallet
+addresses linked to identity, is held in Blockmediary’s off chain database and is never written
+to the Blockchain. The Escrow Contract stores only the Buyer and Seller wallet addresses, the
+Escrow Amount, the Deal state, and the Escrow Specification hash.Open discussion point: if
+names are stripped from the Escrow Specification before hashing, this clause should confirm
+explicitly that the Escrow Specification hash is computed over a version of the specification
+containing no personal data.
+13.3 Retention
+Personal data will be retained for the period specified in Schedule 1, defaulting to five years
+from the completion of the Deal, whether Released, Refunded, or Cancelled, to comply with the
+record keeping obligations under regulation 40 of the Money Laundering Regulations 2017 (UK
+Government, 2017). After that period, data will be securely deleted or anonymised.
+13.4 Subject Rights
+Each Party has rights to access, rectify, and request erasure of their personal data, subject to
+overriding legal obligations, in particular anti money laundering record keeping. Requests should
+be directed to the data protection contact recorded in Schedule 1.
+13.5 Cross Border Transfers
+If personal data is transferred outside the United Kingdom or the European Economic Area, for
+example to a cloud provider or a know your business vendor in a third country, Blockmediary
+will ensure that an appropriate transfer mechanism is in place, whether the United Kingdom
+International Data Transfer Agreement, European Union standard contractual clauses, an
+adequacy decision, or an equivalent mechanism.
+14
+
+=== PAGE 15 ===
+14. Liability
+14.1 Limitation
+Blockmediary’s liability to either Party under or in connection with this Agreement is limited to
+direct losses caused by Blockmediary’s fraud, wilful misconduct, or gross negligence, and in any
+event to the amount of fees paid by the claimant Party to Blockmediary in connection with this
+Deal in the twelve months preceding the claim.
+14.2 Exclusions
+Blockmediary shall not be liable for loss arising from the quality, condition, or non delivery
+of goods, since Blockmediary releases funds on the basis of document compliance rather than
+goods receipt; loss arising from a Party’s own misrepresentation in documents or in the know
+your customer process; loss arising from a smart contract exploit or a force majeure event
+beyond Blockmediary’s reasonable control, provided Blockmediary has complied with its key
+management and audit obligations; or indirect or consequential loss, loss of profit, or loss of
+business.
+14.3 Force Majeure
+Neither Party shall be liable for delay or failure to perform caused by circumstances beyond their
+reasonable control. If a force majeure event prevents the Seller from shipping by the Shipment
+Deadline, the Parties may agree an extension by mutual amendment under clause 8.3.
+15. Term and Termination
+15.1 Term
+This Agreement commences on the Effective Date and continues until the Deal reaches a terminal
+state, being Released, Refunded, or Cancelled.
+15.2 Cancellation Before Funding
+Either Party may cancel the Deal before the Buyer deposits the Escrow Amount. Cancellation is
+effected by written notice via the Blockmediary platform, and Blockmediary will call the cancel
+function on the Escrow Contract.
+15
+
+=== PAGE 16 ===
+15.3 Survival
+Clauses 10, being Dispute Resolution, 12, being Representations and Warranties, 13, being
+Data Protection, 14, being Liability, and this clause 15.4 survive termination or expiry of this
+Agreement.
+15.4 Governing Law, Survival
+The governing law clause at 10.5 and this survival clause survive any termination of this
+Agreement.
+16. General
+16.1 Entire Agreement
+This Agreement, including all Schedules, constitutes the entire agreement between the Parties
+relating to the escrow arrangement and supersedes all prior representations about it. It does not
+affect or replace the Parties’ underlying sale contract.
+16.2 Amendments
+This Agreement may only be amended by mutual written agreement of all three parties recorded
+in the Blockmediary platform. Amendments to the Release Rules require a new Deal under
+clause 8.3.
+16.3 No Assignment
+No Party may assign or transfer their rights or obligations under this Agreement without the
+prior written consent of the other Parties, except that Blockmediary may assign its rights and
+obligations to a group company or to a successor entity acquiring all or substantially all of
+Blockmediary’s business.
+16.4 Severability
+If any provision of this Agreement is held invalid or unenforceable, the remaining provisions
+continue in full force.
+16.5 Notices
+Notices under this Agreement shall be given via the Blockmediary platform’s notification system,
+or by email to the address registered by each Party. Notices are effective on delivery confirmation.
+16
+
+=== PAGE 17 ===
+16.6 No Third Party Rights
+This Agreement does not confer any rights on third parties under the Contracts (Rights of
+Third Parties) Act 1999 (UK Government, 1999), except that any successor or assignee of
+Blockmediary may enforce clause 14, being Liability.
+Schedule 1: Deal Terms and Release Rules
+This Schedule is completed for each Deal and is incorporated into, and governed by, the Trade
+Escrow Agreement.
+Deal Terms
+Deal IDThe identifier matching the on chain deal identifier.
+Escrow Contract address
+The address on the Blockchain at which the Escrow Contract is deployed.
+BlockchainBase Sepolia or Base Mainnet, with the corresponding chain identifier.
+Buyer legal name and wallet address
+As provided by the Buyer at onboarding.
+Seller legal name and wallet address
+As provided by the Seller at onboarding.
+Settlement Token
+USDC or EURC.
+Escrow AmountThe amount in the Settlement Token, expressed in minor units.
+Invoice Currency
+The currency stated in the commercial invoice, being United States dollars,
+euro, or pounds sterling.
+Goods description and Harmonised System code
+As provided at deal setup.
+IncotermThe applicable Incoterms 2020 rule and named port or place.
+Trade corridorThe origin country and destination country.
+Funding Deadline
+The date by which the Buyer must deposit the Escrow Amount.
+Shipment Deadline
+The latest shipment date evidenced by the transport document.
+17
+
+=== PAGE 18 ===
+Submission Deadline
+The latest date for the Seller’s document presentation.
+Objection Window
+Defaulting to forty eight hours after the Notice of Release.
+Value cap Defaulting to fifty thousand pounds sterling equivalent; above this, human
+reviewer sign off is required.
+Governing lawEnglish law by default, or an alternative as agreed by the Parties.
+Dispute forumAs set out in Schedule 2.
+Required Documents
+The Incoterm selected for this Deal drives the baseline set of Required Documents. A commercial
+invoice is always required, and must be issued by the Seller, name the Buyer as consignee, state
+the Invoice Currency, and match the goods description in this Schedule. A packing list is always
+required, with quantities consistent with the invoice. An on board bill of lading is required
+for free on board, cost and freight, and cost, insurance, and freight sea shipments, and must
+carry an on board notation and date, name the vessel, and be clean, with no damage clauses.
+An air waybill is required for air shipments, with its date of issue serving as the shipment date.
+A road or rail transport document is required for land shipments, and a multimodal transport
+document is required for combined mode shipments. An export customs declaration is required
+for most Incoterms other than ex works. An insurance certificate or policy is required for cost,
+insurance, and freight terms, at a minimum of Institute Cargo Clauses C cover, and for carriage
+and insurance paid terms, at a minimum of Institute Cargo Clauses A cover, in both cases at
+no less than one hundred and ten per cent of the invoice value; cover notes are not accepted.
+A certificate of origin is required where a preferential tariff, a letter of credit condition, or a
+buyer requirement calls for one. An inspection certificate is required where quality or quantity
+verification has been specified, issued by the named inspector before shipment. An export
+licence is required where the goods fall on a controlled list. Import customs clearance evidence
+is required for delivered duty paid terms only. Any further document specific to this Deal is
+recorded separately in the deal setup record.
+Release Rules
+The following conditions must all be satisfied for a Compliant determination: every Required
+Document ticked above has been submitted; the invoice amount, converted to minor units,
+matches the Escrow Amount within the tolerance recorded at deal setup; the Seller name on
+the invoice matches the Seller named in this Agreement to a fuzzy match score of at least
+0.8; the Buyer name on the invoice matches the Buyer named in this Agreement to the same
+18
+
+=== PAGE 19 ===
+threshold; the invoice currency field matches the Invoice Currency recorded above; the shipment
+date evidenced by the transport document is on or before the Shipment Deadline; the transport
+document is clean, meaning free of damage, short shipment, or condition clauses; and, where
+insurance is a Required Document, the coverage is at least one hundred and ten per cent of the
+invoice amount. Any deal specific rule beyond this baseline set is recorded separately in the deal
+setup record.
+Schedule 2: Dispute Forum
+The first line forum for documentary disputes is the International Chamber of Commerce’s
+DOCDEX procedure, which delivers a non binding expert opinion within thirty days
+(International Chamber of Commerce, 2015). All other disputes escalate to arbitration, either
+under the International Chamber of Commerce Rules of Arbitration or the London Court of
+International Arbitration Rules, in the version in force at the date of the dispute, with the seat of
+arbitration in London, England, and the language of proceedings English. The number of
+arbitrators defaults to one, reflecting that a single arbitrator is faster and less costly for typical
+small and medium sized enterprise deal values, though three arbitrators may be agreed for larger
+disputes. An emergency arbitrator is available under both the International Chamber of
+Commerce and London Court of International Arbitration Rules, which is relevant where
+injunctive relief is needed to prevent a fraudulent release.
+This template is for internal Blockmediary team use and discussion. It is a working draft, not
+a final legal document. Qualified legal counsel admitted in the relevant jurisdiction should be
+sought before this Agreement is used with real parties or real funds. Certain provisions, including
+the signature method, governing law alternatives, dispute forum, value caps, and the Objection
+Window, remain open discussion points and require team agreement before finalisation.
+19
+
+=== PAGE 20 ===
+References
+European Parliament and Council. (2016).Regulation (eu) 2016/679 (general data protection
+regulation).
+European Parliament and Council. (2021).Regulation (eu) 2021/821 setting up a union regime
+for the control of exports of dual-use items.
+European Parliament and Council. (2024).Regulation (eu) 2024/1183 amending the eidas
+regulation (eidas 2.0).
+International Chamber of Commerce. (2007).Uniform customs and practice for documentary
+credits (ucp 600), icc publication no. 600.ICC.
+International Chamber of Commerce. (2015).Icc docdex rules for documentary
+instruments dispute resolution expertise.Retrieved from https://iccwbo.org/
+dispute-resolution/dispute-resolution-services/adr/docdex/
+Transakt. (2026).Difc partner-led pilot and vara scale readiness report.(Internal
+business-planning report prepared for Blockmediary, 12 August 2026)
+UK Government. (1999).Contracts (rights of third parties) act 1999.(c. 31)
+UK Government. (2000).Electronic communications act 2000.(c. 7)
+UK Government. (2008).Export control order 2008.(SI 2008/3231)
+UK Government. (2017).The money laundering, terrorist financing and transfer of funds
+(information on the payer) regulations 2017.(SI 2017/692, as amended)
+US Bureau of Industry and Security. (2024).Export administration regulations.(15 CFR Parts
+730-774)
+US Directorate of Defense Trade Controls. (2024).International traffic in arms regulations.(22
+CFR Parts 120-130)
+20

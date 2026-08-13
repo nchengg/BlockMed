@@ -1,7 +1,11 @@
-# Blockmediary — Landing Page Design Sheet
+# Blockmediary — Landing Page Design Sheet (superseded)
 
-> This document is the implementation spec for Opus 4.8.
-> Read it fully before writing a single line of code.
+> **Superseded 2026-08-13.** `CLAUDE.md` (root of the repo) is now the authoritative frontend
+> spec — it has a different colour system, section structure, and copy, and it also carries
+> the current AI-verification-language correction that this file predates. Do not build from
+> this file; it's kept for design-history reference only.
+>
+> This document was the implementation spec for Opus 4.8.
 > Do not deviate from the scene structure or copy without flagging it first.
 
 ---

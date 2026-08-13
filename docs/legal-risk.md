@@ -1,7 +1,15 @@
 # Blockmediary — Legal & Compliance Risk Register
 **Role:** Chief Compliance Officer (CCO) — Badhri
-**Last updated:** 2026-06-23 (rev. 5)
+**Last updated:** 2026-08-13 (rev. 6)
 **Status:** Living document — update as research and build progress
+
+**Rev. 6 change note:** Section 4 (UAE) and Section 10 rewritten. The UAE regulatory home is
+no longer "ADGM for MVP; DIFC as scale-up" — the confirmed route, following a team decision
+informed by a founder's existing DIFC-connected partner relationship and the detailed
+readiness analysis in `docs/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.md`, is a
+**DIFC partner-led pilot run in parallel with an independent VARA licence application**. ADGM
+is no longer part of the plan. This mirrors the same route change already made in the
+submitted `Risk_assessment.tex` / PDF — this document had not been updated to match until now.
 
 ---
 
@@ -10,6 +18,8 @@
 This is the working legal risk reference for Blockmediary's CCO function. It covers the key regulatory risks, applicable rules, and mitigation strategies across our two target jurisdiction groups: **UK/EU** and **UAE/Dubai**. Turkey has been excluded from target markets. It serves both as internal working notes and as a shareable compliance reference for the team and hackathon judges.
 
 Blockmediary is a **programmable documentary escrow layer for SME cross-border trade** — it locks stablecoin (USDC on Base) into a smart contract, verifies trade documents, and releases funds on compliance. This creates regulatory surface area across: crypto/stablecoin regulation, payment services, AML/KYB/KYC, data privacy, trade finance, and consumer/business protection law.
+
+**Current status:** We validated the core escrow mechanism on testnet as a proof of concept. Mainnet deployment for real value would additionally require licensing/VASP registration, resolution of client-asset custody status, sanctions screening, resolution of the GDPR question raised by the on-chain spec hash, and a security audit — all of which are set out in this register as a forward-looking compliance roadmap, **not** as already satisfied.
 
 ---
 
@@ -30,7 +40,7 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 | 11 | Turkey data protection | KVKK Law No. 6698 | Turkey | 🟡 Medium | ⛔ N/A — Turkey excluded |
 | 12 | UAE mainland licensing | CBUAE Payment Token Services Reg. | UAE mainland | 🔴 High | License or partner required |
 | 13 | UAE Dubai VARA licensing | VARA Rulebook v2.0 (June 2025) | UAE (Dubai) | 🔴 High | Category 1 token approval needed |
-| 14 | DIFC / ADGM alternative | DFSA / FSRA crypto frameworks | UAE (Free zones) | 🟢 Lower | More accessible for MVP |
+| 14 | DIFC partner-led pilot + VARA licence (confirmed route) | DFSA outsourcing rules / VARA Rulebook v2.0 | UAE (DIFC + Dubai) | 🟢 Lower | Confirmed — pilot targets Month 12, VARA licence targets Month 18 |
 | 15 | UAE data protection | PDPL Federal Decree-Law No. 45/2021 | UAE | 🟡 Medium | Exec regulations pending |
 | 16 | Sanctions screening | OFAC, UN, HMT, UAE lists | Global | 🔴 High | Must screen before every deal |
 | 17 | Trade finance / documentary credit law | UCP 600, URDG 758, eUCP | Global | 🟡 Medium | Governs release rule logic |
@@ -82,7 +92,7 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 **Mitigation:**
 - Take legal advice on whether Blockmediary's activity constitutes a regulated cryptoasset service under the new regime.
 - For MVP/hackathon: operate in testnet only; no UK persons transacting with real funds.
-- For production: budget for FCA authorisation (timeline: 12–18 months) or consider launching initially in a free-zone jurisdiction (ADGM, DIFC) with a cleaner path to authorisation.
+- For production: budget for FCA authorisation (timeline: 12–18 months) or launch initially via the confirmed DIFC partner-led pilot (§4.2, §10), which has a faster path to a first live transaction.
 
 **Key reference:** [FCA CP25/40](https://www.fca.org.uk/publications/consultation-papers/cp25-40-regulating-cryptoasset-activities)
 
@@ -242,7 +252,7 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 - Confirm with Circle that USDC used is MiCA-compliant (Circle received EMI authorisation in France in 2024).
 - For EU market entry: apply for MiCA CASP authorisation with a national competent authority (note: requires EU-established entity).
 - For hackathon: note the MiCA compliance path in the pitch; operate on testnet only.
-- Consider ADGM/DIFC as the initial regulatory home and passport to EU later.
+- The confirmed DIFC partner-led pilot (§4.2, §10) is the initial regulatory home; whether it can passport to EU activity later is not yet confirmed and should be checked with counsel.
 
 **Key references:**
 - [EBA MiCA page](https://www.eba.europa.eu/regulation-and-policy/asset-referenced-and-e-money-tokens-mica)
@@ -256,7 +266,7 @@ Blockmediary is a **programmable documentary escrow layer for SME cross-border t
 
 **Risk to Blockmediary:**
 - DORA is not a standalone licence — it is a compliance obligation that comes with MiCA CASP authorisation (already flagged as required in §2.1). Firms cannot hold a MiCA CASP licence without also satisfying DORA.
-- Blockmediary's architecture depends on multiple third-party ICT providers: Anthropic Claude (AI/OCR), cloud infrastructure (document storage, audit ledger), KYB/KYC provider (TBD), blockchain node provider (Base Sepolia / mainnet RPC). Each of these is a "third-party ICT provider" under DORA, requiring: risk assessment, written contractual terms (including audit rights, exit plans, SLA commitments), and inclusion in Blockmediary's ICT risk register.
+- Blockmediary's target architecture depends on multiple third-party ICT providers: Anthropic Claude (AI/OCR extraction — roadmap, not yet delivered; the current prototype uses a deterministic rules engine), cloud infrastructure (document storage, audit ledger), KYB/KYC provider (TBD), blockchain node provider (Base Sepolia / mainnet RPC). Each of these is a "third-party ICT provider" under DORA, requiring: risk assessment, written contractual terms (including audit rights, exit plans, SLA commitments), and inclusion in Blockmediary's ICT risk register.
 - DORA's incident reporting obligation: significant ICT incidents must be reported to the national competent authority. For Blockmediary, a releaser key compromise (§5.9 below), a prolonged outage of the document verification service, or a data breach affecting the KYC database would all be reportable incidents.
 - Major incidents must be reported: initial notification within 4 hours of classification; intermediate report within 72 hours; final report within 1 month.
 
@@ -351,43 +361,49 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 
 **Mitigation:**
 - For UAE mainland: partner with a CBUAE-licensed entity or obtain a stored value facility licence before offering services to UAE mainland users.
-- Consider structuring UAE market entry through **ADGM or DIFC** (see 4.3 below), which have more accessible crypto licensing frameworks.
+- Blockmediary avoids the mainland regime entirely at this stage by routing launch activity through the **DIFC partner-led pilot and a separate VARA licensing track** (see 4.2 and 4.3 below). This does not fully close the question: Financial Free Zones are excluded from the mainland regime's definition of "UAE" under Article 2, but a licensed VASP may still need a non-objection registration to custody or transfer certain foreign payment tokens, and whether a UAE buyer may lawfully prefund USDC/EURC into escrow remains an open legal gate pending written advice.
 
 ---
 
-### 4.2 Dubai (VARA) — Virtual Asset Regulatory Authority
+### 4.2 DIFC (Dubai International Financial Centre) — Partner-Led Pilot (confirmed route)
 
-**What it is:** VARA regulates virtual asset activities in Dubai (outside DIFC). VARA Rulebook v2.0 took effect 19 June 2025. Category 1 tokens (stablecoins, ARVAs) now require **prior VARA approval** before issuance or distribution.
+**What it is:** Following a team decision — informed by an existing relationship one of the founders holds with a DIFC-connected partner, and by the readiness analysis in `docs/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.md` — Blockmediary's near-term UAE route is a **partner-led pilot within DIFC**, not an independent DFSA licence application. A DIFC partner-led pilot is not itself a named DFSA licence category: it's an operating arrangement where a DFSA-authorised firm acts as the regulated principal and Blockmediary supplies the technology, document verification and workflow layer beneath it. A DIFC Commercial or Innovation Licence gives Blockmediary legal presence in the Centre but does **not** itself authorise regulated financial services.
 
 **Risk to Blockmediary:**
-- Distributing or facilitating USDC (a Category 1 token) in Dubai without VARA approval / using a VARA-licensed distributor could breach VARA rules.
-- Operating a VA escrow / transfer service in Dubai without VARA licensing triggers penalties.
+- Under DFSA outsourcing rules, the authorised partner remains responsible for the outsourced functions, must supervise Blockmediary as provider, and — where material — must notify the DFSA and maintain written outsourcing/contingency arrangements. The partner agreement and responsibility matrix are the central regulatory instrument, not a licence held by Blockmediary itself.
+- Blockmediary must not describe itself as "DFSA authorised" unless and until it separately obtains that authorisation.
+
+**Minimum requirements before the pilot accepts live funds:**
+- A written regulatory perimeter opinion mapping the customer journey, entities, wallet flows, release key and smart contract control.
+- Verification that the partner's actual DFSA permissions cover the specific custody, settlement and customer activity involved (not just generic fintech/payment permissions).
+- An executed partner term sheet and outsourcing agreement (scope, audit rights, incident reporting, termination).
+- A written responsibility matrix (customer contracting, onboarding, sanctions/wallet screening, safeguarding, release approval, loss liability).
+- A defined pilot envelope: B2B customers only, deal values at/below the £50k automation threshold, approved low-risk corridors, manual sign-off available on every release.
+
+**Note:** The DFSA Innovation Testing Licence (ITL) is *not* assumed required or sufficient for this route — it's a restricted sandbox for a firm that itself needs to test a regulated activity, and should only be pursued if counsel concludes Blockmediary will itself conduct regulated activity during testing. It is not a default substitute for the partner arrangement.
+
+**Target:** First paid transaction in Month 12 (from a Month 1 start).
+
+**Key reference:** `docs/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.md`
+
+---
+
+### 4.3 VARA (Virtual Assets Regulatory Authority) — Licensing for Scale (confirmed route)
+
+**What it is:** Alongside, and starting from the same Month 1 as, the DIFC pilot, Blockmediary pursues its **own VARA licence** for wider Dubai scale. VARA regulates virtual asset activity outside DIFC; an application must be made through a non-DIFC entity — Blockmediary needs a separate legal entity established outside the Centre, with a physical Dubai office and two full-time, fit-and-proper Responsible Individuals.
+
+**Risk / scope to Blockmediary:**
+- The closest apparent activity fit is **Virtual Asset Transfer and Settlement** (transmission/settlement of virtual assets between wallets), matching the release of escrowed stablecoin to the seller on documentary compliance.
+- Whether **Custody Services** also applies is *not yet settled* — direct smart-contract funding helps, but the server-side release key and any admin/upgrade/recovery rights Blockmediary retains may still amount to control requiring a written opinion. If Custody is required, VARA generally requires it to sit in a legally separate entity from other activities.
+- **Broker-Dealer Services** is not established by the current model (Blockmediary settles a physical goods sale, not a token purchase/sale) and should not be assumed mandatory.
+- VARA does not publish a guaranteed approval timeline. Base case: full licence targeted Month 18; Month 12 only in an early case where the activity perimeter resolves quickly; Month 24 in a delayed case.
+- **Fees remain planning placeholders, not confirmed:** a broad three-activity scope is indicatively ~AED 170,000 application / ~AED 480,000/year supervision / ~AED 1.5m capital floor; a Transfer-and-Settlement-only scope is closer to ~AED 40,000 application / ~AED 80,000/year supervision / capital floor of the higher of AED 500,000 or 25% of fixed annual overhead.
 
 **Mitigation:**
 - Use only VARA-approved stablecoins and VARA-licensed distributors for Dubai-based transactions.
-- For production Dubai launch: obtain relevant VARA licence (VA Management & Investment, VA Broker-Dealer, or VA Custody) as appropriate.
-- For hackathon: note VARA compliance path in pitch.
+- Do not treat "approval to incorporate" or in-principle approval as permission to serve customers — VARA scale activity should begin only from the effective date of the full licence.
 
-**Key reference:** [VARA Rulebook v2.0](https://www.vara.ae)
-
----
-
-### 4.3 DIFC / ADGM — Free Zone Frameworks (Lower Risk Path)
-
-**What it is:**
-- **ADGM (Abu Dhabi Global Market):** FSRA's Digital Asset Framework — well-regarded, internationally recognised, lighter-touch for innovative firms. FSRA has granted licences to crypto custody, exchange, and broker firms.
-- **DIFC (Dubai International Financial Centre):** DFSA's crypto-token regime — regulated crypto services within DIFC. DFSA issued its crypto token framework in 2022, with ongoing updates.
-
-**Risk to Blockmediary:** Lower than mainland UAE.
-
-**Opportunity:**
-- ADGM or DIFC could be the **regulatory home for the MVP** and early production stage.
-- ADGM's FSRA has a structured Innovation Programme (RegLab) that may be relevant for a hackathon-to-pilot pathway.
-- ADGM/DIFC entities can also serve as a base for GCC corridor deals.
-
-**Mitigation / Action:**
-- Prioritise ADGM or DIFC licensing for UAE market entry.
-- Review ADGM FSRA Digital Asset Framework and RegLab eligibility.
+**Key reference:** [VARA Rulebook v2.0](https://www.vara.ae); `docs/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.md`
 
 ---
 
@@ -397,12 +413,14 @@ Federal Decree Law No. 6 of 2025 extends CBUAE oversight to DeFi, cross-chain br
 
 **Risk to Blockmediary:**
 - KYB/KYC data on UAE users (passports, business registration, wallet data linked to identity) is personal data under PDPL.
-- DIFC and ADGM have their own separate data protection frameworks (DIFC DP Law 2020; ADGM DPR 2021) — these are arguably more mature than the federal PDPL.
+- Under the confirmed route, the two UAE entities sit under two different frameworks: the **DIFC pilot entity** is governed by DIFC's own Data Protection Law 2020 (the operative free-zone framework, since the DIFC entity runs the partner-led pilot); the **VARA entity**, established outside DIFC, falls under the **federal PDPL directly** rather than a second free-zone framework.
+- EU residents' data remains subject to GDPR directly regardless of where Blockmediary is incorporated — neither entity's location exempts the product from that separate obligation.
 
 **Mitigation:**
 - Align with PDPL principles now (data minimisation, security, consent/contract basis).
-- For DIFC/ADGM entities: comply with the respective free-zone DP framework.
-- Watch for executive regulations and implement within the grace period.
+- For the DIFC pilot entity: comply with DIFC DP Law 2020.
+- For the VARA entity: comply with the federal PDPL directly.
+- Watch for PDPL executive regulations and implement within the grace period.
 
 ---
 
@@ -507,7 +525,7 @@ The TRD explicitly acknowledges: "`whenNotPaused` on `release` re-introduces a c
 |---------|------|--------------------------|
 | Arts 4 & 5 | Autonomy principle — deal only in documents, not goods or performance | Once docs are compliant, funds **must** release even if buyer claims goods are defective. Disclose clearly in Trade Escrow Agreement. |
 | Art 14(a) | 5-banking-day examination window | Build a hard review deadline. Missing the window = funds release by default. |
-| Art 14(b) | Data need not be identical across docs but must not conflict | AI checker flags *conflicts* (e.g. "5,000 MT" invoice vs "5 MT" BoL), not mere phrasing variations. |
+| Art 14(b) | Data need not be identical across docs but must not conflict | The rules engine flags *conflicts* (e.g. "5,000 MT" invoice vs "5 MT" BoL), not mere phrasing variations; AI/OCR-assisted field extraction is a roadmap item, not yet delivered. |
 | Art 14(c) | Transport doc must be presented within 21 days of shipment date | Build a shipment-date-to-presentation-deadline validation. |
 | Art 14(d) | Goods description in invoice must match credit exactly; other docs need only be not inconsistent | Invoice goods description check is strict; other docs use looser matching. |
 | Art 14(g) | Conditions without a named document are disregarded | Every compliance condition in our deal setup must map to a specific document. |
@@ -635,7 +653,7 @@ The TRD explicitly acknowledges: "`whenNotPaused` on `release` re-introduces a c
 | 5 | Build sanctions screening into deal intake flow (OFAC, HMT, UN, UAE, Turkey lists) | CTO + Badhri | 🔴 High | MVP build |
 | 6 | Draft Privacy Notice covering UK GDPR, EU GDPR, UAE PDPL | Badhri | 🟡 Medium | Pre-launch |
 | 7 | ✅ DONE — Turkey excluded from target markets (CBRT stablecoin payment ban + CMB CASP barrier). Decision communicated to team. | Badhri | — | Closed Jun 2026 |
-| 8 | Assess ADGM RegLab / DIFC Innovation Testing Licence eligibility for UAE MVP | Badhri | 🟡 Medium | Pre-UAE launch |
+| 8 | Commission a single integrated perimeter memorandum with counsel covering the DFSA (DIFC pilot), VARA, and CBUAE positions together — the single most valuable next step per the readiness review | Badhri | 🔴 High | Pre-UAE launch |
 | 9 | Smart contract audit plan — identify auditor and timeline | CTO | 🟡 Medium | Pre-mainnet |
 | 10 | TBML red-flag checklist for document review workflow | Badhri + COO | 🟡 Medium | MVP |
 | 11 | Monitor FCA CP25/14 Policy Statement (expected Summer 2026) | Badhri | 🟢 Low | Ongoing |
@@ -673,8 +691,9 @@ The TRD explicitly acknowledges: "`whenNotPaused` on `release` re-introduces a c
 | Federal Decree Law No. 6 of 2025 | UAE | Extension of CBUAE oversight to DeFi/Web3 | — |
 | VARA Rulebook v2.0 (June 2025) | UAE (Dubai) | Category 1 token approval; CASP licensing in Dubai | — |
 | PDPL (FL No. 45/2021) | UAE | Personal data protection | — |
-| DIFC DP Law 2020 | UAE (DIFC) | DIFC data protection framework | — |
-| ADGM DPR 2021 | UAE (ADGM) | ADGM data protection framework | — |
+| DIFC DP Law 2020 | UAE (DIFC) | DIFC data protection framework — governs the DIFC pilot entity | — |
+| DFSA outsourcing rules | UAE (DIFC) | Governs the DIFC partner-led pilot's outsourcing arrangement | — |
+| VARA Rulebook v2.0 fees schedule | UAE (Dubai) | VARA application/supervision/capital fee schedule (planning placeholders) | — |
 | UCP 600 (ICC Pub. No. 600, 2007) | Global | ICC documentary credit standards — governs document examination and release logic | [docs/UCP600.md](UCP600.md) |
 | eUCP | Global | Electronic supplement to UCP 600 — governs electronic document presentations | — |
 | Incoterms® 2020 | Global | ICC trade terms — determines required documents, risk transfer, insurance obligations | [docs/Incoterms2020.md](Incoterms2020.md) |
@@ -773,7 +792,7 @@ Understanding how competitors handle compliance informs Blockmediary's own posit
 | **XREX** | Stablecoin escrow, B2B | Buyer approval | Yes (USDC/USDT) | Yes | MAS, US MSB | No |
 | **Komgo** | Commodity LC digitisation | LC process | Partial (Quorum) | No (large traders) | EU banking consortium | Partial (LC wrapper) |
 | **Contour** | LC replacement (wound down) | N/A | No (Corda) | No | N/A | Partial (attempted) |
-| **Blockmediary** | On-chain stablecoin escrow | Document compliance | Yes (USDC, Base) | Yes ($5K–$250K) | Seeking FCA, ADGM, MiCA | Yes — UCP 600-inspired |
+| **Blockmediary** | On-chain stablecoin escrow | Document compliance | Yes (USDC, Base) | Yes ($5K–$250K) | Seeking FCA, DIFC/VARA, MiCA | Yes — UCP 600-inspired |
 
 **Blockmediary's defensible differentiator:** Documentary release — funds release when documents are verified as compliant, not when the buyer clicks approve. This closes the gap that exists in Tazapay, Truzo, and XREX, and is the exact mechanism that makes Blockmediary a genuine LC alternative rather than a "hold-and-release" escrow service. Komgo is not a direct competitor. Contour's failure in November 2023 left this space wide open.
 
@@ -809,64 +828,39 @@ Turkey has been **fully excluded** from Blockmediary's target markets. The fiat-
 
 ---
 
-## 10. UAE Jurisdiction Choice — JAFZA vs DIFC vs ADGM
+## 10. UAE Jurisdiction Choice — DIFC Partner-Led Pilot and VARA Scale (confirmed route)
+
+This section previously weighed a single choice of regulatory home among JAFZA, DIFC, and ADGM, and recommended incorporating in ADGM first. **That recommendation has since been superseded.** Following a team decision — informed by an existing relationship one of the founders holds with a DIFC-connected partner, and by the more detailed readiness analysis in `docs/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.md` — Blockmediary's confirmed route is a **DIFC partner-led pilot run in parallel with an independent VARA licence application**, rather than a single free-zone choice or an ADGM-first sequence. ADGM is not part of the confirmed plan; it's recorded below as a route the team considered and moved away from, for transparency, rather than omitted silently.
+
+### The two confirmed tracks
+
+Both start together at inception (Month 1) and are legally distinct:
+
+- **DIFC partner-led pilot** (detail in §4.2 above): gives Blockmediary an early, controlled route to paying customers under an authorised partner's DFSA permissions. Targets a first paid transaction in **Month 12**. This does not by itself make Blockmediary a regulated entity — Blockmediary should not describe itself as "DFSA authorised" unless and until it separately obtains that authorisation.
+- **VARA licence** (detail in §4.3 above): builds Blockmediary's own licensed platform for wider Dubai scale, through a legal entity established outside DIFC. Targets a full licence in **Month 18** (base case); Month 12 only if the activity perimeter resolves quickly, Month 24 if regulatory or partner remediation is needed.
+
+Running both from Month 1 avoids making the scale track wait for pilot revenue, while keeping the pilot as the nearer-term route to real customer evidence.
 
 ### JAFZA (Jebel Ali Free Zone Authority)
 
-JAFZA is a Tier 1 logistics and trading free zone — excellent for import/export, warehousing, and physical goods businesses. **It is not a financial services regulator.** Regulated activities (crypto escrow, payment services, custody) are supervised by VARA (Dubai) or the mainland CBUAE — not JAFZA. For Blockmediary, JAFZA can house a **holding company or commercial subsidiary** but cannot be the regulatory home for the financial services product.
+JAFZA remains relevant only in the same narrow role previously identified: it's a logistics and trading free zone, not a financial services regulator, and could house a holding or commercial subsidiary for physical-goods-related activity if the team wanted one — but it has no role in either the DIFC pilot or the VARA licence.
 
-**Verdict for Blockmediary: Not suitable as the primary regulatory home. Useful only as a commercial/holding entity.**
+**Verdict for Blockmediary: Not suitable as the regulatory home. Useful only as a commercial/holding entity, if needed at all.**
 
----
+### ADGM (Abu Dhabi Global Market) — considered and moved away from
 
-### DIFC (Dubai International Financial Centre)
+ADGM was the previous MVP recommendation (principles-based FSRA regulator, lower capital requirements, active Digital Lab sandbox). It is **not part of the confirmed plan** and is not analysed further here — kept as a record of the route considered and superseded, not a live option.
 
-- **Regulator:** DFSA (Dubai Financial Services Authority) — modelled closely on the UK FCA.
-- **Legal system:** English common law, independent courts — very familiar for UK/EU-trained lawyers.
-- **Crypto framework:** DFSA published its Investment Token and Crypto Token regime in 2022. Firms can obtain a licence to provide custody, exchange, and arranged services for crypto tokens within DIFC.
-- **Ecosystem:** 8,800+ registered companies (2025), including JPMorgan, Goldman Sachs, Big Four firms, and FinTech Hive accelerator. 62% rise in new registrations Q1 2026.
-- **Capital requirements:** Higher than ADGM (~20–30% more).
-- **Sandbox:** DIFC Innovation Testing Licence (ITL) — allows testing of innovative financial products for up to 2 years without full authorisation.
-- **Data protection:** DIFC Data Protection Law 2020 — mature, GDPR-aligned.
+### Open items carried over from the readiness report
 
-**Best for:** Blockmediary if the team wants UK FCA-style regulation, maximum institutional credibility, and access to the largest financial ecosystem in the Middle East.
+Three points of continuing uncertainty should be tracked as open, not treated as resolved by this route decision:
+1. Whether Blockmediary's release key, contract administration and recovery design amount to custody/control under DFSA or VARA rules is not yet settled — determines entity structure and capital.
+2. The exact VARA activity scope — in particular whether Custody Services applies alongside Transfer and Settlement — is not yet confirmed.
+3. CBUAE's treatment of UAE-denominated USDC/EURC settlement remains a hard legal gate independent of which UAE route is chosen (see §4.1).
 
----
+The single most valuable next step, per the readiness review, is a single integrated perimeter memorandum prepared with counsel covering the DFSA, VARA and CBUAE positions together.
 
-### ADGM (Abu Dhabi Global Market)
-
-- **Regulator:** FSRA (Financial Services Regulatory Authority) — principles-based, more flexible, crypto-forward since 2018.
-- **Legal system:** English common law — same as DIFC.
-- **Crypto framework:** First formal virtual asset framework in the Middle East (2018). Updated guidance March 2026 covering tokenised securities, DeFi, AI-driven systems. Licence categories include Multilateral Trading Facility, Broker-Dealer, Custodian, and Investment Manager for digital assets.
-- **Ecosystem:** 12,000+ active licences (2026), Abu Dhabi government-backed, strong sovereign wealth fund connections.
-- **Capital requirements:** 20–30% lower than DIFC — meaningful for a startup.
-- **Sandbox:** FSRA Digital Lab — active engagement with founders, rapid testing pathway.
-- **Data protection:** ADGM Data Protection Regulations 2021 — similarly GDPR-aligned to DIFC.
-
-**Best for:** Blockmediary if the team wants lower capital requirements, a more founder-friendly regulator, and the most advanced crypto-specific licensing framework in the UAE.
-
----
-
-### Recommendation: **ADGM for MVP; DIFC as scale-up option**
-
-| Criteria | JAFZA | DIFC | ADGM | Winner |
-|----------|-------|------|------|--------|
-| Crypto/fintech licensing | ❌ | ✅ | ✅✅ | ADGM |
-| English common law | ❌ | ✅ | ✅ | Tie |
-| Capital requirements | N/A | Higher | Lower | ADGM |
-| Regulator flexibility | N/A | Structured / FCA-style | Principles-based, founder-friendly | ADGM for early stage |
-| Ecosystem / prestige | High (logistics) | Highest (finance) | High (finance) | DIFC for later stage |
-| Sandbox / innovation pathway | ❌ | ITL (2 years) | Digital Lab (active) | ADGM |
-| GDPR-aligned data protection | ❌ | ✅ (DIFC DP Law 2020) | ✅ (ADGM DPR 2021) | Tie |
-| GCC corridor access | ✅ (trade) | ✅ | ✅ | Tie |
-
-**Recommended path:**
-1. **Incorporate in ADGM** and apply for FSRA Digital Lab / Innovation Testing Licence for the MVP phase.
-2. Use ADGM as the regulatory home for GCC and MENA market launch.
-3. Consider **DIFC** for a second entity once institutional partnerships (banks, trade finance houses) are being pursued — the DIFC ecosystem is better for those conversations.
-4. JAFZA: only if the team wants a separate holding or trading entity for physical goods logistics — not the fintech product.
-
-**On GDPR in ADGM/DIFC:** Both free zones have their **own** data protection frameworks (DIFC DP Law 2020; ADGM DPR 2021) that are separate from and more developed than the UAE federal PDPL. They are both closely aligned with GDPR principles (lawful basis, data minimisation, data subject rights, breach notification, DPO requirements for high-risk processing). For practical purposes, if you comply with GDPR you will largely satisfy DIFC/ADGM DP requirements — but there are differences in detail (e.g. DIFC has its own Commissioner, separate enforcement). **EU GDPR itself still applies if you process data of EU residents regardless of where the company is incorporated** — so incorporation in ADGM does not exempt Blockmediary from GDPR for EU user data.
+**On data protection:** the DIFC pilot entity is governed by DIFC's own Data Protection Law 2020; the separate VARA entity, established outside DIFC, falls under the federal PDPL directly rather than a second free-zone framework (see §4.4). EU residents' data remains subject to GDPR directly regardless of where Blockmediary is incorporated.
 
 ---
 

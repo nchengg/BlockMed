@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSession } from '@/lib/auth/useSession';
 import { fetchDeals, fetchSummary, type DealListItem, type DealSummary } from '@/lib/escrow/client';
+import { previewDocumentCounts, type PreviewDocumentStatus } from '@/lib/preview/documents';
 
 const usdcFormatter = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
@@ -11,12 +12,17 @@ const usdcFormatter = new Intl.NumberFormat('en-US', {
 });
 
 export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
-  const { account } = useSession();
+  const { account, isUiPreview } = useSession();
   const accountId = account?.id;
   const [summary, setSummary] = useState<DealSummary | null>(null);
   const [deals, setDeals] = useState<DealListItem[]>([]);
 
   const refresh = useCallback(async () => {
+    if (isUiPreview) {
+      setSummary(UI_PREVIEW_SUMMARY);
+      setDeals([]);
+      return;
+    }
     try {
       const [nextSummary, nextDeals] = await Promise.all([
         fetchSummary(accountId),
@@ -25,10 +31,12 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
       setSummary(nextSummary);
       setDeals(nextDeals.deals ?? []);
     } catch {
+      // Local UI preview has no database or chain. Keep its labelled example
+      // portfolio visible rather than showing an indefinite loading state.
       setSummary(null);
       setDeals([]);
     }
-  }, [accountId]);
+  }, [accountId, isUiPreview]);
 
   useEffect(() => {
     const initial = setTimeout(() => { void refresh(); }, 0);
@@ -177,6 +185,20 @@ export function DashboardTab({ onOpenDeals }: { onOpenDeals: () => void }) {
   );
 }
 
+const UI_PREVIEW_SUMMARY: DealSummary = {
+  ok: true,
+  chainOk: false,
+  network: null,
+  money: {
+    locked: '0',
+    awaitingFunding: '0',
+    released: '0',
+    escrowTotalAllAccounts: null,
+    demoWallets: null,
+  },
+  counts: { total: 0, active: 0, settled: 0, asBuyer: 0, asSeller: 0, needsYou: 0 },
+};
+
 function DashboardHeading({
   companyName,
   onOpenDeals,
@@ -255,7 +277,7 @@ function DealTableRow({ deal, demo }: { deal: DealListItem; demo: boolean }) {
       </span>
       <span>{deal.counterparty}</span>
       <span className="bm-mono">{formatUsdc(deal.terms?.amountUsdc)} USDC</span>
-      <span>{documentCount(deal)}</span>
+      <span>{demo ? <PreviewDocumentSummary dealId={deal.dealId} /> : documentCount(deal)}</span>
       <span><span className={stateClass(deal.state)}>{stateLabel(deal.state)}</span></span>
       <span className="bm-link">{demo ? nextActionLabel(deal) : 'Open'}</span>
     </div>
@@ -263,6 +285,23 @@ function DealTableRow({ deal, demo }: { deal: DealListItem; demo: boolean }) {
 
   if (!href) return content;
   return <Link href={href} style={{ textDecoration: 'none' }}>{content}</Link>;
+}
+
+function PreviewDocumentSummary({ dealId }: { dealId: string }) {
+  const counts = previewDocumentCounts(dealId);
+  return (
+    <span className="bm-preview-document-summary" aria-label={`${counts.Pending} pending, ${counts.Sent} sent, ${counts.Received} received documents`}>
+      <span className={previewDocumentStatusClass('Pending')}>{counts.Pending} pending</span>
+      <span className={previewDocumentStatusClass('Sent')}>{counts.Sent} sent</span>
+      <span className={previewDocumentStatusClass('Received')}>{counts.Received} received</span>
+    </span>
+  );
+}
+
+function previewDocumentStatusClass(status: PreviewDocumentStatus): string {
+  if (status === 'Received') return 'bm-status bm-status-success';
+  if (status === 'Sent') return 'bm-status bm-status-info';
+  return 'bm-status bm-status-warning';
 }
 
 function dashboardMetrics(summary: DealSummary, deals: DealListItem[], demo: boolean) {

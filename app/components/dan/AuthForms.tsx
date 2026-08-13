@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { useSession } from '@/lib/auth/useSession';
 import { validateSignup, hasErrors, type SignupInput, type FieldErrors } from '@/lib/auth/validate';
 import { DemoAccountSwitcher } from './DemoAccountSwitcher';
+import { UiPreviewSwitcher } from './UiPreviewSwitcher';
 
 export function AuthForms() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
@@ -32,6 +33,9 @@ export function AuthForms() {
           <SignInForm />
           <div style={{ marginTop: 26 }}>
             <DemoAccountSwitcher />
+          </div>
+          <div style={{ marginTop: 18 }}>
+            <UiPreviewSwitcher />
           </div>
         </>
       ) : (

@@ -5,7 +5,7 @@ import { chainReader, toDealView } from "@/lib/escrow/dealView";
 
 export const dynamic = "force-dynamic";
 
-// One deal, shaped for the viewer — backs the deal page (/dan/deals/[dealId]).
+// One deal, shaped for the viewer — backs the deal page (/dashboard/deals/[dealId]).
 // Same shape as a row from the list route (both use toDealView), so the page and
 // the list can never disagree about what a deal is.
 //

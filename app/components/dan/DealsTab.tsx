@@ -28,7 +28,7 @@ function formatUsdc(value: string | number | null | undefined): string {
   return usdcFormatter.format(amount);
 }
 
-export function DealsTab({ dealBasePath = '/dan/deals' }: { dealBasePath?: string }) {
+export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?: string }) {
   const { account } = useSession();
   const accountId = account?.id;
   const actor = actorFromSession(account);

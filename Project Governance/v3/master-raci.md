@@ -57,10 +57,3 @@ Each task has one accountable owner. **A/R** means the same person is accountabl
 | SUB-03 | Rehearsals and recordings | Done | 10–13 Aug | R | C |  | A/R |  | R |
 | SUB-04 | Submission QA and upload | Done | 13–14 Aug | A/R | I | I | R | I | C |
 | DEF-01 | Post-MVP integrations and production hardening | Deferred | After assessment | A | C | C | C | C | C |
-
-## Tamer's added contribution summary
-
-- Completed market research, strategic analysis and strategic planning during July 2026.
-- Completed cross-functional financial and legal coordination and oversight during July 2026.
-- Consulted on the financial model, pricing, funding assumptions, legal research and final compliance claims.
-- Leads project coordination, the final deck/script and submission QA.

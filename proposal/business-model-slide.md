@@ -1,6 +1,15 @@
-# Slide 6 — Business Model Canvas
+# Slide 6 — Business Model Canvas (draft — figures superseded)
 
 **Transakt — Pitch Deck (Blockmediary)**
+
+> **Note (2026-08-13):** the fee, margin and revenue figures below (0.5–1.0% flat settlement
+> fee, $ revenue, 60–70% blended margin) are an early draft and do not match Conrad's rebuilt
+> financial model — see `financial-projections/financial-model-key-figures-2026-08-12.md` for
+> the current tiered 0.8%/1.5%/3.0% fee structure, £-denominated figures, and 71–79% base gross
+> margin. The "six-layer verification moat" below also predates the delivered scope — see
+> `docs/Flow Guidance/verification-model-v2.md` for the current four-layer model (the extra
+> layers here were never built). Kept for slide-drafting history; do not pull numbers from
+> this file for the current deck.
 
 Template: Tony Wood facilitator deck, slides 50 and 53 (Business Model Canvas, 8 blocks).
 
@@ -61,7 +70,7 @@ Template: Tony Wood facilitator deck, slides 50 and 53 (Business Model Canvas, 8
 - Only UCP 600-aligned documentary credit on stablecoin rails
 - Six-layer verification moat (intake → OCR → carrier → human → fraud DB → forensics)
 - Self-pricing tiered model (speed vs cost-of-trust)
-- Gulf-native: UAE/KSA regulator-ready (VARA, ADGM, DIFC, PTSR 2024)
+- Gulf-native: UAE/KSA regulator-ready (confirmed route: DIFC partner-led pilot + VARA licence, PTSR 2024 — ADGM considered and superseded, see `docs/legal-risk.md` §10)
 - SME-first pricing: $5K–$250K, not $1M+ bank LCs
 - Regulated CeFi: not a bank, not DeFi
 
@@ -78,7 +87,7 @@ Template: Tony Wood facilitator deck, slides 50 and 53 (Business Model Canvas, 8
 ### 6 — Costs  · accent: Amber
 **Fixed**
 - Engineering (contracts, review console, intake UI)
-- Compliance retainers (KYB/KYC, sanctions, counsel — DIFC/ADGM)
+- Compliance retainers (KYB/KYC, sanctions, counsel — DIFC + VARA)
 - Custody + security infrastructure
 - Document forensics partner retainer
 - Carrier API integrations (DCSA: Maersk, MSC, CMA CGM, Hapag-Lloyd, ONE, Evergreen, COSCO, ZIM)
@@ -96,7 +105,7 @@ Template: Tony Wood facilitator deck, slides 50 and 53 (Business Model Canvas, 8
 **Direct**
 - Gulf chambers: Dubai, Sharjah, Saudi Chambers Federation
 - Freight forwarder referrals
-- DIFC FinTech Hive / ADGM RegLab accelerators
+- DIFC FinTech Hive accelerator
 - Trade events: Gulfood, GITEX, Dubai FinTech Summit
 
 **Indirect**

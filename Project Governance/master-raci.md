@@ -1,6 +1,8 @@
 # Master RACI — Blockmediary
 
-> **Version:** v2 · **Date:** 8 June 2026 · **Owner:** Tamer (CEO)
+> **SUPERSEDED — historical baseline only.** This 8 June planning artifact uses the original workstream structure and is not the current controlled accountability matrix. See [Master RACI v2.1](project-governance-v2/master-raci.md).
+
+> **Version:** v2 (legacy numbering) · **Date:** 8 June 2026 · **Owner:** Tamer (CEO)
 > **Legend:** R = Responsible (does the work) · A = Accountable (one only, owns the outcome) · C = Consulted · I = Informed
 > **Rule:** one **A** per row. If a row has more than one A after editing, it is broken.
 

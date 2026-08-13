@@ -1,6 +1,8 @@
 # Master Gantt — Blockmediary
 
-> **Version:** v2 · **Date:** 8 June 2026 · **Owner:** Tamer (CEO)
+> **SUPERSEDED — historical baseline only.** This 8 June schedule uses legacy M0–M8 identifiers and is not the current v2.1 task-controlled Gantt. See `project-governance-v2/master-gantt.xlsx` when generated.
+
+> **Version:** v2 (legacy numbering) · **Date:** 8 June 2026 · **Owner:** Tamer (CEO)
 > **Window:** Mon 9 Jun → Thu 14 Aug 2026 (10 weeks)
 > **Legend:** █ = active work · ░ = light / handover · ◆ = milestone
 

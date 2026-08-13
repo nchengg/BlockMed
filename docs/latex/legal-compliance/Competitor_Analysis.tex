@@ -55,9 +55,10 @@ digitises the existing letter of credit or bank workflow while keeping banks in 
 The second is the fintech escrow platform, exemplified by Tazapay and Truzo, which removes
 the letter of credit entirely but keeps a centralised, custodial intermediary, namely the
 fintech itself, together with manual document review. Blockmediary's wager is that neither
-camp has combined full bank removal, non custodial on chain settlement, and automated
-artificial intelligence document verification in a single product, and that this
-combination is the open lane in the market.
+camp has combined full bank removal, non custodial on chain settlement, and a deterministic
+document verification engine, with artificial intelligence extraction and a human review
+console on the near term roadmap, in a single product, and that this combination is the
+open lane in the market.
 
 %---------------------------------------------------------------
 \section*{2. Head to Head Comparison}
@@ -79,8 +80,9 @@ and local payment rails with a recent stablecoin add on, Truzo settles in fiat t
 Currencycloud, XREX settles across a multi asset custodial stack including Bitcoin,
 Ethereum, Solana, and stablecoins, Komgo settles through traditional banking rails, and
 Contour used R3 Corda purely for document exchange while settlement itself remained a bank
-function. On document and trust verification, Blockmediary uses automated artificial
-intelligence verification, whereas Tazapay relies on manual back office review, Truzo and
+function. On document and trust verification, Blockmediary uses a deterministic rules
+engine, with artificial intelligence extraction and a human review console on the roadmap,
+whereas Tazapay relies on manual back office review, Truzo and
 XREX rely on manual know your customer and compliance checks, with XREX supplementing this
 with automated wallet risk scoring, and Komgo and Contour both rely on conventional bank
 underwriting. Blockmediary is also the only one of the six with open source smart
@@ -193,7 +195,7 @@ flat, aspirational claim. The underlying pain point is a small and medium sized 
 flow problem: the roughly ninety day payment delay pattern typical of cross border trade,
 in which a seller ships and then waits for letter of credit processing and payment,
 directly damages small and medium sized enterprise working capital, so Blockmediary's near
-instant, artificial intelligence verified release changes the economics of running a
+instant, rules based release changes the economics of running a
 trading business, not merely the cost of a single transaction. A genuine headwind should
 also be acknowledged rather than glossed over: a higher global interest rate environment
 increases the opportunity cost to a buyer of locking capital in escrow before goods arrive,
@@ -227,12 +229,14 @@ Two specific technology maturations make Blockmediary possible now in a way it w
 have been a few years ago. First, low cost, fast finality layer two blockchains such as
 Base make micro value on chain escrow economically viable, where the equivalent
 transaction would have been cost prohibitive on the Ethereum base layer. Second, large
-language model based document understanding makes automated verification of commercial
-invoices, bills of lading, and packing lists against a rules engine accurate enough to
-meaningfully reduce, though not eliminate, human review, in a way earlier optical
-character recognition only approaches could not, since they could not handle the
+language model based document understanding now makes automated verification of
+commercial invoices, bills of lading, and packing lists against a rules engine accurate
+enough to meaningfully reduce, though not eliminate, human review, in a way earlier
+optical character recognition only approaches could not, since they could not handle the
 judgement calls that Uniform Customs and Practice for Documentary Credits style document
-checking requires. Legal recognition of electronic trade documents is catching up to the
+checking requires. Blockmediary's delivered prototype currently uses the deterministic
+rules engine on its own; this large language model extraction layer is a near term
+roadmap item rather than delivered functionality. Legal recognition of electronic trade documents is catching up to the
 underlying technology: the United Kingdom's Electronic Trade Documents Act 2023 and the
 United Nations Commission on International Trade Law's Model Law on Electronic
 Transferable Records, already adopted in the Dubai International Financial Centre,
@@ -344,7 +348,7 @@ escrow brand specifically, allegations that funds were sometimes released to sup
 before goods had actually arrived \citep{tazapaytrustpilot}. Tazapay is, in substance, the
 clearest same problem, old architecture foil to Blockmediary: centralised, custodial, and
 human reviewed. Blockmediary targets precisely its weakest points, turning opacity and
-slow, arbitrary release into instant, artificial intelligence verified, on chain release.
+slow, arbitrary release into instant, rules based, on chain release.
 
 \subsection*{4.2 Truzo}
 
@@ -393,8 +397,9 @@ document based trust, with no evidence of invoice or bill of lading verification
 kind, and no open source contracts. XREX is the closest of the five comparators in ethos,
 being stablecoin first with an emerging market small and medium sized enterprise focus,
 but it is architecturally opposite to Blockmediary on custody and trust model: Blockmediary
-runs non custodial smart contracts with artificial intelligence document verification,
-where XREX runs a custodial, licensed intermediary with know your customer and wallet risk
+runs non custodial smart contracts with deterministic, rules based document verification,
+with artificial intelligence extraction and a human review console on the roadmap, where
+XREX runs a custodial, licensed intermediary with know your customer and wallet risk
 scoring.
 
 \subsection*{4.4 Komgo}
@@ -446,8 +451,8 @@ bank consortium model itself had already failed. The lessons apply directly to
 Blockmediary's design: avoid consortium governance in favour of a single accountable
 product rather than a coalition of competing banks; avoid any closed network onboarding
 requirement, since Blockmediary's buyer and seller need only hold USDC on Base rather than
-integrate with a counterparty bank; remove banks from the trust layer entirely, using
-artificial intelligence and a smart contract, rather than merely routing trust through
+integrate with a counterparty bank; remove banks from the trust layer entirely, using a
+deterministic rules engine and a smart contract, rather than merely routing trust through
 issuing and advising banks faster; run a self serve fee model that does not depend on bank
 subsidy or goodwill; and build on a public layer two network with standard USDC rails
 rather than expensive permissioned enterprise distributed ledger technology. Contour's
@@ -512,7 +517,7 @@ of its shutdown, and this is usable evidence that bank led blockchain trade fina
 struggles structurally to move quickly, in a way a focused, non bank owned product does
 not. Custody and verification are the two axes that most cleanly separate every researched
 competitor from Blockmediary, since no researched competitor is both non custodial and
-automated document verified at the same time, which is why the head to head comparison in
+rules based document verified at the same time, which is why the head to head comparison in
 section two is built around exactly those two dimensions. On fees specifically, Tazapay's
 zero point eight to three point eight per cent and Truzo's zero point two two to three
 point one per cent both land in or above the one to three per cent range typical of letter
@@ -525,10 +530,12 @@ aspirational close to zero per cent claim. Finally, a caveat should
 be stated explicitly rather than omitted from the individual report: several of the
 platforms compared here, particularly Komgo and XREX, are larger, regulated, and well
 funded incumbents, and Blockmediary's honest counter to that scale is speed of trust,
-meaning artificial intelligence verification measured in minutes rather than bank
-underwriting measured in days, and cost, meaning the absence of a bank margin, rather than
-a claim to greater scale or regulatory maturity, which remain real gaps worth
-acknowledging directly in the reflection section of the individual report.
+meaning rules based verification measured in minutes rather than bank underwriting
+measured in days, and cost, meaning the absence of a bank margin, rather than a claim to
+greater scale or regulatory maturity. Artificial intelligence extraction and a human
+review console remain on the roadmap rather than delivered, which is itself a gap worth
+acknowledging directly in the reflection section of the individual report, alongside the
+scale and regulatory maturity points.
 
 \newpage
 \bibliographystyle{apacite}

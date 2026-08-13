@@ -55,12 +55,30 @@ export async function POST(req: Request) {
 
   // Same pre-flight as the server-signed path: a shortfall is predictable, and
   // saying so beats letting MetaMask show a failing transaction.
-  const held = (await pc.readContract({
-    address: dep.usdc,
-    abi: usdcAbi,
-    functionName: "balanceOf",
-    args: [expected as `0x${string}`],
-  })) as bigint;
+  // Chain reads go through a public RPC that rate-limits. A throttled read used
+  // to throw out of the route, which returned an EMPTY body — the browser then
+  // failed parsing it ("Unexpected end of JSON input"), telling the user
+  // nothing about what went wrong. Catch it and say so.
+  let held: bigint;
+  try {
+    held = (await pc.readContract({
+      address: dep.usdc,
+      abi: usdcAbi,
+      functionName: "balanceOf",
+      args: [expected as `0x${string}`],
+    })) as bigint;
+  } catch (e) {
+    const rateLimited = String((e as Error)?.message ?? "").includes("rate limit");
+    return NextResponse.json(
+      {
+        error: rateLimited
+          ? "The network node is rate-limiting us. Wait a few seconds and try again."
+          : "Could not read your USDC balance from the chain. Try again in a moment.",
+        retryable: true,
+      },
+      { status: 503 },
+    );
+  }
 
   if (held < amountMinor) {
     return NextResponse.json(
@@ -77,12 +95,20 @@ export async function POST(req: Request) {
 
   // An existing allowance from an earlier attempt can be reused — skipping a
   // redundant approve saves the user a wallet popup and a gas fee.
-  const allowance = (await pc.readContract({
-    address: dep.usdc,
-    abi: usdcAbi,
-    functionName: "allowance",
-    args: [expected as `0x${string}`, dep.escrow],
-  })) as bigint;
+  // Same treatment: a failed allowance read must not take the route down. Zero
+  // is the safe fallback — it means we ask for an approve that may be
+  // redundant, which costs the user a popup but never breaks the flow.
+  let allowance = 0n;
+  try {
+    allowance = (await pc.readContract({
+      address: dep.usdc,
+      abi: usdcAbi,
+      functionName: "allowance",
+      args: [expected as `0x${string}`, dep.escrow],
+    })) as bigint;
+  } catch {
+    allowance = 0n;
+  }
 
   const steps: {
     kind: "approve" | "deposit";

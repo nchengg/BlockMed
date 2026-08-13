@@ -1,4 +1,4 @@
-# Local-only chat logs (per session, written by tools/log_session.py)
+# Local-only chat logs (per session, written by agent-tooling/tools/log_session.py)
 .chatlog/
 
 # Local-only Claude Code settings (may contain user-specific permissions / hooks)
@@ -45,6 +45,9 @@ desktop.ini
 BlockMed.code-workspace
 .vscode/
 .idea/
+
+# MS Office lock/temp files (e.g. ~$Pitch-Deck.pptx) — created while a doc is open
+~$*
 
 # Manual point-in-time deck backups (use git history, not sibling files)
 proposal/*_backup-*.pptx

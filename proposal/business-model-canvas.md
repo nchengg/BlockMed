@@ -14,6 +14,17 @@ Design notes for team:
   contradiction is fixed here. Content order == placement order.
 - UAE only. KSA was removed: the financial model is a single-track UAE plan with no
   second regulator costed anywhere.
+- Türkiye was removed. CBRT Regulation 2021/14 bans crypto-assets as a means of payment
+  for goods and services — precisely our settlement model. Turkish residents and entities
+  are excluded entirely (docs/legal-risk.md §3.2). Do not reinstate the corridor.
+- CLAIM DISCIPLINE — these wordings are legally constrained, do not "improve" them:
+  * "UCP 600-inspired", never "UCP 600 documentary credit". The Trade Escrow Agreement
+    is a separate instrument and is not a letter of credit (legal-risk §5.5).
+  * Blockmediary is NOT itself regulated during the pilot. The DFSA-authorised partner
+    is the regulated principal. Never write "DFSA authorised" or "regulated operator"
+    (legal-risk §4.2).
+  * Do NOT claim "non-custodial". The server-side release key means the custody
+    perimeter is unresolved pending a written control analysis (Readiness Report §2).
 - All figures are base case unless stated. GMV is trade value processed, not revenue.
 -->
 
@@ -31,27 +42,27 @@ Design notes for team:
 - Most SME cross-border trade still on trust, in cash, or not at all
 
 **Our Solution**
-- UCP 600 documentary credit, stablecoin settlement, without the issuing bank
+- UCP 600-inspired documentary release, stablecoin settlement, no issuing bank
 - Buyer escrow → seller documents → release on compliant presentation
 - Four verification layers plus an invoked escalation route
 
 ### Block 2 — Business Description
 *Brief outline of your business model*
 
-- Regulated operator: escrow, verification, settlement orchestration
+- Documentary escrow operator: verification, release rules, settlement
 - Smart-contract escrow holds stablecoins against documentary release rules
-- Mirrors UCP 600 Article 14 strict-compliance logic
+- UCP 600-inspired Article 14 release logic — a Trade Escrow Agreement, not an LC
 - Settlement on stablecoin rails (USDC), not bank correspondent networks
 - Not a bank: no deposits, no lending, no token issuance
 - Not DeFi: centralised trust and compliance layer by design
-- Launch route: DIFC regulated-partner pilot Month 12, first receipts Month 13
+- Pilot runs under a DFSA-authorised partner's permissions — first paid deal Month 12
 - Full VARA licence targeted Month 18 — the gate for UAE-wide scale
 
 ### Block 3 — Target Market
 
 **Sector & geography**
 - SME importers/exporters; UAE launch market
-- Corridors: UAE–India (CEPA), UAE–Türkiye (textiles)
+- Corridor: UAE–India (CEPA); further low-risk corridors per pilot envelope
 - Sectors: manufacturing, consumer goods, electronics, textiles
 - Ticket: £20K–£50K at launch → £36K–£87K by Year 5
 
@@ -69,12 +80,12 @@ Design notes for team:
 ### Block 4 — USPs
 *How does your product/service compare? What makes you unique?*
 
-- Only UCP 600-aligned documentary credit on stablecoin rails
+- UCP 600-inspired documentary release on stablecoin rails
 - Four-layer verification: screening → extraction → source corroboration → contracted examiner
 - Self-pricing tiered model — customers trade speed against cost of trust
-- Gulf-native: UAE regulator-ready (VARA, DIFC, CBUAE PTSR 2024)
+- Two-track UAE route: DIFC partner pilot now, own VARA licence for scale
 - Cheaper all-in than an LC on the deals that matter most
-- Regulated operator, non-custodial by design: not a bank, not DeFi
+- Compliance-first by design: not a bank, not DeFi
 
 ### Block 5 — Revenue
 
@@ -125,7 +136,7 @@ Design notes for team:
 
 - **Bank-issued LCs** — trust and networks; 1–3% commission before the fee stack
 - **Tazapay** — escrow-as-a-service; manual review, custodial fiat rails
-- **Truzo** — narrow UK–SA corridor; manual KYC
+- **Truzo** — narrow UK–Africa corridor; manual KYC
 - **XREX** — licensed custodial escrow; releases on agreement, not documents
 - **Komgo / Contour** — bank-consortium LC digitisation; Contour shut in 2023
 
@@ -223,7 +234,7 @@ Content order above is identical to this table. Build top-left to bottom-right.
 
 Single line, 6pt Soft grey, left-aligned:
 
-> *Sources: ADB (2025); ICC UCP 600 (2007); CBUAE Payment Token Services Regulation (2024); VARA Rulebook (2026); Blockmediary financial model, 13 Aug 2026; `docs/Competitor-analysis.md`.*
+> *Sources: ADB (2025); ICC UCP 600 (2007); VARA Rulebook (2026); Blockmediary financial model and legal & compliance risk register, 13 Aug 2026. UCP 600-inspired release logic; not a letter of credit. Pilot operates under a DFSA-authorised partner. GMV is trade value processed, not revenue.*
 
 ---
 
@@ -241,7 +252,7 @@ Every number in Blocks 5 and 6 traces to the financial model. Check these before
 | Ancillary 17–26% of revenue | `Revenue Risk Add-Ons` vs `P&L 5yr` total revenue |
 | Break-even Y4 M8 | `Cash Flow Statement!B45:B47` |
 | £3.06m operating funding | `Launch Readiness!E12` |
-| £319k VARA restricted capital | `Launch Readiness!E17` |
+| £319k VARA restricted capital | `Launch Readiness!E17` — broad three-activity placeholder. `docs/legal-risk.md` §4.3 notes Broker-Dealer is *not* established by the current model; a Transfer-and-Settlement-only scope drops the floor to ~AED 500k (~£106k). The model is deliberately conservative. |
 | 8 → 24 FTE | `P&L 5yr!C36:G36` |
 | Ticket £20K–£50K → £36K–£87K | `Sensitivity` deal-value cases (Low/Base/High by tier) |
 | Pilot M12 / receipts M13 / licence M18 | `Launch Readiness!E6, E11, E14` |
@@ -256,3 +267,6 @@ Every number in Blocks 5 and 6 traces to the financial model. Check these before
 - Blockmediary. (2026). *Financial model, submission-ready build, 13 August 2026.* `financial-projections/`
 - Blockmediary. (2026). *Competitor analysis.* `docs/Competitor-analysis.md`
 - Blockmediary. (2026). *Verification model v2.* `docs/verification-model-v2.md`
+- Blockmediary. (2026). *Legal & compliance risk register.* `docs/legal-risk.md`
+- Blockmediary. (2026). *DIFC partner-led pilot and VARA scale readiness report.* `docs/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.md`
+- Central Bank of the Republic of Türkiye. (2021). *Regulation on the disuse of crypto-assets in payments, No. 2021/14.* (Basis for Türkiye exclusion.)

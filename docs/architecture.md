@@ -4,10 +4,10 @@
 
 | Layer | Framework stage | Where it lives |
 |-------|-----------------|----------------|
-| Role | Define the role | `agents/{operations,development}/*.md` (canonical); `.claude/agents/{operations,development}/*.md` (generated) |
-| Workflow | Build the workflow | `skills/*/SKILL.md` (canonical); `.claude/skills/*/SKILL.md` (generated) |
+| Role | Define the role | `agent-tooling/agents/{operations,development}/*.md` (canonical); `.claude/agents/{operations,development}/*.md` (generated) |
+| Workflow | Build the workflow | `agent-tooling/skills/*/SKILL.md` (canonical); `.claude/skills/*/SKILL.md` (generated) |
 | Context/memory | Add memory & context | `docs/domain-rules.md`, `docs/product-blockmediary.md`, `CLAUDE.md`, `AGENTS.md` |
-| Tools | Connect tools | `tools/`, MCP servers |
+| Tools | Connect tools | `agent-tooling/tools/`, MCP servers |
 | Routines | Routine stack | `/schedule`, hooks in `.claude/settings.json` |
 | Review | Review & refine | evaluation harness (built in weeks 8–9) |
 
@@ -16,10 +16,10 @@
 The agents are split into **two isolated environments** that must not reference or invoke
 each other:
 
-- **`agents/development/` (`dev-*`)** — the Transakt team's build & delivery agents
+- **`agent-tooling/agents/development/` (`dev-*`)** — the Transakt team's build & delivery agents
   (proposal, planning, weekly log, repo briefing). Active **now**, run by Claude Code
   directly from this scaffold repo. Fast iteration; agents and skills are just files.
-- **`agents/operations/` (`ops-*`)** — the live escrow product runtime. The domain
+- **`agent-tooling/agents/operations/` (`ops-*`)** — the live escrow product runtime. The domain
   specialists and the `run-analysis` flow are invoked through the Claude Agent SDK behind
   the Blockmediary web/dashboard UI in the downstream product repo. The skill is the stable
   seam — the UI calls the workflow, not individual agents. This is a **late-stage / product**
@@ -43,9 +43,9 @@ See [product-blockmediary.md](product-blockmediary.md) for the full state model.
 
 ## Agent team
 
-Two isolated environments under `agents/` (`dev-*` and `ops-*` never invoke each other).
+Two isolated environments under `agent-tooling/agents/` (`dev-*` and `ops-*` never invoke each other).
 
-### `agents/development/` — team build & delivery (active now)
+### `agent-tooling/agents/development/` — team build & delivery (active now)
 
 - **dev-orchestrator** — manager for the dev environment: routes across `dev-*`, aggregates, decides vs. escalates.
 - **dev-data-analyst** — profiles team-side datasets (fixtures, sizing, market data).
@@ -55,14 +55,14 @@ Two isolated environments under `agents/` (`dev-*` and `ops-*` never invoke each
 - **dev-personal-log** — Build + Report phases (weekly individual log; 80% individual-grade asset).
 - **dev-tldr** — daily morning repo/CI/timeline briefing for each teammate.
 
-### `agents/operations/` — live escrow product runtime (late-stage / downstream)
+### `agent-tooling/agents/operations/` — live escrow product runtime (late-stage / downstream)
 
 Cross-cutting (duplicated from dev with their own `ops-` identity):
 - **ops-orchestrator** — manager for the escrow pipeline: routes `ops-*` by escrow state, applies the autonomy policy.
 - **ops-data-analyst** — profiles operational datasets (document sets, KYC records, on-chain logs).
 - **ops-report-writer** — formats product-runtime output for buyer/seller/reviewer (product-briefing).
 
-Domain specialists (added during Build, from `agents/_TEMPLATE.md`):
+Domain specialists (added during Build, from `agent-tooling/agents/_TEMPLATE.md`):
 - **ops-deal-intake** — captures sale-contract terms (uploaded contract or structured form) → produces canonical escrow specification (JSON).
 - **ops-kyc-compliance** — KYC / KYB / sanctions screening at intake plus continuous monitoring; appends to the audit ledger.
 - **ops-escrow** — smart-contract wrapper: lock funds, release, refund, state transitions. Narrow scope by design.
@@ -72,5 +72,5 @@ Domain specialists (added during Build, from `agents/_TEMPLATE.md`):
 
 ## Two rules that prevent the common failure modes
 
-1. **Determinism for money:** all arithmetic / amount-matching / fee math happens in `tools/` (real code), not in agent prose. LLMs miscount; code doesn't.
+1. **Determinism for money:** all arithmetic / amount-matching / fee math happens in `agent-tooling/tools/` (real code), not in agent prose. LLMs miscount; code doesn't.
 2. **Explicit autonomy line:** every output is tagged auto-handled vs. escalated, with a reason. Document compliance and release decisions especially — graders and (eventually) regulators want to see the trail.

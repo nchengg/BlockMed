@@ -16,7 +16,7 @@ live in [hackathon-context.md](hackathon-context.md).
 
 - **Currencies:** stablecoins (USDC, EURC) on the settlement chain. Buyer deposit currency = release currency = the escrow's specified `payment.currency`. No FX inside the MVP escrow — parties agree the stablecoin upfront.
 - **Date / time:** ISO 8601 UTC for all on-chain timestamps and document fields. Trade shipment deadlines come from the agreed escrow specification, not from documents.
-- **Rounding:** money calculated in minor units (cents / smallest token unit). Round only at display, not in intermediate math. **Do this in `tools/`, never in agent free-text.**
+- **Rounding:** money calculated in minor units (cents / smallest token unit). Round only at display, not in intermediate math. **Do this in `agent-tooling/tools/`, never in agent free-text.**
 - **Escrow state model:** `Draft → Agreed → Funded → DocumentsSubmitted → ReviewInProgress → Compliant → ReleasePending → Released`. Branches: `Cancelled` (from Agreed), `Refunded` (from Funded or via Disputed), `Disputed` (from ReviewInProgress or ReleasePending). End states: `Released`, `Refunded`, `Cancelled`.
 - **Document-verification outcomes:** `Compliant` (release) / `Discrepant` (cure or waive) / `Rejected` (refund or amend) / `Escalated` (freeze pending dispute — fraud, sanctions, unresolved objection).
 - **Valid objection grounds** (buyer, during the objection window): missing required document; document field mismatch vs. escrow terms; shipment after deadline; suspected document fraud; sanctions / KYC / compliance issue; mutual amendment request. Anything else is invalid (e.g. "buyer changed their mind", "wants to renegotiate after shipment", subjective quality complaint when no inspection certificate was required).
@@ -42,7 +42,7 @@ Agents act automatically only inside these envelopes. Anything outside escalates
 - **DO** treat the escrow specification (the structured JSON generated at deal intake) as authoritative for release rules. Document checks compare against the spec, not against the underlying sale contract.
 - **DO** keep the smart contract narrow: escrow, state, release, refund, dispute. Anything that requires "understanding" a document happens off-chain.
 - **DO** prefer buyer deposit into a smart contract or regulated custody partner. Never route buyer funds through a Blockmediary-controlled wallet.
-- **DON'T** compute money figures in agent free-text. Use `tools/` for all arithmetic — invoice/escrow amount matching, currency comparison, fee calculation.
+- **DON'T** compute money figures in agent free-text. Use `agent-tooling/tools/` for all arithmetic — invoice/escrow amount matching, currency comparison, fee calculation.
 - **DON'T** release funds without all of: escrow Funded; documents submitted; compliance verdict; release notice issued; objection window expired; no active dispute.
 - **DON'T** accept buyer objections outside the predefined valid grounds. The product's value depends on protecting the seller from post-shipment renegotiation.
 - **DON'T** claim title or quality control over physical goods. Blockmediary releases on **document** compliance — not on actual receipt or condition of goods, unless an inspection certificate is in the release rules.

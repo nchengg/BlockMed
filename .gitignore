@@ -1,4 +1,4 @@
-# Local-only chat logs (per session, written by tools/log_session.py)
+# Local-only chat logs (per session, written by agent-tooling/tools/log_session.py)
 .chatlog/
 
 # Local-only Claude Code settings (may contain user-specific permissions / hooks)

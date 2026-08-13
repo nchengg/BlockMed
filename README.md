@@ -32,7 +32,7 @@ The escrow contract is live on Base Sepolia with real testnet transactions:
 | **Competitor analysis** | [`docs/Competitor-analysis.md`](docs/Competitor-analysis.md) |
 | **Domain rules (UCP 600 / Incoterms 2020)** | [`docs/domain-rules.md`](docs/domain-rules.md), [`docs/UCP600.md`](docs/UCP600.md), [`docs/Incoterms2020.md`](docs/Incoterms2020.md) |
 | **Architecture & auth** | [`docs/architecture.md`](docs/architecture.md), [`docs/auth-mechanism.md`](docs/auth-mechanism.md) |
-| **Project governance** (plan · Kanban · RACI · Gantt) | [`project-governance/v3/`](project-governance/v3/) — v3 is current |
+| **Project governance** (plan · Kanban · RACI · Gantt) | [`project-governance/`](project-governance/) |
 | **Proposal / pitch materials** | [`proposal/`](proposal/) |
 | **Financial model** | [`financial-projections/`](financial-projections/) |
 
@@ -44,7 +44,7 @@ The escrow contract is live on Base Sepolia with real testnet transactions:
 | [`app/`](app/) | The web application — Next.js 16, React 19, Prisma + Postgres, viem. Dashboard, escrow API, auth. |
 | [`contracts/`](contracts/) | The `Escrow.sol` smart contract, Hardhat tests, and Base Sepolia deploy scripts. |
 | [`docs/`](docs/) | Requirements, legal, domain and design documents. |
-| [`project-governance/`](project-governance/) | Project plan, Kanban, RACI, Gantt (**v3** = current; earlier versions superseded). |
+| [`project-governance/`](project-governance/) | Project plan, Kanban, RACI, Gantt. |
 | [`proposal/`](proposal/) | Proposal-video deck and pitch materials. |
 | [`financial-projections/`](financial-projections/) | Financial model and pricing. |
 | [`data/`](data/) | Synthetic / sandbox datasets only — no real PII. |

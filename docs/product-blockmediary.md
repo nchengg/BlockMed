@@ -7,6 +7,8 @@
 
 Source of truth for product mechanics: `Hackathon/MVP_FLOW.md` (Drive). This file is the canonical product spec for agent design; update it whenever the team's MVP doc evolves and regenerate downstream artefacts.
 
+> For the authoritative delivered-vs-roadmap split (what's actually built vs. planned), see `docs/business-requirements.md` (baselined 2026-08-09) and `docs/technical-requirements.md` — this file predates that baseline and is kept for agent-design context, not as the current scope reference.
+
 ## Positioning
 
 Blockmediary does **not** turn an entire trade contract into a smart contract, and it does **not** offer working-capital advances or trade financing. The underlying sale contract stays between buyer and seller; Blockmediary provides a separate Trade Escrow Agreement plus an on-chain execution layer for locking and releasing funds.
@@ -84,7 +86,7 @@ The smart contract **does not understand trade documents**. It holds funds and e
 | Layer | Responsibility |
 |-------|----------------|
 | Smart contract escrow | Hold and release stablecoin funds; enforce state transitions |
-| Off-chain workflow | Deal terms, document storage, OCR/AI extraction, rules engine |
+| Off-chain workflow | Deal terms, document storage, deterministic rules engine (delivered); OCR/AI extraction (roadmap) |
 | Off-chain verification | Determine whether release conditions are satisfied |
 | Authorised release function | Submit the verdict on-chain |
 | Audit trail | Record who approved release and on what basis |
@@ -100,7 +102,7 @@ The smart contract **does not understand trade documents**. It holds funds and e
 
 ## External rails
 
-- **Stablecoin rail** — USDC / EURC on a PoS chain (specific chain TBD; selection criteria: throughput, finality, regulatory clarity, gas cost; candidates per Module Resources: Solana, Polygon, Base, Avalanche — Nexa input via David Thibodeau's deck).
+- **Stablecoin rail** — USDC on Base Sepolia (testnet), delivered; EURC support and a production mainnet deployment are on the roadmap. Contract kept chain-portable.
 - **Document custody / electronic bill of lading** — TBD partnership for title control if added beyond MVP.
 
 ## Revenue model
@@ -116,8 +118,8 @@ The MVP is **not** a financing product, so there is no financing spread. Revenue
 
 ## Open questions (drive Build-phase work)
 
-1. **Which PoS chain?** (Solana / Polygon / Base / Avalanche, given Chris Carr's smart-contract module + David Thibodeau's Nexa demo.)
-2. **Document-verification tooling** — what mix of OCR/AI extraction vs. human review hits acceptable accuracy for the MVP doc set?
+1. ~~Which chain?~~ — resolved: delivered on Base Sepolia (testnet, EVM L2), kept chain-portable; production mainnet is a later decision.
+2. **Document-verification tooling** — the delivered baseline is a deterministic rules engine; what mix of OCR/AI extraction vs. human review hits acceptable accuracy for the MVP doc set remains a roadmap question.
 3. **Custody model** — buyer deposits to a smart contract directly vs. a regulated custody partner. MVP doc strongly prefers smart contract / regulated custodian over a Blockmediary-controlled wallet.
 4. **Beachhead corridor + goods type** — start with simple, repeatable, low-to-medium value manufactured-goods transactions. Which corridor (e.g. Shenzhen → LA)?
 5. **Dispute forum** — named arbitrator / expert determination process for unresolved issues. Pick one for the MVP demo.

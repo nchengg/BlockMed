@@ -59,12 +59,12 @@ Agents act automatically only inside these envelopes. Anything outside escalates
 |------|------------|
 | **Beachhead** | The single buyer/seller corridor + goods type the MVP targets first (e.g. Shenzhen → LA, manufactured components). |
 | **Compliance verdict** | Outcome of document verification: `Compliant` / `Discrepant` / `Rejected` / `Escalated`. |
-| **Document reviewer** | Human (or assisted) role that approves release after rules-engine and OCR/AI checks. |
+| **Document reviewer** | Human role that approves release after the deterministic rules-engine check (OCR/AI-assisted extraction is a roadmap item, not yet delivered). |
 | **Dispute resolver** | Named external forum / arbitrator / expert determination used when the workflow leaves the happy path. |
 | **Escrow specification** | Structured JSON generated at deal intake; authoritative source for release rules and the schema documents are checked against. |
 | **Notice of release** | Message issued when documents are compliant; starts the buyer's objection window. |
 | **Objection window** | Fixed period (default 48h) during which the buyer can raise a *valid* objection to release. |
-| **PoS chain** | Proof-of-stake blockchain hosting the escrow contract. Specific chain TBD (Solana / Polygon / Base / Avalanche candidates). |
+| **Settlement chain** | Blockchain hosting the escrow contract. Delivered on Base Sepolia (testnet, EVM L2); contract kept chain-portable, production mainnet is a later decision. |
 | **Release rules** | The document-compliance conditions defined in the escrow specification that must be satisfied for funds to release. |
 | **Smart contract escrow** | The on-chain contract holding stablecoin funds and enforcing state transitions. Narrow scope: hold, release, refund, dispute. |
 | **Trade Escrow Agreement** | The legal agreement between buyer, seller and Blockmediary covering the escrow workflow (separate from the underlying sale contract). |

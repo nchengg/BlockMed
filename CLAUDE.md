@@ -73,16 +73,16 @@ Full-bleed drone footage of a cargo ship, pinned while the user scrolls 400vh. T
 Split-column timeline: **SELLER** vs **BUYER**. Shows the 90-day payment delay that destroys SME cash flow. Amber dots = done, grey circles = unpaid/waiting. Bottom line: "A Letter of Credit puts a bank in the middle — and charges 1–3% for the privilege."
 
 ### 3 — Solution
-Circuit diagram: BUYER → BLOCKMEDIARY → SELLER. Connecting lines animate `scaleX` on scroll entry. Centre node glows amber. Stat row below: `~0% bank fees` · `<5 min AI verification` · `100% on-chain`.
+Circuit diagram: BUYER → BLOCKMEDIARY → SELLER. Connecting lines animate `scaleX` on scroll entry. Centre node glows amber. Stat row below: `~2% platform fee` · `<5 min automated verification` · `100% on-chain`.
 
 ### 4 — How it works
 Three cards, staggered reveal:
 - **01** Buyer deposits — locks exact USDC amount in escrow
 - **02** Seller ships & uploads — commercial invoice through the dashboard
-- **03** AI verifies. Funds transfer. — Claude checks documents, escrow releases
+- **03** Rules engine verifies. Funds transfer. — Deterministic checks against the agreed release terms, escrow releases
 
 ### 5 — Trust signals
-Four items in a row: Built on Base · Powered by Claude AI · Open-source contracts · Non-custodial. Fades in as a unit.
+Four items in a row: Built on Base · Deterministic verification engine · Open-source contracts · Non-custodial. Fades in as a unit.
 
 ### 6 — CTA
 "Ready to protect your next trade?" + two buttons: **I'm a Buyer** (amber filled → `/buyer`) · **I'm a Seller** (outlined → `/seller`). Nothing else on screen.

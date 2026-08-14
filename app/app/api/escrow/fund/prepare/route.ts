@@ -55,12 +55,30 @@ export async function POST(req: Request) {
 
   // Same pre-flight as the server-signed path: a shortfall is predictable, and
   // saying so beats letting MetaMask show a failing transaction.
-  const held = (await pc.readContract({
-    address: dep.usdc,
-    abi: usdcAbi,
-    functionName: "balanceOf",
-    args: [expected as `0x${string}`],
-  })) as bigint;
+  // Chain reads go through a public RPC that rate-limits. A throttled read used
+  // to throw out of the route, which returned an EMPTY body — the browser then
+  // failed parsing it ("Unexpected end of JSON input"), telling the user
+  // nothing about what went wrong. Catch it and say so.
+  let held: bigint;
+  try {
+    held = (await pc.readContract({
+      address: dep.usdc,
+      abi: usdcAbi,
+      functionName: "balanceOf",
+      args: [expected as `0x${string}`],
+    })) as bigint;
+  } catch (e) {
+    const rateLimited = String((e as Error)?.message ?? "").includes("rate limit");
+    return NextResponse.json(
+      {
+        error: rateLimited
+          ? "The network node is rate-limiting us. Wait a few seconds and try again."
+          : "Could not read your USDC balance from the chain. Try again in a moment.",
+        retryable: true,
+      },
+      { status: 503 },
+    );
+  }
 
   if (held < amountMinor) {
     return NextResponse.json(
@@ -77,19 +95,53 @@ export async function POST(req: Request) {
 
   // An existing allowance from an earlier attempt can be reused — skipping a
   // redundant approve saves the user a wallet popup and a gas fee.
-  const allowance = (await pc.readContract({
-    address: dep.usdc,
-    abi: usdcAbi,
-    functionName: "allowance",
-    args: [expected as `0x${string}`, dep.escrow],
-  })) as bigint;
+  // Same treatment: a failed allowance read must not take the route down. Zero
+  // is the safe fallback — it means we ask for an approve that may be
+  // redundant, which costs the user a popup but never breaks the flow.
+  let allowance = 0n;
+  try {
+    allowance = (await pc.readContract({
+      address: dep.usdc,
+      abi: usdcAbi,
+      functionName: "allowance",
+      args: [expected as `0x${string}`, dep.escrow],
+    })) as bigint;
+  } catch {
+    allowance = 0n;
+  }
 
   const steps: {
-    kind: "approve" | "deposit";
+    kind: "approve" | "deposit" | "fee";
     to: string;
     data: string;
     label: string;
+    /** Hex gas limit, estimated server-side — see estimateStepGas below. */
+    gas?: string;
   }[] = [];
+
+  // Estimate gas HERE rather than letting the wallet do it.
+  //
+  // MetaMask's estimator has been returning ~140,000,000 for a plain ERC-20
+  // approve that actually costs ~39,000. That is thousands of times too high AND
+  // above Base's 25,000,000 per-transaction cap, so the node rejects the signed
+  // transaction outright ("exceeds maximum per-tx gas limit"). Estimating
+  // against the chain and passing an explicit limit sidesteps a wallet bug we
+  // cannot fix, and costs nothing: gas is charged on what is USED, not what is
+  // requested, so a 25% buffer is free insurance against slightly different
+  // state at mining time.
+  const estimateStepGas = async (to: string, data: string): Promise<string | undefined> => {
+    try {
+      const est = await pc.estimateGas({
+        account: expected as `0x${string}`,
+        to: to as `0x${string}`,
+        data: data as `0x${string}`,
+      });
+      return `0x${((est * 125n) / 100n).toString(16)}`;
+    } catch {
+      // No estimate is better than a wrong one: the wallet falls back to its own.
+      return undefined;
+    }
+  };
 
   if (allowance < amountMinor) {
     steps.push({
@@ -101,6 +153,9 @@ export async function POST(req: Request) {
         args: [dep.escrow, amountMinor],
       }),
       label: `Allow the escrow to move ${deal.terms.amountUsdc} USDC`,
+      gas: await estimateStepGas(dep.usdc, encodeFunctionData({
+        abi: usdcAbi, functionName: "approve", args: [dep.escrow, amountMinor],
+      })),
     });
   }
 
@@ -113,6 +168,12 @@ export async function POST(req: Request) {
       args: [deal.onChainDealId as `0x${string}`],
     }),
     label: `Lock ${deal.terms.amountUsdc} USDC in escrow`,
+    // Estimating deposit BEFORE the approve is mined reverts (no allowance yet),
+    // so this is undefined on a first run and the wallet estimates it itself at
+    // signing time — by which point the approval exists.
+    gas: await estimateStepGas(dep.escrow, encodeFunctionData({
+      abi: escrowAbi, functionName: "deposit", args: [deal.onChainDealId as `0x${string}`],
+    })),
   });
 
   return NextResponse.json({

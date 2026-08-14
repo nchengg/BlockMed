@@ -22,6 +22,12 @@ export async function GET(req: Request, ctx: { params: Promise<{ dealId: string 
     return NextResponse.json({ ok: false, error: "You are not a party to this deal." }, { status: 403 });
   }
 
-  const { readState, chainId } = chainReader();
-  return NextResponse.json({ ok: true, chainId, deal: await toDealView(deal, accountId, readState) });
+  const { readState, chainId, escrow } = chainReader();
+  return NextResponse.json({
+    ok: true,
+    chainId,
+    // The contract address, so the client can link it on a block explorer.
+    escrow,
+    deal: await toDealView(deal, accountId, readState),
+  });
 }

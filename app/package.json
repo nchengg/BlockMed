@@ -14,6 +14,7 @@
     "db:seed:demo": "prisma migrate deploy && node prisma/seed-demo.mjs"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.9.1",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "bcryptjs": "^3.0.3",

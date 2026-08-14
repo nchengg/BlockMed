@@ -13,6 +13,7 @@
 // convenience — see lib/escrow/actor.ts and app/api/escrow/submit-bol/route.ts.
 import {
   createPublicClient,
+  fallback,
   createWalletClient,
   http,
   type Abi,
@@ -113,8 +114,60 @@ function chainFor(dep: Deployment) {
   );
 }
 
+/**
+ * Public Base endpoints that we have measured as usable, tried in order after
+ * the deployment's own rpcUrl.
+ *
+ * Every free endpoint rate-limits, and they do it at different thresholds and
+ * for different methods — measured on Base mainnet, 15 rapid balanceOf reads:
+ *
+ *   1rpc.io/base            15/15 reads, receipts OK
+ *   base-rpc.publicnode.com 15/15 reads, receipts REJECTED (invalid params)
+ *   mainnet.base.org         4/15 reads, receipts OK
+ *
+ * No single one of these is reliable alone, which is why the dashboard showed
+ * "the network node is rate-limiting us" mid-demo. A fallback transport retries
+ * the next endpoint instead of surfacing the failure, so one throttled provider
+ * degrades latency rather than breaking the page.
+ *
+ * publicnode is kept in the list because it serves plain reads perfectly well —
+ * viem will simply move on when a receipt call fails there.
+ */
+const BASE_FALLBACK_RPCS = [
+  "https://base-rpc.publicnode.com",
+  "https://mainnet.base.org",
+  // Last: 1rpc enforces a DAILY quota rather than a rate limit, so once it is
+  // spent it returns -32001 for every method until the quota resets. Good
+  // throughput while it lasts, useless afterwards — so it backs up the others
+  // rather than leading them.
+  "https://1rpc.io/base",
+];
+
+/**
+ * The transport every client here should use.
+ *
+ * Shared by publicClient AND walletFor deliberately. Writing a transaction is
+ * not one request — viem first reads the nonce (eth_getTransactionCount) and
+ * gas price, then sends. A throttled endpoint therefore breaks a WRITE just as
+ * easily as a read, and it breaks it before anything is signed.
+ *
+ * That is exactly what happened to recordVerdict: the public client had a
+ * fallback, the wallet client did not, and approving documents failed with a
+ * 500 on the nonce lookup while every read on the page kept working.
+ */
+function transportFor(dep: Deployment) {
+  // Local chains have exactly one endpoint and no rate limit; a fallback list of
+  // public mainnet URLs would be actively wrong there.
+  if (dep.chainId !== base.id) return http(dep.rpcUrl);
+  const urls = [dep.rpcUrl, ...BASE_FALLBACK_RPCS.filter((u) => u !== dep.rpcUrl)];
+  // rank:false keeps the declared order — the deployment's own endpoint is the
+  // one the operator chose, so it stays first rather than being reordered by
+  // latency sampling that would itself cost requests.
+  return fallback(urls.map((u) => http(u)), { rank: false, retryCount: 1 });
+}
+
 export function publicClient(dep: Deployment) {
-  return createPublicClient({ chain: chainFor(dep), transport: http(dep.rpcUrl) });
+  return createPublicClient({ chain: chainFor(dep), transport: transportFor(dep) });
 }
 
 /**
@@ -145,14 +198,14 @@ export function walletFor(role: Role, dep: Deployment) {
     return createWalletClient({
       account: privateKeyToAccount(key as Hex),
       chain,
-      transport: http(dep.rpcUrl),
+      transport: transportFor(dep),
     });
   }
 
   return createWalletClient({
     account: privateKeyToAccount(DEV_KEYS[role]),
     chain,
-    transport: http(dep.rpcUrl),
+    transport: transportFor(dep),
   });
 }
 

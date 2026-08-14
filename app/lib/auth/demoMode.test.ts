@@ -30,10 +30,21 @@ describe("demoLoginEnabled", () => {
     }
   });
 
-  // Belt and braces: an env var set by mistake in production must not open it.
-  it("stays off in production even when the variable is set", () => {
+  // The NODE_ENV guard was deliberately dropped (8cc698c) so the passwordless
+  // switcher can run on the hosted Vercel prototype, where every build is
+  // NODE_ENV=production. This test now pins the CONSEQUENCE of that decision
+  // rather than the old guard: production alone no longer closes the door, so
+  // the explicit opt-in is the only thing left holding it — which makes the
+  // "off by default" test above load-bearing rather than a formality.
+  //
+  // Restore this to expect(false) when the production guard comes back.
+  it("is NOT closed by production alone — the opt-in is the only gate", () => {
     vi.stubEnv("ESCROW_DEMO_LOGIN", "1");
     vi.stubEnv("NODE_ENV", "production");
+    expect(demoLoginEnabled()).toBe(true);
+
+    // ...and unsetting it still closes the door, in production as anywhere else.
+    vi.stubEnv("ESCROW_DEMO_LOGIN", "");
     expect(demoLoginEnabled()).toBe(false);
   });
 });

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSession } from '@/lib/auth/useSession';
 import { previewDocuments, savePreviewDocumentStatus, type PreviewDocument, type PreviewDocumentStatus } from '@/lib/preview/documents';
 import {
@@ -41,6 +41,14 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
   const [error, setError] = useState<string | null>(null);
   const demoDeals = demoDealRows(account?.companyName ?? 'Demo Trading Co');
 
+  // Read inside the polling interval without making it a dependency — see the
+  // effect below for why re-creating the interval on every busy flip was the
+  // cause of the flicker.
+  const busyRef = useRef(busy);
+  const creatingRef = useRef(creating);
+  busyRef.current = busy;
+  creatingRef.current = creating;
+
   const refreshBackendDeals = async () => {
     if (isUiPreview) {
       setDeals([]);
@@ -68,13 +76,21 @@ export function DealsTab({ dealBasePath = '/dashboard/deals' }: { dealBasePath?:
       }
     };
     const initial = setTimeout(() => { void load(); }, 0);
-    if (busy || creating) return () => clearTimeout(initial);
-    const id = setInterval(() => { void load(); }, 4000);
+    // `busy` deliberately drives only whether the interval RUNS, via the ref
+    // below — it is not a dependency. Having it in the dependency array tore
+    // down and rebuilt this effect on every busy transition, firing an extra
+    // immediate load each time. During an accept (which waits on an on-chain
+    // createDeal receipt) that meant several overlapping loads racing the
+    // action, and the row visibly flickering between states as they landed.
+    const id = setInterval(() => {
+      if (busyRef.current || creatingRef.current) return;
+      void load();
+    }, 4000);
     return () => {
       clearTimeout(initial);
       clearInterval(id);
     };
-  }, [accountId, busy, creating, isUiPreview]);
+  }, [accountId, isUiPreview]);
 
   useEffect(() => {
     if (isUiPreview) {

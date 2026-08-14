@@ -34,7 +34,18 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
-  const pack: DocumentPack = { invoice: body.invoice, packingList: body.packingList, bol: body.bol };
+  // Carry EVERY document the client sent, not just the original three. This
+  // rebuilt the pack from three fixed fields and silently dropped the
+  // certificate of origin and both customs references — the engine then failed
+  // the pack for a missing document the seller had actually filled in.
+  const pack: DocumentPack = {
+    invoice: body.invoice,
+    packingList: body.packingList,
+    bol: body.bol,
+    ...(body.certificateOfOrigin ? { certificateOfOrigin: body.certificateOfOrigin } : {}),
+    ...(body.ukCustoms ? { ukCustoms: body.ukCustoms } : {}),
+    ...(body.uaeCustoms ? { uaeCustoms: body.uaeCustoms } : {}),
+  };
 
   const deal = await getDeal(appDealId);
   if (!deal?.onChainDealId || !deal.terms) {

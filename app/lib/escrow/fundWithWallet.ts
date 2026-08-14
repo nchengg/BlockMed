@@ -13,7 +13,14 @@ import {
   getChainId, ensureChain, requestAddress, sendTransaction, waitForReceipt, walletErrorMessage,
 } from '@/lib/wallet/browser';
 
-export type FundStep = { kind: 'approve' | 'deposit'; to: string; data: string; label: string };
+export type FundStep = {
+  kind: 'approve' | 'deposit' | 'fee';
+  to: string;
+  data: string;
+  label: string;
+  /** Server-side gas estimate; absent when it could not be estimated. */
+  gas?: string;
+};
 
 export type FundProgress = {
   /** Which step is in flight, so the UI can say what the wallet is asking for. */
@@ -36,7 +43,13 @@ export async function fundWithWallet(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ dealId }),
   });
-  const prep = await prepRes.json();
+  const prep = await prepRes.json().catch(() => null);
+  if (!prep) {
+    return {
+      ok: false,
+      error: `The server did not respond properly (HTTP ${prepRes.status}). Wait a moment and try again.`,
+    };
+  }
   if (!prepRes.ok) return { ok: false, error: prep.error ?? 'Could not prepare the deposit.' };
 
   const steps: FundStep[] = prep.steps;
@@ -72,7 +85,7 @@ export async function fundWithWallet(
     for (let i = 0; i < steps.length; i++) {
       const step = steps[i];
       onProgress?.({ step, index: i, total: steps.length });
-      const hash = await sendTransaction(prep.from, step.to, step.data);
+      const hash = await sendTransaction(prep.from, step.to, step.data, step.gas);
       hashes[step.kind] = hash;
       // Wait for it to be mined before the next step: the deposit depends on
       // the approval already being on-chain.
@@ -85,8 +98,17 @@ export async function fundWithWallet(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ dealId, approveHash: hashes.approve, depositHash: hashes.deposit }),
     });
-    const confirm = await confirmRes.json();
-    if (!confirmRes.ok) return { ok: false, error: confirm.error ?? 'Deposit could not be confirmed.' };
+    const confirm = await confirmRes.json().catch(() => null);
+    if (!confirmRes.ok || !confirm) {
+      // The money HAS moved by this point — only the record failed. Say so,
+      // rather than implying the deposit did not happen.
+      return {
+        ok: false,
+        error:
+          'Your deposit went through on-chain, but recording it failed ' +
+          `(HTTP ${confirmRes.status}). Refresh the deal — do not pay again.`,
+      };
+    }
 
     return { ok: true, approveHash: hashes.approve, depositHash: hashes.deposit! };
   } catch (err) {

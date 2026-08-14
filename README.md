@@ -12,6 +12,26 @@ A buyer locks USDC in a non-custodial on-chain escrow; the seller ships and uplo
 
 ## 👀 For the marker — start here
 
+### 📌 The submission set — the polished documents, in one place
+
+The graded deliverables, in reading order. Print-ready versions live in
+[`docs/PDFs For Submission/`](docs/PDFs%20For%20Submission/).
+
+| Deliverable | File |
+|---|---|
+| **Main presentation deck** (the 5-min video's slides) | [`proposal/Main-Presentation-Aug-14.pptx`](proposal/Main-Presentation-Aug-14.pptx) |
+| **Legal & Compliance report** | [`docs/PDFs For Submission/BlockMed_Legal_and_Compliance.pdf`](docs/PDFs%20For%20Submission/BlockMed_Legal_and_Compliance.pdf) |
+| **DIFC Pilot & VARA Readiness report** | [`docs/PDFs For Submission/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.pdf`](docs/PDFs%20For%20Submission/Blockmediary_DIFC_Pilot_and_VARA_Readiness_Report.pdf) |
+| **Deal Value research report** | [`docs/PDFs For Submission/Blockmediary_Deal_Value_Research_Report.pdf`](docs/PDFs%20For%20Submission/Blockmediary_Deal_Value_Research_Report.pdf) |
+| **Competitor analysis** | [`docs/PDFs For Submission/Competitor_Analysis.pdf`](docs/PDFs%20For%20Submission/Competitor_Analysis.pdf) |
+| **Trade Escrow Agreement** (draft legal instrument) | [`docs/PDFs For Submission/Trade_Escrow_Agreement.pdf`](docs/PDFs%20For%20Submission/Trade_Escrow_Agreement.pdf) |
+| **Financial model** (workbook + slides) | [`financial-projections/`](financial-projections/) |
+| **Project governance** (plan · RACI · Kanban) | [`project-governance/`](project-governance/) |
+
+Everything else in the repo is the working material behind these: source documents
+(`.md` files — GitHub renders them formatted in the browser, just click), the
+codebase, and the audit trail of how the product was built.
+
 ### 1. Try the live prototype (≈2 min, no setup)
 1. Open **https://block-med-nine.vercel.app** and scroll the landing page (the product story).
 2. Go to **`/dashboard`**.
